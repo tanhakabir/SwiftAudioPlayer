@@ -98,16 +98,20 @@ extension LockScreenViewProtocol {
             return .success
         }
         
-        commandCenter.changePlaybackPositionCommand.addTarget { [weak presenter] event in
-            guard let presenter = presenter else {
+        if #available(iOS 9.1, *) {
+            commandCenter.changePlaybackPositionCommand.addTarget { [weak presenter] event in
+                guard let presenter = presenter else {
+                    return .commandFailed
+                }
+                if let positionEvent = event as? MPChangePlaybackPositionCommandEvent {
+                    presenter.seek(toNeedle: Needle(positionEvent.positionTime))
+                    return .success
+                }
+                
                 return .commandFailed
             }
-            if let positionEvent = event as? MPChangePlaybackPositionCommandEvent {
-                presenter.seek(toNeedle: Needle(positionEvent.positionTime))
-                return .success
-            }
-            
-            return .commandFailed
+        } else {
+            // Fallback on earlier versions
         }
     }
     

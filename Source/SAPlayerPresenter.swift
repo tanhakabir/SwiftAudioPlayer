@@ -123,6 +123,7 @@ class SAPlayerPresenter {
     
     fileprivate func getSpeed() -> Double {
 //        return mapper.fetchAudioSpeed()
+        return 0
     }
 }
 

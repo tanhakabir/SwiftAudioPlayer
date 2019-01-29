@@ -208,6 +208,7 @@ extension AudioDataManager {
         }
         
         downloadWorker.resumeAllActive()
+        return false
     }
 }
 

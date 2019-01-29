@@ -26,10 +26,16 @@
 import Foundation
 import AVFoundation
 
-class SAPlayer {
-    static let sharedInstance: SAPlayer = SAPlayer()
-    var presenter: SAPlayerPresenter!
-    var player: AudioEngine?
+public class SAPlayer {
+    public static let shared: SAPlayer = SAPlayer()
+    private var presenter: SAPlayerPresenter!
+    private var player: AudioEngine?
+    
+    public var rate: Double = 1.0 {
+        didSet {
+            Log.test("foo")
+        }
+    }
     
     private init() {
         presenter = SAPlayerPresenter(delegate: self)
@@ -66,11 +72,11 @@ extension SAPlayer: SAPlayerDelegate {
     private func becomeDeviceAudioPlayer() {
         do {
             if #available(iOS 11.0, *) {
-                try AVAudioSession.sharedInstance().setCategory(.playback, mode: .spokenAudio, policy: .longForm, options: [])
+//                try AVAudioSession.sharedInstance().setCategory(.playback, mode: .spokenAudio, policy: .longForm, options: [])
             } else {
                 // Fallback on earlier versions
             }
-            try AVAudioSession.sharedInstance().setActive(true, options: .notifyOthersOnDeactivation)
+            try AVAudioSession.sharedInstance().setActive(true, with: .notifyOthersOnDeactivation)
         } catch {
             Log.monitor("Problem setting up AVAudioSession to play in:: \(error.localizedDescription)")
         }

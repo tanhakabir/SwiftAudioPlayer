@@ -1,0 +1,22 @@
+{
+  "name": "SwiftAudioPlayer",
+  "version": "0.1.0",
+  "summary": "A short description of SwiftAudioPlayer.",
+  "description": "TODO: Add long description of the pod here.",
+  "homepage": "https://github.com/tanhakabir/SwiftAudioPlayer",
+  "license": {
+    "type": "MIT",
+    "file": "LICENSE"
+  },
+  "authors": {
+    "tanhakabir": "tanhakabir.ca@gmail.com"
+  },
+  "source": {
+    "git": "https://github.com/tanhakabir/SwiftAudioPlayer.git",
+    "tag": "0.1.0"
+  },
+  "platforms": {
+    "ios": "8.0"
+  },
+  "source_files": "SwiftAudioPlayer/Classes/**/*"
+}

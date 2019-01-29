@@ -1,0 +1,11 @@
+use_frameworks!
+
+target 'SwiftAudioPlayer_Example' do
+  pod 'SwiftAudioPlayer', :path => '../'
+
+  target 'SwiftAudioPlayer_Tests' do
+    inherit! :search_paths
+
+    
+  end
+end

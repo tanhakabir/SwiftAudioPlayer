@@ -20,9 +20,10 @@ it, simply add the following line to your Podfile:
 pod 'SwiftAudioPlayer'
 ```
 
-## Author
+## Authors
 
 tanhakabir, tanhakabir.ca@gmail.com
+JonMercer, mercer.jon@gmail.com
 
 ## License
 

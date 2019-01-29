@@ -15,6 +15,33 @@
 		831B263D357A5FA2DDC7B1AE4B374092 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5A16F4CFC63FAC439D7A04994F579A03 /* Foundation.framework */; };
 		8F93DB166237195ED222EE55B6404625 /* Pods-SwiftAudioPlayer_Example-umbrella.h in Headers */ = {isa = PBXBuildFile; fileRef = 3B0B76CB1439F4D361322144E5A65C3A /* Pods-SwiftAudioPlayer_Example-umbrella.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		A4681F812200D0500018AB51 /* Log.swift in Sources */ = {isa = PBXBuildFile; fileRef = A4681F802200D0500018AB51 /* Log.swift */; };
+		A4681F832200D9150018AB51 /* AudioEngine.swift in Sources */ = {isa = PBXBuildFile; fileRef = A4681F822200D9150018AB51 /* AudioEngine.swift */; };
+		A4681F862200DA8B0018AB51 /* AudioClockDirector.swift in Sources */ = {isa = PBXBuildFile; fileRef = A4681F852200DA8B0018AB51 /* AudioClockDirector.swift */; };
+		A4681F882200DAD50018AB51 /* DirectorThreadSafeClosures.swift in Sources */ = {isa = PBXBuildFile; fileRef = A4681F872200DAD50018AB51 /* DirectorThreadSafeClosures.swift */; };
+		A4681F8A2200DB3C0018AB51 /* Date.swift in Sources */ = {isa = PBXBuildFile; fileRef = A4681F892200DB3C0018AB51 /* Date.swift */; };
+		A4681F8C2200DDD50018AB51 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = A4681F8B2200DDD50018AB51 /* Constants.swift */; };
+		A4681F8E2200E00E0018AB51 /* SAPlayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = A4681F8D2200E00E0018AB51 /* SAPlayer.swift */; };
+		A4681F902200E1450018AB51 /* SAPlayerPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = A4681F8F2200E1450018AB51 /* SAPlayerPresenter.swift */; };
+		A4681F922200E1950018AB51 /* SAPlayerDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = A4681F912200E1950018AB51 /* SAPlayerDelegate.swift */; };
+		A4681F952200E2220018AB51 /* AudioDiskEngine.swift in Sources */ = {isa = PBXBuildFile; fileRef = A4681F942200E2220018AB51 /* AudioDiskEngine.swift */; };
+		A4681F972200E2E20018AB51 /* URL.swift in Sources */ = {isa = PBXBuildFile; fileRef = A4681F962200E2E20018AB51 /* URL.swift */; };
+		A4681F9A2200E3D90018AB51 /* AudioDataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = A4681F992200E3D90018AB51 /* AudioDataManager.swift */; };
+		A4681F9D2200E4B40018AB51 /* AudioStreamWorker.swift in Sources */ = {isa = PBXBuildFile; fileRef = A4681F9C2200E4B40018AB51 /* AudioStreamWorker.swift */; };
+		A4681F9F2200E5DE0018AB51 /* StreamProgressDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = A4681F9E2200E5DE0018AB51 /* StreamProgressDTO.swift */; };
+		A4681FA32200E6710018AB51 /* AudioDownloadWorker.swift in Sources */ = {isa = PBXBuildFile; fileRef = A4681FA22200E6710018AB51 /* AudioDownloadWorker.swift */; };
+		A4681FA52200E7920018AB51 /* FileStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = A4681FA42200E7920018AB51 /* FileStorage.swift */; };
+		A4681FA72200F0130018AB51 /* StreamProgressPTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = A4681FA62200F0130018AB51 /* StreamProgressPTO.swift */; };
+		A4681FA92200F5A20018AB51 /* AudioThrottler.swift in Sources */ = {isa = PBXBuildFile; fileRef = A4681FA82200F5A20018AB51 /* AudioThrottler.swift */; };
+		A4681FAC2200F8490018AB51 /* AudioParsable.swift in Sources */ = {isa = PBXBuildFile; fileRef = A4681FAB2200F8490018AB51 /* AudioParsable.swift */; };
+		A4681FAE2200F8E90018AB51 /* AudioParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = A4681FAD2200F8E90018AB51 /* AudioParser.swift */; };
+		A4681FB02200FA6C0018AB51 /* AudioParserErrors.swift in Sources */ = {isa = PBXBuildFile; fileRef = A4681FAF2200FA6C0018AB51 /* AudioParserErrors.swift */; };
+		A4681FB22200FB020018AB51 /* AudioParserPropertyListener.swift in Sources */ = {isa = PBXBuildFile; fileRef = A4681FB12200FB020018AB51 /* AudioParserPropertyListener.swift */; };
+		A4681FB42200FC520018AB51 /* AudioParserPacketListener.swift in Sources */ = {isa = PBXBuildFile; fileRef = A4681FB32200FC520018AB51 /* AudioParserPacketListener.swift */; };
+		A4681FB72200FE090018AB51 /* AudioConverter.swift in Sources */ = {isa = PBXBuildFile; fileRef = A4681FB62200FE090018AB51 /* AudioConverter.swift */; };
+		A4681FB92200FE7F0018AB51 /* AudioConverterErrors.swift in Sources */ = {isa = PBXBuildFile; fileRef = A4681FB82200FE7F0018AB51 /* AudioConverterErrors.swift */; };
+		A4681FBB2201002F0018AB51 /* AudioConverterListener.swift in Sources */ = {isa = PBXBuildFile; fileRef = A4681FBA2201002F0018AB51 /* AudioConverterListener.swift */; };
+		A4681FBD220100AB0018AB51 /* AudioStreamEngine.swift in Sources */ = {isa = PBXBuildFile; fileRef = A4681FBC220100AB0018AB51 /* AudioStreamEngine.swift */; };
+		A4681FBF22010ECF0018AB51 /* LockScreenViewProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = A4681FBE22010ECF0018AB51 /* LockScreenViewProtocol.swift */; };
 		B73D01578ABBDB6FF402D868A6C547FF /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5A16F4CFC63FAC439D7A04994F579A03 /* Foundation.framework */; };
 		E08AD6157EF688FE832F866CBCDA3532 /* SwiftAudioPlayer-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = FB83B3B4253D41C37C5563D34D450BF8 /* SwiftAudioPlayer-dummy.m */; };
 /* End PBXBuildFile section */
@@ -64,6 +91,33 @@
 		A19C8F889C787C19BE4123C1896AF501 /* Pods-SwiftAudioPlayer_Example-resources.sh */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.script.sh; path = "Pods-SwiftAudioPlayer_Example-resources.sh"; sourceTree = "<group>"; };
 		A39F2A138CF40C1051CA9E227429A86D /* SwiftAudioPlayer.modulemap */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.module; path = SwiftAudioPlayer.modulemap; sourceTree = "<group>"; };
 		A4681F802200D0500018AB51 /* Log.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Log.swift; sourceTree = "<group>"; };
+		A4681F822200D9150018AB51 /* AudioEngine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioEngine.swift; sourceTree = "<group>"; };
+		A4681F852200DA8B0018AB51 /* AudioClockDirector.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioClockDirector.swift; sourceTree = "<group>"; };
+		A4681F872200DAD50018AB51 /* DirectorThreadSafeClosures.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DirectorThreadSafeClosures.swift; sourceTree = "<group>"; };
+		A4681F892200DB3C0018AB51 /* Date.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Date.swift; sourceTree = "<group>"; };
+		A4681F8B2200DDD50018AB51 /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
+		A4681F8D2200E00E0018AB51 /* SAPlayer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SAPlayer.swift; sourceTree = "<group>"; };
+		A4681F8F2200E1450018AB51 /* SAPlayerPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SAPlayerPresenter.swift; sourceTree = "<group>"; };
+		A4681F912200E1950018AB51 /* SAPlayerDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SAPlayerDelegate.swift; sourceTree = "<group>"; };
+		A4681F942200E2220018AB51 /* AudioDiskEngine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioDiskEngine.swift; sourceTree = "<group>"; };
+		A4681F962200E2E20018AB51 /* URL.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = URL.swift; sourceTree = "<group>"; };
+		A4681F992200E3D90018AB51 /* AudioDataManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioDataManager.swift; sourceTree = "<group>"; };
+		A4681F9C2200E4B40018AB51 /* AudioStreamWorker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioStreamWorker.swift; sourceTree = "<group>"; };
+		A4681F9E2200E5DE0018AB51 /* StreamProgressDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StreamProgressDTO.swift; sourceTree = "<group>"; };
+		A4681FA22200E6710018AB51 /* AudioDownloadWorker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioDownloadWorker.swift; sourceTree = "<group>"; };
+		A4681FA42200E7920018AB51 /* FileStorage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileStorage.swift; sourceTree = "<group>"; };
+		A4681FA62200F0130018AB51 /* StreamProgressPTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StreamProgressPTO.swift; sourceTree = "<group>"; };
+		A4681FA82200F5A20018AB51 /* AudioThrottler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioThrottler.swift; sourceTree = "<group>"; };
+		A4681FAB2200F8490018AB51 /* AudioParsable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioParsable.swift; sourceTree = "<group>"; };
+		A4681FAD2200F8E90018AB51 /* AudioParser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioParser.swift; sourceTree = "<group>"; };
+		A4681FAF2200FA6C0018AB51 /* AudioParserErrors.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioParserErrors.swift; sourceTree = "<group>"; };
+		A4681FB12200FB020018AB51 /* AudioParserPropertyListener.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioParserPropertyListener.swift; sourceTree = "<group>"; };
+		A4681FB32200FC520018AB51 /* AudioParserPacketListener.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioParserPacketListener.swift; sourceTree = "<group>"; };
+		A4681FB62200FE090018AB51 /* AudioConverter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioConverter.swift; sourceTree = "<group>"; };
+		A4681FB82200FE7F0018AB51 /* AudioConverterErrors.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioConverterErrors.swift; sourceTree = "<group>"; };
+		A4681FBA2201002F0018AB51 /* AudioConverterListener.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioConverterListener.swift; sourceTree = "<group>"; };
+		A4681FBC220100AB0018AB51 /* AudioStreamEngine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioStreamEngine.swift; sourceTree = "<group>"; };
+		A4681FBE22010ECF0018AB51 /* LockScreenViewProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LockScreenViewProtocol.swift; sourceTree = "<group>"; };
 		AB41D88A2C694FBDF26EA56381EED25F /* Pods-SwiftAudioPlayer_Example-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "Pods-SwiftAudioPlayer_Example-dummy.m"; sourceTree = "<group>"; };
 		B8C829A46249957CD3056074B5CC0BBB /* README.md */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		B9A6DFC8AB64B139080060EA639B3A7D /* Info.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -115,7 +169,14 @@
 		41C7F403DA52FBC5C40644BB0E824CAA /* SwiftAudioPlayer */ = {
 			isa = PBXGroup;
 			children = (
-				A4681F802200D0500018AB51 /* Log.swift */,
+				A4681F8D2200E00E0018AB51 /* SAPlayer.swift */,
+				A4681F912200E1950018AB51 /* SAPlayerDelegate.swift */,
+				A4681F8F2200E1450018AB51 /* SAPlayerPresenter.swift */,
+				A4681FBE22010ECF0018AB51 /* LockScreenViewProtocol.swift */,
+				A4681F852200DA8B0018AB51 /* AudioClockDirector.swift */,
+				A4681F932200E2020018AB51 /* Engine */,
+				A4681F9B2200E4850018AB51 /* Model */,
+				A4681F842200D91D0018AB51 /* Util */,
 				840F8E752B4437107D761C28D4EE8D0B /* Pod */,
 				EAE1BCB45D8F275CE4428674B5151284 /* Support Files */,
 			);
@@ -195,6 +256,83 @@
 				6EC04ECC8F7CB2AF2E4E042A6A8ECFA1 /* SwiftAudioPlayer.podspec */,
 			);
 			name = Pod;
+			sourceTree = "<group>";
+		};
+		A4681F842200D91D0018AB51 /* Util */ = {
+			isa = PBXGroup;
+			children = (
+				A4681F8B2200DDD50018AB51 /* Constants.swift */,
+				A4681F802200D0500018AB51 /* Log.swift */,
+				A4681F872200DAD50018AB51 /* DirectorThreadSafeClosures.swift */,
+				A4681F892200DB3C0018AB51 /* Date.swift */,
+				A4681F962200E2E20018AB51 /* URL.swift */,
+			);
+			path = Util;
+			sourceTree = "<group>";
+		};
+		A4681F932200E2020018AB51 /* Engine */ = {
+			isa = PBXGroup;
+			children = (
+				A4681F822200D9150018AB51 /* AudioEngine.swift */,
+				A4681F942200E2220018AB51 /* AudioDiskEngine.swift */,
+				A4681FBC220100AB0018AB51 /* AudioStreamEngine.swift */,
+				A4681FB52200FDF30018AB51 /* Converter */,
+				A4681FAA2200F8280018AB51 /* Parser */,
+				A4681FA82200F5A20018AB51 /* AudioThrottler.swift */,
+			);
+			path = Engine;
+			sourceTree = "<group>";
+		};
+		A4681F9B2200E4850018AB51 /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				A4681F992200E3D90018AB51 /* AudioDataManager.swift */,
+				A4681FA62200F0130018AB51 /* StreamProgressPTO.swift */,
+				A4681FA02200E5F50018AB51 /* Streaming */,
+				A4681FA12200E6540018AB51 /* Downloading */,
+			);
+			name = Model;
+			path = "New Group";
+			sourceTree = "<group>";
+		};
+		A4681FA02200E5F50018AB51 /* Streaming */ = {
+			isa = PBXGroup;
+			children = (
+				A4681F9E2200E5DE0018AB51 /* StreamProgressDTO.swift */,
+				A4681F9C2200E4B40018AB51 /* AudioStreamWorker.swift */,
+			);
+			path = Streaming;
+			sourceTree = "<group>";
+		};
+		A4681FA12200E6540018AB51 /* Downloading */ = {
+			isa = PBXGroup;
+			children = (
+				A4681FA22200E6710018AB51 /* AudioDownloadWorker.swift */,
+				A4681FA42200E7920018AB51 /* FileStorage.swift */,
+			);
+			path = Downloading;
+			sourceTree = "<group>";
+		};
+		A4681FAA2200F8280018AB51 /* Parser */ = {
+			isa = PBXGroup;
+			children = (
+				A4681FAB2200F8490018AB51 /* AudioParsable.swift */,
+				A4681FAD2200F8E90018AB51 /* AudioParser.swift */,
+				A4681FB12200FB020018AB51 /* AudioParserPropertyListener.swift */,
+				A4681FB32200FC520018AB51 /* AudioParserPacketListener.swift */,
+				A4681FAF2200FA6C0018AB51 /* AudioParserErrors.swift */,
+			);
+			path = Parser;
+			sourceTree = "<group>";
+		};
+		A4681FB52200FDF30018AB51 /* Converter */ = {
+			isa = PBXGroup;
+			children = (
+				A4681FB62200FE090018AB51 /* AudioConverter.swift */,
+				A4681FBA2201002F0018AB51 /* AudioConverterListener.swift */,
+				A4681FB82200FE7F0018AB51 /* AudioConverterErrors.swift */,
+			);
+			path = Converter;
 			sourceTree = "<group>";
 		};
 		BC3CA7F9E30CC8F7E2DD044DD34432FC /* Frameworks */ = {
@@ -364,8 +502,35 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A4681F9F2200E5DE0018AB51 /* StreamProgressDTO.swift in Sources */,
+				A4681F832200D9150018AB51 /* AudioEngine.swift in Sources */,
+				A4681F8A2200DB3C0018AB51 /* Date.swift in Sources */,
+				A4681F862200DA8B0018AB51 /* AudioClockDirector.swift in Sources */,
+				A4681F882200DAD50018AB51 /* DirectorThreadSafeClosures.swift in Sources */,
+				A4681F8C2200DDD50018AB51 /* Constants.swift in Sources */,
+				A4681F922200E1950018AB51 /* SAPlayerDelegate.swift in Sources */,
 				418D41690EF20077112E2BE86E32FB6A /* Pods-SwiftAudioPlayer_Example-dummy.m in Sources */,
+				A4681FA32200E6710018AB51 /* AudioDownloadWorker.swift in Sources */,
+				A4681F9A2200E3D90018AB51 /* AudioDataManager.swift in Sources */,
+				A4681FAC2200F8490018AB51 /* AudioParsable.swift in Sources */,
+				A4681FA72200F0130018AB51 /* StreamProgressPTO.swift in Sources */,
+				A4681FB02200FA6C0018AB51 /* AudioParserErrors.swift in Sources */,
+				A4681FBB2201002F0018AB51 /* AudioConverterListener.swift in Sources */,
+				A4681F902200E1450018AB51 /* SAPlayerPresenter.swift in Sources */,
+				A4681FB92200FE7F0018AB51 /* AudioConverterErrors.swift in Sources */,
+				A4681FA52200E7920018AB51 /* FileStorage.swift in Sources */,
+				A4681FA92200F5A20018AB51 /* AudioThrottler.swift in Sources */,
+				A4681FAE2200F8E90018AB51 /* AudioParser.swift in Sources */,
+				A4681FB72200FE090018AB51 /* AudioConverter.swift in Sources */,
+				A4681F952200E2220018AB51 /* AudioDiskEngine.swift in Sources */,
 				A4681F812200D0500018AB51 /* Log.swift in Sources */,
+				A4681FBD220100AB0018AB51 /* AudioStreamEngine.swift in Sources */,
+				A4681F8E2200E00E0018AB51 /* SAPlayer.swift in Sources */,
+				A4681FB22200FB020018AB51 /* AudioParserPropertyListener.swift in Sources */,
+				A4681F9D2200E4B40018AB51 /* AudioStreamWorker.swift in Sources */,
+				A4681F972200E2E20018AB51 /* URL.swift in Sources */,
+				A4681FB42200FC520018AB51 /* AudioParserPacketListener.swift in Sources */,
+				A4681FBF22010ECF0018AB51 /* LockScreenViewProtocol.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -1,0 +1,141 @@
+//
+//  FileStorage.swift
+//  SwiftAudioPlayer
+//
+//  Created by Tanha Kabir on 2019-01-29.
+//  Copyright © 2019 Tanha Kabir, Jon Mercer
+//
+//  Permission is hereby granted, free of charge, to any person obtaining a copy
+//  of this software and associated documentation files (the "Software"), to deal
+//  in the Software without restriction, including without limitation the rights
+//  to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+//  copies of the Software, and to permit persons to whom the Software is
+//  furnished to do so, subject to the following conditions:
+//
+//  The above copyright notice and this permission notice shall be included in
+//  all copies or substantial portions of the Software.
+//
+//  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+//  IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+//  FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+//  AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+//  LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+//  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+//  THE SOFTWARE.
+
+import Foundation
+
+struct FileStorage {
+    private init() {}
+    
+    public static func sizePerMB(_ url: URL?) -> Double {
+        guard let filePath = url?.path else {
+            return 0.0
+        }
+        do {
+            let attribute = try FileManager.default.attributesOfItem(atPath: filePath)
+            if let size = attribute[FileAttributeKey.size] as? NSNumber {
+                return size.doubleValue / 1000000.0
+            }
+        } catch {
+            Log.error("Error: \(error)")
+        }
+        return 0.0
+    }
+    
+    private static func getUrl(givenAName name: NameFile, inDirectory dir: FileManager.SearchPathDirectory) -> URL {
+        let directoryPath = NSSearchPathForDirectoriesInDomains(dir, .userDomainMask, true)[0] as String
+        let url = URL(fileURLWithPath: directoryPath)
+        return url.appendingPathComponent(name)
+    }
+    
+    private static func isStored(_ url: URL) -> Bool{
+        // https://stackoverflow.com/questions/42897844/swift-3-0-filemanager-fileexistsatpath-always-return-false
+        // When determining if a file exists, we must use .path not .absolute string!
+        return FileManager.default.fileExists(atPath: url.path)
+    }
+    
+    private static func delete(_ url: URL) {
+        if !isStored(url) {
+            return
+        }
+        
+        do {
+            try FileManager.default.removeItem(at: url)
+        } catch let error {
+            Log.error("Could not delete a file: \(error.localizedDescription)")
+        }
+    }
+}
+
+// MARK:- Audio
+extension FileStorage {
+    struct Audio {
+        private static let directory: FileManager.SearchPathDirectory = .documentDirectory
+        private init() {}
+        
+        static func isStored(_ id: ID) -> Bool {
+            guard let url = locate(id)?.path else {
+                return false
+            }
+            
+            //FIXME: This is an unreliable API. Maybe use a map instead?
+            return FileManager.default.fileExists(atPath: url)
+        }
+        
+        static func delete(_ id: ID) {
+            guard let url = locate(id) else {
+                Log.warn("trying to delete audio file that doesn't exist with id: \(id)")
+                return
+            }
+            return FileStorage.delete(url)
+        }
+        
+        static func write(_ id: ID, fileExtension: String, data: Data) {
+            do {
+                let url = FileStorage.getUrl(givenAName: getAudioFileName(id, fileExtension: fileExtension), inDirectory: directory)
+                try data.write(to: url)
+            } catch {
+                Log.monitor(error.localizedDescription)
+            }
+        }
+        
+        static func read(_ id: ID) -> Data? {
+            guard let url = locate(id) else {
+                Log.debug("Trying to get data for audio file that doesn't exist: \(id)")
+                return nil
+            }
+            let data = try? Data(contentsOf: url)
+            return data
+        }
+        
+        static func locate(_ id: ID) -> URL? {
+            let urls = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)
+            
+            for url in urls {
+                if url.absoluteString.contains(getAudioName(id)) && url.pathExtension != "" {
+                    _ = getUrl(givenId: id, andFileExtension: url.pathExtension)
+                    return url
+                }
+            }
+            return nil
+        }
+        
+        static func getUrl(givenId id: ID, andFileExtension fileExtension: String) -> URL {
+            let url = FileStorage.getUrl(givenAName: getAudioFileName(id, fileExtension: fileExtension), inDirectory: directory)
+            return url
+        }
+        
+        private static func getCachedKey(_ id: ID) -> String {
+            return "audio_filename_\(id)"
+        }
+        
+        private static func getAudioName(_ id: ID) -> NameFile {
+            return "audio_\(id)"
+        }
+        
+        private static func getAudioFileName(_ id: ID, fileExtension: String) -> NameFile {
+            return "\(getAudioName(id)).\(fileExtension)"
+        }
+    }
+}

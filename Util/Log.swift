@@ -9,7 +9,7 @@
 import Foundation
 import os.log
 
-private class Log {
+class Log {
     private init() {}
     
     // Possible levels of log messages to log
@@ -23,7 +23,7 @@ private class Log {
     }
     
     // Specify which types of log messages to display. Default level is set to WARN, which means Log will print any log messages of type only WARN, ERROR, MONITOR, and TEST. To print DEBUG and INFO logs, set the level to a lower value.
-    public static var logLevel: LogLevel = LogLevel.WARN
+    public static var logLevel: LogLevel = LogLevel.ERROR
     
     // Used for OSLog
     private static let SUBSYSTEM: String = "com.SwiftAudioPlayer"
@@ -167,7 +167,7 @@ private class Log {
      - Parameter functionName: automatically generated based on the function that called this function
      - Parameter lineNumber: automatically generated based on the line that called this function
      */
-    public static func debug(_ logMessage: Any, classPath: String = #file, functionName: String = #function, lineNumber: Int = #line) {
+    public static func debug(_ logMessage: Any?..., classPath: String = #file, functionName: String = #function, lineNumber: Int = #line) {
         let fileName = URLUtil.getNameFromStringPath(classPath)
         if logLevel.rawValue <= LogLevel.DEBUG.rawValue {
             if #available(iOS 10.0, *) {
@@ -201,5 +201,15 @@ extension Date {
         let formatter = DateFormatter()
         formatter.dateFormat = "HH:mm:ss.SSS"
         return formatter.string(from: self)
+    }
+}
+
+extension Array where Element == Any? {
+    var toLog: String  {
+        var strs:[String] = []
+        for element in self {
+            strs.append("\(element ?? "nil")")
+        }
+        return strs.joined(separator: " |^| ")
     }
 }

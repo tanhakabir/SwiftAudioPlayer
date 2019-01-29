@@ -9,7 +9,7 @@ EXTERNAL SOURCES:
     :path: "../"
 
 SPEC CHECKSUMS:
-  SwiftAudioPlayer: 6d47a258720feecb431509eb71215559621fa12d
+  SwiftAudioPlayer: abfeb4ac2467cdd7b5b8a5cb442780184ea172bc
 
 PODFILE CHECKSUM: 84ea27746bf895da86125356a8d0df7a323c4c08
 

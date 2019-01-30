@@ -25,24 +25,17 @@
 
 import Foundation
 
+/**
+ Utility class to access audio files saved on the phone.
+ */
 struct FileStorage {
     private init() {}
     
-    public static func sizePerMB(_ url: URL?) -> Double {
-        guard let filePath = url?.path else {
-            return 0.0
-        }
-        do {
-            let attribute = try FileManager.default.attributesOfItem(atPath: filePath)
-            if let size = attribute[FileAttributeKey.size] as? NSNumber {
-                return size.doubleValue / 1000000.0
-            }
-        } catch {
-            Log.error("Error: \(error)")
-        }
-        return 0.0
-    }
-    
+    /**
+     Generates a URL for a file that would be saved locally.
+     
+     Note: It is not guaranteed that the file actually exists.
+     */
     private static func getUrl(givenAName name: NameFile, inDirectory dir: FileManager.SearchPathDirectory) -> URL {
         let directoryPath = NSSearchPathForDirectoriesInDomains(dir, .userDomainMask, true)[0] as String
         let url = URL(fileURLWithPath: directoryPath)
@@ -113,7 +106,7 @@ extension FileStorage {
             let urls = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)
             
             for url in urls {
-                if url.absoluteString.contains(getAudioName(id)) && url.pathExtension != "" {
+                if url.absoluteString.contains(id) && url.pathExtension != "" {
                     _ = getUrl(givenId: id, andFileExtension: url.pathExtension)
                     return url
                 }
@@ -126,16 +119,8 @@ extension FileStorage {
             return url
         }
         
-        private static func getCachedKey(_ id: ID) -> String {
-            return "audio_filename_\(id)"
-        }
-        
-        private static func getAudioName(_ id: ID) -> NameFile {
-            return "audio_\(id)"
-        }
-        
         private static func getAudioFileName(_ id: ID, fileExtension: String) -> NameFile {
-            return "\(getAudioName(id)).\(fileExtension)"
+            return "\(id).\(fileExtension)"
         }
     }
 }

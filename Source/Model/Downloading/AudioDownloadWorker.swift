@@ -37,7 +37,6 @@ protocol AudioDataDownloadable: AnyObject {
     func stop(withID id: ID, callback: ((_ dataSoFar: Data?, _ totalBytesExpected: Int64?) -> ())?)
     func pauseAllActive() //Because of streaming
     func resumeAllActive() //Because of streaming
-    func cellularDownloadPreferenceChanged(callback: @escaping([(ID, Data?)]) ->())
 }
 
 class AudioDownloadWorker: NSObject, AudioDataDownloadable {
@@ -147,25 +146,6 @@ class AudioDownloadWorker: NSObject, AudioDataDownloadable {
         }
         
         callback?(nil, nil)
-    }
-    
-    func cellularDownloadPreferenceChanged(callback: @escaping([(ID, Data?)]) ->()) {
-        Log.info("")
-        var ret: [(ID, Data?)] = []
-        
-        for download in activeDownloads {
-            guard download.task.state == .running else {
-                continue
-            }
-            
-            download.task.cancel { [weak self] (data: Data?) in
-                ret.append((download.info.id, data))
-                
-                if ret.count == self?.activeDownloads.count ?? 0 {
-                    callback(ret)
-                }
-            }
-        }
     }
 }
 

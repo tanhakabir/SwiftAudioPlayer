@@ -101,7 +101,7 @@
 		A4681F912200E1950018AB51 /* SAPlayerDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SAPlayerDelegate.swift; sourceTree = "<group>"; };
 		A4681F942200E2220018AB51 /* AudioDiskEngine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioDiskEngine.swift; sourceTree = "<group>"; };
 		A4681F962200E2E20018AB51 /* URL.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = URL.swift; sourceTree = "<group>"; };
-		A4681F992200E3D90018AB51 /* AudioDataManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = AudioDataManager.swift; path = ../Model/AudioDataManager.swift; sourceTree = "<group>"; };
+		A4681F992200E3D90018AB51 /* AudioDataManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = AudioDataManager.swift; path = ../../Source/Model/AudioDataManager.swift; sourceTree = "<group>"; };
 		A4681F9C2200E4B40018AB51 /* AudioStreamWorker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = AudioStreamWorker.swift; path = ../../Model/Streaming/AudioStreamWorker.swift; sourceTree = "<group>"; };
 		A4681F9E2200E5DE0018AB51 /* StreamProgressDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = StreamProgressDTO.swift; path = ../../Model/Streaming/StreamProgressDTO.swift; sourceTree = "<group>"; };
 		A4681FA22200E6710018AB51 /* AudioDownloadWorker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = AudioDownloadWorker.swift; path = ../../Model/Downloading/AudioDownloadWorker.swift; sourceTree = "<group>"; };
@@ -284,8 +284,7 @@
 				A4681FA02200E5F50018AB51 /* Streaming */,
 				A4681FA12200E6540018AB51 /* Downloading */,
 			);
-			name = Model;
-			path = "New Group";
+			path = Model;
 			sourceTree = "<group>";
 		};
 		A4681FA02200E5F50018AB51 /* Streaming */ = {

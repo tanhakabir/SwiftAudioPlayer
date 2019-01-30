@@ -42,7 +42,7 @@ protocol AudioDataManagable {
     func pauseStream(withRemoteURL url: AudioURL)
     func resumeStream(withRemoteURL url: AudioURL)
     func seekStream(withRemoteURL url: AudioURL, toByteOffset offset: UInt64)
-    func deleteStream(withRemoteURL url: AudioURL) //FIXME: remove when we have persisten play button
+    func deleteStream(withRemoteURL url: AudioURL) 
     
     func getPersistedUrl(withRemoteURL url: AudioURL) -> URL?
     func startDownload(withRemoteURL url: AudioURL)

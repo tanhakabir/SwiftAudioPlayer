@@ -5,6 +5,12 @@
 //  Created by Tanha Kabir on 2019-01-29.
 //  Copyright © 2019 Tanha Kabir, Jon Mercer
 //
+//  This file was modified and adapted from https://github.com/syedhali/AudioStreamer
+//  which was released under Apache License 2.0. Apache License 2.0 requires explicit
+//  documentation of modified files from source and a copy of the Apache License 2.0
+//  in the project which he have under the name Credited_LICENSE.
+//
+//
 //  Permission is hereby granted, free of charge, to any person obtaining a copy
 //  of this software and associated documentation files (the "Software"), to deal
 //  in the Software without restriction, including without limitation the rights

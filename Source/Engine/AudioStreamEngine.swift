@@ -1,9 +1,33 @@
 //
 //  AudioStreamEngine.swift
-//  Pods-SwiftAudioPlayer_Example
+//  SwiftAudioPlayer
 //
 //  Created by Tanha Kabir on 2019-01-29.
+//  Copyright © 2019 Tanha Kabir, Jon Mercer
 //
+//  This file was modified and adapted from https://github.com/syedhali/AudioStreamer
+//  which was released under Apache License 2.0. Apache License 2.0 requires explicit
+//  documentation of modified files from source and a copy of the Apache License 2.0
+//  in the project which he have under the name Credited_LICENSE.
+//
+//
+//  Permission is hereby granted, free of charge, to any person obtaining a copy
+//  of this software and associated documentation files (the "Software"), to deal
+//  in the Software without restriction, including without limitation the rights
+//  to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+//  copies of the Software, and to permit persons to whom the Software is
+//  furnished to do so, subject to the following conditions:
+//
+//  The above copyright notice and this permission notice shall be included in
+//  all copies or substantial portions of the Software.
+//
+//  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+//  IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+//  FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+//  AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+//  LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+//  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+//  THE SOFTWARE.
 
 import Foundation
 import AVFoundation
@@ -36,7 +60,7 @@ class AudioStreamEngine: AudioEngine {
     private let MAX_POLL_BUFFER_COUNT = 300 //Having one buffer in engine at a time is choppy.
     private let PCM_BUFFER_SIZE: AVAudioFrameCount = 8192
     
-    private let queue = DispatchQueue(label: "com.chameleon.engine", qos: .userInitiated)
+    private let queue = DispatchQueue(label: "SwiftAudioPlayer.engine", qos: .userInitiated)
     
     //From init
     private var converter: AudioConvertable!
@@ -182,7 +206,7 @@ class AudioStreamEngine: AudioEngine {
         } catch ConverterError.reachedEndOfFile {
             Log.info(ConverterError.reachedEndOfFile.localizedDescription)
         } catch ConverterError.notEnoughData {
-            shouldPollForNextBuffer = true //🎯🎯🎯🎯 for visibility copy pasta diff //TODO: we should actually test if this happens
+            shouldPollForNextBuffer = true
             Log.debug(ConverterError.notEnoughData.localizedDescription)
         } catch ConverterError.superConcerningShouldNeverHappen {
             Log.error(ConverterError.superConcerningShouldNeverHappen.localizedDescription)

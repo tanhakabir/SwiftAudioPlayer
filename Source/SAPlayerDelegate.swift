@@ -27,8 +27,8 @@ import Foundation
 import CoreMedia
 
 protocol SAPlayerDelegate: AnyObject, LockScreenViewProtocol {
-    func startAudioDownloaded(withRemoutUrl url: AudioURL)
-    func startAudioStreamed(withRemoutUrl url: AudioURL)
+    func startAudioDownloaded(withRemoteUrl url: AudioURL)
+    func startAudioStreamed(withRemoteUrl url: AudioURL)
     func play()
     func pause()
     func seek(toNeedle needle: Needle) //TODO ensure that engine cleans up out of bounds

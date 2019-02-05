@@ -51,13 +51,13 @@ public class SAPlayer {
 
 
 extension SAPlayer: SAPlayerDelegate {
-    func startAudioDownloaded(withRemoutUrl url: AudioURL) {
+    func startAudioDownloaded(withRemoteUrl url: AudioURL) {
         player?.pause()
         player?.invalidate()
         player = AudioDiskEngine(withRemoteUrl: url, delegate: presenter)
     }
     
-    func startAudioStreamed(withRemoutUrl url: AudioURL) {
+    func startAudioStreamed(withRemoteUrl url: AudioURL) {
         player?.pause()
         player?.invalidate()
         player = AudioStreamEngine(withRemoteUrl: url, delegate: presenter)

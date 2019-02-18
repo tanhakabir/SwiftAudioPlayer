@@ -42,7 +42,7 @@
 		A4681FDF220113E20018AB51 /* DirectorThreadSafeClosures.swift in Sources */ = {isa = PBXBuildFile; fileRef = A4681F872200DAD50018AB51 /* DirectorThreadSafeClosures.swift */; };
 		A4681FE0220113E40018AB51 /* Log.swift in Sources */ = {isa = PBXBuildFile; fileRef = A4681F802200D0500018AB51 /* Log.swift */; };
 		A4681FE1220113E70018AB51 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = A4681F8B2200DDD50018AB51 /* Constants.swift */; };
-		A49B78C4221A78DE00BBA862 /* DownloadProgressDirector.swift in Sources */ = {isa = PBXBuildFile; fileRef = A49B78C3221A78DE00BBA862 /* DownloadProgressDirector.swift */; };
+		A4FBA6B2221B538E00D5A353 /* DownloadProgressDirector.swift in Sources */ = {isa = PBXBuildFile; fileRef = A49B78C3221A78DE00BBA862 /* DownloadProgressDirector.swift */; };
 		B73D01578ABBDB6FF402D868A6C547FF /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5A16F4CFC63FAC439D7A04994F579A03 /* Foundation.framework */; };
 		E08AD6157EF688FE832F866CBCDA3532 /* SwiftAudioPlayer-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = FB83B3B4253D41C37C5563D34D450BF8 /* SwiftAudioPlayer-dummy.m */; };
 /* End PBXBuildFile section */
@@ -520,6 +520,7 @@
 				A4681FD3220113B60018AB51 /* AudioParserPropertyListener.swift in Sources */,
 				A4681FCA220113940018AB51 /* AudioClockDirector.swift in Sources */,
 				A4681FD0220113A70018AB51 /* AudioConverterErrors.swift in Sources */,
+				A4FBA6B2221B538E00D5A353 /* DownloadProgressDirector.swift in Sources */,
 				A4681FD7220113C30018AB51 /* StreamProgressPTO.swift in Sources */,
 				A4681FE0220113E40018AB51 /* Log.swift in Sources */,
 				A4681FCE220113A20018AB51 /* AudioConverter.swift in Sources */,
@@ -542,7 +543,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				A49B78C4221A78DE00BBA862 /* DownloadProgressDirector.swift in Sources */,
 				418D41690EF20077112E2BE86E32FB6A /* Pods-SwiftAudioPlayer_Example-dummy.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

@@ -50,21 +50,20 @@ class SAPlayerPresenter {
         prepareNextEpisodeToPlay()
     }
     
-    func playNewEpisode() {
-        
+    func handlePlayAudio(withRemoteUrl url: URL) {
+        if let savedUrl = AudioDataManager.shared.getPersistedUrl(withRemoteURL: url) {
+            delegate?.startAudioDownloaded(withSavedUrl: savedUrl)
+        } else {
+            delegate?.startAudioStreamed(withRemoteUrl: url)
+        }
+    }
+    
+    @available(iOS 10.0, *)
+    func handleLockscreenInfo(info: SALockScreenInfo) {
+//        delegate?.setLockScreenInfo(withMediaInfo: info, duration: <#T##Duration#>)
     }
     
 //    private func newEpisodeArrived(episode: EpisodePTO) {
-//        self.episode = episode
-//        let key = episode.getKey()
-//
-//        if mapper.isAudioDownloaded(withEpisodeKey: key) {
-//            delegate?.startAudioDownloaded(withKey: key)
-//        } else {
-//            delegate?.startAudioStreamed(withKey: key)
-//        }
-//
-//        setSpeed(withMultiple: getSpeed())
 //
 //        mapper.fetchHistory(withEpisodeKey: key) { [weak self] (historyPTO: HistoryPTO?) in
 //            guard let _ = self else {return}
@@ -110,57 +109,41 @@ class SAPlayerPresenter {
 //            self?.isPlaying = payload.1
 //        }
 //    }
-//
-//    private func historyArrived(withHistory historyPTO: HistoryPTO?) {
-//        let needleFromHistory: Needle = historyPTO?.getNeedle() ?? 0
-//
-//        delegate?.seek(toNeedle: needleFromHistory)
-//
-//        if shouldPlayImmediately {
-//            delegate?.play()
-//        }
-//    }
-    
-    fileprivate func getSpeed() -> Double {
-//        return mapper.fetchAudioSpeed()
-        return 0
-    }
 }
 
 //MARK:- Used by outside world including:
 // SPP, lock screen, directors
 extension SAPlayerPresenter {
-    func pause() {
-        delegate?.pause()
+    func handlePause() {
+        delegate?.pauseEngine()
     }
     
-    func play() {
-        delegate?.play()
+    func handlePlay() {
+        delegate?.playEngine()
     }
     
-    func togglePlayingAndPausing() {
+    func handleTogglePlayingAndPausing() {
         if isPlaying {
-            pause()
+            handlePause()
         } else {
-            play()
+            handlePlay()
         }
     }
     
-    func skipForward() {
-        seek(toNeedle: (needle ?? 0) + SAPlayerPresenter.SKIP_FORWARD_SECONDS)
+    func handleSkipForward() {
+        handleSeek(toNeedle: (needle ?? 0) + SAPlayerPresenter.SKIP_FORWARD_SECONDS)
     }
     
-    func skipBackward() {
-        seek(toNeedle: (needle ?? 0) - SAPlayerPresenter.SKIP_BACKWARDS_SECONDS)
+    func handleSkipBackward() {
+        handleSeek(toNeedle: (needle ?? 0) - SAPlayerPresenter.SKIP_BACKWARDS_SECONDS)
     }
     
-    func seek(toNeedle needle: Needle) {
-        delegate?.seek(toNeedle: needle)
+    func handleSeek(toNeedle needle: Needle) {
+        delegate?.seekEngine(toNeedle: needle)
     }
     
-    func setSpeed(withMultiple: Double) {
-//        mapper.saveAudioSpeed(multiple: withMultiple)
-        delegate?.setSpeed(withMultiple: withMultiple)
+    func handleSetSpeed(withMultiple: Double) {
+        delegate?.setSpeedEngine(withMultiple: withMultiple)
     }
 }
 

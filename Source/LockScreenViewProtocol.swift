@@ -33,36 +33,35 @@ protocol LockScreenViewProtocol {
 }
 
 extension LockScreenViewProtocol {
-//    func setLockScreenInfo(withEpisode vto: EpisodeVTO, duration: Duration) {
-//        var nowPlayingInfo:[String : Any] = [:]
-//        
-//        let episodeName = vto.getName()
-//        let podcastName = vto.getPodcastName()
-//        let releaseDate = vto.getPublicationDate()
-//        
-//        // For some reason we need to set a duration here for the needle?
-//        nowPlayingInfo[MPMediaItemPropertyPlaybackDuration] = NSNumber(floatLiteral: duration)
-//        
-//        nowPlayingInfo[MPMediaItemPropertyTitle] = episodeName
-//        nowPlayingInfo[MPMediaItemPropertyArtist] = podcastName
-//        nowPlayingInfo[MPMediaItemPropertyAlbumTitle] = podcastName
-//        //nowPlayingInfo[MPMediaItemPropertyGenre] = //maybe later when we have it
-//        //nowPlayingInfo[MPMediaItemPropertyIsExplicit] = //maybe later when we have it
-//        nowPlayingInfo[MPMediaItemPropertyAlbumArtist] = podcastName
-//        nowPlayingInfo[MPMediaItemPropertyMediaType] = MPMediaType.podcast.rawValue
-//        nowPlayingInfo[MPMediaItemPropertyPodcastTitle] = episodeName
-//        nowPlayingInfo[MPNowPlayingInfoPropertyPlaybackRate] = 0.0 //because default is 1.0. If we pause audio then it keeps ticking
-//        nowPlayingInfo[MPMediaItemPropertyReleaseDate] = Date(timeIntervalSince1970: TimeInterval(releaseDate))
-//        if let episodeImage = vto.getEpisodeImage() {
-//            nowPlayingInfo[MPMediaItemPropertyArtwork] =
-//                MPMediaItemArtwork(boundsSize: episodeImage.size) { size in
-//                    return episodeImage
-//            }
-//        }
-//        
-//        
-//        MPNowPlayingInfoCenter.default().nowPlayingInfo = nowPlayingInfo
-//    }
+    @available(iOS 10.0, *)
+    func setLockScreenInfo(withMediaInfo info: SALockScreenInfo, duration: Duration) {
+        var nowPlayingInfo:[String : Any] = [:]
+        
+        let title = info.title
+        let artist = info.artist
+        let releaseDate = info.releaseDate
+        
+        // For some reason we need to set a duration here for the needle?
+        nowPlayingInfo[MPMediaItemPropertyPlaybackDuration] = NSNumber(floatLiteral: duration)
+        
+        nowPlayingInfo[MPMediaItemPropertyTitle] = title
+        nowPlayingInfo[MPMediaItemPropertyArtist] = artist
+        nowPlayingInfo[MPMediaItemPropertyAlbumTitle] = artist
+        //nowPlayingInfo[MPMediaItemPropertyGenre] = //maybe later when we have it
+        //nowPlayingInfo[MPMediaItemPropertyIsExplicit] = //maybe later when we have it
+        nowPlayingInfo[MPMediaItemPropertyAlbumArtist] = artist
+        nowPlayingInfo[MPMediaItemPropertyMediaType] = MPMediaType.podcast.rawValue
+        nowPlayingInfo[MPMediaItemPropertyPodcastTitle] = title
+        nowPlayingInfo[MPNowPlayingInfoPropertyPlaybackRate] = 0.0 //because default is 1.0. If we pause audio then it keeps ticking
+        nowPlayingInfo[MPMediaItemPropertyReleaseDate] = Date(timeIntervalSince1970: TimeInterval(releaseDate))
+        nowPlayingInfo[MPMediaItemPropertyArtwork] =
+            MPMediaItemArtwork(boundsSize: info.artwork.size) { size in
+                return info.artwork
+        }
+        
+        
+        MPNowPlayingInfoCenter.default().nowPlayingInfo = nowPlayingInfo
+    }
     
     // https://stackoverflow.com/questions/36754934/update-mpremotecommandcenter-play-pause-button
     func setLockScreenControls(presenter: SAPlayerPresenter) { //FIXME: this is weird
@@ -76,7 +75,7 @@ extension LockScreenViewProtocol {
             }
             
             if !presenter.getIsPlaying() {
-                presenter.play()
+                presenter.handlePlay()
                 return .success
             }
             
@@ -90,7 +89,7 @@ extension LockScreenViewProtocol {
             }
             
             if presenter.getIsPlaying() {
-                presenter.pause()
+                presenter.handlePause()
                 return .success
             }
             
@@ -104,7 +103,7 @@ extension LockScreenViewProtocol {
             guard let presenter = presenter else {
                 return .commandFailed
             }
-            presenter.skipBackward()
+            presenter.handleSkipBackward()
             return .success
         }
         
@@ -112,7 +111,7 @@ extension LockScreenViewProtocol {
             guard let presenter = presenter else {
                 return .commandFailed
             }
-            presenter.skipForward()
+            presenter.handleSkipForward()
             return .success
         }
         
@@ -122,7 +121,7 @@ extension LockScreenViewProtocol {
                     return .commandFailed
                 }
                 if let positionEvent = event as? MPChangePlaybackPositionCommandEvent {
-                    presenter.seek(toNeedle: Needle(positionEvent.positionTime))
+                    presenter.handleSeek(toNeedle: Needle(positionEvent.positionTime))
                     return .success
                 }
                 

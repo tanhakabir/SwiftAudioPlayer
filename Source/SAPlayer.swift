@@ -26,6 +26,15 @@
 import Foundation
 import AVFoundation
 
+public struct SALockScreenInfo {
+    typealias UTC = Int
+    
+    var title: String
+    var artist: String
+    var artwork: UIImage
+    var releaseDate: UTC
+}
+
 public class SAPlayer {
     public static let shared: SAPlayer = SAPlayer()
     private var presenter: SAPlayerPresenter!
@@ -33,7 +42,7 @@ public class SAPlayer {
     
     public var rate: Double = 1.0 {
         didSet {
-            Log.test("foo")
+            presenter.handleSetSpeed(withMultiple: rate)
         }
     }
     
@@ -41,20 +50,33 @@ public class SAPlayer {
         presenter = SAPlayerPresenter(delegate: self)
     }
     
-    func create() {
-        //do nothing
+    public func togglePlayAndPause() {
+        presenter.handleTogglePlayingAndPausing()
     }
     
-    func togglePlayPause() {
+    public func play() {
+        presenter.handlePlay()
+    }
+    
+    public func pause() {
+        presenter.handlePause()
+    }
+    
+    public func seekTo(seconds: Double) {
+        presenter.handleSeek(toNeedle: seconds)
+    }
+    
+    public func playAudio(withRemoteUrl url: URL, mediaInfo: SALockScreenInfo? = nil) {
+        presenter.handlePlayAudio(withRemoteUrl: url)
     }
 }
 
 
 extension SAPlayer: SAPlayerDelegate {
-    func startAudioDownloaded(withRemoteUrl url: AudioURL) {
+    func startAudioDownloaded(withSavedUrl url: AudioURL) {
         player?.pause()
         player?.invalidate()
-        player = AudioDiskEngine(withRemoteUrl: url, delegate: presenter)
+        player = AudioDiskEngine(withSavedUrl: url, delegate: presenter)
     }
     
     func startAudioStreamed(withRemoteUrl url: AudioURL) {
@@ -63,7 +85,7 @@ extension SAPlayer: SAPlayerDelegate {
         player = AudioStreamEngine(withRemoteUrl: url, delegate: presenter)
     }
     
-    func play() {
+    func playEngine() {
         becomeDeviceAudioPlayer()
         player?.play()
     }
@@ -82,15 +104,15 @@ extension SAPlayer: SAPlayerDelegate {
         }
     }
     
-    func pause() {
+    func pauseEngine() {
         player?.pause()
     }
     
-    func seek(toNeedle needle: Needle) {
+    func seekEngine(toNeedle needle: Needle) {
         player?.seek(toNeedle: needle)
     }
     
-    func setSpeed(withMultiple multiple: Double) {
+    func setSpeedEngine(withMultiple multiple: Double) {
         player?.setSpeed(speed: multiple)
     }
 }

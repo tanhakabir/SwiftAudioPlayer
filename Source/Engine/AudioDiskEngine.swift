@@ -46,13 +46,8 @@ class AudioDiskEngine: AudioEngine {
     
     var audioLengthSeconds: Float = 0
     
-    init(withRemoteUrl url: AudioURL, delegate:AudioEngineDelegate?) {
+    init(withSavedUrl url: AudioURL, delegate:AudioEngineDelegate?) {
         Log.info(url.key)
-        guard let diskUrl = AudioDataManager.shared.getPersistedUrl(withRemoteURL: url) else {
-            Log.monitor("expected local file url for disk engine, file doesn't exist!")
-            super.init(url: url, delegate: delegate, engineAudioFormat: AudioEngine.defaultEngineAudioFormat)
-            return
-        }
         
         do {
             audioFile = try AVAudioFile(forReading: url)

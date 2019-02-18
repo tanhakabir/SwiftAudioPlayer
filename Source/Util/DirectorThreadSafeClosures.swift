@@ -33,16 +33,18 @@ enum DirectorError: Error {
  P for payload
  */
 class DirectorThreadSafeClosures<P>  {
-    typealias TypeClosure = (P) throws -> Void
-    fileprivate var queue: DispatchQueue = DispatchQueue(label: "SwiftAudioPlayer.thread_safe_map", attributes: .concurrent)
-    fileprivate var map: [String: TypeClosure] = [:]
+    typealias TypeClosure = (Key, P) throws -> Void
+    private var queue: DispatchQueue = DispatchQueue(label: "SwiftAudioPlayer.thread_safe_map", attributes: .concurrent)
+    private var closures: [UInt: TypeClosure] = [:]
+    private var cache: [Key: P] = [:]
     
-    func broadcast(payload: P) {
+    func broadcast(key: Key, payload: P) {
         queue.sync {
-            var iterator = self.map.makeIterator()
+            self.cache[key] = payload
+            var iterator = self.closures.makeIterator()
             while let element = iterator.next() {
                 do {
-                    try element.value(payload)
+                    try element.value(key, payload)
                 } catch {
                     helperRemove(withKey: element.key)
                 }
@@ -51,71 +53,45 @@ class DirectorThreadSafeClosures<P>  {
     }
     
     //UInt is actually 64-bits on modern devices
-    func attach(closure: @escaping TypeClosure, payload: P?) -> UInt {
+    func attach(closure: @escaping TypeClosure) -> UInt {
         let id: UInt = Date.getUTC64()
         
         //The director may not yet have the status yet. We should only call the closure if we have it
-        if let p = payload {
-            //Let the caller know the immediate value. If it's dead already then stop
+        //Let the caller know the immediate value. If it's dead already then stop
+        for (key, val) in cache {
             do {
-                try closure(p)
+                try closure(key, val)
             } catch {
                 return id
             }
         }
         
         //Replace what's in the map with the new closure
-        helperInsert(withKey: "\(id)", closure: closure)
+        helperInsert(withKey: id, closure: closure)
         
         return id
     }
     
-    func attach(id: String, closure: @escaping TypeClosure, payload: P?) {
-        
-        //Check if ID already exists. If it exists keep going and replace what's already there
-        queue.sync {
-            if map[id] != nil {
-                Log.warn("Trying to attach with same id twice! id: \(id)")
-            }
-        }
-        
-        //The director may not yet have the status yet. We should only call the closure if we have it
-        if let p = payload {
-            //Let the caller know the immediate value. If it's dead already then stop
-            do {
-                try closure(p)
-            } catch {
-                return
-            }
-        }
-        
-        //Replace what's in the map with the new closure
-        helperInsert(withKey: id, closure: closure)
-    }
-    
     func detach(id: UInt) {
-        helperRemove(withKey: "\(id)")
-    }
-    
-    func detach(id: String) {
         helperRemove(withKey: id)
     }
     
     func clear() {
         queue.async(flags: .barrier) {
-            self.map.removeAll()
+            self.closures.removeAll()
+            self.cache.removeAll()
         }
     }
     
-    private func helperRemove(withKey key: String) {
+    private func helperRemove(withKey key: UInt) {
         queue.async(flags: .barrier) {
-            self.map[key] = nil
+            self.closures[key] = nil
         }
     }
     
-    private func helperInsert(withKey key: String, closure: @escaping TypeClosure) {
+    private func helperInsert(withKey key: UInt, closure: @escaping TypeClosure) {
         queue.async(flags: .barrier) {
-            self.map[key] = closure
+            self.closures[key] = closure
         }
     }
 }

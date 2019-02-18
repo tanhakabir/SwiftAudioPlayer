@@ -27,28 +27,18 @@ import Foundation
 import CoreMedia
 
 class AudioClockDirector {
-    static let sharedInstance = AudioClockDirector()
+    static let shared = AudioClockDirector()
     
-    private var needleClosures: DirectorThreadSafeClosures<(Key, Needle)> = DirectorThreadSafeClosures()
-    private var durationClosures: DirectorThreadSafeClosures<(Key, Duration)> = DirectorThreadSafeClosures()
-    private var playingStatusClosures: DirectorThreadSafeClosures<(Key, IsPlaying)> = DirectorThreadSafeClosures()
-    private var bufferClosures: DirectorThreadSafeClosures<(Key, AudioAvailabilityRange)> = DirectorThreadSafeClosures()
-    
-    private var needleMap: [Key: Needle] = [:]
-    private var durationMap: [Key: Duration] = [:]
-    private var playingStatusMap: [Key: IsPlaying] = [:]
-    private var bufferedRangeMap: [Key: AudioAvailabilityRange] = [:]
+    private var needleClosures: DirectorThreadSafeClosures<Needle> = DirectorThreadSafeClosures()
+    private var durationClosures: DirectorThreadSafeClosures<Duration> = DirectorThreadSafeClosures()
+    private var playingStatusClosures: DirectorThreadSafeClosures<IsPlaying> = DirectorThreadSafeClosures()
+    private var bufferClosures: DirectorThreadSafeClosures<AudioAvailabilityRange> = DirectorThreadSafeClosures()
     
     private init() {}
     
     func create() {}
     
     func clear() {
-        self.needleMap = [:]
-        self.durationMap = [:]
-        self.playingStatusMap = [:]
-        self.bufferedRangeMap = [:]
-        
         needleClosures.clear()
         durationClosures.clear()
         playingStatusClosures.clear()
@@ -58,58 +48,26 @@ class AudioClockDirector {
     // MARK: - Attaches
     
     // Needle
-    func attachToChangesInNeedle(closure: @escaping ((Key, Needle)) throws -> Void) -> UInt{
-        for (key, needle) in needleMap {
-            do {
-                try closure((key, needle))
-            } catch {
-                Log.debug(error.localizedDescription)
-            }
-        }
-        
-        return needleClosures.attach(closure: closure, payload: nil)
+    func attachToChangesInNeedle(closure: @escaping (Key, Needle) throws -> Void) -> UInt {
+        return needleClosures.attach(closure: closure)
     }
     
     
     // Duration
-    func attachToChangesInDuration(closure: @escaping ((Key, Duration)) throws -> Void) -> UInt {
-        for (key, duration) in durationMap {
-            do {
-                try closure((key, duration))
-            } catch {
-                Log.debug(error.localizedDescription)
-            }
-        }
-        
-        return durationClosures.attach(closure: closure, payload: nil)
+    func attachToChangesInDuration(closure: @escaping (Key, Duration) throws -> Void) -> UInt {
+        return durationClosures.attach(closure: closure)
     }
     
     
     // Playing status
-    func attachToChangesInPlayingStatus(closure: @escaping ((Key, IsPlaying)) throws -> Void) -> UInt{
-        for (key, playing) in playingStatusMap {
-            do {
-                try closure((key, playing))
-            } catch {
-                Log.debug(error.localizedDescription)
-            }
-        }
-        
-        return playingStatusClosures.attach(closure: closure, payload: nil)
+    func attachToChangesInPlayingStatus(closure: @escaping (Key, IsPlaying) throws -> Void) -> UInt{
+        return playingStatusClosures.attach(closure: closure)
     }
     
     
     // Buffer
-    func attachToChangesInBufferedRange(closure: @escaping ((Key, AudioAvailabilityRange)) throws -> Void) -> UInt{
-        for (key, buffer) in bufferedRangeMap {
-            do {
-                try closure((key, buffer))
-            } catch {
-                Log.debug(error.localizedDescription)
-            }
-        }
-        
-        return bufferClosures.attach(closure: closure, payload: nil)
+    func attachToChangesInBufferedRange(closure: @escaping (Key, AudioAvailabilityRange) throws -> Void) -> UInt{
+        return bufferClosures.attach(closure: closure)
     }
     
     
@@ -134,33 +92,28 @@ class AudioClockDirector {
 // MARK: - Receives notifications from AudioEngine on ticks
 extension AudioClockDirector {
     func needleTick(_ key: Key, needle: Needle) {
-        self.needleMap[key] = needle
-        needleClosures.broadcast(payload: (key, needle))
+        needleClosures.broadcast(key: key, payload: needle)
     }
 }
 
 extension AudioClockDirector {
     func durationWasChanged(_ key: Key, duration: Duration) {
-        self.durationMap[key] = duration
-        durationClosures.broadcast(payload: (key, duration))
+        durationClosures.broadcast(key: key, payload: duration)
     }
 }
 
 extension AudioClockDirector {
     func audioPaused(_ key: Key) {
-        self.playingStatusMap[key] = false
-        playingStatusClosures.broadcast(payload: (key, false))
+        playingStatusClosures.broadcast(key: key, payload: false)
     }
     
     func audioPlaying(_ key: Key) {
-        self.playingStatusMap[key] = true
-        playingStatusClosures.broadcast(payload: (key, true))
+        playingStatusClosures.broadcast(key: key, payload: true)
     }
 }
 
 extension AudioClockDirector {
     func changeInAudioBuffered(_ key: Key, buffered: AudioAvailabilityRange) {
-        self.bufferedRangeMap[key] = buffered
-        bufferClosures.broadcast(payload: (key, buffered))
+        bufferClosures.broadcast(key: key, payload: buffered)
     }
 }

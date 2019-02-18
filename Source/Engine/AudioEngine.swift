@@ -77,7 +77,7 @@ class AudioEngine: AudioEngineProtocol {
     var needle: Needle = -1 {
         didSet {
             if needle >= 0 && oldValue != needle {
-                AudioClockDirector.sharedInstance.needleTick(key, needle: needle)
+                AudioClockDirector.shared.needleTick(key, needle: needle)
             }
         }
     }
@@ -85,7 +85,7 @@ class AudioEngine: AudioEngineProtocol {
     var duration: Duration = -1 {
         didSet {
             if duration >= 0 && oldValue != duration {
-                AudioClockDirector.sharedInstance.durationWasChanged(key, duration: duration)
+                AudioClockDirector.shared.durationWasChanged(key, duration: duration)
             }
         }
     }
@@ -97,9 +97,9 @@ class AudioEngine: AudioEngineProtocol {
             }
             
             if isPlaying {
-                AudioClockDirector.sharedInstance.audioPlaying(key)
+                AudioClockDirector.shared.audioPlaying(key)
             } else {
-                AudioClockDirector.sharedInstance.audioPaused(key)
+                AudioClockDirector.shared.audioPaused(key)
             }
         }
     }
@@ -109,7 +109,7 @@ class AudioEngine: AudioEngineProtocol {
         didSet {
             if bufferedSeconds.startingNeedle == 0 && bufferedSeconds.durationLoadedByNetwork == 0 {
                 bufferedSecondsDebouncer = bufferedSeconds
-                AudioClockDirector.sharedInstance.changeInAudioBuffered(key, buffered: bufferedSeconds)
+                AudioClockDirector.shared.changeInAudioBuffered(key, buffered: bufferedSeconds)
                 return
             }
             
@@ -123,7 +123,7 @@ class AudioEngine: AudioEngineProtocol {
             }
             
             bufferedSecondsDebouncer = bufferedSeconds
-            AudioClockDirector.sharedInstance.changeInAudioBuffered(key, buffered: bufferedSeconds)
+            AudioClockDirector.shared.changeInAudioBuffered(key, buffered: bufferedSeconds)
         }
     }
     

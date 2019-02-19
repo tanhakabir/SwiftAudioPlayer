@@ -30,6 +30,8 @@ import UIKit
 // MARK: - Set up lockscreen audio controls
 // Documentation: https://developer.apple.com/documentation/avfoundation/media_assets_playback_and_editing/creating_a_basic_video_player_ios_and_tvos/controlling_background_audio
 protocol LockScreenViewProtocol {
+    var skipForwardSeconds: Double { get set }
+    var skipBackwardSeconds: Double { get set }
 }
 
 extension LockScreenViewProtocol {
@@ -96,8 +98,8 @@ extension LockScreenViewProtocol {
             return .commandFailed
         }
         
-        commandCenter.skipBackwardCommand.preferredIntervals = [SAPlayerPresenter.SKIP_BACKWARDS_SECONDS] as [NSNumber]
-        commandCenter.skipForwardCommand.preferredIntervals = [SAPlayerPresenter.SKIP_FORWARD_SECONDS] as [NSNumber]
+        commandCenter.skipBackwardCommand.preferredIntervals = [skipBackwardSeconds] as [NSNumber]
+        commandCenter.skipForwardCommand.preferredIntervals = [skipForwardSeconds] as [NSNumber]
         
         commandCenter.skipBackwardCommand.addTarget { [weak presenter] event in
             guard let presenter = presenter else {

@@ -17,7 +17,7 @@ class ViewController: UIViewController {
         var foo = SALockScreenInfo(title: "", artist: "", artwork: UIImage(), releaseDate: 12)
         SAPlayer.shared.rate = 1.0
         SAPlayer.shared.mediaInfo = foo
-        SAPlayer.shared.playAudio(withRemoteUrl: URL(string: "")!)
+        SAPlayer.shared.initializeAudio(withRemoteUrl: URL(string: "https://traffic.megaphone.fm/TTH7630150098.mp3")!)
 
         // Do any additional setup after loading the view, typically from a nib.
     }

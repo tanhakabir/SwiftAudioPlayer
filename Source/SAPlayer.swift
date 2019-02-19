@@ -26,23 +26,30 @@
 import Foundation
 import AVFoundation
 
-public struct SALockScreenInfo {
-    typealias UTC = Int
-    
-    var title: String
-    var artist: String
-    var artwork: UIImage
-    var releaseDate: UTC
-}
-
 public class SAPlayer {
     public static let shared: SAPlayer = SAPlayer()
     private var presenter: SAPlayerPresenter!
     private var player: AudioEngine?
     
+    public var skipForwardSeconds: Double = 30
+    public var skipBackwardSeconds: Double = 15
+    
     public var rate: Double = 1.0 {
         didSet {
             presenter.handleSetSpeed(withMultiple: rate)
+        }
+    }
+    
+    public var mediaInfo: SALockScreenInfo? = nil {
+        didSet {
+            if let info = mediaInfo {
+                if #available(iOS 10.0, *) {
+                    presenter.handleLockscreenInfo(info: info)
+                } else {
+                    // TODO
+                    // Fallback on earlier versions
+                }
+            }
         }
     }
     
@@ -67,6 +74,7 @@ public class SAPlayer {
     }
     
     public func playAudio(withRemoteUrl url: URL, mediaInfo: SALockScreenInfo? = nil) {
+        self.mediaInfo = mediaInfo
         presenter.handlePlayAudio(withRemoteUrl: url)
     }
 }

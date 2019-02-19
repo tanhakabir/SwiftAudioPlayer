@@ -1,8 +1,8 @@
 //
-//  SAPlayerDelegate.swift
+//  SALockScreenInfo.swift
 //  SwiftAudioPlayer
 //
-//  Created by Tanha Kabir on 2019-01-29.
+//  Created by Tanha Kabir on 2019-02-18.
 //  Copyright © 2019 Tanha Kabir, Jon Mercer
 //
 //  Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -24,16 +24,20 @@
 //  THE SOFTWARE.
 
 import Foundation
-import CoreMedia
+import UIKit
 
-protocol SAPlayerDelegate: AnyObject, LockScreenViewProtocol {
-    var skipForwardSeconds: Double { get set }
-    var skipBackwardSeconds: Double { get set }
+public typealias UTC = Int
+
+public struct SALockScreenInfo {
+    var title: String
+    var artist: String
+    var artwork: UIImage
+    var releaseDate: UTC
     
-    func startAudioDownloaded(withSavedUrl url: AudioURL)
-    func startAudioStreamed(withRemoteUrl url: AudioURL)
-    func playEngine()
-    func pauseEngine()
-    func seekEngine(toNeedle needle: Needle) //TODO ensure that engine cleans up out of bounds
-    func setSpeedEngine(withMultiple multiple: Double)
+    public init(title: String, artist: String, artwork: UIImage, releaseDate: UTC) {
+        self.title = title
+        self.artist = artist
+        self.artwork = artwork
+        self.releaseDate = releaseDate
+    }
 }

@@ -28,15 +28,13 @@ import AVFoundation
 import MediaPlayer
 
 class SAPlayerPresenter {
-    public static let SKIP_FORWARD_SECONDS: Double = 30
-    public static let SKIP_BACKWARDS_SECONDS: Double = 15
-    private let ID: String = #file.description
-    
     weak var delegate: SAPlayerDelegate?
     var shouldPlayImmediately = false //for auto-play
     
-    fileprivate var needle: Needle?
-    fileprivate var isPlaying = false
+    private var key: String?
+    private var needle: Needle?
+    private var isPlaying = false
+    private var mediaInfo: SALockScreenInfo?
     
     var durationRef:UInt = 0
     var needleRef:UInt = 0
@@ -51,64 +49,64 @@ class SAPlayerPresenter {
     }
     
     func handlePlayAudio(withRemoteUrl url: URL) {
+        AudioClockDirector.shared.detachFromChangesInDuration(withID: durationRef)
+        AudioClockDirector.shared.detachFromChangesInNeedle(withID: needleRef)
+        AudioClockDirector.shared.detachFromChangesInPlayingStatus(withID: playingStatusRef)
+        
+        self.key = url.key
+        
         if let savedUrl = AudioDataManager.shared.getPersistedUrl(withRemoteURL: url) {
+            self.key = savedUrl.key
             delegate?.startAudioDownloaded(withSavedUrl: savedUrl)
         } else {
             delegate?.startAudioStreamed(withRemoteUrl: url)
         }
+        
+        durationRef = AudioClockDirector.shared.attachToChangesInDuration(closure: { [weak self] (key, duration) in
+            guard let self = self else { throw DirectorError.closureIsDead }
+            guard key == self.key else {
+                Log.debug("misfire expected key: \(self.key ?? "none") payload key: \(key)")
+                return
+            }
+            
+            self.delegate?.updateLockscreenPlaybackDuration(duration: duration)
+            
+            if let info = self.mediaInfo {
+                if #available(iOS 10.0, *) {
+                    self.delegate?.setLockScreenInfo(withMediaInfo: info, duration: duration)
+                } else {
+                    // TODO
+                    // Fallback on earlier versions
+                }
+            }
+        })
+        
+        needleRef = AudioClockDirector.shared.attachToChangesInNeedle(closure: { [weak self] (key, needle) in
+            guard let self = self else { throw DirectorError.closureIsDead }
+            guard key == self.key else {
+                Log.debug("misfire expected key: \(self.key ?? "none") payload key: \(key)")
+                return
+            }
+            
+            self.needle = needle
+            self.delegate?.updateLockscreenElapsedTime(needle: needle)
+        })
+        
+        playingStatusRef = AudioClockDirector.shared.attachToChangesInPlayingStatus(closure: { [weak self] (key, isPlaying) in
+            guard let self = self else { throw DirectorError.closureIsDead }
+            guard key == self.key else {
+                Log.debug("misfire expected key: \(self.key ?? "none") payload key: \(key)")
+                return
+            }
+            
+            self.isPlaying = isPlaying
+        })
     }
     
     @available(iOS 10.0, *)
     func handleLockscreenInfo(info: SALockScreenInfo) {
-//        delegate?.setLockScreenInfo(withMediaInfo: info, duration: <#T##Duration#>)
+        self.mediaInfo = info
     }
-    
-//    private func newEpisodeArrived(episode: EpisodePTO) {
-//
-//        mapper.fetchHistory(withEpisodeKey: key) { [weak self] (historyPTO: HistoryPTO?) in
-//            guard let _ = self else {return}
-//            self?.historyArrived(withHistory: historyPTO)
-//        }
-//
-//
-//        AudioClockDirector.sharedInstance.detachFromChangesInDuration(withID: durationRef)
-//        AudioClockDirector.sharedInstance.detachFromChangesInNeedle(withID: needleRef)
-//        AudioClockDirector.sharedInstance.detachFromChangesInPlayingStatus(withID: playingStatusRef)
-//
-//        durationRef = AudioClockDirector.sharedInstance.attachToChangesInDuration { [weak self] (payload: (Key, Duration)) in
-//            guard let _ = self else { throw DirectorError.closureIsDead }
-//            guard payload.0 == self?.episode?.getKey() else {
-//                Log.debug("misfire eKey: \(self?.episode?.getKey() ?? "none") payload: \(payload.0)")
-//                return
-//            }
-//
-//            self?.delegate?.updateLockscreenPlaybackDuration(duration: payload.1)
-//
-//            guard let e = self?.episode else { return }
-//            self?.delegate?.setLockScreenInfo(withEpisode: EpisodeVTO(pto: e), duration: payload.1)
-//        }
-//
-//        needleRef = AudioClockDirector.sharedInstance.attachToChangesInNeedle { [weak self] (payload: (Key, Needle)) in
-//            guard let _ = self else { throw DirectorError.closureIsDead }
-//            guard payload.0 == self?.episode?.getKey() else {
-//                Log.debug("misfire eKey: \(self?.episode?.getKey() ?? "none") payload: \(payload.0)")
-//                return
-//            }
-//
-//            self?.needle = payload.1
-//            self?.delegate?.updateLockscreenElapsedTime(needle: payload.1)
-//        }
-//
-//        playingStatusRef = AudioClockDirector.sharedInstance.attachToChangesInPlayingStatus { [weak self] (payload: (Key, IsPlaying)) in
-//            guard let _ = self else { throw DirectorError.closureIsDead }
-//            guard payload.0 == self?.episode?.getKey() else {
-//                Log.debug("misfire eKey: \(self?.episode?.getKey() ?? "none") payload: \(payload.0)")
-//                return
-//            }
-//
-//            self?.isPlaying = payload.1
-//        }
-//    }
 }
 
 //MARK:- Used by outside world including:
@@ -131,11 +129,13 @@ extension SAPlayerPresenter {
     }
     
     func handleSkipForward() {
-        handleSeek(toNeedle: (needle ?? 0) + SAPlayerPresenter.SKIP_FORWARD_SECONDS)
+        guard let forward = delegate?.skipForwardSeconds else { return }
+        handleSeek(toNeedle: (needle ?? 0) + forward)
     }
     
     func handleSkipBackward() {
-        handleSeek(toNeedle: (needle ?? 0) - SAPlayerPresenter.SKIP_BACKWARDS_SECONDS)
+        guard let backward = delegate?.skipForwardSeconds else { return }
+        handleSeek(toNeedle: (needle ?? 0) - backward)
     }
     
     func handleSeek(toNeedle needle: Needle) {
@@ -161,67 +161,15 @@ extension SAPlayerPresenter: AudioEngineDelegate {
     }
     
     func didEndPlaying() {
-        playNextEpisode()
+        // TODO
+//        playNextEpisode()
     }
 }
 
-//MARK:- Play Next Episode
+//MARK:- Autoplay
 //FIXME: This needs to be refactored
 extension SAPlayerPresenter {
     func prepareNextEpisodeToPlay() {
         // TODO
     }
-    
-    /**
-     - In shortlist
-     - AND with UTC added less than current episode UTC
-     - AND downloaded
-     - AND has no history
-     */
-    func playNextEpisode() {
-        shouldPlayImmediately = false
-//        guard mapper.fetchShouldAutoplay() else {
-//            return
-//        }
-//
-//        guard let episode = episode, let shortlist = shortlist else {
-//            Log.warn("should not be hitting end of episode if no such episode exists!")
-//            return
-//        }
-//
-//        let currentEpisodeKey = episode.getKey()
-//        let keysAfterCurrentEpisode = shortlist.getSortedPinnedEpisodesAfter(afterEpisode: currentEpisodeKey)
-//        let downloadedKeys = keysAfterCurrentEpisode.filter{mapper.isAudioDownloaded(withEpisodeKey: $0)}
-//        playNextEpisodeWithNoHistory(fromListOfEpisodes: downloadedKeys)
-    }
-    
-//    private func playNextEpisodeWithNoHistory(fromListOfEpisodes keys: [KeyEpisode]) {
-//        guard keys.count > 0 else {
-//            Log.info("no list of episodes to play next 32453")
-//            return
-//        }
-//
-//        playNextEpisodeWithNoHistoryHelper(index: 0, keys: keys)
-//    }
-    
-//    private func playNextEpisodeWithNoHistoryHelper(index: Int, keys: [KeyEpisode]) {
-//        guard index < keys.count else {
-//            return
-//        }
-//        
-//        mapper.fetchHistory(withEpisodeKey: keys[index]) { (pto: HistoryPTO?) in
-//            if pto == nil {
-//                if self.shouldPlayImmediately {
-//                    //FIXME This is a hack because for some reason an episode is played twice within a second.
-//                    return
-//                }
-//                self.shouldPlayImmediately = true
-//                self.delegate?.seek(toNeedle: 0)
-//                EpisodeDirector.sharedInstance.setEpisode(key: keys[index])
-//                self.mapper.pinEpisode(withKey: keys[index])
-//            } else {
-//                self.playNextEpisodeWithNoHistoryHelper(index: index+1, keys: keys)
-//            }
-//        }
-//    }
 }

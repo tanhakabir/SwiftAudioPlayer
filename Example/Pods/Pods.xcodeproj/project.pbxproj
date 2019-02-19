@@ -43,6 +43,7 @@
 		A4681FE0220113E40018AB51 /* Log.swift in Sources */ = {isa = PBXBuildFile; fileRef = A4681F802200D0500018AB51 /* Log.swift */; };
 		A4681FE1220113E70018AB51 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = A4681F8B2200DDD50018AB51 /* Constants.swift */; };
 		A4FBA6B2221B538E00D5A353 /* DownloadProgressDirector.swift in Sources */ = {isa = PBXBuildFile; fileRef = A49B78C3221A78DE00BBA862 /* DownloadProgressDirector.swift */; };
+		A4FBA6B5221B74C900D5A353 /* SALockScreenInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = A4FBA6B3221B74C900D5A353 /* SALockScreenInfo.swift */; };
 		B73D01578ABBDB6FF402D868A6C547FF /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5A16F4CFC63FAC439D7A04994F579A03 /* Foundation.framework */; };
 		E08AD6157EF688FE832F866CBCDA3532 /* SwiftAudioPlayer-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = FB83B3B4253D41C37C5563D34D450BF8 /* SwiftAudioPlayer-dummy.m */; };
 /* End PBXBuildFile section */
@@ -121,6 +122,7 @@
 		A4681FBC220100AB0018AB51 /* AudioStreamEngine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioStreamEngine.swift; sourceTree = "<group>"; };
 		A4681FBE22010ECF0018AB51 /* LockScreenViewProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LockScreenViewProtocol.swift; sourceTree = "<group>"; };
 		A49B78C3221A78DE00BBA862 /* DownloadProgressDirector.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DownloadProgressDirector.swift; sourceTree = "<group>"; };
+		A4FBA6B3221B74C900D5A353 /* SALockScreenInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SALockScreenInfo.swift; sourceTree = "<group>"; };
 		AB41D88A2C694FBDF26EA56381EED25F /* Pods-SwiftAudioPlayer_Example-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "Pods-SwiftAudioPlayer_Example-dummy.m"; sourceTree = "<group>"; };
 		B8C829A46249957CD3056074B5CC0BBB /* README.md */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		B9A6DFC8AB64B139080060EA639B3A7D /* Info.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -334,6 +336,7 @@
 		A4681FE2220117B50018AB51 /* Source */ = {
 			isa = PBXGroup;
 			children = (
+				A4FBA6B3221B74C900D5A353 /* SALockScreenInfo.swift */,
 				A4681F8D2200E00E0018AB51 /* SAPlayer.swift */,
 				A4681F912200E1950018AB51 /* SAPlayerDelegate.swift */,
 				A4681F8F2200E1450018AB51 /* SAPlayerPresenter.swift */,
@@ -504,6 +507,7 @@
 				A4681FD2220113B20018AB51 /* AudioParser.swift in Sources */,
 				A4681FCF220113A40018AB51 /* AudioConverterListener.swift in Sources */,
 				A4681FE1220113E70018AB51 /* Constants.swift in Sources */,
+				A4FBA6B5221B74C900D5A353 /* SALockScreenInfo.swift in Sources */,
 				A4681FC6220113880018AB51 /* SAPlayer.swift in Sources */,
 				A4681FC72201138B0018AB51 /* SAPlayerDelegate.swift in Sources */,
 				A4681FD5220113BD0018AB51 /* AudioParserErrors.swift in Sources */,

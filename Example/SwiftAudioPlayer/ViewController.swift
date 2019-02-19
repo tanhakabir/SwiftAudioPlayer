@@ -18,6 +18,7 @@ class ViewController: UIViewController {
         SAPlayer.shared.rate = 1.0
         SAPlayer.shared.mediaInfo = foo
         SAPlayer.shared.playAudio(withRemoteUrl: URL(string: "")!)
+
         // Do any additional setup after loading the view, typically from a nib.
     }
 

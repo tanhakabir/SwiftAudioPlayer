@@ -219,7 +219,7 @@ class AudioStreamEngine: AudioEngine {
         let range = converter.pollNetworkAudioAvailabilityRange()
         isPlayable = (numberOfBuffersScheduledInTotal > 0 && range.1 > 0) && predictedStreamDuration > 0
         Log.debug("loaded \(range), numberOfBuffersScheduledInTotal: \(numberOfBuffersScheduledInTotal), isPlayable: \(isPlayable)")
-        bufferedSeconds = AudioAvailabilityRange(startingNeedle: range.0, durationLoadedByNetwork: range.1, isPlayable: isPlayable)
+        bufferedSeconds = SAAudioAvailabilityRange(startingNeedle: range.0, durationLoadedByNetwork: range.1, isPlayable: isPlayable)
     }
     
     private func updateNeedle() {

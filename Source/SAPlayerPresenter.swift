@@ -36,6 +36,8 @@ class SAPlayerPresenter {
     private var isPlaying = false
     private var mediaInfo: SALockScreenInfo?
     
+    private var urlKeyMap: [Key: URL] = [:]
+    
     var durationRef:UInt = 0
     var needleRef:UInt = 0
     var playingStatusRef:UInt = 0
@@ -48,6 +50,10 @@ class SAPlayerPresenter {
         prepareNextEpisodeToPlay()
     }
     
+    func getUrl(forKey key: Key) -> URL? {
+        return urlKeyMap[key]
+    }
+    
     func handlePlayAudio(withRemoteUrl url: URL) {
         AudioClockDirector.shared.detachFromChangesInDuration(withID: durationRef)
         AudioClockDirector.shared.detachFromChangesInNeedle(withID: needleRef)
@@ -57,8 +63,10 @@ class SAPlayerPresenter {
         
         if let savedUrl = AudioDataManager.shared.getPersistedUrl(withRemoteURL: url) {
             self.key = savedUrl.key
+            urlKeyMap[savedUrl.key] = url
             delegate?.startAudioDownloaded(withSavedUrl: savedUrl)
         } else {
+            urlKeyMap[url.key] = url
             delegate?.startAudioStreamed(withRemoteUrl: url)
         }
         

@@ -26,17 +26,6 @@
 import Foundation
 import AVFoundation
 
-//Think of it as the grey buffer line from youtube
-struct AudioAvailabilityRange {
-    let startingNeedle: Needle
-    let durationLoadedByNetwork: Duration
-    let isPlayable: Bool
-    
-    func contains(_ needle: Needle) -> Bool {
-        return needle >= startingNeedle && (needle - startingNeedle) < durationLoadedByNetwork
-    }
-}
-
 protocol AudioEngineProtocol {
     func play()
     func pause()
@@ -104,10 +93,10 @@ class AudioEngine: AudioEngineProtocol {
         }
     }
     
-    var bufferedSecondsDebouncer: AudioAvailabilityRange = AudioAvailabilityRange(startingNeedle: 0, durationLoadedByNetwork: 0, isPlayable: false)
-    var bufferedSeconds: AudioAvailabilityRange =  AudioAvailabilityRange(startingNeedle: 0, durationLoadedByNetwork: 0, isPlayable: false) {
+    var bufferedSecondsDebouncer: SAAudioAvailabilityRange = SAAudioAvailabilityRange(startingNeedle: 0.0, durationLoadedByNetwork: 0.0, isPlayable: false)
+    var bufferedSeconds: SAAudioAvailabilityRange =  SAAudioAvailabilityRange(startingNeedle: 0.0, durationLoadedByNetwork: 0.0, isPlayable: false) {
         didSet {
-            if bufferedSeconds.startingNeedle == 0 && bufferedSeconds.durationLoadedByNetwork == 0 {
+            if bufferedSeconds.startingNeedle == 0.0 && bufferedSeconds.durationLoadedByNetwork == 0.0 {
                 bufferedSecondsDebouncer = bufferedSeconds
                 AudioClockDirector.shared.changeInAudioBuffered(key, buffered: bufferedSeconds)
                 return

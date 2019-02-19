@@ -57,6 +57,13 @@ public class SAPlayer {
         presenter = SAPlayerPresenter(delegate: self)
     }
     
+    func getUrl(forKey key: Key) -> URL? {
+        return presenter.getUrl(forKey: key)
+    }
+}
+
+//MARK: - Player Controls
+extension SAPlayer {
     public func togglePlayAndPause() {
         presenter.handleTogglePlayingAndPausing()
     }
@@ -79,6 +86,21 @@ public class SAPlayer {
     }
 }
 
+extension SAPlayer {
+    public struct Downloader {
+        public static func downloadAudio(withRemoteUrl url: URL) {
+            AudioDataManager.shared.startDownload(withRemoteURL: url)
+        }
+        
+        public static func cancelDownload(withRemoteUrl url: URL) {
+            AudioDataManager.shared.deleteDownload(withRemoteURL: url)
+        }
+        
+        public static func setBackgroundCompletionHandler(_ completionHandler: @escaping () -> ()) {
+            AudioDataManager.shared.setBackgroundCompletionHandler(completionHandler)
+        }
+    }
+}
 
 extension SAPlayer: SAPlayerDelegate {
     func startAudioDownloaded(withSavedUrl url: AudioURL) {

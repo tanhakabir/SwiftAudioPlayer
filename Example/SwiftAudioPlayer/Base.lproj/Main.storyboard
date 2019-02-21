@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="13771" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="vXZ-lx-hvc">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14460.31" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="vXZ-lx-hvc">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13772"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14460.20"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
@@ -20,11 +20,108 @@
                     <view key="view" contentMode="scaleToFill" id="kh9-bI-dsS">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                        <subviews>
+                            <progressView opaque="NO" contentMode="scaleToFill" verticalHuggingPriority="750" progress="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="lTK-Hd-Tl2">
+                                <rect key="frame" x="16" y="320" width="343" height="2"/>
+                                <color key="tintColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <color key="progressTintColor" red="0.46202266219999999" green="0.83828371759999998" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <color key="trackTintColor" white="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            </progressView>
+                            <slider opaque="NO" contentMode="scaleToFill" verticalCompressionResistancePriority="749" contentHorizontalAlignment="center" contentVerticalAlignment="center" value="0.25" minValue="0.0" maxValue="1" translatesAutoresizingMaskIntoConstraints="NO" id="w2a-RA-zmI">
+                                <rect key="frame" x="14" y="305" width="347" height="31"/>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <color key="maximumTrackTintColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <connections>
+                                    <action selector="scrubberSeeked:" destination="vXZ-lx-hvc" eventType="valueChanged" id="jDA-wR-wxk"/>
+                                </connections>
+                            </slider>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="jUc-tP-CC5">
+                                <rect key="frame" x="172.5" y="250" width="30" height="30"/>
+                                <state key="normal" title="play"/>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="tFH-sY-Xu9">
+                                <rect key="frame" x="62.5" y="250" width="30" height="30"/>
+                                <state key="normal" title="-15"/>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="0QE-3F-a4G">
+                                <rect key="frame" x="282.5" y="250" width="30" height="30"/>
+                                <state key="normal" title="+30"/>
+                            </button>
+                            <slider opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" value="1" minValue="0.0" maxValue="32" translatesAutoresizingMaskIntoConstraints="NO" id="vfk-OJ-S3T">
+                                <rect key="frame" x="14" y="564" width="347" height="31"/>
+                                <connections>
+                                    <action selector="rateChanged:" destination="vXZ-lx-hvc" eventType="valueChanged" id="FDJ-jA-bm8"/>
+                                </connections>
+                            </slider>
+                            <segmentedControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="joK-xi-MCo">
+                                <rect key="frame" x="16" y="80" width="343" height="29"/>
+                                <segments>
+                                    <segment title="First"/>
+                                    <segment title="Second"/>
+                                </segments>
+                            </segmentedControl>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="KDu-ea-kF8">
+                                <rect key="frame" x="78" y="140" width="69" height="30"/>
+                                <state key="normal" title="Download"/>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="6d9-Bc-hIz">
+                                <rect key="frame" x="244" y="140" width="49" height="30"/>
+                                <state key="normal" title="Stream"/>
+                            </button>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="rate: 1.0" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="yUQ-mI-ozK">
+                                <rect key="frame" x="157" y="535" width="61" height="21"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                        </subviews>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <constraints>
+                            <constraint firstItem="lTK-Hd-Tl2" firstAttribute="leading" secondItem="kh9-bI-dsS" secondAttribute="leading" constant="16" id="1wb-IW-jYz"/>
+                            <constraint firstItem="jUc-tP-CC5" firstAttribute="top" secondItem="KDu-ea-kF8" secondAttribute="bottom" constant="80" id="5sT-An-9vw"/>
+                            <constraint firstItem="6d9-Bc-hIz" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="KDu-ea-kF8" secondAttribute="trailing" constant="8" symbolic="YES" id="60t-zV-EiY"/>
+                            <constraint firstItem="joK-xi-MCo" firstAttribute="leading" secondItem="lTK-Hd-Tl2" secondAttribute="leading" id="7KA-Mg-HFD"/>
+                            <constraint firstItem="vfk-OJ-S3T" firstAttribute="trailing" secondItem="lTK-Hd-Tl2" secondAttribute="trailing" id="8PP-Pp-1Hc"/>
+                            <constraint firstItem="joK-xi-MCo" firstAttribute="trailing" secondItem="lTK-Hd-Tl2" secondAttribute="trailing" id="AH1-Uu-eLB"/>
+                            <constraint firstItem="joK-xi-MCo" firstAttribute="top" secondItem="jyV-Pf-zRb" secondAttribute="bottom" constant="60" id="Ba7-nd-oCD"/>
+                            <constraint firstItem="0QE-3F-a4G" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="jUc-tP-CC5" secondAttribute="trailing" constant="8" symbolic="YES" id="JP5-yW-eVB"/>
+                            <constraint firstItem="yUQ-mI-ozK" firstAttribute="top" secondItem="w2a-RA-zmI" secondAttribute="bottom" constant="200" id="K1K-8N-SpD"/>
+                            <constraint firstItem="vfk-OJ-S3T" firstAttribute="leading" secondItem="lTK-Hd-Tl2" secondAttribute="leading" id="NOY-IO-NIJ"/>
+                            <constraint firstItem="tFH-sY-Xu9" firstAttribute="centerY" secondItem="jUc-tP-CC5" secondAttribute="centerY" id="Rre-EY-kVY"/>
+                            <constraint firstItem="KDu-ea-kF8" firstAttribute="leading" secondItem="kh9-bI-dsS" secondAttribute="leading" constant="78" id="SRU-sX-z5b"/>
+                            <constraint firstItem="w2a-RA-zmI" firstAttribute="trailing" secondItem="lTK-Hd-Tl2" secondAttribute="trailing" id="Vki-IZ-AdN"/>
+                            <constraint firstItem="yUQ-mI-ozK" firstAttribute="centerX" secondItem="kh9-bI-dsS" secondAttribute="centerX" id="a66-h4-WVf"/>
+                            <constraint firstItem="tFH-sY-Xu9" firstAttribute="leading" secondItem="kh9-bI-dsS" secondAttribute="leading" constant="62.5" id="cH6-q6-Lel"/>
+                            <constraint firstItem="jUc-tP-CC5" firstAttribute="centerX" secondItem="kh9-bI-dsS" secondAttribute="centerX" id="cgM-Nj-yit"/>
+                            <constraint firstItem="KDu-ea-kF8" firstAttribute="top" secondItem="joK-xi-MCo" secondAttribute="bottom" constant="32" id="dLw-rF-Pfb"/>
+                            <constraint firstItem="w2a-RA-zmI" firstAttribute="leading" secondItem="lTK-Hd-Tl2" secondAttribute="leading" id="daz-b0-eCC"/>
+                            <constraint firstItem="jUc-tP-CC5" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="tFH-sY-Xu9" secondAttribute="trailing" constant="8" symbolic="YES" id="fS9-Ce-4ph"/>
+                            <constraint firstAttribute="trailing" secondItem="lTK-Hd-Tl2" secondAttribute="trailing" constant="16" id="gdg-7Y-7la"/>
+                            <constraint firstItem="6d9-Bc-hIz" firstAttribute="top" secondItem="joK-xi-MCo" secondAttribute="bottom" constant="32" id="m9s-An-IWV"/>
+                            <constraint firstItem="vfk-OJ-S3T" firstAttribute="top" secondItem="yUQ-mI-ozK" secondAttribute="bottom" constant="8" id="oaW-rr-UVN"/>
+                            <constraint firstAttribute="trailing" secondItem="0QE-3F-a4G" secondAttribute="trailing" constant="62.5" id="tg1-gr-hdd"/>
+                            <constraint firstAttribute="trailing" secondItem="6d9-Bc-hIz" secondAttribute="trailing" constant="82" id="vtN-y4-iqp"/>
+                            <constraint firstItem="0QE-3F-a4G" firstAttribute="centerY" secondItem="jUc-tP-CC5" secondAttribute="centerY" id="xDi-tj-bBF"/>
+                            <constraint firstItem="lTK-Hd-Tl2" firstAttribute="top" secondItem="jUc-tP-CC5" secondAttribute="bottom" constant="40" id="ytQ-s4-kJm"/>
+                            <constraint firstItem="w2a-RA-zmI" firstAttribute="centerY" secondItem="lTK-Hd-Tl2" secondAttribute="centerY" constant="-1" id="zHt-h3-4ig"/>
+                        </constraints>
                     </view>
+                    <connections>
+                        <outlet property="audioSelector" destination="joK-xi-MCo" id="GmY-Xg-be0"/>
+                        <outlet property="bufferProgress" destination="lTK-Hd-Tl2" id="54k-by-qb2"/>
+                        <outlet property="downloadButton" destination="KDu-ea-kF8" id="5o4-1h-y06"/>
+                        <outlet property="playPauseButton" destination="jUc-tP-CC5" id="e9C-zV-A1B"/>
+                        <outlet property="rateLabel" destination="yUQ-mI-ozK" id="Dx4-lO-A1B"/>
+                        <outlet property="rateSlider" destination="vfk-OJ-S3T" id="mNc-ET-aNM"/>
+                        <outlet property="scrubberSlider" destination="w2a-RA-zmI" id="VbI-tT-lbc"/>
+                        <outlet property="skipBackwardButton" destination="tFH-sY-Xu9" id="LwM-2S-m6F"/>
+                        <outlet property="skipForwardButton" destination="0QE-3F-a4G" id="cQ7-b7-pW7"/>
+                        <outlet property="streamButton" destination="6d9-Bc-hIz" id="DZe-ga-3RV"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="x5A-6p-PRh" sceneMemberID="firstResponder"/>
             </objects>
+            <point key="canvasLocation" x="132" y="103.89805097451276"/>
         </scene>
     </scenes>
 </document>

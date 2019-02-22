@@ -40,6 +40,30 @@ public class SAPlayer {
         }
     }
     
+    public var duration: Double {
+        get {
+            return presenter.duration ?? 0.0
+        }
+    }
+    
+    public var prettyDuration: String {
+        get {
+            return SAPlayer.prettifyTimestamp(duration)
+        }
+    }
+    
+    public var elapsedTime: Double {
+        get {
+            return presenter.needle ?? 0
+        }
+    }
+    
+    public var prettyElapsedTime: String {
+        get {
+            return SAPlayer.prettifyTimestamp(elapsedTime)
+        }
+    }
+    
     public var mediaInfo: SALockScreenInfo? = nil {
         didSet {
             if let info = mediaInfo {
@@ -57,8 +81,21 @@ public class SAPlayer {
         presenter = SAPlayerPresenter(delegate: self)
     }
     
+    public static func prettifyTimestamp(_ timestamp: Double) -> String {
+        let hours = Int(timestamp / 60 / 60)
+        let minutes = Int((timestamp - Double(hours * 60)) / 60)
+        
+        let secondsLeft = Int(timestamp) - (minutes * 60)
+        
+        return "\(hours):\(String(format: "%02d", minutes)):\(String(format: "%02d", secondsLeft))"
+    }
+    
     func getUrl(forKey key: Key) -> URL? {
         return presenter.getUrl(forKey: key)
+    }
+    
+    func addUrlToMapping(url: URL) {
+        presenter.addUrlToKeyMap(url)
     }
 }
 
@@ -89,11 +126,20 @@ extension SAPlayer {
 extension SAPlayer {
     public struct Downloader {
         public static func downloadAudio(withRemoteUrl url: URL) {
+            SAPlayer.shared.addUrlToMapping(url: url)
             AudioDataManager.shared.startDownload(withRemoteURL: url)
         }
         
         public static func cancelDownload(withRemoteUrl url: URL) {
             AudioDataManager.shared.deleteDownload(withRemoteURL: url)
+        }
+        
+        public static func deleteDownload(withRemoteUrl url: URL) {
+            AudioDataManager.shared.deleteDownload(withRemoteURL: url)
+        }
+        
+        public static func isDownloaded(withRemoteUrl url: URL) -> Bool {
+            return AudioDataManager.shared.getPersistedUrl(withRemoteURL: url) != nil
         }
         
         public static func setBackgroundCompletionHandler(_ completionHandler: @escaping () -> ()) {

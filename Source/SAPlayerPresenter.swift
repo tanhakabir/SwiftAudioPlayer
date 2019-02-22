@@ -31,8 +31,10 @@ class SAPlayerPresenter {
     weak var delegate: SAPlayerDelegate?
     var shouldPlayImmediately = false //for auto-play
     
+    var needle: Needle?
+    var duration: Duration?
+    
     private var key: String?
-    private var needle: Needle?
     private var isPlaying = false
     private var mediaInfo: SALockScreenInfo?
     
@@ -52,6 +54,10 @@ class SAPlayerPresenter {
     
     func getUrl(forKey key: Key) -> URL? {
         return urlKeyMap[key]
+    }
+    
+    func addUrlToKeyMap(_ url: URL) {
+        urlKeyMap[url.key] = url
     }
     
     func handlePlayAudio(withRemoteUrl url: URL) {
@@ -78,6 +84,7 @@ class SAPlayerPresenter {
             }
             
             self.delegate?.updateLockscreenPlaybackDuration(duration: duration)
+            self.duration = duration
             
             if let info = self.mediaInfo {
                 if #available(iOS 10.0, *) {

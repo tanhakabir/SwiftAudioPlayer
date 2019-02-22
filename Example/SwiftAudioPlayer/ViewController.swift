@@ -69,11 +69,6 @@ class ViewController: UIViewController {
     @IBOutlet weak var durationLabel: UILabel!
     @IBOutlet weak var currentTimestampLabel: UILabel!
     
-    var timestampRef: UInt?
-    var durationRef: UInt?
-    var downloadRef: UInt?
-    var bufferRef: UInt?
-    
     var isDownloading: Bool = false
     var isStreaming: Bool = false
     
@@ -100,20 +95,20 @@ class ViewController: UIViewController {
         
         isPlayable = false
         
-        durationRef = SAPlayer.Updates.Duration.subscribe { [weak self] (url, duration) in
+        _ = SAPlayer.Updates.Duration.subscribe { [weak self] (url, duration) in
             guard let self = self else { return }
             guard url == self.selectedAudio.url else { return }
             self.durationLabel.text = SAPlayer.prettifyTimestamp(duration)
             self.duration = duration
         }
         
-        timestampRef = SAPlayer.Updates.ElapsedTime.subscribe { [weak self] (url, position) in
+        _ = SAPlayer.Updates.ElapsedTime.subscribe { [weak self] (url, position) in
             guard let self = self else { return }
             guard url == self.selectedAudio.url else { return }
             self.currentTimestampLabel.text = SAPlayer.prettifyTimestamp(position)
         }
         
-        downloadRef = SAPlayer.Updates.AudioDownloading.subscribe { [weak self] (url, progress) in
+        _ = SAPlayer.Updates.AudioDownloading.subscribe { [weak self] (url, progress) in
             print(progress)
             guard let self = self else { return }
             guard url == self.selectedAudio.url else { return }
@@ -123,7 +118,7 @@ class ViewController: UIViewController {
             }
         }
         
-        bufferRef = SAPlayer.Updates.StreamingBuffer.subscribe{ [weak self] (url, buffer) in
+        _ = SAPlayer.Updates.StreamingBuffer.subscribe{ [weak self] (url, buffer) in
             guard let self = self else { return }
             guard url == self.selectedAudio.url else { return }
             
@@ -132,6 +127,17 @@ class ViewController: UIViewController {
             self.bufferProgress.progress = Float((buffer.totalDurationBuffered + buffer.startingBufferTimePositon) / self.duration)
             
             self.isPlayable = buffer.isReadyForPlaying
+        }
+        
+        _ = SAPlayer.Updates.PlayingStatus.subscribe { [weak self] (url, playing) in
+            guard let self = self else { return }
+            guard url == self.selectedAudio.url else { return }
+            
+            if playing {
+                self.playPauseButton.setTitle("Pause", for: .normal)
+            } else {
+                self.playPauseButton.setTitle("Play", for: .normal)
+            }
         }
     }
 
@@ -185,6 +191,18 @@ class ViewController: UIViewController {
         } else {
             // TODO
         }
+    }
+    
+    @IBAction func playPauseTouched(_ sender: Any) {
+        SAPlayer.shared.togglePlayAndPause()
+    }
+    
+    @IBAction func skipBackwardTouched(_ sender: Any) {
+        SAPlayer.shared.skipBackwards()
+    }
+    
+    @IBAction func skipForwardTouched(_ sender: Any) {
+        SAPlayer.shared.skipForward()
     }
     
     private func adjustSpeed() {

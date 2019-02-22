@@ -113,6 +113,14 @@ extension SAPlayer {
         presenter.handlePause()
     }
     
+    public func skipBackwards() {
+        presenter.handleSkipBackward()
+    }
+    
+    public func skipForward() {
+        presenter.handleSkipForward()
+    }
+    
     public func seekTo(seconds: Double) {
         presenter.handleSeek(toNeedle: seconds)
     }

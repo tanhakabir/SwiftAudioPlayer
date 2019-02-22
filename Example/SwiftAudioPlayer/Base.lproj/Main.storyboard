@@ -38,14 +38,23 @@
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="jUc-tP-CC5">
                                 <rect key="frame" x="172.5" y="250" width="30" height="30"/>
                                 <state key="normal" title="play"/>
+                                <connections>
+                                    <action selector="playPauseTouched:" destination="vXZ-lx-hvc" eventType="touchUpInside" id="Avk-K3-EZ7"/>
+                                </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="tFH-sY-Xu9">
                                 <rect key="frame" x="62.5" y="250" width="30" height="30"/>
                                 <state key="normal" title="-15"/>
+                                <connections>
+                                    <action selector="skipBackwardTouched:" destination="vXZ-lx-hvc" eventType="touchUpInside" id="PCT-BE-udf"/>
+                                </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="0QE-3F-a4G">
                                 <rect key="frame" x="282.5" y="250" width="30" height="30"/>
                                 <state key="normal" title="+30"/>
+                                <connections>
+                                    <action selector="skipForwardTouched:" destination="vXZ-lx-hvc" eventType="touchUpInside" id="uXv-bz-tnt"/>
+                                </connections>
                             </button>
                             <slider opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" value="1" minValue="0.10000000000000001" maxValue="32" translatesAutoresizingMaskIntoConstraints="NO" id="vfk-OJ-S3T">
                                 <rect key="frame" x="14" y="564" width="347" height="31"/>

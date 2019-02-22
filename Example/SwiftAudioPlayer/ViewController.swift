@@ -72,22 +72,39 @@ class ViewController: UIViewController {
     var timestampRef: UInt?
     var durationRef: UInt?
     var downloadRef: UInt?
+    var bufferRef: UInt?
     
     var isDownloading: Bool = false
+    var isStreaming: Bool = false
+    
+    var duration: Double = 0.0
+    
+    var isPlayable: Bool = false {
+        didSet {
+            if isPlayable {
+                playPauseButton.isEnabled = true
+                skipBackwardButton.isEnabled = true
+                skipForwardButton.isEnabled = true
+            } else {
+                playPauseButton.isEnabled = false
+                skipBackwardButton.isEnabled = false
+                skipForwardButton.isEnabled = false
+            }
+        }
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
         adjustSpeed()
         
-        playPauseButton.isEnabled = false
-        skipBackwardButton.isEnabled = false
-        skipForwardButton.isEnabled = false
+        isPlayable = false
         
         durationRef = SAPlayer.Updates.Duration.subscribe { [weak self] (url, duration) in
             guard let self = self else { return }
             guard url == self.selectedAudio.url else { return }
             self.durationLabel.text = SAPlayer.prettifyTimestamp(duration)
+            self.duration = duration
         }
         
         timestampRef = SAPlayer.Updates.ElapsedTime.subscribe { [weak self] (url, position) in
@@ -97,12 +114,24 @@ class ViewController: UIViewController {
         }
         
         downloadRef = SAPlayer.Updates.AudioDownloading.subscribe { [weak self] (url, progress) in
+            print(progress)
             guard let self = self else { return }
             guard url == self.selectedAudio.url else { return }
             
             if self.isDownloading {
                 self.downloadButton.setTitle("Cancel \(String(format: "%02d", (progress * 100)))%", for: .normal)
             }
+        }
+        
+        bufferRef = SAPlayer.Updates.StreamingBuffer.subscribe{ [weak self] (url, buffer) in
+            guard let self = self else { return }
+            guard url == self.selectedAudio.url else { return }
+            
+            if self.duration == 0.0 { return }
+            
+            self.bufferProgress.progress = Float((buffer.totalDurationBuffered + buffer.startingBufferTimePositon) / self.duration)
+            
+            self.isPlayable = buffer.isReadyForPlaying
         }
     }
 
@@ -149,6 +178,13 @@ class ViewController: UIViewController {
     }
     
     @IBAction func streamTouched(_ sender: Any) {
+        if !isStreaming {
+            SAPlayer.shared.initializeAudio(withRemoteUrl: selectedAudio.url)
+            streamButton.setTitle("Cancel streaming", for: .normal)
+            downloadButton.isEnabled = false
+        } else {
+            // TODO
+        }
     }
     
     private func adjustSpeed() {

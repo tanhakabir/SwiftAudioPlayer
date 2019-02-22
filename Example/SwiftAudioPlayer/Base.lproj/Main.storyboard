@@ -47,7 +47,7 @@
                                 <rect key="frame" x="282.5" y="250" width="30" height="30"/>
                                 <state key="normal" title="+30"/>
                             </button>
-                            <slider opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" value="1" minValue="0.0" maxValue="32" translatesAutoresizingMaskIntoConstraints="NO" id="vfk-OJ-S3T">
+                            <slider opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" value="1" minValue="0.10000000000000001" maxValue="32" translatesAutoresizingMaskIntoConstraints="NO" id="vfk-OJ-S3T">
                                 <rect key="frame" x="14" y="564" width="347" height="31"/>
                                 <connections>
                                     <action selector="rateChanged:" destination="vXZ-lx-hvc" eventType="valueChanged" id="FDJ-jA-bm8"/>

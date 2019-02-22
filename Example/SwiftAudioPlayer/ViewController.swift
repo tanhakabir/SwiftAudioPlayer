@@ -106,6 +106,10 @@ class ViewController: UIViewController {
             guard let self = self else { return }
             guard url == self.selectedAudio.url else { return }
             self.currentTimestampLabel.text = SAPlayer.prettifyTimestamp(position)
+            
+            guard self.duration != 0 else { return }
+            
+            self.scrubberSlider.value = Float(position/self.duration)
         }
         
         _ = SAPlayer.Updates.AudioDownloading.subscribe { [weak self] (url, progress) in
@@ -124,7 +128,13 @@ class ViewController: UIViewController {
             
             if self.duration == 0.0 { return }
             
-            self.bufferProgress.progress = Float((buffer.totalDurationBuffered + buffer.startingBufferTimePositon) / self.duration)
+            let progress = Float((buffer.totalDurationBuffered + buffer.startingBufferTimePositon) / self.duration)
+            
+            self.bufferProgress.progress = progress
+            
+            if progress >= 0.99 {
+                self.streamButton.isEnabled = false
+            }
             
             self.isPlayable = buffer.isReadyForPlaying
         }
@@ -155,6 +165,7 @@ class ViewController: UIViewController {
     }
     
     @IBAction func scrubberSeeked(_ sender: Any) {
+        SAPlayer.shared.seekTo(seconds: Double(scrubberSlider.value))
     }
     
     

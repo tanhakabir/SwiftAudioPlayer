@@ -141,18 +141,14 @@ class AudioStreamEngine: AudioEngine {
         
         
         let timeInterval = 1 / (converter.engineAudioFormat.sampleRate / Double(PCM_BUFFER_SIZE))
-        if #available(iOS 10.0, *) {
-            Timer.scheduledTimer(withTimeInterval: timeInterval / 32, repeats: true) { [weak self] (timer: Timer) in
-                self?.timer = timer
-                self?.pollForNextBuffer()
-                self?.updateNetworkBufferRange()
-                self?.updateNeedle()
-                self?.updateIsPlaying()
-                self?.updateDuration()
-            }
-        } else {
-            // TODO
-            // Fallback on earlier versions
+        
+        Timer.scheduledTimer(withTimeInterval: timeInterval / 32, repeats: true) { [weak self] (timer: Timer) in
+            self?.timer = timer
+            self?.pollForNextBuffer()
+            self?.updateNetworkBufferRange()
+            self?.updateNeedle()
+            self?.updateIsPlaying()
+            self?.updateDuration()
         }
     }
     

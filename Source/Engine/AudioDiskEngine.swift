@@ -70,16 +70,11 @@ class AudioDiskEngine: AudioEngine {
         }
         
         
-        if #available(iOS 10.0, *) {
-            Timer.scheduledTimer(withTimeInterval: 0.2, repeats: true) { [weak self] (timer: Timer) in
-                guard let _ = self else { return }
-                self?.timer = timer
-                self?.updateIsPlaying()
-                self?.updateNeedle()
-            }
-        } else {
-            // TODO
-            // Fallback on earlier versions
+        Timer.scheduledTimer(withTimeInterval: 0.2, repeats: true) { [weak self] (timer: Timer) in
+            guard let _ = self else { return }
+            self?.timer = timer
+            self?.updateIsPlaying()
+            self?.updateNeedle()
         }
         
         scheduleAudioFile()

@@ -87,12 +87,7 @@ class SAPlayerPresenter {
             self.duration = duration
             
             if let info = self.mediaInfo {
-                if #available(iOS 10.0, *) {
-                    self.delegate?.setLockScreenInfo(withMediaInfo: info, duration: duration)
-                } else {
-                    // TODO
-                    // Fallback on earlier versions
-                }
+                self.delegate?.setLockScreenInfo(withMediaInfo: info, duration: duration)
             }
         })
         

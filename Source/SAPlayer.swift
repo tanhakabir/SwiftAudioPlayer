@@ -67,12 +67,7 @@ public class SAPlayer {
     public var mediaInfo: SALockScreenInfo? = nil {
         didSet {
             if let info = mediaInfo {
-                if #available(iOS 10.0, *) {
-                    presenter.handleLockscreenInfo(info: info)
-                } else {
-                    // TODO
-                    // Fallback on earlier versions
-                }
+                presenter.handleLockscreenInfo(info: info)
             }
         }
     }

@@ -28,7 +28,7 @@ import Foundation
 extension SAPlayer {
     
     /**
-     Recieve updates for changing values from the player, such as the duration, elapsed time of playing audio, download progress, and etc.
+     Receive updates for changing values from the player, such as the duration, elapsed time of playing audio, download progress, and etc.
      */
     public struct Updates {
         

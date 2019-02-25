@@ -40,7 +40,7 @@ extension SAPlayer {
             /**
              Subscribe to updates in elapsed time of the playing audio. Aka, the current timestamp of the audio.
              
-             Note: It's recommended to have a weak reference to a class that uses this fuction
+             Note: It's recommended to have a weak reference to a class that uses this function
              
              - Parameter closure: The closure that will receive the updates of the changes in time.
              - Parameter url: The corresponding remote URL for the updated playing time.
@@ -72,7 +72,7 @@ extension SAPlayer {
             /**
              Subscribe to updates to changes in duration of the current audio initialized.
              
-             Note: It's recommended to have a weak reference to a class that uses this fuction
+             Note: It's recommended to have a weak reference to a class that uses this function
              
              - Parameter closure: The closure that will receive the updates of the changes in duration.
              - Parameter url: The corresponding remote URL for the updated duration.
@@ -104,7 +104,7 @@ extension SAPlayer {
             /**
              Subscribe to updates to changes in the playing/paused status of audio.
              
-             Note: It's recommended to have a weak reference to a class that uses this fuction
+             Note: It's recommended to have a weak reference to a class that uses this function
              
              - Parameter closure: The closure that will receive the updates of the changes in duration.
              - Parameter url: The corresponding remote URL for the updated duration.
@@ -136,7 +136,7 @@ extension SAPlayer {
             /**
              Subscribe to updates to changes in the progress of downloading audio for streaming. Information about range of audio available and if the audio is playable. Look at SAAudioAvailabilityRange for more information. For progress of downloading audio that saves to the phone for playback later, look at AudioDownloading instead.
              
-             Note: It's recommended to have a weak reference to a class that uses this fuction
+             Note: It's recommended to have a weak reference to a class that uses this function
              
              - Parameter closure: The closure that will receive the updates of the changes in duration.
              - Parameter url: The corresponding remote URL for the updated streaming progress.
@@ -168,7 +168,7 @@ extension SAPlayer {
             /**
              Subscribe to updates to changes in the progress of downloading audio. This does not correspond to progress in streaming downloads, look at StreamingBuffer for streaming progress.
              
-             Note: It's recommended to have a weak reference to a class that uses this fuction
+             Note: It's recommended to have a weak reference to a class that uses this function
              
              - Parameter closure: The closure that will receive the updates of the changes in duration.
              - Parameter url: The corresponding remote URL for the updated download progress.

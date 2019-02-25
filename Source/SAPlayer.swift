@@ -94,7 +94,7 @@ public class SAPlayer {
     }
 }
 
-//MARK: - Player Controls
+//MARK: - External Player Controls
 extension SAPlayer {
     public func togglePlayAndPause() {
         presenter.handleTogglePlayingAndPausing()
@@ -126,31 +126,8 @@ extension SAPlayer {
     }
 }
 
-extension SAPlayer {
-    public struct Downloader {
-        public static func downloadAudio(withRemoteUrl url: URL) {
-            SAPlayer.shared.addUrlToMapping(url: url)
-            AudioDataManager.shared.startDownload(withRemoteURL: url)
-        }
-        
-        public static func cancelDownload(withRemoteUrl url: URL) {
-            AudioDataManager.shared.deleteDownload(withRemoteURL: url)
-        }
-        
-        public static func deleteDownload(withRemoteUrl url: URL) {
-            AudioDataManager.shared.deleteDownload(withRemoteURL: url)
-        }
-        
-        public static func isDownloaded(withRemoteUrl url: URL) -> Bool {
-            return AudioDataManager.shared.getPersistedUrl(withRemoteURL: url) != nil
-        }
-        
-        public static func setBackgroundCompletionHandler(_ completionHandler: @escaping () -> ()) {
-            AudioDataManager.shared.setBackgroundCompletionHandler(completionHandler)
-        }
-    }
-}
 
+//MARK: - Internal implementation of delegate
 extension SAPlayer: SAPlayerDelegate {
     func startAudioDownloaded(withSavedUrl url: AudioURL) {
         player?.pause()

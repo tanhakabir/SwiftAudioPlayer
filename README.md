@@ -111,25 +111,30 @@ func unsubscribe(_ id: UInt)
 
 
 #### ElapsedTime
+Payload = `Double`
 
 Changes in the timestamp/elapsed time of the current initialized audio. Aka, where the scrubber's pointer of the audio should be at.
 
 Subscribe to this to update views on changes in position of which part of audio is being played.
 
 #### Duration
+Payload = `Double`
 
 Changes in the duration of the current initialized audio. Especially helpful for audio that is being streamed and can change with more data.
 
 #### PlayingStatus
+Payload = `Bool`
 
 Changes in the playing/paused status of the player.
 
 #### StreamingBuffer
+Payload = `SAAudioAvailabilityRange`
 
 Changes in the progress of downloading audio for streaming. Information about range of audio available and if the audio is playable. Look at SAAudioAvailabilityRange for more information. 
 
 For progress of downloading audio that saves to the phone for playback later, look at AudioDownloading instead.
 
 #### AudioDownloading
+Payload = `Double`
 
 Changes in the progress of downloading audio in the background. This does not correspond to progress in streaming downloads, look at StreamingBuffer for streaming progress.

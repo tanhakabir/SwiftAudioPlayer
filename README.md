@@ -65,6 +65,7 @@ override func viewDidLoad() {
 }
 ```
 
+For more details and specifics look at the [API documentation](#api-in-detail) below.
 
 ## Contact
 

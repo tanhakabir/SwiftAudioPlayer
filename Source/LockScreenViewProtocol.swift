@@ -56,10 +56,20 @@ extension LockScreenViewProtocol {
         nowPlayingInfo[MPMediaItemPropertyPodcastTitle] = title
         nowPlayingInfo[MPNowPlayingInfoPropertyPlaybackRate] = 0.0 //because default is 1.0. If we pause audio then it keeps ticking
         nowPlayingInfo[MPMediaItemPropertyReleaseDate] = Date(timeIntervalSince1970: TimeInterval(releaseDate))
-        nowPlayingInfo[MPMediaItemPropertyArtwork] =
-            MPMediaItemArtwork(boundsSize: info.artwork.size) { size in
-                return info.artwork
+
+        if let artwork = info.artwork {
+            nowPlayingInfo[MPMediaItemPropertyArtwork] =
+            MPMediaItemArtwork(boundsSize: artwork.size) { size in
+                return artwork
+            }
+        } else {
+            nowPlayingInfo[MPMediaItemPropertyArtwork] = MPMediaItemArtwork(boundsSize: UIImage().size) { size in
+                return UIImage()
+            }
         }
+        
+        
+        
         
         
         MPNowPlayingInfoCenter.default().nowPlayingInfo = nowPlayingInfo

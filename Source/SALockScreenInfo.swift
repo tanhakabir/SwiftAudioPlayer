@@ -26,15 +26,21 @@
 import Foundation
 import UIKit
 
+/**
+ UTC corresponds to epoch time (number of seconds that have elapsed since January 1, 1970, midnight UTC/GMT). https://www.epochconverter.com/ is a useful site to convert to human readable format.
+ */
 public typealias UTC = Int
 
+/**
+ Use to set what will be displayed in the lockscreen.
+ */
 public struct SALockScreenInfo {
     var title: String
     var artist: String
-    var artwork: UIImage
+    var artwork: UIImage?
     var releaseDate: UTC
     
-    public init(title: String, artist: String, artwork: UIImage, releaseDate: UTC) {
+    public init(title: String, artist: String, artwork: UIImage?, releaseDate: UTC) {
         self.title = title
         self.artist = artist
         self.artwork = artwork

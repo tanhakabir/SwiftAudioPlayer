@@ -79,7 +79,7 @@ Feel free to reach out to either of us:
 [tanhakabir](https://github.com/tanhakabir), tanhakabir.ca@gmail.com
 [JonMercer](https://github.com/JonMercer), mercer.jon@gmail.com
 
-## License
+### License
 
 SwiftAudioPlayer is available under the MIT license. See the LICENSE file for more info.
 

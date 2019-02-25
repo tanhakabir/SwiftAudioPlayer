@@ -92,14 +92,20 @@ SwiftAudioPlayer is available under the MIT license. See the LICENSE file for mo
 
 Receive updates for changing values from the player, such as the duration, elapsed time of playing audio, download progress, and etc.
 
-All subscription functions for updates take the form of: `func subscribe(_ closure: @escaping (_ url: URL, _ payload:  <Payload>) -> ()) -> UInt`
+All subscription functions for updates take the form of:
+```swift
+func subscribe(_ closure: @escaping (_ url: URL, _ payload:  <Payload>) -> ()) -> UInt
+```
 
 - `closure`: The closure that will receive the updates. It's recommended to have a weak reference to a class that uses these functions.
 - `url`: The corresponding remote URL for the update. In the case there might be multiple files observed, such as downloading many files at once or switching over from playing one audio to another and the updates corresponding to the previous aren't silenced on switch-over.
 - `payload`: The updated value.
 - Returns: the id for the subscription in the case you would like to unsubscribe to updates for the closure.
 
-Similarily unsubscribe takes the form of: `func unsubscribe(_ id: UInt)`
+Similarily unsubscribe takes the form of: 
+```swift
+func unsubscribe(_ id: UInt)
+```
 
 - `id`: The closure with this id will stop receiving updates.
 

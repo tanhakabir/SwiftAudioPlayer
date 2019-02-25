@@ -33,20 +33,20 @@ pod 'SwiftAudioPlayer'
 ### Usage
 
 To play remote audio:
-```
+```swift
 let url = URL(string: "https://randomwebsite.com/audio.mp3")!
 SAPlayer.shared.initializeAudio(withRemoteUrl: url)
 SAPlayer.shared.play()
 ```
 
 To set the display information for the lockscreen:
-```
+```swift
 let info = SALockScreenInfo(title: "Random audio", artist: "Foo", artwork: UIImage(), releaseDate: 123456789)
 SAPlayer.shared.mediaInfo = info
 ```
 
 To receive streaming progress:
-```
+```swift
 @IBOutlet weak var bufferProgress: UIProgressView!
 
 override func viewDidLoad() {

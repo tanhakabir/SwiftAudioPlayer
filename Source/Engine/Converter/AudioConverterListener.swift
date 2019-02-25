@@ -8,7 +8,7 @@
 //  This file was modified and adapted from https://github.com/syedhali/AudioStreamer
 //  which was released under Apache License 2.0. Apache License 2.0 requires explicit
 //  documentation of modified files from source and a copy of the Apache License 2.0
-//  in the project which he have under the name Credited_LICENSE.
+//  in the project which is under the name Credited_LICENSE.
 //
 //
 //  Permission is hereby granted, free of charge, to any person obtaining a copy

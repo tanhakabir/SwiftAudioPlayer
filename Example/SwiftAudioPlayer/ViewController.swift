@@ -183,7 +183,9 @@ class ViewController: UIViewController {
             } else {
                 downloadButton.setTitle("Cancel 0%", for: .normal)
                 isDownloading = true
-                SAPlayer.Downloader.downloadAudio(withRemoteUrl: selectedAudio.url)
+                SAPlayer.Downloader.downloadAudio(withRemoteUrl: selectedAudio.url, completion: { url in
+                    //TODO
+                })
                 streamButton.isEnabled = false
             }
         } else {

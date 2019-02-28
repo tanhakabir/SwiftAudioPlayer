@@ -95,7 +95,7 @@ class AudioDownloadWorker: NSObject, AudioDataDownloadable {
         let rank = Date.getUTC()
         
         guard numberOfActive < MAX_CONCURRENT_DOWNLOADS else {
-            queuedDownloads.update(with: DownloadInfo(id: id, remoteUrl: remoteUrl, rank: rank))
+            queuedDownloads.update(with: DownloadInfo(id: id, remoteUrl: remoteUrl, rank: rank, completionHandlers: []))
             return
         }
         
@@ -109,7 +109,7 @@ class AudioDownloadWorker: NSObject, AudioDataDownloadable {
         
         task.taskDescription = id
         
-        let activeTask = ActiveDownload(info: DownloadInfo(id: id, remoteUrl: remoteUrl, rank: rank), task: task)
+        let activeTask = ActiveDownload(info: DownloadInfo(id: id, remoteUrl: remoteUrl, rank: rank, completionHandlers: []), task: task)
         
         activeDownloads.append(activeTask)
         activeTask.task.resume()
@@ -256,9 +256,18 @@ extension AudioDownloadWorker {
 // MARK:- Helper Classes
 extension AudioDownloadWorker {
     fileprivate struct DownloadInfo: Hashable {
+        static func == (lhs: AudioDownloadWorker.DownloadInfo, rhs: AudioDownloadWorker.DownloadInfo) -> Bool {
+            return lhs.id == rhs.id && lhs.remoteUrl == rhs.remoteUrl
+        }
+        
+        var hashValue: Int {
+            return id.hashValue ^ remoteUrl.hashValue
+        }
+        
         let id: ID
         let remoteUrl: URL
         let rank: Int
+        var completionHandlers: [(URL) -> ()]
     }
     
     private class ActiveDownload: Hashable {

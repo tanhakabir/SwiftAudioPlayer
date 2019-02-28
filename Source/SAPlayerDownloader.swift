@@ -27,9 +27,9 @@ import Foundation
 
 extension SAPlayer {
     public struct Downloader {
-        public static func downloadAudio(withRemoteUrl url: URL) {
+        public static func downloadAudio(withRemoteUrl url: URL, completion: @escaping (URL) -> ()) {
             SAPlayer.shared.addUrlToMapping(url: url)
-            AudioDataManager.shared.startDownload(withRemoteURL: url)
+            AudioDataManager.shared.startDownload(withRemoteURL: url, completion: completion)
         }
         
         public static func cancelDownload(withRemoteUrl url: URL) {

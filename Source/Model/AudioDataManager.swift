@@ -172,7 +172,7 @@ extension AudioDataManager {
             return
         }
         
-        downloadWorker.start(withID: key, withRemoteUrl: url, withResumeData: nil)
+        downloadWorker.start(withID: key, withRemoteUrl: url)
     }
     
     func deleteDownload(withRemoteURL url: AudioURL) {

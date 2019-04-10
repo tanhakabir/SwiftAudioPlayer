@@ -33,7 +33,7 @@ protocol AudioDataDownloadable: AnyObject {
     
     func getProgressOfDownload(withID id: ID) -> Double?
     
-    func start(withID id: ID, withRemoteUrl remoteUrl: URL, withResumeData data: Data?)
+    func start(withID id: ID, withRemoteUrl remoteUrl: URL)
     func stop(withID id: ID, callback: ((_ dataSoFar: Data?, _ totalBytesExpected: Int64?) -> ())?)
     func pauseAllActive() //Because of streaming
     func resumeAllActive() //Because of streaming
@@ -85,7 +85,7 @@ class AudioDownloadWorker: NSObject, AudioDataDownloadable {
         return activeDownloads.filter { $0.info.id == id }.first?.progress
     }
     
-    func start(withID id: ID, withRemoteUrl remoteUrl: URL, withResumeData data: Data? = nil) {
+    func start(withID id: ID, withRemoteUrl remoteUrl: URL) {
         Log.info("paramID: \(id) activeDownloadIDs: \((activeDownloads.map { $0.info.id } ).toLog)")
         let temp = activeDownloads.filter { $0.info.id == id }.count
         guard temp == 0 else {
@@ -99,14 +99,7 @@ class AudioDownloadWorker: NSObject, AudioDataDownloadable {
             return
         }
         
-        var task: URLSessionDownloadTask
-        
-        if let resumeData = data {
-            task = session.downloadTask(withResumeData: resumeData)
-        } else {
-            task = session.downloadTask(with: remoteUrl)
-        }
-        
+        let task: URLSessionDownloadTask = session.downloadTask(with: remoteUrl)
         task.taskDescription = id
         
         let activeTask = ActiveDownload(info: DownloadInfo(id: id, remoteUrl: remoteUrl, rank: rank, completionHandlers: []), task: task)

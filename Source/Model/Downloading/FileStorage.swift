@@ -36,19 +36,19 @@ struct FileStorage {
      
      Note: It is not guaranteed that the file actually exists.
      */
-    private static func getUrl(givenAName name: NameFile, inDirectory dir: FileManager.SearchPathDirectory) -> URL {
+    static func getUrl(givenAName name: NameFile, inDirectory dir: FileManager.SearchPathDirectory) -> URL {
         let directoryPath = NSSearchPathForDirectoriesInDomains(dir, .userDomainMask, true)[0] as String
         let url = URL(fileURLWithPath: directoryPath)
         return url.appendingPathComponent(name)
     }
     
-    private static func isStored(_ url: URL) -> Bool{
+    static func isStored(_ url: URL) -> Bool{
         // https://stackoverflow.com/questions/42897844/swift-3-0-filemanager-fileexistsatpath-always-return-false
         // When determining if a file exists, we must use .path not .absolute string!
         return FileManager.default.fileExists(atPath: url.path)
     }
     
-    private static func delete(_ url: URL) {
+    static func delete(_ url: URL) {
         if !isStored(url) {
             return
         }

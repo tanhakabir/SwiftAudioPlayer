@@ -33,7 +33,7 @@ protocol AudioDataDownloadable: AnyObject {
     
     func getProgressOfDownload(withID id: ID) -> Double?
     
-    func start(withID id: ID, withRemoteUrl remoteUrl: URL)
+    func start(withID id: ID, withRemoteUrl remoteUrl: URL, completion: @escaping (URL) -> ())
     func stop(withID id: ID, callback: ((_ dataSoFar: Data?, _ totalBytesExpected: Int64?) -> ())?)
     func pauseAllActive() //Because of streaming
     func resumeAllActive() //Because of streaming
@@ -85,24 +85,34 @@ class AudioDownloadWorker: NSObject, AudioDataDownloadable {
         return activeDownloads.filter { $0.info.id == id }.first?.progress
     }
     
-    func start(withID id: ID, withRemoteUrl remoteUrl: URL) {
-        Log.info("paramID: \(id) activeDownloadIDs: \((activeDownloads.map { $0.info.id } ).toLog)")
+    func start(withID id: ID, withRemoteUrl remoteUrl: URL, completion: @escaping (URL) -> ()) {
+        Log.info("startExternal paramID: \(id) activeDownloadIDs: \((activeDownloads.map { $0.info.id } ).toLog)")
         let temp = activeDownloads.filter { $0.info.id == id }.count
         guard temp == 0 else {
             return
         }
         
-        let rank = Date.getUTC()
+        let info = queuedDownloads.updatePreservingOldCompletionHandlers(withID: id, withRemoteUrl: remoteUrl, completion: completion)
         
-        guard numberOfActive < MAX_CONCURRENT_DOWNLOADS else {
-            queuedDownloads.update(with: DownloadInfo(id: id, remoteUrl: remoteUrl, rank: rank, completionHandlers: []))
+        start(withInfo: info)
+    }
+    
+    fileprivate func start(withInfo info: DownloadInfo) {
+        Log.info("paramID: \(info.id) activeDownloadIDs: \((activeDownloads.map { $0.info.id } ).toLog)")
+        let temp = activeDownloads.filter { $0.info.id == info.id }.count
+        guard temp == 0 else {
             return
         }
         
-        let task: URLSessionDownloadTask = session.downloadTask(with: remoteUrl)
-        task.taskDescription = id
+        guard numberOfActive < MAX_CONCURRENT_DOWNLOADS else {
+            queuedDownloads.updatePreservingOldCompletionHandlers(withID: info.id, withRemoteUrl: info.remoteUrl)
+            return
+        }
         
-        let activeTask = ActiveDownload(info: DownloadInfo(id: id, remoteUrl: remoteUrl, rank: rank, completionHandlers: []), task: task)
+        let task: URLSessionDownloadTask = session.downloadTask(with: info.remoteUrl)
+        task.taskDescription = info.id
+        
+        let activeTask = ActiveDownload(info: info, task: task)
         
         activeDownloads.append(activeTask)
         activeTask.task.resume()
@@ -182,10 +192,15 @@ extension AudioDownloadWorker: URLSessionDownloadDelegate {
         }
         
         completionHandler(task.info.id, nil)
+    
+        for handler in task.info.completionHandlers {
+            handler(task.info.remoteUrl)
+        }
+        
         activeDownloads = activeDownloads.filter { $0 != task }
         
         if let queued = queuedDownloads.popHighestRanked() {
-            start(withID: queued.id, withRemoteUrl: queued.remoteUrl)
+            start(withInfo: queued)
         }
     }
     
@@ -299,6 +314,26 @@ extension Set where Element == AudioDownloadWorker.DownloadInfo {
         self.remove(ret)
         
         return ret
+    }
+    
+    mutating func updatePreservingOldCompletionHandlers(withID id: ID, withRemoteUrl remoteUrl: URL, completion: ((URL) -> ())? = nil) -> AudioDownloadWorker.DownloadInfo {
+        
+        let rank = Date.getUTC()
+        
+        let tempHandlers: [(URL) -> ()] = completion != nil ? [completion!] : []
+        
+        var newInfo = AudioDownloadWorker.DownloadInfo.init(id: id, remoteUrl: remoteUrl, rank: rank, completionHandlers: tempHandlers)
+        
+        if let previous = self.update(with: newInfo) {
+            let prevHandlers = previous.completionHandlers
+            let newHandlers = prevHandlers + tempHandlers
+            
+            newInfo = AudioDownloadWorker.DownloadInfo.init(id: id, remoteUrl: remoteUrl, rank: rank, completionHandlers: newHandlers)
+            
+            self.update(with: newInfo)
+        }
+        
+        return newInfo
     }
 }
 

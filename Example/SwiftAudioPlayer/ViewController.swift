@@ -118,7 +118,10 @@ class ViewController: UIViewController {
             guard url == self.selectedAudio.url else { return }
             
             if self.isDownloading {
-                self.downloadButton.setTitle("Cancel \(String(format: "%02d", (progress * 100)))%", for: .normal)
+                DispatchQueue.main.async {
+                    self.downloadButton.setTitle("Cancel \(String(format: "%.2f", (progress * 100)))%", for: .normal)
+                }
+                
             }
         }
         
@@ -184,6 +187,7 @@ class ViewController: UIViewController {
                 downloadButton.setTitle("Cancel 0%", for: .normal)
                 isDownloading = true
                 SAPlayer.Downloader.downloadAudio(withRemoteUrl: selectedAudio.url, completion: { url in
+                    print("🌺🌺🌺🌺🌺🌺 Downloaded \(url)")
                     //TODO
                 })
                 streamButton.isEnabled = false

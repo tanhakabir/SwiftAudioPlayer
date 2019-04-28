@@ -63,14 +63,31 @@ extension SAPlayer {
             AudioDataManager.shared.deleteDownload(withRemoteURL: url)
         }
         
+        /**
+         Check if audio at remote url is downloaded on device.
+         
+         - Parameter url: The remote url corresponding to the audio file you want to see if downloaded.
+         - Returns: Whether of not file at remote url is downloaded on device.
+         */
         public static func isDownloaded(withRemoteUrl url: URL) -> Bool {
             return AudioDataManager.shared.getPersistedUrl(withRemoteURL: url) != nil
         }
         
+        /**
+         Get url of audio file downloaded from remote url onto on device if it exists.
+         
+         - Parameter url: The remote url corresponding to the audio file you want the device url of.
+         - Returns: Url of audio file on device if it exists.
+         */
         public static func getSavedUrl(forRemoteUrl url: URL) -> URL? {
             return AudioDataManager.shared.getPersistedUrl(withRemoteURL: url)
         }
         
+        /**
+         Pass along the completion handler from `AppDelegate` to ensure downloading continues while app is in background.
+         
+         - Parameter completionHandler: The completion hander from `AppDelegate` to use for app in the background downloads.
+         */
         public static func setBackgroundCompletionHandler(_ completionHandler: @escaping () -> ()) {
             AudioDataManager.shared.setBackgroundCompletionHandler(completionHandler)
         }

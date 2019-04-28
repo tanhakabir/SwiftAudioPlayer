@@ -109,6 +109,8 @@ class AudioDownloadWorker: NSObject, AudioDataDownloadable {
             return
         }
         
+        queuedDownloads.remove(info)
+        
         let task: URLSessionDownloadTask = session.downloadTask(with: info.remoteUrl)
         task.taskDescription = info.id
         

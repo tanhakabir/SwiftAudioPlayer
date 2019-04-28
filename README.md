@@ -89,15 +89,15 @@ SwiftAudioPlayer is available under the MIT license. See the LICENSE file for mo
 
 ---
 
-## API in detail
+# API in detail
 
-### SAPlayer.Downloader
+## SAPlayer.Downloader
 
 Use functionaity from Downloader to save audio files from remote locations for future offline playback.
 
 Audio files are saved under custom naming scheme on device and are recoverable with original remote URL for file.
 
-##### Important step for background downloads
+#### Important step for background downloads
 
 To ensure that your app will keep downloading audio in the background be sure to add the following to `AppDelegate.swift`:
 
@@ -107,7 +107,7 @@ func application(_ application: UIApplication, handleEventsForBackgroundURLSessi
 }
 ```
 
-#### Downloading
+### Downloading
 
 Downloads will be held on pause when active stream is started, and will resume downloads when streaming is done.
 
@@ -125,7 +125,7 @@ And use the following to stop any active or prevent future downloads of the corr
 func cancelDownload(withRemoteUrl url: URL)
 ```
 
-#### Manage Downloaded
+### Manage Downloaded
 
 Use the following to manage downloaded audio files.
 
@@ -146,7 +146,7 @@ func deleteDownloaded(withSavedUrl url: URL)
 
 ---
 
-### SAPlayer.Updates
+## SAPlayer.Updates
 
 Receive updates for changing values from the player, such as the duration, elapsed time of playing audio, download progress, and etc.
 
@@ -168,31 +168,31 @@ func unsubscribe(_ id: UInt)
 - `id`: The closure with this id will stop receiving updates.
 
 
-#### ElapsedTime
+### ElapsedTime
 Payload = `Double`
 
 Changes in the timestamp/elapsed time of the current initialized audio. Aka, where the scrubber's pointer of the audio should be at.
 
 Subscribe to this to update views on changes in position of which part of audio is being played.
 
-#### Duration
+### Duration
 Payload = `Double`
 
 Changes in the duration of the current initialized audio. Especially helpful for audio that is being streamed and can change with more data.
 
-#### PlayingStatus
+### PlayingStatus
 Payload = `Bool`
 
 Changes in the playing/paused status of the player.
 
-#### StreamingBuffer
+### StreamingBuffer
 Payload = `SAAudioAvailabilityRange`
 
 Changes in the progress of downloading audio for streaming. Information about range of audio available and if the audio is playable. Look at SAAudioAvailabilityRange for more information. 
 
 For progress of downloading audio that saves to the phone for playback later, look at AudioDownloading instead.
 
-#### AudioDownloading
+### AudioDownloading
 Payload = `Double`
 
 Changes in the progress of downloading audio in the background. This does not correspond to progress in streaming downloads, look at StreamingBuffer for streaming progress.

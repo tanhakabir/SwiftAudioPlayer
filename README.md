@@ -144,8 +144,6 @@ Delete downloaded audio if it exists:
 func deleteDownloaded(withSavedUrl url: URL)
 ```
 
----
-
 ## SAPlayer.Updates
 
 Receive updates for changing values from the player, such as the duration, elapsed time of playing audio, download progress, and etc.

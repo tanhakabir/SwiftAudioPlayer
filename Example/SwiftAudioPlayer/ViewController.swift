@@ -48,10 +48,16 @@ class ViewController: UIViewController {
             if SAPlayer.Downloader.isDownloaded(withRemoteUrl: selectedAudio.url) {
                 downloadButton.setTitle("Delete downloaded", for: .normal)
                 streamButton.isEnabled = false
+            } else {
+                downloadButton.setTitle("Download", for: .normal)
+                streamButton.isEnabled = true
             }
+            
+            self.currentUrlLocationLabel.text = "remote url: \(selectedAudio.url.absoluteString)"
         }
     }
     
+    @IBOutlet weak var currentUrlLocationLabel: UILabel!
     @IBOutlet weak var bufferProgress: UIProgressView!
     @IBOutlet weak var scrubberSlider: UISlider!
     
@@ -94,6 +100,7 @@ class ViewController: UIViewController {
         adjustSpeed()
         
         isPlayable = false
+        selectedAudio = AudioInfo(index: 0)
         
         _ = SAPlayer.Updates.Duration.subscribe { [weak self] (url, duration) in
             guard let self = self else { return }
@@ -113,15 +120,15 @@ class ViewController: UIViewController {
         }
         
         _ = SAPlayer.Updates.AudioDownloading.subscribe { [weak self] (url, progress) in
-            print(progress)
             guard let self = self else { return }
             guard url == self.selectedAudio.url else { return }
             
             if self.isDownloading {
                 DispatchQueue.main.async {
-                    self.downloadButton.setTitle("Cancel \(String(format: "%.2f", (progress * 100)))%", for: .normal)
+                    UIView.performWithoutAnimation {
+                        self.downloadButton.setTitle("Cancel \(String(format: "%.2f", (progress * 100)))%", for: .normal)
+                    }
                 }
-                
             }
         }
         
@@ -186,9 +193,10 @@ class ViewController: UIViewController {
             } else {
                 downloadButton.setTitle("Cancel 0%", for: .normal)
                 isDownloading = true
-                SAPlayer.Downloader.downloadAudio(withRemoteUrl: selectedAudio.url, completion: { url in
-                    print("🌺🌺🌺🌺🌺🌺 Downloaded \(url)")
-                    //TODO
+                SAPlayer.Downloader.downloadAudio(withRemoteUrl: selectedAudio.url, completion: { [weak self] url in
+                    DispatchQueue.main.async {
+                        self?.currentUrlLocationLabel.text = "saved to: \(url.lastPathComponent)"
+                    }
                 })
                 streamButton.isEnabled = false
             }

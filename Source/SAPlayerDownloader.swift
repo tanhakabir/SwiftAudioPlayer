@@ -26,8 +26,26 @@
 import Foundation
 
 extension SAPlayer {
+    /**
+     Actions relating to downloading remote audio to the device for offline playback.
+     
+     - Note: All saved urls generated from downloaded audio corresponds to a specific remote url. Thus, can be queryed if original remote url is known.
+     
+     - Important: Please ensure that you have passed in the background download completion handler in the AppDelegate with `setBackgroundCompletionHandler` to allow for downloading audio while app is in the background.
+     */
     public struct Downloader {
-        public static func downloadAudio(withRemoteUrl url: URL, completion: @escaping (URL) -> ()) {
+        /**
+         Download audio from a remote url. Will save the audio on the device for playback later.
+         
+         Save the saved url of the downloaded audio for future playback or query for the saved url with the same remote url in the future.
+         
+         - Note: It's recommended to have a weak reference to a class that uses this function
+         
+         - Parameter url: The remote url to download audio from.
+         - Parameter completion: Completion handler that will return once the download is successful and complete.
+         - Parameter savedUrl: The url of where the audio was saved locally on the device. Will receive once download has completed.
+         */
+        public static func downloadAudio(withRemoteUrl url: URL, completion: @escaping (_ savedUrl: URL) -> ()) {
             SAPlayer.shared.addUrlToMapping(url: url)
             AudioDataManager.shared.startDownload(withRemoteURL: url, completion: completion)
         }
@@ -42,6 +60,10 @@ extension SAPlayer {
         
         public static func isDownloaded(withRemoteUrl url: URL) -> Bool {
             return AudioDataManager.shared.getPersistedUrl(withRemoteURL: url) != nil
+        }
+        
+        public static func getSavedUrl(forRemoteUrl url: URL) -> URL? {
+            return AudioDataManager.shared.getPersistedUrl(withRemoteURL: url)
         }
         
         public static func setBackgroundCompletionHandler(_ completionHandler: @escaping () -> ()) {

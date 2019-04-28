@@ -194,7 +194,7 @@ extension AudioDownloadWorker: URLSessionDownloadDelegate {
         completionHandler(task.info.id, nil)
     
         for handler in task.info.completionHandlers {
-            handler(task.info.remoteUrl)
+            handler(destinationUrl)
         }
         
         activeDownloads = activeDownloads.filter { $0 != task }

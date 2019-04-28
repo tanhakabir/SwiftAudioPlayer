@@ -64,6 +64,9 @@ override func viewDidLoad() {
     }
 }
 ```
+Look at the [Updates](#SAPlayer.Updates) section to see usage details and other updates to follow.
+
+**Important:** For app in background downloading please refer to [note](#important-step-for-background-downloads).
 
 For more details and specifics look at the [API documentation](#api-in-detail) below.
 
@@ -87,6 +90,61 @@ SwiftAudioPlayer is available under the MIT license. See the LICENSE file for mo
 ---
 
 ## API in detail
+
+### SAPlayer.Downloader
+
+Use functionaity from Downloader to save audio files from remote locations for future offline playback.
+
+Audio files are saved under custom naming scheme on device and are recoverable with original remote URL for file.
+
+##### Important step for background downloads
+
+To ensure that your app will keep downloading audio in the background be sure to add the following to `AppDelegate.swift`:
+
+```swift
+func application(_ application: UIApplication, handleEventsForBackgroundURLSession identifier: String, completionHandler: @escaping () -> Void) {
+    SAPlayer.Downloader.setBackgroundCompletionHandler(completionHandler)
+}
+```
+
+#### Downloading
+
+Downloads will be held on pause when active stream is started, and will resume downloads when streaming is done.
+
+Use the following to start downloading audio in the background:
+
+```swift
+func downloadAudio(withRemoteUrl url: URL, completion: @escaping (_ savedUrl: URL) -> ())
+```
+
+It will call the completion handler you pass after successful download with the location of the downloaded file on the device.
+
+And use the following to stop any active or prevent future downloads of the corresponding remote URL:
+
+```swift
+func cancelDownload(withRemoteUrl url: URL)
+```
+
+#### Manage Downloaded
+
+Use the following to manage downloaded audio files.
+
+Checks if downloaded already:
+```swift
+func isDownloaded(withRemoteUrl url: URL) -> Bool
+```
+
+Get URL of audio file saved on device corresponding to remote location:
+```swift
+func getSavedUrl(forRemoteUrl url: URL) -> URL?
+```
+
+Delete downloaded audio if it exists:
+```swift
+func deleteDownloaded(withSavedUrl url: URL)
+```
+
+---
 
 ### SAPlayer.Updates
 

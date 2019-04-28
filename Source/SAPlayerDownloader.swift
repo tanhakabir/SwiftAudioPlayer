@@ -56,11 +56,18 @@ extension SAPlayer {
          - Parameter url: The remote url corresponding to the active download you want to cancel.
          */
         public static func cancelDownload(withRemoteUrl url: URL) {
-            AudioDataManager.shared.deleteDownload(withRemoteURL: url)
+            AudioDataManager.shared.cancelDownload(withRemoteURL: url)
         }
         
-        public static func deleteDownload(withRemoteUrl url: URL) {
-            AudioDataManager.shared.deleteDownload(withRemoteURL: url)
+        /**
+         Delete downloaded audio file from device at url.
+         
+         - Note: This will delete any file saved on device at the local url. This, however, is intended to use for audio files.
+         
+         - Parameter url: The url of the audio to delete from the device.
+         */
+        public static func deleteDownloaded(withSavedUrl url: URL) {
+            AudioDataManager.shared.deleteDownload(withLocalURL: url)
         }
         
         /**

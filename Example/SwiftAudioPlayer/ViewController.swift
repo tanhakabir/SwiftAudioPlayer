@@ -185,8 +185,8 @@ class ViewController: UIViewController {
     
     @IBAction func downloadTouched(_ sender: Any) {
         if !isDownloading {
-            if SAPlayer.Downloader.isDownloaded(withRemoteUrl: selectedAudio.url) {
-                SAPlayer.Downloader.deleteDownload(withRemoteUrl: selectedAudio.url)
+            if let savedUrl = SAPlayer.Downloader.getSavedUrl(forRemoteUrl: selectedAudio.url) {
+                SAPlayer.Downloader.deleteDownloaded(withSavedUrl: savedUrl)
                 downloadButton.setTitle("Download", for: .normal)
                 streamButton.isEnabled = true
                 isDownloading = false

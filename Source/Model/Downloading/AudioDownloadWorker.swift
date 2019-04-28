@@ -150,6 +150,7 @@ class AudioDownloadWorker: NSObject, AudioDataDownloadable {
             }
         }
         
+        queuedDownloads.remove(withMatchingId: id)
         callback?(nil, nil)
     }
 }
@@ -336,6 +337,27 @@ extension Set where Element == AudioDownloadWorker.DownloadInfo {
         }
         
         return newInfo
+    }
+    
+    mutating func remove(withMatchingId id: ID) {
+        var toRemove: AudioDownloadWorker.DownloadInfo? = nil
+        var matchCount = 0
+        
+        for item in self.enumerated() {
+            if item.element.id == id {
+                toRemove = item.element
+                matchCount += 1
+            }
+        }
+        
+        guard matchCount <= 1 else {
+            Log.error("Found \(matchCount) matches of queued info with the same id of: \(id), this should have never happened.")
+            return
+        }
+        
+        if let removeInfo = toRemove {
+            self.remove(removeInfo)
+        }
     }
 }
 

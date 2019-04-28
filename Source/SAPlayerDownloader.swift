@@ -50,6 +50,11 @@ extension SAPlayer {
             AudioDataManager.shared.startDownload(withRemoteURL: url, completion: completion)
         }
         
+        /**
+         Cancel downloading audio from a specific remote url if actively downloading. If download has not started yet, it will remove from the list of future downloads queued.
+         
+         - Parameter url: The remote url corresponding to the active download you want to cancel.
+         */
         public static func cancelDownload(withRemoteUrl url: URL) {
             AudioDataManager.shared.deleteDownload(withRemoteURL: url)
         }

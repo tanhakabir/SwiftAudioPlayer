@@ -60,21 +60,19 @@ class SAPlayerPresenter {
         urlKeyMap[url.key] = url
     }
     
+    func handlePlaySavedAudio(withSavedUrl url: URL) {
+        self.key = url.key
+        urlKeyMap[url.key] = url
+        delegate?.startAudioDownloaded(withSavedUrl: url)
+    }
+    
     func handlePlayAudio(withRemoteUrl url: URL) {
         AudioClockDirector.shared.detachFromChangesInDuration(withID: durationRef)
         AudioClockDirector.shared.detachFromChangesInNeedle(withID: needleRef)
         AudioClockDirector.shared.detachFromChangesInPlayingStatus(withID: playingStatusRef)
         
         self.key = url.key
-        
-        if let savedUrl = AudioDataManager.shared.getPersistedUrl(withRemoteURL: url) {
-            self.key = savedUrl.key
-            urlKeyMap[savedUrl.key] = url
-            delegate?.startAudioDownloaded(withSavedUrl: savedUrl)
-        } else {
-            urlKeyMap[url.key] = url
-            delegate?.startAudioStreamed(withRemoteUrl: url)
-        }
+        urlKeyMap[url.key] = url
         
         durationRef = AudioClockDirector.shared.attachToChangesInDuration(closure: { [weak self] (key, duration) in
             guard let self = self else { throw DirectorError.closureIsDead }

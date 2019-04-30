@@ -10,7 +10,7 @@ import UIKit
 import SwiftAudioPlayer
 
 class ViewController: UIViewController {
-    struct AudioInfo {
+    struct AudioInfo: Hashable {
         let index: Int
         
         var url: URL {
@@ -42,6 +42,8 @@ class ViewController: UIViewController {
         let artist: String = "SwiftAudioPlayer Sample App"
         let releaseDate: Int = 1550790640
     }
+    
+    var savedUrls: [AudioInfo: URL] = [:]
     
     var selectedAudio: AudioInfo = AudioInfo(index: 0) {
         didSet {
@@ -172,6 +174,10 @@ class ViewController: UIViewController {
         selectedAudio = AudioInfo(index: selected)
         
         SAPlayer.shared.mediaInfo = SALockScreenInfo(title: selectedAudio.title, artist: selectedAudio.artist, artwork: UIImage(), releaseDate: selectedAudio.releaseDate)
+        
+        if let savedUrl = savedUrls[selectedAudio] {
+            
+        }
     }
     
     @IBAction func scrubberSeeked(_ sender: Any) {
@@ -194,8 +200,10 @@ class ViewController: UIViewController {
                 downloadButton.setTitle("Cancel 0%", for: .normal)
                 isDownloading = true
                 SAPlayer.Downloader.downloadAudio(withRemoteUrl: selectedAudio.url, completion: { [weak self] url in
+                    guard let self = self else { return }
                     DispatchQueue.main.async {
-                        self?.currentUrlLocationLabel.text = "saved to: \(url.lastPathComponent)"
+                        self.currentUrlLocationLabel.text = "saved to: \(url.lastPathComponent)"
+                        self.savedUrls[self.selectedAudio] = url
                     }
                 })
                 streamButton.isEnabled = false

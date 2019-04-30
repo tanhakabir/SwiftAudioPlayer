@@ -120,6 +120,11 @@ extension SAPlayer {
         presenter.handleSeek(toNeedle: seconds)
     }
     
+    public func initializeSavedAudio(withSavedUrl url: URL, mediaInfo: SALockScreenInfo? = nil) {
+        self.mediaInfo = mediaInfo
+        presenter.handlePlaySavedAudio(withSavedUrl: url)
+    }
+    
     public func initializeAudio(withRemoteUrl url: URL, mediaInfo: SALockScreenInfo? = nil) {
         self.mediaInfo = mediaInfo
         presenter.handlePlayAudio(withRemoteUrl: url)

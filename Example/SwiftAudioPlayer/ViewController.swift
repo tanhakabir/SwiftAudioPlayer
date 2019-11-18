@@ -106,7 +106,7 @@ class ViewController: UIViewController {
         
         _ = SAPlayer.Updates.Duration.subscribe { [weak self] (url, duration) in
             guard let self = self else { return }
-            guard url == self.selectedAudio.url else { return }
+            guard url == self.selectedAudio.url || url == self.savedUrls[self.selectedAudio] else { return }
             self.durationLabel.text = SAPlayer.prettifyTimestamp(duration)
             self.duration = duration
         }
@@ -136,7 +136,7 @@ class ViewController: UIViewController {
         
         _ = SAPlayer.Updates.StreamingBuffer.subscribe{ [weak self] (url, buffer) in
             guard let self = self else { return }
-            guard url == self.selectedAudio.url else { return }
+            guard url == self.selectedAudio.url || url == self.savedUrls[self.selectedAudio] else { return }
             
             if self.duration == 0.0 { return }
             
@@ -175,9 +175,7 @@ class ViewController: UIViewController {
         
         SAPlayer.shared.mediaInfo = SALockScreenInfo(title: selectedAudio.title, artist: selectedAudio.artist, artwork: UIImage(), releaseDate: selectedAudio.releaseDate)
         
-        if let savedUrl = savedUrls[selectedAudio] {
-            
-        }
+        //        if let savedUrl = savedUrls[selectedAudio] {}
     }
     
     @IBAction func scrubberSeeked(_ sender: Any) {
@@ -204,6 +202,8 @@ class ViewController: UIViewController {
                     DispatchQueue.main.async {
                         self.currentUrlLocationLabel.text = "saved to: \(url.lastPathComponent)"
                         self.savedUrls[self.selectedAudio] = url
+                        
+                        SAPlayer.shared.initializeSavedAudio(withSavedUrl: url)
                     }
                 })
                 streamButton.isEnabled = false

@@ -196,6 +196,10 @@ class ViewController: UIViewController {
                 SAPlayer.Downloader.downloadAudio(withRemoteUrl: selectedAudio.url, completion: { [weak self] url in
                     DispatchQueue.main.async {
                         self?.currentUrlLocationLabel.text = "saved to: \(url.lastPathComponent)"
+                        
+                        if let selectedUrl = self?.selectedAudio.url {
+                            SAPlayer.shared.initializeAudio(withRemoteUrl: selectedUrl)
+                        }
                     }
                 })
                 streamButton.isEnabled = false

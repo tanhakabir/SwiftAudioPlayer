@@ -33,7 +33,13 @@ extension Date {
      */
     static func getUTC64() -> UInt {
         //"On 32-bit platforms, UInt is the same size as UInt32, and on 64-bit platforms, UInt is the same size as UInt64."
-        return UInt(Date().timeIntervalSince1970.bitPattern)
+        
+        if #available(iOS 11.0, *) {
+            return UInt(Date().timeIntervalSince1970.bitPattern)
+        } else {
+            let time = Date().timeIntervalSince1970.bitPattern & 0xFFFFFFFF;
+            return UInt(time)
+        }
     }
     
     /**

@@ -38,6 +38,12 @@ class DirectorThreadSafeClosures<P>  {
     private var closures: [UInt: TypeClosure] = [:]
     private var cache: [Key: P] = [:]
     
+    var count: Int {
+        get {
+            return closures.count
+        }
+    }
+    
     func broadcast(key: Key, payload: P) {
         queue.sync {
             self.cache[key] = payload

@@ -105,7 +105,7 @@ class AudioDownloadWorker: NSObject, AudioDataDownloadable {
         }
         
         guard numberOfActive < MAX_CONCURRENT_DOWNLOADS else {
-            queuedDownloads.updatePreservingOldCompletionHandlers(withID: info.id, withRemoteUrl: info.remoteUrl)
+            _ = queuedDownloads.updatePreservingOldCompletionHandlers(withID: info.id, withRemoteUrl: info.remoteUrl)
             return
         }
         

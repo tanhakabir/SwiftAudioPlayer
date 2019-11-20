@@ -22,7 +22,7 @@ class ViewController: UIViewController {
             case 2:
                 return URL(string: "https://backtracks.fm/ycombinator/pr/0f685f72-29b1-11e9-9bcf-0ece7a7d2472/111---jake-klamka-and-kevin-hale---y-combinator.mp3?s=1&amp;sd=1&amp;u=1549423185")!
             default:
-                return URL(string: "https://traffic.megaphone.fm/TTH7630150098.mp3")!
+                return URL(string: "https://cdn.fastlearner.media/bensound-rumble.mp3")!
             }
         }
         
@@ -35,7 +35,7 @@ class ViewController: UIViewController {
             case 2:
                 return "Y Combinator"
             default:
-                return "Twenty Thousand Hertz"
+                return "Soundbite"
             }
         }
         
@@ -156,6 +156,7 @@ class ViewController: UIViewController {
             guard let self = self else { return }
             guard url == self.selectedAudio.url || url == self.savedUrls[self.selectedAudio] else { return }
             
+            print(playing)
             if playing {
                 self.playPauseButton.setTitle("Pause", for: .normal)
             } else {

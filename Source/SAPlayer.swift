@@ -127,7 +127,7 @@ extension SAPlayer {
     
     public func initializeAudio(withRemoteUrl url: URL, mediaInfo: SALockScreenInfo? = nil) {
         self.mediaInfo = mediaInfo
-        presenter.handlePlayAudio(withRemoteUrl: url)
+        presenter.handlePlayStreamedAudio(withRemoteUrl: url)
     }
 }
 

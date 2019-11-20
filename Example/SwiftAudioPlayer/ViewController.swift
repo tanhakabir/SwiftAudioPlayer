@@ -16,7 +16,7 @@ class ViewController: UIViewController {
         var url: URL {
             switch index {
             case 0:
-                return URL(string: "https://traffic.megaphone.fm/TTH7630150098.mp3")!
+                return URL(string: "https://cdn.fastlearner.media/bensound-rumble.mp3")!
             case 1:
                 return URL(string: "https://chtbl.com/track/18338/traffic.libsyn.com/secure/acquired/acquired_-_armrev_2.mp3?dest-id=376122")!
             case 2:
@@ -29,7 +29,7 @@ class ViewController: UIViewController {
         var title: String {
             switch index {
             case 0:
-                return "Twenty Thousand Hertz"
+                return "Soundbite"
             case 1:
                 return "Acquired"
             case 2:

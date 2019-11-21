@@ -111,7 +111,7 @@ extension SAPlayer {
              - Parameter playingStatus: Whether the player is playing audio or paused.
              - Returns: the id for the subscription in the case you would like to unsubscribe to updates for the closure.
              */
-            public static func subscribe(_ closure: @escaping (_ url: URL, _ playingStatus: Bool) -> ()) -> UInt {
+            public static func subscribe(_ closure: @escaping (_ url: URL, _ playingStatus: SAPlayingStatus) -> ()) -> UInt {
                 return AudioClockDirector.shared.attachToChangesInPlayingStatus(closure: { (key, isPlaying) in
                     guard let url = SAPlayer.shared.getUrl(forKey: key) else { return }
                     closure(url, isPlaying)

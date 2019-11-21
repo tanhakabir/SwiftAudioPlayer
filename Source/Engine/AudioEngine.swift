@@ -26,6 +26,12 @@
 import Foundation
 import AVFoundation
 
+public enum SAPlayingStatus {
+    case playing
+    case paused
+    case buffering
+}
+
 protocol AudioEngineProtocol {
     func play()
     func pause()
@@ -79,17 +85,13 @@ class AudioEngine: AudioEngineProtocol {
         }
     }
     
-    var isPlaying = false {
+    var playingStatus: SAPlayingStatus = .paused {
         didSet {
-            guard isPlaying != oldValue else {
+            guard playingStatus != oldValue else {
                 return
             }
             
-            if isPlaying {
-                AudioClockDirector.shared.audioPlaying(key)
-            } else {
-                AudioClockDirector.shared.audioPaused(key)
-            }
+            AudioClockDirector.shared.audioPlayingStatusWasChanged(key, status: playingStatus)
         }
     }
     
@@ -149,7 +151,13 @@ class AudioEngine: AudioEngineProtocol {
     }
     
     func updateIsPlaying() {
-        isPlaying = engine.isRunning && playerNode.isPlaying
+        if !bufferedSeconds.isPlayable {
+            playingStatus = .buffering
+            return
+        }
+        
+        let isPlaying = engine.isRunning && playerNode.isPlaying
+        playingStatus = isPlaying ? .playing : .paused
     }
     
     func play() {

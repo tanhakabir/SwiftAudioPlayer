@@ -114,15 +114,14 @@ class ViewController: UIViewController {
         
         _ = SAPlayer.Updates.ElapsedTime.subscribe { [weak self] (url, position) in
             guard let self = self else { return }
-            if self.beingSeeked == false{
-                guard url == self.selectedAudio.url || url == self.savedUrls[self.selectedAudio] else { return }
-                
-                self.currentTimestampLabel.text = SAPlayer.prettifyTimestamp(position)
-                
-                guard self.duration != 0 else { return }
-                
-                self.scrubberSlider.value = Float(position/self.duration)
-            }
+            guard self.beingSeeked == false else { return }
+            guard url == self.selectedAudio.url || url == self.savedUrls[self.selectedAudio] else { return }
+            
+            self.currentTimestampLabel.text = SAPlayer.prettifyTimestamp(position)
+            
+            guard self.duration != 0 else { return }
+            
+            self.scrubberSlider.value = Float(position/self.duration)
         }
         
         _ = SAPlayer.Updates.AudioDownloading.subscribe { [weak self] (url, progress) in
@@ -181,7 +180,7 @@ class ViewController: UIViewController {
         
         //        if let savedUrl = savedUrls[selectedAudio] {}
     }
-    @IBAction func beingScrubberSeeked(_ sender: UISlider) {
+    @IBAction func scrubberStartedSeeking(_ sender: UISlider) {
         beingSeeked = true
     }
     

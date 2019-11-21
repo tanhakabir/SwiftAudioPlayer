@@ -163,7 +163,7 @@ class AudioParser: AudioParsable {
             if isParsingComplete {
                 throw ParserError.readerAskingBeyondEndOfFile
             } else {
-                Log.debug("Tried to pull packet at index: \(packetIndex) when only have: \(audioPackets.count)")
+                Log.debug("Tried to pull packet at index: \(packetIndex) when only have: \(audioPackets.count), we predict \(totalPredictedPacketCount) in total")
                 throw ParserError.notEnoughDataForReader
             }
         }

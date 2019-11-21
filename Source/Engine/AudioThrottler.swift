@@ -36,6 +36,7 @@ protocol AudioThrottleable {
     func tellAudioFormatFound()
     func tellByteOffset(offset: UInt64)
     func tellSeek(offset: UInt64)
+    func tellBytesPerAudioPacket(count: UInt64)
     func pollRangeOfBytesAvailable() -> (UInt64, UInt64)
     func invalidate()
 }
@@ -98,15 +99,7 @@ class AudioThrottler: AudioThrottleable {
     var byteOffsetBecauseOfSeek: UInt = 0
     var totalBytesExpected: Int64? //this got sent up twice. Once at beginning of stream and second from network seek. We honor the first send
     
-    var largestPollingOffsetDifference: UInt64 = 0
-    var lastOffsetPolled: UInt64 = 0 {
-        didSet {
-            let diff = lastOffsetPolled - oldValue
-            if diff > largestPollingOffsetDifference {
-                largestPollingOffsetDifference = diff
-            }
-        }
-    }
+    var largestPollingOffsetDifference: UInt64 = 1
     
     required init(withRemoteUrl url: AudioURL, withDelegate delegate: AudioThrottleDelegate) {
         self.url = url
@@ -145,9 +138,14 @@ class AudioThrottler: AudioThrottleable {
         shouldThrottle = true //the above layer has enough info that we can throttle
     }
     
+    func tellBytesPerAudioPacket(count: UInt64) {
+        if count > largestPollingOffsetDifference {
+            largestPollingOffsetDifference = count
+        }
+    }
+    
     func tellByteOffset(offset: UInt64) {
         Log.debug("offset \(offset)")
-        lastOffsetPolled = offset
         
         for wrappedNetworkData in networkData {
             if wrappedNetworkData.containsOffset(UInt(offset)) {

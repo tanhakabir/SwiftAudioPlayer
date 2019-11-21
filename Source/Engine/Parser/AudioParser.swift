@@ -98,7 +98,14 @@ class AudioParser: AudioParsable {
         return predictedCount
     }
     
-    var sumOfParsedAudioBytes:UInt32 = 0
+    var sumOfParsedAudioBytes:UInt32 = 0 {
+        didSet {
+            if let byteCount = averageBytesPerPacket {
+                throttler.tellBytesPerAudioPacket(count: UInt64(byteCount))
+            }
+        }
+    }
+    
     var numberOfPacketsParsed:UInt32 = 0
     var audioPackets: [(AudioStreamPacketDescription?,Data)] = [] { 
         didSet {

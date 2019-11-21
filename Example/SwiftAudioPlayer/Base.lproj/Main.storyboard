@@ -65,7 +65,7 @@
                             <segmentedControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="joK-xi-MCo">
                                 <rect key="frame" x="16" y="80" width="343" height="29"/>
                                 <segments>
-                                    <segment title="20k Hertz"/>
+                                    <segment title="Soundbite"/>
                                     <segment title="Acquired"/>
                                     <segment title="Y Combinator"/>
                                 </segments>

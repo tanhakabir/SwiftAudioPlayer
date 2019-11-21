@@ -16,26 +16,26 @@ class ViewController: UIViewController {
         var url: URL {
             switch index {
             case 0:
-                return URL(string: "https://traffic.megaphone.fm/TTH7630150098.mp3")!
+                return URL(string: "https://cdn.fastlearner.media/bensound-rumble.mp3")!
             case 1:
                 return URL(string: "https://chtbl.com/track/18338/traffic.libsyn.com/secure/acquired/acquired_-_armrev_2.mp3?dest-id=376122")!
             case 2:
                 return URL(string: "https://backtracks.fm/ycombinator/pr/0f685f72-29b1-11e9-9bcf-0ece7a7d2472/111---jake-klamka-and-kevin-hale---y-combinator.mp3?s=1&amp;sd=1&amp;u=1549423185")!
             default:
-                return URL(string: "https://traffic.megaphone.fm/TTH7630150098.mp3")!
+                return URL(string: "https://cdn.fastlearner.media/bensound-rumble.mp3")!
             }
         }
         
         var title: String {
             switch index {
             case 0:
-                return "Twenty Thousand Hertz"
+                return "Soundbite"
             case 1:
                 return "Acquired"
             case 2:
                 return "Y Combinator"
             default:
-                return "Twenty Thousand Hertz"
+                return "Soundbite"
             }
         }
         

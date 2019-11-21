@@ -47,6 +47,10 @@ class AudioThrottler: AudioThrottleable {
         var alreadySent: Bool
         var next: NetworkDataWrapper?
         
+        var byteCount: UInt {
+            return UInt(data.count)
+        }
+        
         var endOffset: UInt {
             return startOffset + UInt(data.count) - 1
         }
@@ -94,6 +98,16 @@ class AudioThrottler: AudioThrottleable {
     var byteOffsetBecauseOfSeek: UInt = 0
     var totalBytesExpected: Int64? //this got sent up twice. Once at beginning of stream and second from network seek. We honor the first send
     
+    var largestPollingOffsetDifference: UInt64 = 0
+    var lastOffsetPolled: UInt64 = 0 {
+        didSet {
+            let diff = lastOffsetPolled - oldValue
+            if diff > largestPollingOffsetDifference {
+                largestPollingOffsetDifference = diff
+            }
+        }
+    }
+    
     required init(withRemoteUrl url: AudioURL, withDelegate delegate: AudioThrottleDelegate) {
         self.url = url
         self.delegate = delegate
@@ -133,15 +147,29 @@ class AudioThrottler: AudioThrottleable {
     
     func tellByteOffset(offset: UInt64) {
         Log.debug("offset \(offset)")
+        lastOffsetPolled = offset
+        
         for wrappedNetworkData in networkData {
             if wrappedNetworkData.containsOffset(UInt(offset)) {
-                Log.debug("offset within network packet of range: \(wrappedNetworkData.startOffset) to \(wrappedNetworkData.endOffset)")
+                Log.debug("offset: \(offset) within network packet of range: \(wrappedNetworkData.startOffset) to \(wrappedNetworkData.endOffset) is next sent: \(wrappedNetworkData.isNextSent())")
+                
                 if wrappedNetworkData.alreadySent {
                     if !wrappedNetworkData.isNextSent() {
-                        if let next = wrappedNetworkData.next {
-                            Log.debug("Sending next network packet with range: \(next.startOffset) to \(next.endOffset)")
-                            next.alreadySent = true
-                            delegate?.shouldProcess(networkData: next.data)
+                        var bytesSent: UInt = 0
+                        var current = wrappedNetworkData
+                        
+                        // Sometimes the next data packet is smaller than a full audio chunk size, so we need to ensure we send up enough packets for the audio chunk. This prevented Issue #4 where tsreaming would randomly get stuck in a state needing more data up the chain.
+                        // https://github.com/tanhakabir/SwiftAudioPlayer/issues/4
+                        while bytesSent < largestPollingOffsetDifference {
+                            if let next = current.next {
+                                Log.debug("Sending next network packet with range: \(next.startOffset) to \(next.endOffset)")
+                                next.alreadySent = true
+                                delegate?.shouldProcess(networkData: next.data)
+                                bytesSent += next.byteCount
+                                current = next
+                            } else {
+                                return
+                            }
                         }
                     }
                     return

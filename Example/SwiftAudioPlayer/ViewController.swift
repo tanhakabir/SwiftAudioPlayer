@@ -188,7 +188,6 @@ class ViewController: UIViewController {
         let value = Double(scrubberSlider.value) * duration
         SAPlayer.shared.seekTo(seconds: value)
         beingSeeked = false
-        SAPlayer.shared.play()
     }
     
     

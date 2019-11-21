@@ -171,6 +171,7 @@ extension SAPlayer: SAPlayerDelegate {
     
     func seekEngine(toNeedle needle: Needle) {
         player?.seek(toNeedle: needle)
+        player?.play()
     }
     
     func setSpeedEngine(withMultiple multiple: Double) {

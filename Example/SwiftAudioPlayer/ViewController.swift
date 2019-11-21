@@ -79,6 +79,7 @@ class ViewController: UIViewController {
     
     var isDownloading: Bool = false
     var isStreaming: Bool = false
+    var beingSeeked: Bool = false
     
     var duration: Double = 0.0
     
@@ -113,13 +114,15 @@ class ViewController: UIViewController {
         
         _ = SAPlayer.Updates.ElapsedTime.subscribe { [weak self] (url, position) in
             guard let self = self else { return }
-            guard url == self.selectedAudio.url || url == self.savedUrls[self.selectedAudio] else { return }
-            
-            self.currentTimestampLabel.text = SAPlayer.prettifyTimestamp(position)
-            
-            guard self.duration != 0 else { return }
-            
-            self.scrubberSlider.value = Float(position/self.duration)
+            if self.beingSeeked == false{
+                guard url == self.selectedAudio.url || url == self.savedUrls[self.selectedAudio] else { return }
+                
+                self.currentTimestampLabel.text = SAPlayer.prettifyTimestamp(position)
+                
+                guard self.duration != 0 else { return }
+                
+                self.scrubberSlider.value = Float(position/self.duration)
+            }
         }
         
         _ = SAPlayer.Updates.AudioDownloading.subscribe { [weak self] (url, progress) in
@@ -178,9 +181,15 @@ class ViewController: UIViewController {
         
         //        if let savedUrl = savedUrls[selectedAudio] {}
     }
+    @IBAction func beingScrubberSeeked(_ sender: UISlider) {
+        beingSeeked = true
+    }
     
     @IBAction func scrubberSeeked(_ sender: Any) {
-        SAPlayer.shared.seekTo(seconds: Double(scrubberSlider.value))
+        let value = Double(scrubberSlider.value) * duration
+        SAPlayer.shared.seekTo(seconds: value)
+        beingSeeked = false
+        SAPlayer.shared.play()
     }
     
     

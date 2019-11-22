@@ -133,6 +133,7 @@ extension LockScreenViewProtocol {
             }
             if let positionEvent = event as? MPChangePlaybackPositionCommandEvent {
                 presenter.handleSeek(toNeedle: Needle(positionEvent.positionTime))
+                presenter.handlePlay()
                 return .success
             }
             
@@ -147,4 +148,19 @@ extension LockScreenViewProtocol {
     func updateLockscreenPlaybackDuration(duration: Duration) {
         MPNowPlayingInfoCenter.default().nowPlayingInfo?[MPMediaItemPropertyPlaybackDuration] = NSNumber(value: duration)
     }
+    
+    func pauseing_updateLockscreenElapsedTime(){
+        MPNowPlayingInfoCenter.default().nowPlayingInfo?[MPNowPlayingInfoPropertyPlaybackRate] = 0.0
+    }
+    
+    func playing_updateLockscreenElapsedTime(){
+        MPNowPlayingInfoCenter.default().nowPlayingInfo?[MPNowPlayingInfoPropertyPlaybackRate] = 1.0
+    }
+    
+    func playing_updateLockscreenElapsedTime_increase(speed: Double){
+        if speed > 0.0{
+            MPNowPlayingInfoCenter.default().nowPlayingInfo?[MPNowPlayingInfoPropertyPlaybackRate] = speed
+        }
+    }
+
 }

@@ -133,7 +133,6 @@ extension LockScreenViewProtocol {
             }
             if let positionEvent = event as? MPChangePlaybackPositionCommandEvent {
                 presenter.handleSeek(toNeedle: Needle(positionEvent.positionTime))
-                presenter.handlePlay()
                 return .success
             }
             

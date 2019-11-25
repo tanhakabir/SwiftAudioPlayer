@@ -31,7 +31,7 @@ class AudioClockDirector {
     
     private var needleClosures: DirectorThreadSafeClosures<Needle> = DirectorThreadSafeClosures()
     private var durationClosures: DirectorThreadSafeClosures<Duration> = DirectorThreadSafeClosures()
-    private var playingStatusClosures: DirectorThreadSafeClosures<IsPlaying> = DirectorThreadSafeClosures()
+    private var playingStatusClosures: DirectorThreadSafeClosures<SAPlayingStatus> = DirectorThreadSafeClosures()
     private var bufferClosures: DirectorThreadSafeClosures<SAAudioAvailabilityRange> = DirectorThreadSafeClosures()
     
     private init() {}
@@ -60,7 +60,7 @@ class AudioClockDirector {
     
     
     // Playing status
-    func attachToChangesInPlayingStatus(closure: @escaping (Key, IsPlaying) throws -> Void) -> UInt{
+    func attachToChangesInPlayingStatus(closure: @escaping (Key, SAPlayingStatus) throws -> Void) -> UInt{
         return playingStatusClosures.attach(closure: closure)
     }
     
@@ -103,12 +103,8 @@ extension AudioClockDirector {
 }
 
 extension AudioClockDirector {
-    func audioPaused(_ key: Key) {
-        playingStatusClosures.broadcast(key: key, payload: false)
-    }
-    
-    func audioPlaying(_ key: Key) {
-        playingStatusClosures.broadcast(key: key, payload: true)
+    func audioPlayingStatusWasChanged(_ key: Key, status: SAPlayingStatus) {
+        playingStatusClosures.broadcast(key: key, payload: status)
     }
 }
 

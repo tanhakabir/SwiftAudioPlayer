@@ -35,7 +35,7 @@ class SAPlayerPresenter {
     var duration: Duration?
     
     private var key: String?
-    private var isPlaying = false
+    private var isPlaying: SAPlayingStatus = .buffering
     private var mediaInfo: SALockScreenInfo?
     
     private var urlKeyMap: [Key: URL] = [:]
@@ -135,9 +135,9 @@ extension SAPlayerPresenter {
     }
     
     func handleTogglePlayingAndPausing() {
-        if isPlaying {
+        if isPlaying == .playing {
             handlePause()
-        } else {
+        } else if isPlaying == .paused {
             handlePlay()
         }
     }
@@ -166,7 +166,7 @@ extension SAPlayerPresenter {
 //MARK:- For lock screen
 extension SAPlayerPresenter {
     func getIsPlaying() -> Bool {
-        return isPlaying
+        return isPlaying == .playing
     }
 }
 

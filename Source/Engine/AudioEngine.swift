@@ -79,17 +79,13 @@ class AudioEngine: AudioEngineProtocol {
         }
     }
     
-    var isPlaying = false {
+    var playingStatus: SAPlayingStatus? = nil {
         didSet {
-            guard isPlaying != oldValue else {
+            guard playingStatus != oldValue, let status = playingStatus else {
                 return
             }
             
-            if isPlaying {
-                AudioClockDirector.shared.audioPlaying(key)
-            } else {
-                AudioClockDirector.shared.audioPaused(key)
-            }
+            AudioClockDirector.shared.audioPlayingStatusWasChanged(key, status: status)
         }
     }
     
@@ -149,7 +145,13 @@ class AudioEngine: AudioEngineProtocol {
     }
     
     func updateIsPlaying() {
-        isPlaying = engine.isRunning && playerNode.isPlaying
+        if !bufferedSeconds.isPlayable {
+            playingStatus = .buffering
+            return
+        }
+        
+        let isPlaying = engine.isRunning && playerNode.isPlaying
+        playingStatus = isPlaying ? .playing : .paused
     }
     
     func play() {

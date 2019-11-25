@@ -158,10 +158,19 @@ class ViewController: UIViewController {
             guard let self = self else { return }
             guard url == self.selectedAudio.url || url == self.savedUrls[self.selectedAudio] else { return }
             
-            if playing {
+            switch playing {
+            case .playing:
+                self.isPlayable = true
                 self.playPauseButton.setTitle("Pause", for: .normal)
-            } else {
+                return
+            case .paused:
+                self.isPlayable = true
                 self.playPauseButton.setTitle("Play", for: .normal)
+                return
+            case .buffering:
+                self.isPlayable = false
+                self.playPauseButton.setTitle("Loading", for: .normal)
+                return
             }
         }
     }

@@ -79,13 +79,13 @@ class AudioEngine: AudioEngineProtocol {
         }
     }
     
-    var playingStatus: SAPlayingStatus = .paused {
+    var playingStatus: SAPlayingStatus? = nil {
         didSet {
-            guard playingStatus != oldValue else {
+            guard playingStatus != oldValue, let status = playingStatus else {
                 return
             }
             
-            AudioClockDirector.shared.audioPlayingStatusWasChanged(key, status: playingStatus)
+            AudioClockDirector.shared.audioPlayingStatusWasChanged(key, status: status)
         }
     }
     

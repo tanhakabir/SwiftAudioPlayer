@@ -103,14 +103,6 @@ extension AudioClockDirector {
 }
 
 extension AudioClockDirector {
-    func audioPaused(_ key: Key) {
-        playingStatusClosures.broadcast(key: key, payload: .paused)
-    }
-    
-    func audioPlaying(_ key: Key) {
-        playingStatusClosures.broadcast(key: key, payload: .playing)
-    }
-    
     func audioPlayingStatusWasChanged(_ key: Key, status: SAPlayingStatus) {
         playingStatusClosures.broadcast(key: key, payload: status)
     }

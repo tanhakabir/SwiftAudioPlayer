@@ -58,6 +58,7 @@ import AVFoundation
 class AudioStreamEngine: AudioEngine {
     //Constants
     private let MAX_POLL_BUFFER_COUNT = 300 //Having one buffer in engine at a time is choppy.
+    private let MIN_BUFFERS_TO_BE_PLAYABLE = 300
     private let PCM_BUFFER_SIZE: AVAudioFrameCount = 8192
     
     private let queue = DispatchQueue(label: "SwiftAudioPlayer.engine", qos: .userInitiated)
@@ -213,7 +214,7 @@ class AudioStreamEngine: AudioEngine {
     
     private func updateNetworkBufferRange() { //for ui
         let range = converter.pollNetworkAudioAvailabilityRange()
-        isPlayable = (numberOfBuffersScheduledInTotal > 0 && range.1 > 0) && predictedStreamDuration > 0
+        isPlayable = (numberOfBuffersScheduledFromPoll > MIN_BUFFERS_TO_BE_PLAYABLE && range.1 > 0) && predictedStreamDuration > 0
         Log.debug("loaded \(range), numberOfBuffersScheduledInTotal: \(numberOfBuffersScheduledInTotal), isPlayable: \(isPlayable)")
         bufferedSeconds = SAAudioAvailabilityRange(startingNeedle: range.0, durationLoadedByNetwork: range.1, isPlayable: isPlayable)
     }
@@ -290,6 +291,8 @@ class AudioStreamEngine: AudioEngine {
         playerNode.stop()
         
         shouldPollForNextBuffer = true
+        
+        updateNetworkBufferRange()
     }
     
     override func invalidate() {

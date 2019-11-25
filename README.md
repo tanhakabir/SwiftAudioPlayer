@@ -178,9 +178,9 @@ Payload = `Double`
 Changes in the duration of the current initialized audio. Especially helpful for audio that is being streamed and can change with more data.
 
 ### PlayingStatus
-Payload = `Bool`
+Payload = `SAPlayingStatus`
 
-Changes in the playing/paused status of the player.
+Changes in the playing status of the player. Can be one of the following 3: `playing`, `paused`, `buffering`.
 
 ### StreamingBuffer
 Payload = `SAAudioAvailabilityRange`

@@ -26,12 +26,6 @@
 import Foundation
 import AVFoundation
 
-public enum SAPlayingStatus {
-    case playing
-    case paused
-    case buffering
-}
-
 protocol AudioEngineProtocol {
     func play()
     func pause()

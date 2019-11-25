@@ -14,6 +14,7 @@
 		79D8DF73FA7CDD6E266BAE71D46E035F /* Pods-SwiftAudioPlayer_Tests-umbrella.h in Headers */ = {isa = PBXBuildFile; fileRef = 50C71346CE708A211A5AFAC20BAE48CB /* Pods-SwiftAudioPlayer_Tests-umbrella.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		831B263D357A5FA2DDC7B1AE4B374092 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5A16F4CFC63FAC439D7A04994F579A03 /* Foundation.framework */; };
 		8F93DB166237195ED222EE55B6404625 /* Pods-SwiftAudioPlayer_Example-umbrella.h in Headers */ = {isa = PBXBuildFile; fileRef = 3B0B76CB1439F4D361322144E5A65C3A /* Pods-SwiftAudioPlayer_Example-umbrella.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		A41AA0D2238BB9B600A467E1 /* SAPlayingStatus.swift in Sources */ = {isa = PBXBuildFile; fileRef = A41AA0D1238BB9B600A467E1 /* SAPlayingStatus.swift */; };
 		A4681FC6220113880018AB51 /* SAPlayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = A4681F8D2200E00E0018AB51 /* SAPlayer.swift */; };
 		A4681FC72201138B0018AB51 /* SAPlayerDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = A4681F912200E1950018AB51 /* SAPlayerDelegate.swift */; };
 		A4681FC82201138E0018AB51 /* SAPlayerPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = A4681F8F2200E1450018AB51 /* SAPlayerPresenter.swift */; };
@@ -95,6 +96,7 @@
 		99925F09FC9C6EA4B9C0508F4E2D1FE2 /* Info.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		A19C8F889C787C19BE4123C1896AF501 /* Pods-SwiftAudioPlayer_Example-resources.sh */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.script.sh; path = "Pods-SwiftAudioPlayer_Example-resources.sh"; sourceTree = "<group>"; };
 		A39F2A138CF40C1051CA9E227429A86D /* SwiftAudioPlayer.modulemap */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.module; path = SwiftAudioPlayer.modulemap; sourceTree = "<group>"; };
+		A41AA0D1238BB9B600A467E1 /* SAPlayingStatus.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SAPlayingStatus.swift; sourceTree = "<group>"; };
 		A4523BC8220A0B3C0079C4BC /* Credited_LICENSE */ = {isa = PBXFileReference; lastKnownFileType = text; path = Credited_LICENSE; sourceTree = "<group>"; };
 		A4681F802200D0500018AB51 /* Log.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Log.swift; sourceTree = "<group>"; };
 		A4681F822200D9150018AB51 /* AudioEngine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioEngine.swift; sourceTree = "<group>"; };
@@ -278,6 +280,7 @@
 		A4681F932200E2020018AB51 /* Engine */ = {
 			isa = PBXGroup;
 			children = (
+				A41AA0D1238BB9B600A467E1 /* SAPlayingStatus.swift */,
 				A4FBA6B8221BAF8700D5A353 /* SAAudioAvailabilityRange.swift */,
 				A4681F822200D9150018AB51 /* AudioEngine.swift */,
 				A4681F942200E2220018AB51 /* AudioDiskEngine.swift */,
@@ -510,6 +513,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A41AA0D2238BB9B600A467E1 /* SAPlayingStatus.swift in Sources */,
 				A4681FDC220113D70018AB51 /* AudioDownloadWorker.swift in Sources */,
 				A4681FD8220113C60018AB51 /* AudioDataManager.swift in Sources */,
 				A4681FD1220113AF0018AB51 /* AudioParsable.swift in Sources */,

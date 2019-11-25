@@ -159,6 +159,8 @@ extension SAPlayer: SAPlayerDelegate {
             } else {
                 // Fallback on earlier versions
             }
+            try AVAudioSession.sharedInstance().setCategory(AVAudioSessionCategoryPlayback, mode: AVAudioSessionModeDefault, options: .allowAirPlay)
+
             try AVAudioSession.sharedInstance().setActive(true, with: .notifyOthersOnDeactivation)
         } catch {
             Log.monitor("Problem setting up AVAudioSession to play in:: \(error.localizedDescription)")

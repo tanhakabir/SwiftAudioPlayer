@@ -126,10 +126,12 @@ class SAPlayerPresenter {
 extension SAPlayerPresenter {
     func handlePause() {
         delegate?.pauseEngine()
+        self.delegate?.pauseing_updateLockscreenElapsedTime()
     }
     
     func handlePlay() {
         delegate?.playEngine()
+        self.delegate?.playing_updateLockscreenElapsedTime()
     }
     
     func handleTogglePlayingAndPausing() {
@@ -156,6 +158,8 @@ extension SAPlayerPresenter {
     
     func handleSetSpeed(withMultiple: Double) {
         delegate?.setSpeedEngine(withMultiple: withMultiple)
+        self.delegate?.playing_updateLockscreenElapsedTime_increase(speed: withMultiple)
+
     }
 }
 

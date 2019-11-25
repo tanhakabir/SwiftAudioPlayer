@@ -149,15 +149,15 @@ extension LockScreenViewProtocol {
         MPNowPlayingInfoCenter.default().nowPlayingInfo?[MPMediaItemPropertyPlaybackDuration] = NSNumber(value: duration)
     }
     
-    func pauseing_updateLockscreenElapsedTime(){
+    func updateLockscreenPaused(){
         MPNowPlayingInfoCenter.default().nowPlayingInfo?[MPNowPlayingInfoPropertyPlaybackRate] = 0.0
     }
     
-    func playing_updateLockscreenElapsedTime(){
+    func updateLockscreenPlaying(){
         MPNowPlayingInfoCenter.default().nowPlayingInfo?[MPNowPlayingInfoPropertyPlaybackRate] = 1.0
     }
     
-    func playing_updateLockscreenElapsedTime_increase(speed: Double){
+    func updateLockscreenChangePlaybackRate(speed: Double){
         if speed > 0.0{
             MPNowPlayingInfoCenter.default().nowPlayingInfo?[MPNowPlayingInfoPropertyPlaybackRate] = speed
         }

@@ -172,7 +172,9 @@ extension SAPlayer: SAPlayerDelegate {
     }
     
     func seekEngine(toNeedle needle: Needle) {
-        player?.seek(toNeedle: needle)
+        var seekToNeedle = needle < 0 ? 0 : needle
+        seekToNeedle = needle > Needle(duration) ? Needle(duration) : needle
+        player?.seek(toNeedle: seekToNeedle)
     }
     
     func setSpeedEngine(withMultiple multiple: Double) {

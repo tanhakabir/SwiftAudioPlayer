@@ -174,6 +174,10 @@ class AudioConverter: AudioConvertable {
     }
     
     private func getPacketIndex(forNeedle needle: Needle) -> AVAudioPacketCount? {
+        guard needle >= 0 else {
+            Log.error("needle should never be a negative number! needle received: \(needle)")
+            return nil
+        }
         guard let frame = frameOffset(forTime: TimeInterval(needle)) else { return nil }
         guard let framesPerPacket = parser.fileAudioFormat?.streamDescription.pointee.mFramesPerPacket else { return nil }
         return AVAudioPacketCount(frame) / AVAudioPacketCount(framesPerPacket)

@@ -36,8 +36,13 @@ protocol LockScreenViewProtocol {
 
 extension LockScreenViewProtocol {
     @available(iOS 10.0, *)
-    func setLockScreenInfo(withMediaInfo info: SALockScreenInfo, duration: Duration) {
+    func setLockScreenInfo(withMediaInfo info: SALockScreenInfo?, duration: Duration) {
         var nowPlayingInfo:[String : Any] = [:]
+        
+        guard let info = info else {
+            MPNowPlayingInfoCenter.default().nowPlayingInfo = [:]
+            return
+        }
         
         let title = info.title
         let artist = info.artist
@@ -67,10 +72,6 @@ extension LockScreenViewProtocol {
                 return UIImage()
             }
         }
-        
-        
-        
-        
         
         MPNowPlayingInfoCenter.default().nowPlayingInfo = nowPlayingInfo
     }

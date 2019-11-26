@@ -31,40 +31,71 @@ public class SAPlayer {
     private var presenter: SAPlayerPresenter!
     private var player: AudioEngine?
     
+    /**
+     Corresponding to the skipping forward button on the media player on the lockscreen. Default is set to 30 seconds.
+     */
     public var skipForwardSeconds: Double = 30
+    
+    /**
+     Corresponding to the skipping backwards button on the media player on the lockscreen. Default is set to 15 seconds.
+     */
     public var skipBackwardSeconds: Double = 15
     
+    /**
+     List of AVAudioUnit audio modifiers to pass to the engine on initialization.
+     
+     - Important: To have the intended effects, the list of modifiers must be finalized before initializing the audio to be played. The modifers are added to the engine in order of the list.
+     
+     - Note: The default list given has an AVAudioUnitTimePitch already first in the list. This node is specifically set to change the rate of audio without changing the pitch of the audio (intended for changing the rate of spoken word). Please look at [forums.developer.apple.com/thread/5874](https://forums.developer.apple.com/thread/5874) and [forums.developer.apple.com/thread/6050](https://forums.developer.apple.com/thread/6050) to see the specific componentDescription used.
+     */
     public var audioModifiers: [AVAudioUnit] = []
     
-    public var duration: Double {
+    /**
+     Total duration of current audio initialized. Returns nil if no audio is initialized in player.
+     */
+    public var duration: Double? {
         get {
-            return presenter.duration ?? 0.0
+            return presenter.duration
         }
     }
     
-    public var prettyDuration: String {
+    /**
+     A textual representation of the duration of the current audio initialized. Returns nil if no audio is initialized in player.
+     */
+    public var prettyDuration: String? {
         get {
-            return SAPlayer.prettifyTimestamp(duration)
+            guard let d = duration else { return nil }
+            return SAPlayer.prettifyTimestamp(d)
         }
     }
     
-    public var elapsedTime: Double {
+    /**
+     Elapsed playback time of the current audio initialized. Returns nil if no audio is initialized in player.
+     */
+    public var elapsedTime: Double? {
         get {
-            return presenter.needle ?? 0
+            return presenter.needle
         }
     }
     
-    public var prettyElapsedTime: String {
+    /**
+     A textual representation of the elapsed playback time of the current audio initialized. Returns nil if no audio is initialized in player.
+     */
+    public var prettyElapsedTime: String? {
         get {
-            return SAPlayer.prettifyTimestamp(elapsedTime)
+            guard let e = elapsedTime else { return nil }
+            return SAPlayer.prettifyTimestamp(e)
         }
     }
     
+    /**
+     Corresponding to the media info to display on the lockscreen for the current audio.
+     
+     - Note: Setting this to nil clears the information displayed on the lockscreen media player.
+     */
     public var mediaInfo: SALockScreenInfo? = nil {
         didSet {
-            if let info = mediaInfo {
-                presenter.handleLockscreenInfo(info: info)
-            }
+            presenter.handleLockscreenInfo(info: mediaInfo)
         }
     }
     
@@ -86,6 +117,12 @@ public class SAPlayer {
         audioModifiers.append(AVAudioUnitTimePitch(audioComponentDescription: componentDescription))
     }
     
+    /**
+     Formats a textual representation of a given timestamp for display in hh:MM:SS format, that is hours:minutes:seconds.
+
+     - Parameter timestamp: The timestamp to format.
+     - Returns: A textual representation of the given timestamp
+     */
     public static func prettifyTimestamp(_ timestamp: Double) -> String {
         let hours = Int(timestamp / 60 / 60)
         let minutes = Int((timestamp - Double(hours * 60)) / 60)
@@ -192,7 +229,7 @@ extension SAPlayer: SAPlayerDelegate {
     
     func seekEngine(toNeedle needle: Needle) {
         var seekToNeedle = needle < 0 ? 0 : needle
-        seekToNeedle = needle > Needle(duration) ? Needle(duration) : needle
+        seekToNeedle = needle > Needle(duration ?? 0) ? Needle(duration ?? 0) : needle
         player?.seek(toNeedle: seekToNeedle)
     }
 }

@@ -8,6 +8,7 @@
 
 import UIKit
 import SwiftAudioPlayer
+import AVFoundation
 
 class ViewController: UIViewController {
     struct AudioInfo: Hashable {
@@ -258,7 +259,11 @@ class ViewController: UIViewController {
     private func adjustSpeed() {
         let speed = rateSlider.value
         rateLabel.text = "rate: \(speed)x"
-        SAPlayer.shared.rate = Double(speed)
+        if let node = SAPlayer.shared.audioModifiers[0] as? AVAudioUnitTimePitch {
+            node.rate = speed
+        }
+        
+//        SAPlayer.shared.rate = Double(speed)
     }
     
 }

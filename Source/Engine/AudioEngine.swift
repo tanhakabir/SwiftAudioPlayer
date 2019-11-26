@@ -130,9 +130,35 @@ class AudioEngine: AudioEngineProtocol {
         rateNode = AVAudioUnitTimePitch(audioComponentDescription: componentDescription)
         
         engine.attach(playerNode)
-        engine.attach(rateNode)
-        engine.connect(playerNode, to: rateNode, format: engineAudioFormat)
-        engine.connect(rateNode, to: engine.mainMixerNode, format: engineAudioFormat)
+        
+        for node in SAPlayer.shared.audioModifiers {
+            engine.attach(node)
+        }
+        
+        if SAPlayer.shared.audioModifiers.count > 0 {
+            var i = 0
+            
+            let node = SAPlayer.shared.audioModifiers[i]
+            engine.connect(playerNode, to: node, format: engineAudioFormat)
+            
+            i += 1
+            
+            while i < SAPlayer.shared.audioModifiers.count {
+                let lastNode = SAPlayer.shared.audioModifiers[i - 1]
+                let currNode = SAPlayer.shared.audioModifiers[i]
+                
+                engine.connect(lastNode, to: currNode, format: engineAudioFormat)
+            }
+            
+            let finalNode = SAPlayer.shared.audioModifiers[SAPlayer.shared.audioModifiers.count - 1]
+            
+            engine.connect(finalNode, to: engine.mainMixerNode, format: engineAudioFormat)
+        } else {
+            engine.connect(playerNode, to: engine.mainMixerNode, format: engineAudioFormat)
+        }
+        
+//        engine.connect(playerNode, to: rateNode, format: engineAudioFormat)
+//        engine.connect(rateNode, to: engine.mainMixerNode, format: engineAudioFormat)
         
         engine.prepare()
     }

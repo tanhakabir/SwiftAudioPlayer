@@ -34,6 +34,12 @@ public class SAPlayer {
     public var skipForwardSeconds: Double = 30
     public var skipBackwardSeconds: Double = 15
     
+    public var audioModifiers: [AVAudioUnit] = [] {
+        didSet {
+            
+        }
+    }
+    
     public var rate: Double = 1.0 {
         didSet {
             presenter.handleSetSpeed(withMultiple: rate)
@@ -74,6 +80,20 @@ public class SAPlayer {
     
     private init() {
         presenter = SAPlayerPresenter(delegate: self)
+        
+        // https://forums.developer.apple.com/thread/5874
+        // https://forums.developer.apple.com/thread/6050
+        // AVAudioTimePitchAlgorithm.timeDomain (just in case we want it)
+        var componentDescription: AudioComponentDescription {
+            get {
+                var ret = AudioComponentDescription()
+                ret.componentType = kAudioUnitType_FormatConverter
+                ret.componentSubType = kAudioUnitSubType_AUiPodTimeOther
+                return ret
+            }
+        }
+        
+        audioModifiers.append(AVAudioUnitTimePitch(audioComponentDescription: componentDescription))
     }
     
     public static func prettifyTimestamp(_ timestamp: Double) -> String {

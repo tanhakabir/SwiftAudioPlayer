@@ -127,6 +127,7 @@ class AudioEngine: AudioEngineProtocol {
                 let currNode = SAPlayer.shared.audioModifiers[i]
                 
                 engine.connect(lastNode, to: currNode, format: engineAudioFormat)
+                i += 1
             }
             
             let finalNode = SAPlayer.shared.audioModifiers[SAPlayer.shared.audioModifiers.count - 1]

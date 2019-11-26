@@ -41,6 +41,8 @@ extension SAPlayer {
          
          - Note: It's recommended to have a weak reference to a class that uses this function
          
+         - Note: Subscribe to `SAPlayer.Updates.AudioDownloading` to see updates in downloading progress.
+         
          - Parameter url: The remote url to download audio from.
          - Parameter completion: Completion handler that will return once the download is successful and complete.
          - Parameter savedUrl: The url of where the audio was saved locally on the device. Will receive once download has completed.

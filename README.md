@@ -68,9 +68,7 @@ override func viewDidLoad() {
 Look at the [Updates](#SAPlayer.Updates) section to see usage details and other updates to follow.
 
 
-For realtime audio manipulations, [AVAudioUnit](https://developer.apple.com/documentation/avfoundation/avaudiounit) nodes are used.
-
-For example to adjust the reverb through a slider in the UI:
+For realtime audio manipulations, [AVAudioUnit](https://developer.apple.com/documentation/avfoundation/avaudiounit) nodes are used. For example to adjust the reverb through a slider in the UI:
 ```swift
 @IBOutlet weak var reverbSlider: UISlider!
 
@@ -171,7 +169,7 @@ Update and set what displays on the lockscreen's media player when the player is
 `skipForwardSeconds` and `skipBackwardSeconds` for the intervals to skip forward and back with.
 
 `mediaInfo` for the audio's information to display on the lockscreen. Is of type `SALockScreenInfo` which contains:
-```
+```swift
 title: String
 artist: String
 artwork: UIImage?

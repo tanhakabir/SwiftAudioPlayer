@@ -12,7 +12,7 @@ Thus, using [AudioToolbox](https://developer.apple.com/documentation/audiotoolbo
 
 ### Requirements
 
-SwiftAudioPlayer is only available for iOS 10.0 and higher.
+SwiftAudioPlayer is available for iOS 10.0 and higher.
 
 ## Getting Started
 

@@ -106,6 +106,8 @@ class ViewController: UIViewController {
         isPlayable = false
         selectedAudio = AudioInfo(index: 0)
         
+        addRandomModifiers()
+        
         _ = SAPlayer.Updates.Duration.subscribe { [weak self] (url, duration) in
             guard let self = self else { return }
             guard url == self.selectedAudio.url || url == self.savedUrls[self.selectedAudio] else { return }
@@ -174,6 +176,12 @@ class ViewController: UIViewController {
                 return
             }
         }
+    }
+    
+    func addRandomModifiers() {
+        let node = AVAudioUnitReverb()
+        SAPlayer.shared.audioModifiers.append(node)
+        node.wetDryMix = 300
     }
 
     override func didReceiveMemoryWarning() {

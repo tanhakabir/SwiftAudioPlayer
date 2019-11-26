@@ -159,9 +159,9 @@ extension SAPlayer: SAPlayerDelegate {
             } else {
                 // Fallback on earlier versions
             }
-            try AVAudioSession.sharedInstance().setCategory(AVAudioSessionCategoryPlayback, mode: AVAudioSessionModeDefault, options: .allowAirPlay)
+            try AVAudioSession.sharedInstance().setCategory(AVAudioSession.Category.playback, mode: AVAudioSession.Mode(rawValue: convertFromAVAudioSessionMode(AVAudioSession.Mode.default)), options: .allowAirPlay)
 
-            try AVAudioSession.sharedInstance().setActive(true, with: .notifyOthersOnDeactivation)
+            try AVAudioSession.sharedInstance().setActive(true, options: .notifyOthersOnDeactivation)
         } catch {
             Log.monitor("Problem setting up AVAudioSession to play in:: \(error.localizedDescription)")
         }
@@ -182,3 +182,8 @@ extension SAPlayer: SAPlayerDelegate {
     }
 }
 
+
+// Helper function inserted by Swift 4.2 migrator.
+fileprivate func convertFromAVAudioSessionMode(_ input: AVAudioSession.Mode) -> String {
+	return input.rawValue
+}

@@ -156,10 +156,8 @@ extension SAPlayerPresenter {
         delegate?.seekEngine(toNeedle: needle)
     }
     
-    func handleSetSpeed(withMultiple: Double) {
-        delegate?.setSpeedEngine(withMultiple: withMultiple)
-        self.delegate?.updateLockscreenChangePlaybackRate(speed: withMultiple)
-
+    func handleAudioRateChanged(rate: Double) {
+        delegate?.updateLockscreenChangePlaybackRate(speed: rate)
     }
 }
 

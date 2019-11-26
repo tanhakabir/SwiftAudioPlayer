@@ -30,7 +30,6 @@ protocol AudioEngineProtocol {
     func play()
     func pause()
     func seek(toNeedle needle: Needle)
-    func setSpeed(speed: Double)
     func invalidate()
 }
 
@@ -45,7 +44,6 @@ class AudioEngine: AudioEngineProtocol {
     
     let engine = AVAudioEngine()
     let playerNode = AVAudioPlayerNode()
-    let rateNode: AVAudioUnitTimePitch
     
     var timer: Timer?
     
@@ -55,12 +53,6 @@ class AudioEngine: AudioEngineProtocol {
     enum TimerState {
         case suspended
         case resumed
-    }
-    
-    var audioSpeed: Double = 1.0 {
-        didSet {
-            rateNode.rate = Float(audioSpeed)
-        }
     }
     
     var needle: Needle = -1 {
@@ -115,19 +107,6 @@ class AudioEngine: AudioEngineProtocol {
     init(url: AudioURL, delegate:AudioEngineDelegate?, engineAudioFormat: AVAudioFormat) {
         self.key = url.key
         self.delegate = delegate
-        // https://forums.developer.apple.com/thread/5874
-        // https://forums.developer.apple.com/thread/6050
-        // AVAudioTimePitchAlgorithm.timeDomain (just in case we want it)
-        var componentDescription: AudioComponentDescription {
-            get {
-                var ret = AudioComponentDescription()
-                ret.componentType = kAudioUnitType_FormatConverter
-                ret.componentSubType = kAudioUnitSubType_AUiPodTimeOther
-                return ret
-            }
-        }
-        
-        rateNode = AVAudioUnitTimePitch(audioComponentDescription: componentDescription)
         
         engine.attach(playerNode)
         
@@ -156,9 +135,6 @@ class AudioEngine: AudioEngineProtocol {
         } else {
             engine.connect(playerNode, to: engine.mainMixerNode, format: engineAudioFormat)
         }
-        
-//        engine.connect(playerNode, to: rateNode, format: engineAudioFormat)
-//        engine.connect(rateNode, to: engine.mainMixerNode, format: engineAudioFormat)
         
         engine.prepare()
     }
@@ -210,10 +186,6 @@ class AudioEngine: AudioEngineProtocol {
     
     func seek(toNeedle needle: Needle) {
         fatalError("No implementation for seek inAudioEngine, should be using streaming or disk type")
-    }
-    
-    func setSpeed(speed: Double) {
-        audioSpeed = speed
     }
     
     func invalidate() {

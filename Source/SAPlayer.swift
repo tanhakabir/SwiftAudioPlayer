@@ -34,17 +34,7 @@ public class SAPlayer {
     public var skipForwardSeconds: Double = 30
     public var skipBackwardSeconds: Double = 15
     
-    public var audioModifiers: [AVAudioUnit] = [] {
-        didSet {
-            
-        }
-    }
-    
-    public var rate: Double = 1.0 {
-        didSet {
-            presenter.handleSetSpeed(withMultiple: rate)
-        }
-    }
+    public var audioModifiers: [AVAudioUnit] = []
     
     public var duration: Double {
         get {
@@ -140,6 +130,10 @@ extension SAPlayer {
         presenter.handleSeek(toNeedle: seconds)
     }
     
+    public func playbackRateOfAudioChanged(rate: Double) {
+        presenter.handleAudioRateChanged(rate: rate)
+    }
+    
     public func initializeSavedAudio(withSavedUrl url: URL, mediaInfo: SALockScreenInfo? = nil) {
         self.mediaInfo = mediaInfo
         presenter.handlePlaySavedAudio(withSavedUrl: url)
@@ -195,10 +189,6 @@ extension SAPlayer: SAPlayerDelegate {
         var seekToNeedle = needle < 0 ? 0 : needle
         seekToNeedle = needle > Needle(duration) ? Needle(duration) : needle
         player?.seek(toNeedle: seekToNeedle)
-    }
-    
-    func setSpeedEngine(withMultiple multiple: Double) {
-        player?.setSpeed(speed: multiple)
     }
 }
 

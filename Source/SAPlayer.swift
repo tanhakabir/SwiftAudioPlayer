@@ -34,12 +34,20 @@ public class SAPlayer {
     /**
      Corresponding to the skipping forward button on the media player on the lockscreen. Default is set to 30 seconds.
      */
-    public var skipForwardSeconds: Double = 30
+    public var skipForwardSeconds: Double = 30 {
+        didSet {
+            presenter.handleScrubbingIntervalsChanged()
+        }
+    }
     
     /**
      Corresponding to the skipping backwards button on the media player on the lockscreen. Default is set to 15 seconds.
      */
-    public var skipBackwardSeconds: Double = 15
+    public var skipBackwardSeconds: Double = 15 {
+        didSet {
+            presenter.handleScrubbingIntervalsChanged()
+        }
+    }
     
     /**
      List of AVAudioUnit audio modifiers to pass to the engine on initialization.

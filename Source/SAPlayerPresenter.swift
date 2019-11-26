@@ -157,6 +157,10 @@ extension SAPlayerPresenter {
     func handleAudioRateChanged(rate: Float) {
         delegate?.updateLockscreenChangePlaybackRate(speed: rate)
     }
+    
+    func handleScrubbingIntervalsChanged() {
+        delegate?.updateLockscreenSkipIntervals()
+    }
 }
 
 //MARK:- For lock screen

@@ -75,6 +75,8 @@ class ViewController: UIViewController {
     
     @IBOutlet weak var rateLabel: UILabel!
     
+    @IBOutlet weak var reverbLabel: UILabel!
+    @IBOutlet weak var reverbSlider: UISlider!
     @IBOutlet weak var durationLabel: UILabel!
     @IBOutlet weak var currentTimestampLabel: UILabel!
     
@@ -100,8 +102,6 @@ class ViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        adjustSpeed()
         
         isPlayable = false
         selectedAudio = AudioInfo(index: 0)
@@ -210,7 +210,19 @@ class ViewController: UIViewController {
     
     
     @IBAction func rateChanged(_ sender: Any) {
-        adjustSpeed()
+        let speed = rateSlider.value
+        rateLabel.text = "rate: \(speed)x"
+        if let node = SAPlayer.shared.audioModifiers[0] as? AVAudioUnitTimePitch {
+            node.rate = speed
+            SAPlayer.shared.playbackRateOfAudioChanged(rate: speed)
+        }
+    }
+    @IBAction func reverbChanged(_ sender: Any) {
+        let reverb = reverbSlider.value
+        reverbLabel.text = "reverb: \(reverb)"
+        if let node = SAPlayer.shared.audioModifiers[1] as? AVAudioUnitReverb {
+            node.wetDryMix = reverb
+        }
     }
     
     @IBAction func downloadTouched(_ sender: Any) {
@@ -262,15 +274,6 @@ class ViewController: UIViewController {
     
     @IBAction func skipForwardTouched(_ sender: Any) {
         SAPlayer.shared.skipForward()
-    }
-    
-    private func adjustSpeed() {
-        let speed = rateSlider.value
-        rateLabel.text = "rate: \(speed)x"
-        if let node = SAPlayer.shared.audioModifiers[0] as? AVAudioUnitTimePitch {
-            node.rate = speed
-            SAPlayer.shared.playbackRateOfAudioChanged(rate: speed)
-        }
     }
     
 }

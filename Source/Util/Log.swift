@@ -23,7 +23,7 @@ class Log {
     }
     
     // Specify which types of log messages to display. Default level is set to WARN, which means Log will print any log messages of type only WARN, ERROR, MONITOR, and TEST. To print DEBUG and INFO logs, set the level to a lower value.
-    public static var logLevel: LogLevel = LogLevel.ERROR
+    public static var logLevel: LogLevel = LogLevel.MONITOR
     
     // Used for OSLog
     private static let SUBSYSTEM: String = "com.SwiftAudioPlayer"

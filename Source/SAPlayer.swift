@@ -27,7 +27,11 @@ import Foundation
 import AVFoundation
 
 public class SAPlayer {
+    /**
+     Access to the player.
+     */
     public static let shared: SAPlayer = SAPlayer()
+    
     private var presenter: SAPlayerPresenter!
     private var player: AudioEngine?
     
@@ -246,7 +250,7 @@ extension SAPlayer {
      - Parameter withRemoteUrl: The URL of the remote audio.
      - Parameter mediaInfo: The media information of the audio to show on the lockscreen media player (optional).
      */
-    public func initializeAudio(withRemoteUrl url: URL, mediaInfo: SALockScreenInfo? = nil) {
+    public func initializeRemoteAudio(withRemoteUrl url: URL, mediaInfo: SALockScreenInfo? = nil) {
         self.mediaInfo = mediaInfo
         presenter.handlePlayStreamedAudio(withRemoteUrl: url)
     }

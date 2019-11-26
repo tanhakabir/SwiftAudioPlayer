@@ -156,7 +156,7 @@ extension LockScreenViewProtocol {
         MPNowPlayingInfoCenter.default().nowPlayingInfo?[MPNowPlayingInfoPropertyPlaybackRate] = 1.0
     }
     
-    func updateLockscreenChangePlaybackRate(speed: Double){
+    func updateLockscreenChangePlaybackRate(speed: Float){
         if speed > 0.0{
             MPNowPlayingInfoCenter.default().nowPlayingInfo?[MPNowPlayingInfoPropertyPlaybackRate] = speed
         }

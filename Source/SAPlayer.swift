@@ -130,7 +130,12 @@ extension SAPlayer {
         presenter.handleSeek(toNeedle: seconds)
     }
     
-    public func playbackRateOfAudioChanged(rate: Double) {
+    /**
+     If using an AVAudioUnitTimePitch, it's important to notify the player that the rate at which the audio playing has changed to keep the media player in the lockscreen up to date. This is only important for playback rate changes.
+     
+     - Parameter rate: The current rate at which the audio is playing.
+     */
+    public func playbackRateOfAudioChanged(rate: Float) {
         presenter.handleAudioRateChanged(rate: rate)
     }
     

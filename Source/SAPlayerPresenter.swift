@@ -156,7 +156,7 @@ extension SAPlayerPresenter {
         delegate?.seekEngine(toNeedle: needle)
     }
     
-    func handleAudioRateChanged(rate: Double) {
+    func handleAudioRateChanged(rate: Float) {
         delegate?.updateLockscreenChangePlaybackRate(speed: rate)
     }
 }

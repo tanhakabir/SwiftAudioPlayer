@@ -269,7 +269,7 @@ class ViewController: UIViewController {
         rateLabel.text = "rate: \(speed)x"
         if let node = SAPlayer.shared.audioModifiers[0] as? AVAudioUnitTimePitch {
             node.rate = speed
-            SAPlayer.shared.playbackRateOfAudioChanged(rate: Double(speed))
+            SAPlayer.shared.playbackRateOfAudioChanged(rate: speed)
         }
     }
     

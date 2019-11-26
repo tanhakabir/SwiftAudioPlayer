@@ -27,55 +27,127 @@ import Foundation
 import AVFoundation
 
 public class SAPlayer {
+    /**
+     Access to the player.
+     */
     public static let shared: SAPlayer = SAPlayer()
+    
     private var presenter: SAPlayerPresenter!
     private var player: AudioEngine?
     
-    public var skipForwardSeconds: Double = 30
-    public var skipBackwardSeconds: Double = 15
-    
-    public var rate: Double = 1.0 {
+    /**
+     Corresponding to the skipping forward button on the media player on the lockscreen. Default is set to 30 seconds.
+     */
+    public var skipForwardSeconds: Double = 30 {
         didSet {
-            presenter.handleSetSpeed(withMultiple: rate)
+            presenter.handleScrubbingIntervalsChanged()
         }
     }
     
-    public var duration: Double {
+    /**
+     Corresponding to the skipping backwards button on the media player on the lockscreen. Default is set to 15 seconds.
+     */
+    public var skipBackwardSeconds: Double = 15 {
+        didSet {
+            presenter.handleScrubbingIntervalsChanged()
+        }
+    }
+    
+    /**
+     List of [AVAudioUnit](https://developer.apple.com/documentation/avfoundation/audio_track_engineering/audio_engine_building_blocks/audio_enhancements) audio modifiers to pass to the engine on initialization.
+     
+     - Important: To have the intended effects, the list of modifiers must be finalized before initializing the audio to be played. The modifers are added to the engine in order of the list.
+     
+     - Note: The default list already has an AVAudioUnitTimePitch node first in the list. This node is specifically set to change the rate of audio without changing the pitch of the audio (intended for changing the rate of spoken word).
+     
+         The component description of this node is:
+         ````
+         var componentDescription: AudioComponentDescription {
+            get {
+                var ret = AudioComponentDescription()
+                ret.componentType = kAudioUnitType_FormatConverter
+                ret.componentSubType = kAudioUnitSubType_AUiPodTimeOther
+                return ret
+            }
+         }
+         ````
+         Please look at [forums.developer.apple.com/thread/5874](https://forums.developer.apple.com/thread/5874) and [forums.developer.apple.com/thread/6050](https://forums.developer.apple.com/thread/6050) for more details.
+     */
+    public var audioModifiers: [AVAudioUnit] = []
+    
+    /**
+     Total duration of current audio initialized. Returns nil if no audio is initialized in player.
+     */
+    public var duration: Double? {
         get {
-            return presenter.duration ?? 0.0
+            return presenter.duration
         }
     }
     
-    public var prettyDuration: String {
+    /**
+     A textual representation of the duration of the current audio initialized. Returns nil if no audio is initialized in player.
+     */
+    public var prettyDuration: String? {
         get {
-            return SAPlayer.prettifyTimestamp(duration)
+            guard let d = duration else { return nil }
+            return SAPlayer.prettifyTimestamp(d)
         }
     }
     
-    public var elapsedTime: Double {
+    /**
+     Elapsed playback time of the current audio initialized. Returns nil if no audio is initialized in player.
+     */
+    public var elapsedTime: Double? {
         get {
-            return presenter.needle ?? 0
+            return presenter.needle
         }
     }
     
-    public var prettyElapsedTime: String {
+    /**
+     A textual representation of the elapsed playback time of the current audio initialized. Returns nil if no audio is initialized in player.
+     */
+    public var prettyElapsedTime: String? {
         get {
-            return SAPlayer.prettifyTimestamp(elapsedTime)
+            guard let e = elapsedTime else { return nil }
+            return SAPlayer.prettifyTimestamp(e)
         }
     }
     
+    /**
+     Corresponding to the media info to display on the lockscreen for the current audio.
+     
+     - Note: Setting this to nil clears the information displayed on the lockscreen media player.
+     */
     public var mediaInfo: SALockScreenInfo? = nil {
         didSet {
-            if let info = mediaInfo {
-                presenter.handleLockscreenInfo(info: info)
-            }
+            presenter.handleLockscreenInfo(info: mediaInfo)
         }
     }
     
     private init() {
         presenter = SAPlayerPresenter(delegate: self)
+        
+        // https://forums.developer.apple.com/thread/5874
+        // https://forums.developer.apple.com/thread/6050
+        // AVAudioTimePitchAlgorithm.timeDomain (just in case we want it)
+        var componentDescription: AudioComponentDescription {
+            get {
+                var ret = AudioComponentDescription()
+                ret.componentType = kAudioUnitType_FormatConverter
+                ret.componentSubType = kAudioUnitSubType_AUiPodTimeOther
+                return ret
+            }
+        }
+        
+        audioModifiers.append(AVAudioUnitTimePitch(audioComponentDescription: componentDescription))
     }
     
+    /**
+     Formats a textual representation of a given timestamp for display in hh:MM:SS format, that is hours:minutes:seconds.
+
+     - Parameter timestamp: The timestamp to format.
+     - Returns: A textual representation of the given timestamp
+     */
     public static func prettifyTimestamp(_ timestamp: Double) -> String {
         let hours = Int(timestamp / 60 / 60)
         let minutes = Int((timestamp - Double(hours * 60)) / 60)
@@ -96,36 +168,89 @@ public class SAPlayer {
 
 //MARK: - External Player Controls
 extension SAPlayer {
+    /**
+     Toggles between the play and pause state of the player if the player is not buffering (thus is playable).
+     */
     public func togglePlayAndPause() {
         presenter.handleTogglePlayingAndPausing()
     }
     
+    /**
+     Attempts to play the player even if nothing playable is loaded (aka still in buffering state or no audio is initialized).
+     */
     public func play() {
         presenter.handlePlay()
     }
     
+    /**
+     Attempts to pause the player even if nothing playable is loaded (aka still in buffering state or no audio is initialized).
+     */
     public func pause() {
         presenter.handlePause()
     }
     
-    public func skipBackwards() {
-        presenter.handleSkipBackward()
-    }
-    
+    /**
+     Attempts to skip forward in audio even if nothing playable is loaded (aka still in buffering state or no audio is initialized). The interval to which to skip forward is defined by `SAPlayer.shared.skipForwardSeconds`.
+     
+     - Note: The skipping is limited to the duration of the audio, if the intended skip is past the duration of the current audio, the skip will just go to the end.
+     */
     public func skipForward() {
         presenter.handleSkipForward()
     }
     
+    /**
+     Attempts to skip backwards in audio even if nothing playable is loaded (aka still in buffering state or no audio is initialized). The interval to which to skip backwards is defined by `SAPlayer.shared.skipBackwardSeconds`.
+     
+     - Note: The skipping is limited to the playable timestamps, if the intended skip is below 0 seconds, the skip will just go to 0 seconds.
+     */
+    public func skipBackwards() {
+        presenter.handleSkipBackward()
+    }
+    
+    /**
+     Attempts to seek/scrub through the audio even if nothing playable is loaded (aka still in buffering state or no audio is initialized).
+     
+     - Parameter seconds: The intended seconds within the audio to seek to.
+     
+     - Note: The seeking is limited to the playable timestamps, if the intended seek is below 0 seconds, the skip will just go to 0 seconds. If the intended seek is past the curation of the current audio, the seek will just go to the end.
+     */
     public func seekTo(seconds: Double) {
         presenter.handleSeek(toNeedle: seconds)
     }
     
+    /**
+     If using an AVAudioUnitTimePitch, it's important to notify the player that the rate at which the audio playing has changed to keep the media player in the lockscreen up to date. This is only important for playback rate changes.
+     
+     - Parameter rate: The current rate at which the audio is playing.
+     */
+    public func playbackRateOfAudioChanged(rate: Float) {
+        presenter.handleAudioRateChanged(rate: rate)
+    }
+    
+    /**
+     Sets up player to play audio that has been saved on the device.
+     
+     - Important: If intending to use [AVAudioUnit](https://developer.apple.com/documentation/avfoundation/audio_track_engineering/audio_engine_building_blocks/audio_enhancements) audio modifiers during playback, the list of audio modifiers under `SAPlayer.shared.audioModifiers` must be finalized before calling this function. After all realtime audio manipulations within the this will be effective.
+     
+     - Parameter withSavedUrl: The URL of the audio saved on the device.
+     - Parameter mediaInfo: The media information of the audio to show on the lockscreen media player (optional).
+     */
     public func initializeSavedAudio(withSavedUrl url: URL, mediaInfo: SALockScreenInfo? = nil) {
         self.mediaInfo = mediaInfo
         presenter.handlePlaySavedAudio(withSavedUrl: url)
     }
     
-    public func initializeAudio(withRemoteUrl url: URL, mediaInfo: SALockScreenInfo? = nil) {
+    /**
+     Sets up player to play audio that will be streamed from a remote location.
+     
+     - Important: If intending to use [AVAudioUnit](https://developer.apple.com/documentation/avfoundation/audio_track_engineering/audio_engine_building_blocks/audio_enhancements) audio modifiers during playback, the list of audio modifiers under `SAPlayer.shared.audioModifiers` must be finalized before calling this function. After all realtime audio manipulations within the this will be effective.
+     
+     - Note: Subscribe to `SAPlayer.Updates.StreamingBuffer` to see updates in streaming progress.
+     
+     - Parameter withRemoteUrl: The URL of the remote audio.
+     - Parameter mediaInfo: The media information of the audio to show on the lockscreen media player (optional).
+     */
+    public func initializeRemoteAudio(withRemoteUrl url: URL, mediaInfo: SALockScreenInfo? = nil) {
         self.mediaInfo = mediaInfo
         presenter.handlePlayStreamedAudio(withRemoteUrl: url)
     }
@@ -173,12 +298,8 @@ extension SAPlayer: SAPlayerDelegate {
     
     func seekEngine(toNeedle needle: Needle) {
         var seekToNeedle = needle < 0 ? 0 : needle
-        seekToNeedle = needle > Needle(duration) ? Needle(duration) : needle
+        seekToNeedle = needle > Needle(duration ?? 0) ? Needle(duration ?? 0) : needle
         player?.seek(toNeedle: seekToNeedle)
-    }
-    
-    func setSpeedEngine(withMultiple multiple: Double) {
-        player?.setSpeed(speed: multiple)
     }
 }
 

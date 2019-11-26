@@ -35,5 +35,4 @@ protocol SAPlayerDelegate: AnyObject, LockScreenViewProtocol {
     func playEngine()
     func pauseEngine()
     func seekEngine(toNeedle needle: Needle) //TODO ensure that engine cleans up out of bounds
-    func setSpeedEngine(withMultiple multiple: Double)
 }

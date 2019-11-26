@@ -8,6 +8,7 @@
 
 import UIKit
 import SwiftAudioPlayer
+import AVFoundation
 
 class ViewController: UIViewController {
     struct AudioInfo: Hashable {
@@ -74,6 +75,8 @@ class ViewController: UIViewController {
     
     @IBOutlet weak var rateLabel: UILabel!
     
+    @IBOutlet weak var reverbLabel: UILabel!
+    @IBOutlet weak var reverbSlider: UISlider!
     @IBOutlet weak var durationLabel: UILabel!
     @IBOutlet weak var currentTimestampLabel: UILabel!
     
@@ -100,10 +103,10 @@ class ViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        adjustSpeed()
-        
         isPlayable = false
         selectedAudio = AudioInfo(index: 0)
+        
+        addRandomModifiers()
         
         _ = SAPlayer.Updates.Duration.subscribe { [weak self] (url, duration) in
             guard let self = self else { return }
@@ -174,6 +177,12 @@ class ViewController: UIViewController {
             }
         }
     }
+    
+    func addRandomModifiers() {
+        let node = AVAudioUnitReverb()
+        SAPlayer.shared.audioModifiers.append(node)
+        node.wetDryMix = 300
+    }
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
@@ -201,7 +210,19 @@ class ViewController: UIViewController {
     
     
     @IBAction func rateChanged(_ sender: Any) {
-        adjustSpeed()
+        let speed = rateSlider.value
+        rateLabel.text = "rate: \(speed)x"
+        if let node = SAPlayer.shared.audioModifiers[0] as? AVAudioUnitTimePitch {
+            node.rate = speed
+            SAPlayer.shared.playbackRateOfAudioChanged(rate: speed)
+        }
+    }
+    @IBAction func reverbChanged(_ sender: Any) {
+        let reverb = reverbSlider.value
+        reverbLabel.text = "reverb: \(reverb)"
+        if let node = SAPlayer.shared.audioModifiers[1] as? AVAudioUnitReverb {
+            node.wetDryMix = reverb
+        }
     }
     
     @IBAction func downloadTouched(_ sender: Any) {
@@ -235,7 +256,7 @@ class ViewController: UIViewController {
     
     @IBAction func streamTouched(_ sender: Any) {
         if !isStreaming {
-            SAPlayer.shared.initializeAudio(withRemoteUrl: selectedAudio.url)
+            SAPlayer.shared.initializeRemoteAudio(withRemoteUrl: selectedAudio.url)
             streamButton.setTitle("Cancel streaming", for: .normal)
             downloadButton.isEnabled = false
         } else {
@@ -253,12 +274,6 @@ class ViewController: UIViewController {
     
     @IBAction func skipForwardTouched(_ sender: Any) {
         SAPlayer.shared.skipForward()
-    }
-    
-    private func adjustSpeed() {
-        let speed = rateSlider.value
-        rateLabel.text = "rate: \(speed)x"
-        SAPlayer.shared.rate = Double(speed)
     }
     
 }

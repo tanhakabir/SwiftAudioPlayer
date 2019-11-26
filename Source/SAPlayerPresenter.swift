@@ -88,9 +88,7 @@ class SAPlayerPresenter {
             self.delegate?.updateLockscreenPlaybackDuration(duration: duration)
             self.duration = duration
             
-            if let info = self.mediaInfo {
-                self.delegate?.setLockScreenInfo(withMediaInfo: info, duration: duration)
-            }
+            self.delegate?.setLockScreenInfo(withMediaInfo: self.mediaInfo, duration: duration)
         })
         
         needleRef = AudioClockDirector.shared.attachToChangesInNeedle(closure: { [weak self] (key, needle) in
@@ -116,7 +114,7 @@ class SAPlayerPresenter {
     }
     
     @available(iOS 10.0, *)
-    func handleLockscreenInfo(info: SALockScreenInfo) {
+    func handleLockscreenInfo(info: SALockScreenInfo?) {
         self.mediaInfo = info
     }
 }
@@ -156,10 +154,12 @@ extension SAPlayerPresenter {
         delegate?.seekEngine(toNeedle: needle)
     }
     
-    func handleSetSpeed(withMultiple: Double) {
-        delegate?.setSpeedEngine(withMultiple: withMultiple)
-        self.delegate?.updateLockscreenChangePlaybackRate(speed: withMultiple)
-
+    func handleAudioRateChanged(rate: Float) {
+        delegate?.updateLockscreenChangePlaybackRate(speed: rate)
+    }
+    
+    func handleScrubbingIntervalsChanged() {
+        delegate?.updateLockscreenSkipIntervals()
     }
 }
 

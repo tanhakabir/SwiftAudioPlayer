@@ -128,8 +128,6 @@ Both of these expect a URL of the location of the audio and an optional media in
 
 For streaming remote audio, subscribe to `SAPlayer.Updates.StreamingBuffer` for updates on streaming progress.
 
-#### Important
-
 Basic controls available:
 ```swift
 play()
@@ -140,11 +138,13 @@ skipForward()
 skipBackwards()
 ```
 
+#### Important
+
 The engine can handle audio manipulations like speed, pitch, effects, etc. To do this, nodes for effects must be finalized before initialize is called. Look at [audio manipulation documentation](#realtime-audio-manipulation) for more information.
 
 ### Lockscreen Media Player
  
-Update and set what displays on the lockscreen's media player when the player is active. (TODO: Add screenshot)
+Update and set what displays on the lockscreen's media player when the player is active. 
 
 `skipForwardSeconds` and `skipBackwardSeconds` for the intervals to skip forward and back with.
 

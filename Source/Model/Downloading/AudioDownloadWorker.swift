@@ -271,21 +271,18 @@ extension AudioDownloadWorker {
             return lhs.id == rhs.id && lhs.remoteUrl == rhs.remoteUrl
         }
         
-        var hashValue: Int {
-            return id.hashValue ^ remoteUrl.hashValue
-        }
-        
         let id: ID
         let remoteUrl: URL
         let rank: Int
         var completionHandlers: [(URL) -> ()]
+        
+        func hash(into hasher: inout Hasher) {
+            hasher.combine(id)
+            hasher.combine(remoteUrl)
+        }
     }
     
     private class ActiveDownload: Hashable {
-        var hashValue: Int {
-            return info.id.hashValue ^ task.hashValue
-        }
-        
         static func == (lhs: AudioDownloadWorker.ActiveDownload, rhs: AudioDownloadWorker.ActiveDownload) -> Bool {
             return lhs.info.id == rhs.info.id
         }
@@ -298,6 +295,11 @@ extension AudioDownloadWorker {
         init(info: DownloadInfo, task: URLSessionDownloadTask) {
             self.info = info
             self.task = task
+        }
+        
+        func hash(into hasher: inout Hasher) {
+            hasher.combine(info.id)
+            hasher.combine(task)
         }
     }
 }

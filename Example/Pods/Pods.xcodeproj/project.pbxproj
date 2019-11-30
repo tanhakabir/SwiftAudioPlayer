@@ -14,6 +14,7 @@
 		79D8DF73FA7CDD6E266BAE71D46E035F /* Pods-SwiftAudioPlayer_Tests-umbrella.h in Headers */ = {isa = PBXBuildFile; fileRef = 50C71346CE708A211A5AFAC20BAE48CB /* Pods-SwiftAudioPlayer_Tests-umbrella.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		831B263D357A5FA2DDC7B1AE4B374092 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5A16F4CFC63FAC439D7A04994F579A03 /* Foundation.framework */; };
 		8F93DB166237195ED222EE55B6404625 /* Pods-SwiftAudioPlayer_Example-umbrella.h in Headers */ = {isa = PBXBuildFile; fileRef = 3B0B76CB1439F4D361322144E5A65C3A /* Pods-SwiftAudioPlayer_Example-umbrella.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		A40DBE292391D9CA00F86146 /* Data.swift in Sources */ = {isa = PBXBuildFile; fileRef = A40DBE282391D9C900F86146 /* Data.swift */; };
 		A41AA0D2238BB9B600A467E1 /* SAPlayingStatus.swift in Sources */ = {isa = PBXBuildFile; fileRef = A41AA0D1238BB9B600A467E1 /* SAPlayingStatus.swift */; };
 		A4681FC6220113880018AB51 /* SAPlayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = A4681F8D2200E00E0018AB51 /* SAPlayer.swift */; };
 		A4681FC72201138B0018AB51 /* SAPlayerDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = A4681F912200E1950018AB51 /* SAPlayerDelegate.swift */; };
@@ -96,6 +97,7 @@
 		99925F09FC9C6EA4B9C0508F4E2D1FE2 /* Info.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		A19C8F889C787C19BE4123C1896AF501 /* Pods-SwiftAudioPlayer_Example-resources.sh */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.script.sh; path = "Pods-SwiftAudioPlayer_Example-resources.sh"; sourceTree = "<group>"; };
 		A39F2A138CF40C1051CA9E227429A86D /* SwiftAudioPlayer.modulemap */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.module; path = SwiftAudioPlayer.modulemap; sourceTree = "<group>"; };
+		A40DBE282391D9C900F86146 /* Data.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Data.swift; sourceTree = "<group>"; };
 		A41AA0D1238BB9B600A467E1 /* SAPlayingStatus.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SAPlayingStatus.swift; sourceTree = "<group>"; };
 		A4523BC8220A0B3C0079C4BC /* Credited_LICENSE */ = {isa = PBXFileReference; lastKnownFileType = text; path = Credited_LICENSE; sourceTree = "<group>"; };
 		A4681F802200D0500018AB51 /* Log.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Log.swift; sourceTree = "<group>"; };
@@ -273,6 +275,7 @@
 				A4681F872200DAD50018AB51 /* DirectorThreadSafeClosures.swift */,
 				A4681F892200DB3C0018AB51 /* Date.swift */,
 				A4681F962200E2E20018AB51 /* URL.swift */,
+				A40DBE282391D9C900F86146 /* Data.swift */,
 			);
 			path = Util;
 			sourceTree = "<group>";
@@ -524,6 +527,7 @@
 				A4681FD2220113B20018AB51 /* AudioParser.swift in Sources */,
 				A4681FCF220113A40018AB51 /* AudioConverterListener.swift in Sources */,
 				A4681FE1220113E70018AB51 /* Constants.swift in Sources */,
+				A40DBE292391D9CA00F86146 /* Data.swift in Sources */,
 				A4FBA6B5221B74C900D5A353 /* SALockScreenInfo.swift in Sources */,
 				A4681FC6220113880018AB51 /* SAPlayer.swift in Sources */,
 				A4FBA6B7221BAC3D00D5A353 /* SAPlayerUpdateSubscription.swift in Sources */,

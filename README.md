@@ -20,8 +20,8 @@ iOS 10.0 and higher.
 
 1. Clone repo
 2. CD to directory
-3. run `pod install` in terminal
-4. Run
+3. Run `pod install` in terminal
+4. Build and run
 
 ### Installation
 

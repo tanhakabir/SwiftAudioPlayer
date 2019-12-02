@@ -4,21 +4,24 @@
 [![License](https://img.shields.io/cocoapods/l/SwiftAudioPlayer.svg?style=flat)](https://cocoapods.org/pods/SwiftAudioPlayer)
 [![Platform](https://img.shields.io/cocoapods/p/SwiftAudioPlayer.svg?style=flat)](https://cocoapods.org/pods/SwiftAudioPlayer)
 
-Swift based audio player that is able to both stream remote audio and play locally saved audio, while performing audio manipulations in real-time. Underlying using AVAudioEngine, and you can change the rate of audio (up to 32x), change pitch, and [other audio enhancements](https://developer.apple.com/documentation/avfoundation/audio_track_engineering/audio_engine_building_blocks/audio_enhancements).
+Swift-based audio player with AVAudioEngine as its base. Allows for: streaming online audio, playing local file, changing audio speed (3.5X, 4X, 32X), pitch, and real-time audio manipulation using custom [audio enhancements](https://developer.apple.com/documentation/avfoundation/audio_track_engineering/audio_engine_building_blocks/audio_enhancements).
 
-This player was originally developed to be used in a [podcast player](https://chameleonpodcast.com/). We had originally used AVPlayer for playing audio but we wanted to manipulate audio that was being streamed. We set up AVAudioEngine at first just to play a file saved on the phone and it worked great, but AVAudioEngine on its own doesn't support streaming audio as easily as AVPlayer.
+This player was built for [podcasting](https://chameleonpodcast.com/). We originally used AVPlayer for playing audio but we wanted to manipulate audio that was being streamed. We set up AVAudioEngine at first just to play a file saved on the phone and it worked great, but AVAudioEngine on its own doesn't support streaming audio as easily as AVPlayer.
 
 Thus, using [AudioToolbox](https://developer.apple.com/documentation/audiotoolbox), we are able to stream audio and convert the downloaded data into usable data for the AVAudioEngine to play. For an overview of our solution check out our [blog post](https://medium.com/chameleon-podcast/creating-an-advanced-streaming-audio-engine-for-ios-9fbc7aef4115).
 
 ### Requirements
 
-SwiftAudioPlayer is available for iOS 10.0 and higher.
+iOS 10.0 and higher.
 
 ## Getting Started
 
-### Example Project
+### Running the Example Project
 
-To run the example project, clone the repo, and run `pod install` from the Example directory first.
+1. Clone repo
+2. CD to directory
+3. Run `pod install` in terminal
+4. Build and run
 
 ### Installation
 
@@ -46,7 +49,7 @@ let info = SALockScreenInfo(title: "Random audio", artist: "Foo", artwork: UIIma
 SAPlayer.shared.mediaInfo = info
 ```
 
-To receive streaming progress:
+To receive streaming progress (for buffer progress %):
 ```swift
 @IBOutlet weak var bufferProgress: UIProgressView!
 
@@ -115,7 +118,7 @@ SwiftAudioPlayer is available under the MIT license. See the LICENSE file for mo
 
 Access the player and all of its fields and functions through `SAPlayer.shared`.
 
-### Playing Audio
+### Playing Audio (Basic Commands)
 
 To set up player with audio to play, use either: 
 * `initializeSavedAudio(withSavedUrl url: URL, mediaInfo: SALockScreenInfo?)` to play audio that is saved on the device.
@@ -125,11 +128,7 @@ Both of these expect a URL of the location of the audio and an optional media in
 
 For streaming remote audio, subscribe to `SAPlayer.Updates.StreamingBuffer` for updates on streaming progress.
 
-#### Important
-
-Any audio manipulation intended to on the audio must have the nodes anticipated to use finalized before initialize is called. Look at [audio manipulation documentation](#realtime-audio-manipulation) for more information.
-
-All other basic controls are available:
+Basic controls available:
 ```swift
 play()
 pause()
@@ -139,32 +138,13 @@ skipForward()
 skipBackwards()
 ```
 
-### Realtime Audio Manipulation
-
-All audio effects on the player is done through [AVAudioUnit](https://developer.apple.com/documentation/avfoundation/avaudiounit) nodes. These include adding reverb, changing pitch and playback rate, and adding distortion. Full list of effects available [here](https://developer.apple.com/documentation/avfoundation/audio_track_engineering/audio_engine_building_blocks/audio_enhancements).
-
-The effects intended to use are stored in `audioModifiers` as a list of nodes. These nodes are in the order that the engine will attach them to one another.
-
-**Note:** By default `SAPlayer` starts off with one node, an [AVAudioUnitTimePitch](https://developer.apple.com/documentation/avfoundation/avaudiounittimepitch) node, that is set to change the rate of audio without changing the pitch of the audio (intended for changing the rate of spoken word).
-
 #### Important
-All the nodes intended to be used on the playing audio must be finalized before calling `initializeSavedAudio(...)` or `initializeRemoteAudio(...)`. Any changes to list of nodes after initialize is called for a given audio file will not be reflected in playback.
 
-Once all nodes are added to `audioModifiers` and the player has been initialized, any manipulations done with the nodes are performed in realtime. The example app shows manipulating the playback rate in realtime:
-
-```swift
-let speed = rateSlider.value
-if let node = SAPlayer.shared.audioModifiers[0] as? AVAudioUnitTimePitch {
-    node.rate = speed
-    SAPlayer.shared.playbackRateOfAudioChanged(rate: speed)
-}
-```
-
-**Note:** if the rate of the audio is changed, `playbackRateOfAudioChanged` should also be called to update the lockscreen's media player.
+The engine can handle audio manipulations like speed, pitch, effects, etc. To do this, nodes for effects must be finalized before initialize is called. Look at [audio manipulation documentation](#realtime-audio-manipulation) for more information.
 
 ### Lockscreen Media Player
  
-Update and set what displays on the lockscreen's media player when the player is active.
+Update and set what displays on the lockscreen's media player when the player is active. 
 
 `skipForwardSeconds` and `skipBackwardSeconds` for the intervals to skip forward and back with.
 
@@ -196,7 +176,7 @@ func application(_ application: UIApplication, handleEventsForBackgroundURLSessi
 
 ### Downloading
 
-Downloads will be held on pause when active stream is started, and will resume downloads when streaming is done.
+All downloads will be paused when audio is streamed from a URL. They will automatically resume when streaming is done.
 
 Use the following to start downloading audio in the background:
 
@@ -233,6 +213,8 @@ Delete downloaded audio if it exists:
 func deleteDownloaded(withSavedUrl url: URL)
 ```
 
+**NOTE:** You're in charge or clearing downloads when your don't need them anymore
+
 ## SAPlayer.Updates
 
 Receive updates for changing values from the player, such as the duration, elapsed time of playing audio, download progress, and etc.
@@ -265,7 +247,7 @@ Subscribe to this to update views on changes in position of which part of audio 
 ### Duration
 Payload = `Double`
 
-Changes in the duration of the current initialized audio. Especially helpful for audio that is being streamed and can change with more data.
+Changes in the duration of the current initialized audio. Especially helpful for audio that is being streamed and can change with more data. The engine makes a best effort guess as to the duration of the audio. The guess gets better with more bytes streamed from the web.
 
 ### PlayingStatus
 Payload = `SAPlayingStatus`
@@ -283,3 +265,29 @@ For progress of downloading audio that saves to the phone for playback later, lo
 Payload = `Double`
 
 Changes in the progress of downloading audio in the background. This does not correspond to progress in streaming downloads, look at StreamingBuffer for streaming progress.
+
+## Audio Effects
+
+### Realtime Audio Manipulation
+
+All audio effects on the player is done through [AVAudioUnit](https://developer.apple.com/documentation/avfoundation/avaudiounit) nodes. These include adding reverb, changing pitch and playback rate, and adding distortion. Full list of effects available [here](https://developer.apple.com/documentation/avfoundation/audio_track_engineering/audio_engine_building_blocks/audio_enhancements).
+
+The effects intended to use are stored in `audioModifiers` as a list of nodes. These nodes are in the order that the engine will attach them to one another.
+
+**Note:** By default `SAPlayer` starts off with one node, an [AVAudioUnitTimePitch](https://developer.apple.com/documentation/avfoundation/avaudiounittimepitch) node, that is set to change the rate of audio without changing the pitch of the audio (intended for changing the rate of spoken word).
+
+#### Important
+All the nodes intended to be used on the playing audio must be finalized before calling `initializeSavedAudio(...)` or `initializeRemoteAudio(...)`. Any changes to list of nodes after initialize is called for a given audio file will not be reflected in playback.
+
+Once all nodes are added to `audioModifiers` and the player has been initialized, any manipulations done with the nodes are performed in realtime. The example app shows manipulating the playback rate in realtime:
+
+```swift
+let speed = rateSlider.value
+if let node = SAPlayer.shared.audioModifiers[0] as? AVAudioUnitTimePitch {
+    node.rate = speed
+    SAPlayer.shared.playbackRateOfAudioChanged(rate: speed)
+}
+```
+
+**Note:** if the rate of the audio is changed, `playbackRateOfAudioChanged` should also be called to update the lockscreen's media player.
+

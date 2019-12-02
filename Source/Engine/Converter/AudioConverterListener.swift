@@ -70,7 +70,7 @@ func ConverterListener(_ converter: AudioConverterRef, _ packetCount: UnsafeMuta
     let packetByteCount = packet.count //this is not the count of an array
     ioData.pointee.mNumberBuffers = 1
     ioData.pointee.mBuffers.mData = UnsafeMutableRawPointer.allocate(byteCount: packetByteCount, alignment: 0)
-    _ = packet.withUnsafeMutableBytes({ (bytes: UnsafeMutablePointer<UInt8>) in
+    _ = packet.accessMutableBytes({ (bytes: UnsafeMutablePointer<UInt8>) in
         memcpy((ioData.pointee.mBuffers.mData?.assumingMemoryBound(to: UInt8.self))!, bytes, packetByteCount)
     })
     ioData.pointee.mBuffers.mDataByteSize = UInt32(packetByteCount)

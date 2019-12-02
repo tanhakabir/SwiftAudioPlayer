@@ -295,7 +295,7 @@ extension AudioParser: AudioThrottleDelegate {
             let sID = self.streamID!
             let dataSize = data.count
             
-            let _ = try data.withUnsafeBytes({ (bytes:UnsafePointer<UInt8>) in
+            _ = try data.accessBytes({ (bytes: UnsafePointer<UInt8>) in
                 let result:OSStatus = AudioFileStreamParseBytes(sID, UInt32(dataSize), bytes, [])
                 guard result == noErr else {
                     Log.monitor(ParserError.failedToParseBytes(result).errorDescription as Any)

@@ -152,30 +152,34 @@ class AudioThrottler: AudioThrottleable {
                 Log.debug("offset: \(offset) within network packet of range: \(wrappedNetworkData.startOffset) to \(wrappedNetworkData.endOffset) is next sent: \(wrappedNetworkData.isNextSent())")
                 
                 if wrappedNetworkData.alreadySent {
-                    if !wrappedNetworkData.isNextSent() {
-                        var bytesSent: UInt = 0
-                        var current = wrappedNetworkData
-                        
-                        // Sometimes the next data packet is smaller than a full audio chunk size, so we need to ensure we send up enough packets for the audio chunk. This prevented Issue #4 where tsreaming would randomly get stuck in a state needing more data up the chain.
-                        // https://github.com/tanhakabir/SwiftAudioPlayer/issues/4
-                        while bytesSent < largestPollingOffsetDifference {
-                            if let next = current.next {
-                                Log.debug("Sending next network packet with range: \(next.startOffset) to \(next.endOffset)")
+                    Log.debug("already sent offset: \(offset) within network packet of range: \(wrappedNetworkData.startOffset) to \(wrappedNetworkData.endOffset)")
+                    
+                    var bytesSent: UInt = 0
+                    var current = wrappedNetworkData
+                    
+                    // Sometimes the next data packet is smaller than a full audio chunk size, so we need to ensure we send up enough packets for the audio chunk. This prevented Issue #4 where tsreaming would randomly get stuck in a state needing more data up the chain.
+                    // https://github.com/tanhakabir/SwiftAudioPlayer/issues/4
+                    while bytesSent < largestPollingOffsetDifference {
+                        if let next = current.next {
+                            if !next.alreadySent {
+                                Log.info("Sending next network packet with range: \(next.startOffset) to \(next.endOffset), have sent \(bytesSent) bytes so far from \(largestPollingOffsetDifference) bytes")
                                 next.alreadySent = true
                                 delegate?.shouldProcess(networkData: next.data)
-                                bytesSent += next.byteCount
-                                current = next
-                            } else {
-                                return
                             }
+                            bytesSent += next.byteCount
+                            current = next
+                        } else {
+                            Log.debug("next package doesn't exist, bytes sent so far: \(bytesSent)")
+                            return
                         }
                     }
+                    
                     return
                 }
                 
-                Log.debug("Found network packet  to send with range: \(wrappedNetworkData.startOffset) to \(wrappedNetworkData.endOffset)")
-                delegate?.shouldProcess(networkData: wrappedNetworkData.data)
+                Log.info("Found network packet  to send with range: \(wrappedNetworkData.startOffset) to \(wrappedNetworkData.endOffset)")
                 wrappedNetworkData.alreadySent = true
+                delegate?.shouldProcess(networkData: wrappedNetworkData.data)
                 return
             }
         }

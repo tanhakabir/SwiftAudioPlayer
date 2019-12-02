@@ -252,7 +252,7 @@ Changes in the duration of the current initialized audio. Especially helpful for
 ### PlayingStatus
 Payload = `SAPlayingStatus`
 
-Changes in the playing status of the player. Can be one of the following 3: `playing`, `paused`, `buffering`.
+Changes in the playing status of the player. Can be one of the following 4: `playing`, `paused`, `buffering`, `ended` (audio ended).
 
 ### StreamingBuffer
 Payload = `SAAudioAvailabilityRange`

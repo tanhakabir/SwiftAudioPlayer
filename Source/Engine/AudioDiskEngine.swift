@@ -98,7 +98,7 @@ class AudioDiskEngine: AudioEngine {
             if state == .resumed {
                 state = .suspended
             }
-            delegate?.didEndPlaying()
+            playingStatus = .ended
         }
         
         guard audioSampleRate != 0 else {

@@ -78,6 +78,10 @@ class AudioEngine: AudioEngineProtocol {
                 return
             }
             
+            if status == .ended {
+                delegate?.didEndPlaying()
+            }
+            
             AudioClockDirector.shared.audioPlayingStatusWasChanged(key, status: status)
         }
     }

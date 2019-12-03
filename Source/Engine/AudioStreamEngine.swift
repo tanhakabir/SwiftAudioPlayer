@@ -240,7 +240,7 @@ class AudioStreamEngine: AudioEngine {
             Log.info("reached end of audio")
             seek(toNeedle: 0)
             pause()
-            delegate?.didEndPlaying()
+            playingStatus = .ended
         }
         needle = (currentTime + currentTimeOffset)
     }

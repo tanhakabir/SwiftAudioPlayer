@@ -174,6 +174,10 @@ class ViewController: UIViewController {
                 self.isPlayable = false
                 self.playPauseButton.setTitle("Loading", for: .normal)
                 return
+            case .ended:
+                self.isPlayable = false
+                self.playPauseButton.setTitle("Done", for: .normal)
+                return
             }
         }
     }

@@ -35,6 +35,10 @@ protocol LockScreenViewProtocol {
 }
 
 extension LockScreenViewProtocol {
+    func clearLockScreenInfo() {
+         MPNowPlayingInfoCenter.default().nowPlayingInfo = [:]
+    }
+    
     @available(iOS 10.0, *)
     func setLockScreenInfo(withMediaInfo info: SALockScreenInfo?, duration: Duration) {
         var nowPlayingInfo:[String : Any] = [:]

@@ -36,6 +36,33 @@ public class SAPlayer {
     private var player: AudioEngine?
     
     /**
+    Access the engine of the player. Engine is nil if player has not been initialized with audio.
+     
+     - Important: Changes to the engine are not safe guarded, thus unknown behaviour can arise from changing the engine. Just be wary and read [documentation of AVAudioEngine](https://developer.apple.com/documentation/avfoundation/avaudioengine) well when modifying,
+    */
+    public var engine: AVAudioEngine? {
+        get {
+            return player?.engine
+        }
+    }
+    
+    /**
+    Corresponding to the overall volume of the player. Volume's default value is 1.0 and the range of valid values is 0.0 to 1.0. Volume is nil if no audio has been initialized yet.
+    */
+    public var volume: Float? {
+        get {
+            return player?.engine.mainMixerNode.volume
+        }
+        
+        set {
+            guard let value = newValue else { return }
+            guard value >= 0.0 && value <= 1.0 else { return }
+            
+            player?.engine.mainMixerNode.volume = value
+        }
+    }
+    
+    /**
      Corresponding to the skipping forward button on the media player on the lockscreen. Default is set to 30 seconds.
      */
     public var skipForwardSeconds: Double = 30 {

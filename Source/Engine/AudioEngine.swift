@@ -27,6 +27,7 @@ import Foundation
 import AVFoundation
 
 protocol AudioEngineProtocol {
+    var engine: AVAudioEngine { get set }
     func play()
     func pause()
     func seek(toNeedle needle: Needle)
@@ -42,7 +43,7 @@ class AudioEngine: AudioEngineProtocol {
     weak var delegate:AudioEngineDelegate?
     let key:Key
     
-    let engine = AVAudioEngine()
+    var engine = AVAudioEngine()
     let playerNode = AVAudioPlayerNode()
     
     var timer: Timer?

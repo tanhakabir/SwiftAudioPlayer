@@ -281,6 +281,14 @@ extension SAPlayer {
         self.mediaInfo = mediaInfo
         presenter.handlePlayStreamedAudio(withRemoteUrl: url)
     }
+    
+    /**
+     Resets the player to the state before initializing audio and setting media info.
+     */
+    public func clear() {
+        player = nil
+        presenter.handleClear()
+    }
 }
 
 

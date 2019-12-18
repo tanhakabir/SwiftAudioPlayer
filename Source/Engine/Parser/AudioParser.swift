@@ -85,7 +85,9 @@ class AudioParser: AudioParsable {
             return max(AVAudioPacketCount(parsedAudioHeaderPacketCount), AVAudioPacketCount(audioPackets.count))
         }
         
-        guard let sizeOfFileInBytes = expectedFileSizeInBytes, let bytesPerPacket = averageBytesPerPacket else {
+        let sizeOfFileInBytes: UInt64 = expectedFileSizeInBytes != nil ? expectedFileSizeInBytes! : 0
+        
+        guard let bytesPerPacket = averageBytesPerPacket else {
             return AVAudioPacketCount(0)
         }
         

@@ -117,7 +117,6 @@ class ViewController: UIViewController {
         
         _ = SAPlayer.Updates.ElapsedTime.subscribe { [weak self] (url, position) in
             guard let self = self else { return }
-            guard self.beingSeeked == false else { return }
             guard url == self.selectedAudio.url || url == self.savedUrls[self.selectedAudio] else { return }
             
             self.currentTimestampLabel.text = SAPlayer.prettifyTimestamp(position)

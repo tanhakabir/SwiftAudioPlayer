@@ -97,7 +97,15 @@ class AudioThrottler: AudioThrottleable {
     private var networkData: [NetworkDataWrapper] = []
     var shouldThrottle = false
     var byteOffsetBecauseOfSeek: UInt = 0
-    var totalBytesExpected: Int64? //this got sent up twice. Once at beginning of stream and second from network seek. We honor the first send
+    
+    //This will be sent once at beginning of stream and every network seek
+    var totalBytesExpected: Int64? {
+        didSet {
+            if let bytes = totalBytesExpected {
+                delegate?.didUpdate(totalBytesExpected: Int64(byteOffsetBecauseOfSeek) + bytes)
+            }
+        }
+    }
     
     var largestPollingOffsetDifference: UInt64 = 1
     
@@ -110,9 +118,8 @@ class AudioThrottler: AudioThrottleable {
             Log.debug("received stream data of size \(pto.getData().count) and progress: \(pto.getProgress())")
             self.delegate?.didUpdate(networkStreamProgress: pto.getProgress())
             
-            if self.totalBytesExpected == nil, let totalBytesExpected = pto.getTotalBytesExpected() {
+            if let totalBytesExpected = pto.getTotalBytesExpected() {
                 self.totalBytesExpected = totalBytesExpected
-                self.delegate?.didUpdate(totalBytesExpected: totalBytesExpected)
             }
             
             let lastItem = self.networkData.last

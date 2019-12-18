@@ -104,6 +104,8 @@ public class SAPlayer {
     
     /**
      Total duration of current audio initialized. Returns nil if no audio is initialized in player.
+     
+     - Note: If you are streaming from a source that does not have an expected size at the beginning of a stream, such as live streams, this value will be constantly updating to best known value at the time.
      */
     public var duration: Double? {
         get {

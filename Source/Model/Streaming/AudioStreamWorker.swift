@@ -259,8 +259,6 @@ extension AudioStreamWorker: URLSessionDataDelegate {
         totalBytesReceived = totalBytesReceived + Int64(data.count)
         let progress = Double(totalBytesReceived)/Double(totalBytesExpected)
         
-        Log.test(totalBytesExpected)
-        
         Log.debug("network streaming progress \(progress)")
         self.progressCallback(id, StreamProgressDTO(progress: progress, data: data, totalBytesExpected: totalBytesExpected))
     }

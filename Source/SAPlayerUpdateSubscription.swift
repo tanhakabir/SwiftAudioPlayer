@@ -172,7 +172,7 @@ extension SAPlayer {
              
              - Parameter closure: The closure that will receive the updates of the changes in duration.
              - Parameter url: The corresponding remote URL for the updated download progress.
-             - Parameter progress: Value from 0.0 to 1.0 indicating progress of download.
+             - Parameter progress: Value from 0.0 to 1.0 indicating progress of download. This is unreliable for live streams that don't have an expected audio length from the beginning of the stream; in that case it will always be 1.0.
              - Returns: the id for the subscription in the case you would like to unsubscribe to updates for the closure.
              */
             public static func subscribe(_ closure: @escaping (_ url: URL, _ progress: Double) -> ()) -> UInt {

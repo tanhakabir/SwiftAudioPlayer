@@ -244,7 +244,7 @@ class ViewController: UIViewController {
                         self.currentUrlLocationLabel.text = "saved to: \(url.lastPathComponent)"
                         self.savedUrls[self.selectedAudio] = url
                         
-                        SAPlayer.shared.initializeSavedAudio(withSavedUrl: url)
+                        SAPlayer.shared.startSavedAudio(withSavedUrl: url)
                     }
                 })
                 streamButton.isEnabled = false
@@ -259,7 +259,7 @@ class ViewController: UIViewController {
     
     @IBAction func streamTouched(_ sender: Any) {
         if !isStreaming {
-            SAPlayer.shared.initializeRemoteAudio(withRemoteUrl: selectedAudio.url)
+            SAPlayer.shared.startRemoteAudio(withRemoteUrl: selectedAudio.url)
             streamButton.setTitle("Cancel streaming", for: .normal)
             downloadButton.isEnabled = false
         } else {

@@ -198,21 +198,27 @@ public class SAPlayer {
 //MARK: - External Player Controls
 extension SAPlayer {
     /**
-     Toggles between the play and pause state of the player if the player is not buffering (thus is playable).
+     Toggles between the play and pause state of the player. If nothing is playable (aka still in buffering state or no audio is initialized) no action will be taken. Please call `startSavedAudio` or `startRemoteAudio` to set up the player with audio before this.
+     
+     - Note: If you are streaming, wait till the status from `SAPlayer.Updates.PlayingStatus` is not `.buffering`.
      */
     public func togglePlayAndPause() {
         presenter.handleTogglePlayingAndPausing()
     }
     
     /**
-     Attempts to play the player even if nothing playable is loaded (aka still in buffering state or no audio is initialized).
+     Attempts to play the player. If nothing is playable (aka still in buffering state or no audio is initialized) no action will be taken. Please call `startSavedAudio` or `startRemoteAudio` to set up the player with audio before this.
+     
+     - Note: If you are streaming, wait till the status from `SAPlayer.Updates.PlayingStatus` is not `.buffering`.
      */
     public func play() {
         presenter.handlePlay()
     }
     
     /**
-     Attempts to pause the player even if nothing playable is loaded (aka still in buffering state or no audio is initialized).
+     Attempts to pause the player. If nothing is playable (aka still in buffering state or no audio is initialized) no action will be taken. Please call `startSavedAudio` or `startRemoteAudio` to set up the player with audio before this.
+     
+     - Note:If you are streaming, wait till the status from `SAPlayer.Updates.PlayingStatus` is not `.buffering`.
      */
     public func pause() {
         presenter.handlePause()
@@ -264,13 +270,19 @@ extension SAPlayer {
      - Parameter withSavedUrl: The URL of the audio saved on the device.
      - Parameter mediaInfo: The media information of the audio to show on the lockscreen media player (optional).
      */
+    public func startSavedAudio(withSavedUrl url: URL, mediaInfo: SALockScreenInfo? = nil) {
+        self.mediaInfo = mediaInfo
+        presenter.handlePlaySavedAudio(withSavedUrl: url)
+    }
+    
+    @available(*, deprecated, renamed: "startSavedAudio")
     public func initializeSavedAudio(withSavedUrl url: URL, mediaInfo: SALockScreenInfo? = nil) {
         self.mediaInfo = mediaInfo
         presenter.handlePlaySavedAudio(withSavedUrl: url)
     }
     
     /**
-     Sets up player to play audio that will be streamed from a remote location.
+     Sets up player to play audio that will be streamed from a remote location. After this is called, it will connect to the server and start to receive and process data. The player is not playable the SAAudioAvailabilityRange notifies that player is ready for playing (you can subscribe to these updates through `SAPlayer.Updates.StreamingBuffer`). You can alternatively see when the player is available to play by subscribing to `SAPlayer.Updates.PlayingStatus` and waiting for a status that isn't `.buffering`.
      
      - Important: If intending to use [AVAudioUnit](https://developer.apple.com/documentation/avfoundation/audio_track_engineering/audio_engine_building_blocks/audio_enhancements) audio modifiers during playback, the list of audio modifiers under `SAPlayer.shared.audioModifiers` must be finalized before calling this function. After all realtime audio manipulations within the this will be effective.
      
@@ -279,6 +291,12 @@ extension SAPlayer {
      - Parameter withRemoteUrl: The URL of the remote audio.
      - Parameter mediaInfo: The media information of the audio to show on the lockscreen media player (optional).
      */
+    public func startRemoteAudio(withRemoteUrl url: URL, mediaInfo: SALockScreenInfo? = nil) {
+        self.mediaInfo = mediaInfo
+        presenter.handlePlayStreamedAudio(withRemoteUrl: url)
+    }
+    
+    @available(*, deprecated, renamed: "startRemoteAudio")
     public func initializeRemoteAudio(withRemoteUrl url: URL, mediaInfo: SALockScreenInfo? = nil) {
         self.mediaInfo = mediaInfo
         presenter.handlePlayStreamedAudio(withRemoteUrl: url)

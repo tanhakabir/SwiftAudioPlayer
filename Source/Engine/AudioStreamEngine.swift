@@ -236,12 +236,6 @@ class AudioStreamEngine: AudioEngine {
         var currentTime = TimeInterval(playerTime.sampleTime) / playerTime.sampleRate
         currentTime = currentTime > 0 ? currentTime : 0
         
-        if currentTime > predictedStreamDuration {
-            Log.info("reached end of audio")
-            seek(toNeedle: 0)
-            pause()
-            playingStatus = .ended
-        }
         needle = (currentTime + currentTimeOffset)
     }
     

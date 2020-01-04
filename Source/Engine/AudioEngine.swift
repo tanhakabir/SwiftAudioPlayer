@@ -154,7 +154,7 @@ class AudioEngine: AudioEngineProtocol {
     
     func updateIsPlaying() {
         if !bufferedSeconds.isPlayable {
-            if bufferedSeconds.bufferingProgress == 1.0 {
+            if bufferedSeconds.bufferingProgress > 0.999 {
                 playingStatus = .ended
             } else {
                 playingStatus = .buffering

@@ -145,11 +145,9 @@ class ViewController: UIViewController {
             
             if self.duration == 0.0 { return }
             
-            let progress = Float((buffer.totalDurationBuffered + buffer.startingBufferTimePositon) / self.duration)
+            self.bufferProgress.progress = Float(buffer.bufferingProgress)
             
-            self.bufferProgress.progress = progress
-            
-            if progress >= 0.99 {
+            if buffer.bufferingProgress >= 0.99 {
                 self.streamButton.isEnabled = false
             }
             

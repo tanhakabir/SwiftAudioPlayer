@@ -29,7 +29,14 @@ import Foundation
 public struct SAAudioAvailabilityRange {
     let startingNeedle: Needle
     let durationLoadedByNetwork: Duration
+    let predictedDurationToLoad: Duration
     let isPlayable: Bool
+    
+    public var bufferingProgress: Double {
+        get {
+            return (startingNeedle + durationLoadedByNetwork) / predictedDurationToLoad
+        }
+    }
     
     public var startingBufferTimePositon: Double {
         get {
@@ -51,5 +58,9 @@ public struct SAAudioAvailabilityRange {
     
     public func contains(_ needle: Double) -> Bool {
         return needle >= startingNeedle && (needle - startingNeedle) < durationLoadedByNetwork
+    }
+    
+    public func isCompletelyBuffered() -> Bool {
+        return startingNeedle + durationLoadedByNetwork >= predictedDurationToLoad
     }
 }

@@ -247,9 +247,13 @@ extension AudioStreamWorker: URLSessionDataDelegate {
             return
         }
         
-        guard let totalBytesExpected = totalBytesExpectedForCurrentStream, totalBytesExpected > 0 else {
+        guard var totalBytesExpected = totalBytesExpectedForCurrentStream else {
             Log.monitor("should not be called 223r2")
             return
+        }
+        
+        if totalBytesExpected <= 0 {
+            totalBytesExpected = totalBytesReceived
         }
         
         totalBytesReceived = totalBytesReceived + Int64(data.count)

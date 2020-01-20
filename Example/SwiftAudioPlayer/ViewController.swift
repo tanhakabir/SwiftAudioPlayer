@@ -117,7 +117,6 @@ class ViewController: UIViewController {
         
         _ = SAPlayer.Updates.ElapsedTime.subscribe { [weak self] (url, position) in
             guard let self = self else { return }
-            guard self.beingSeeked == false else { return }
             guard url == self.selectedAudio.url || url == self.savedUrls[self.selectedAudio] else { return }
             
             self.currentTimestampLabel.text = SAPlayer.prettifyTimestamp(position)
@@ -146,11 +145,9 @@ class ViewController: UIViewController {
             
             if self.duration == 0.0 { return }
             
-            let progress = Float((buffer.totalDurationBuffered + buffer.startingBufferTimePositon) / self.duration)
+            self.bufferProgress.progress = Float(buffer.bufferingProgress)
             
-            self.bufferProgress.progress = progress
-            
-            if progress >= 0.99 {
+            if buffer.bufferingProgress >= 0.99 {
                 self.streamButton.isEnabled = false
             }
             
@@ -173,6 +170,10 @@ class ViewController: UIViewController {
             case .buffering:
                 self.isPlayable = false
                 self.playPauseButton.setTitle("Loading", for: .normal)
+                return
+            case .ended:
+                self.isPlayable = false
+                self.playPauseButton.setTitle("Done", for: .normal)
                 return
             }
         }
@@ -241,7 +242,7 @@ class ViewController: UIViewController {
                         self.currentUrlLocationLabel.text = "saved to: \(url.lastPathComponent)"
                         self.savedUrls[self.selectedAudio] = url
                         
-                        SAPlayer.shared.initializeSavedAudio(withSavedUrl: url)
+                        SAPlayer.shared.startSavedAudio(withSavedUrl: url)
                     }
                 })
                 streamButton.isEnabled = false
@@ -256,7 +257,7 @@ class ViewController: UIViewController {
     
     @IBAction func streamTouched(_ sender: Any) {
         if !isStreaming {
-            SAPlayer.shared.initializeRemoteAudio(withRemoteUrl: selectedAudio.url)
+            SAPlayer.shared.startRemoteAudio(withRemoteUrl: selectedAudio.url)
             streamButton.setTitle("Cancel streaming", for: .normal)
             downloadButton.isEnabled = false
         } else {

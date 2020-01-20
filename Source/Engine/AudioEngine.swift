@@ -27,6 +27,7 @@ import Foundation
 import AVFoundation
 
 protocol AudioEngineProtocol {
+    var engine: AVAudioEngine { get set }
     func play()
     func pause()
     func seek(toNeedle needle: Needle)
@@ -42,7 +43,7 @@ class AudioEngine: AudioEngineProtocol {
     weak var delegate:AudioEngineDelegate?
     let key:Key
     
-    let engine = AVAudioEngine()
+    var engine = AVAudioEngine()
     let playerNode = AVAudioPlayerNode()
     
     var timer: Timer?
@@ -77,12 +78,16 @@ class AudioEngine: AudioEngineProtocol {
                 return
             }
             
+            if status == .ended {
+                delegate?.didEndPlaying()
+            }
+            
             AudioClockDirector.shared.audioPlayingStatusWasChanged(key, status: status)
         }
     }
     
-    var bufferedSecondsDebouncer: SAAudioAvailabilityRange = SAAudioAvailabilityRange(startingNeedle: 0.0, durationLoadedByNetwork: 0.0, isPlayable: false)
-    var bufferedSeconds: SAAudioAvailabilityRange =  SAAudioAvailabilityRange(startingNeedle: 0.0, durationLoadedByNetwork: 0.0, isPlayable: false) {
+    var bufferedSecondsDebouncer: SAAudioAvailabilityRange = SAAudioAvailabilityRange(startingNeedle: 0.0, durationLoadedByNetwork: 0.0, predictedDurationToLoad: Double.greatestFiniteMagnitude, isPlayable: false)
+    var bufferedSeconds: SAAudioAvailabilityRange =  SAAudioAvailabilityRange(startingNeedle: 0.0, durationLoadedByNetwork: 0.0, predictedDurationToLoad: Double.greatestFiniteMagnitude, isPlayable: false) {
         didSet {
             if bufferedSeconds.startingNeedle == 0.0 && bufferedSeconds.durationLoadedByNetwork == 0.0 {
                 bufferedSecondsDebouncer = bufferedSeconds
@@ -149,7 +154,11 @@ class AudioEngine: AudioEngineProtocol {
     
     func updateIsPlaying() {
         if !bufferedSeconds.isPlayable {
-            playingStatus = .buffering
+            if bufferedSeconds.bufferingProgress > 0.999 {
+                playingStatus = .ended
+            } else {
+                playingStatus = .buffering
+            }
             return
         }
         

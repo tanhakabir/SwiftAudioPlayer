@@ -36,6 +36,33 @@ public class SAPlayer {
     private var player: AudioEngine?
     
     /**
+    Access the engine of the player. Engine is nil if player has not been initialized with audio.
+     
+     - Important: Changes to the engine are not safe guarded, thus unknown behaviour can arise from changing the engine. Just be wary and read [documentation of AVAudioEngine](https://developer.apple.com/documentation/avfoundation/avaudioengine) well when modifying,
+    */
+    public var engine: AVAudioEngine? {
+        get {
+            return player?.engine
+        }
+    }
+    
+    /**
+    Corresponding to the overall volume of the player. Volume's default value is 1.0 and the range of valid values is 0.0 to 1.0. Volume is nil if no audio has been initialized yet.
+    */
+    public var volume: Float? {
+        get {
+            return player?.engine.mainMixerNode.volume
+        }
+        
+        set {
+            guard let value = newValue else { return }
+            guard value >= 0.0 && value <= 1.0 else { return }
+            
+            player?.engine.mainMixerNode.volume = value
+        }
+    }
+    
+    /**
      Corresponding to the skipping forward button on the media player on the lockscreen. Default is set to 30 seconds.
      */
     public var skipForwardSeconds: Double = 30 {
@@ -77,6 +104,8 @@ public class SAPlayer {
     
     /**
      Total duration of current audio initialized. Returns nil if no audio is initialized in player.
+     
+     - Note: If you are streaming from a source that does not have an expected size at the beginning of a stream, such as live streams, this value will be constantly updating to best known value at the time.
      */
     public var duration: Double? {
         get {
@@ -169,21 +198,27 @@ public class SAPlayer {
 //MARK: - External Player Controls
 extension SAPlayer {
     /**
-     Toggles between the play and pause state of the player if the player is not buffering (thus is playable).
+     Toggles between the play and pause state of the player. If nothing is playable (aka still in buffering state or no audio is initialized) no action will be taken. Please call `startSavedAudio` or `startRemoteAudio` to set up the player with audio before this.
+     
+     - Note: If you are streaming, wait till the status from `SAPlayer.Updates.PlayingStatus` is not `.buffering`.
      */
     public func togglePlayAndPause() {
         presenter.handleTogglePlayingAndPausing()
     }
     
     /**
-     Attempts to play the player even if nothing playable is loaded (aka still in buffering state or no audio is initialized).
+     Attempts to play the player. If nothing is playable (aka still in buffering state or no audio is initialized) no action will be taken. Please call `startSavedAudio` or `startRemoteAudio` to set up the player with audio before this.
+     
+     - Note: If you are streaming, wait till the status from `SAPlayer.Updates.PlayingStatus` is not `.buffering`.
      */
     public func play() {
         presenter.handlePlay()
     }
     
     /**
-     Attempts to pause the player even if nothing playable is loaded (aka still in buffering state or no audio is initialized).
+     Attempts to pause the player. If nothing is playable (aka still in buffering state or no audio is initialized) no action will be taken. Please call `startSavedAudio` or `startRemoteAudio` to set up the player with audio before this.
+     
+     - Note:If you are streaming, wait till the status from `SAPlayer.Updates.PlayingStatus` is not `.buffering`.
      */
     public func pause() {
         presenter.handlePause()
@@ -235,13 +270,19 @@ extension SAPlayer {
      - Parameter withSavedUrl: The URL of the audio saved on the device.
      - Parameter mediaInfo: The media information of the audio to show on the lockscreen media player (optional).
      */
+    public func startSavedAudio(withSavedUrl url: URL, mediaInfo: SALockScreenInfo? = nil) {
+        self.mediaInfo = mediaInfo
+        presenter.handlePlaySavedAudio(withSavedUrl: url)
+    }
+    
+    @available(*, deprecated, renamed: "startSavedAudio")
     public func initializeSavedAudio(withSavedUrl url: URL, mediaInfo: SALockScreenInfo? = nil) {
         self.mediaInfo = mediaInfo
         presenter.handlePlaySavedAudio(withSavedUrl: url)
     }
     
     /**
-     Sets up player to play audio that will be streamed from a remote location.
+     Sets up player to play audio that will be streamed from a remote location. After this is called, it will connect to the server and start to receive and process data. The player is not playable the SAAudioAvailabilityRange notifies that player is ready for playing (you can subscribe to these updates through `SAPlayer.Updates.StreamingBuffer`). You can alternatively see when the player is available to play by subscribing to `SAPlayer.Updates.PlayingStatus` and waiting for a status that isn't `.buffering`.
      
      - Important: If intending to use [AVAudioUnit](https://developer.apple.com/documentation/avfoundation/audio_track_engineering/audio_engine_building_blocks/audio_enhancements) audio modifiers during playback, the list of audio modifiers under `SAPlayer.shared.audioModifiers` must be finalized before calling this function. After all realtime audio manipulations within the this will be effective.
      
@@ -250,9 +291,23 @@ extension SAPlayer {
      - Parameter withRemoteUrl: The URL of the remote audio.
      - Parameter mediaInfo: The media information of the audio to show on the lockscreen media player (optional).
      */
+    public func startRemoteAudio(withRemoteUrl url: URL, mediaInfo: SALockScreenInfo? = nil) {
+        self.mediaInfo = mediaInfo
+        presenter.handlePlayStreamedAudio(withRemoteUrl: url)
+    }
+    
+    @available(*, deprecated, renamed: "startRemoteAudio")
     public func initializeRemoteAudio(withRemoteUrl url: URL, mediaInfo: SALockScreenInfo? = nil) {
         self.mediaInfo = mediaInfo
         presenter.handlePlayStreamedAudio(withRemoteUrl: url)
+    }
+    
+    /**
+     Resets the player to the state before initializing audio and setting media info.
+     */
+    public func clear() {
+        player = nil
+        presenter.handleClear()
     }
 }
 

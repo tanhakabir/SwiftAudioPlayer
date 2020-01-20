@@ -218,7 +218,7 @@ class AudioStreamEngine: AudioEngine {
         let range = converter.pollNetworkAudioAvailabilityRange()
         isPlayable = (numberOfBuffersScheduledInTotal >= MIN_BUFFERS_TO_BE_PLAYABLE && range.1 > 0) && predictedStreamDuration > 0
         Log.debug("loaded \(range), numberOfBuffersScheduledInTotal: \(numberOfBuffersScheduledInTotal), isPlayable: \(isPlayable)")
-        bufferedSeconds = SAAudioAvailabilityRange(startingNeedle: range.0, durationLoadedByNetwork: range.1, isPlayable: isPlayable)
+        bufferedSeconds = SAAudioAvailabilityRange(startingNeedle: range.0, durationLoadedByNetwork: range.1, predictedDurationToLoad: predictedStreamDuration, isPlayable: isPlayable)
     }
     
     private func updateNeedle() {
@@ -236,12 +236,6 @@ class AudioStreamEngine: AudioEngine {
         var currentTime = TimeInterval(playerTime.sampleTime) / playerTime.sampleRate
         currentTime = currentTime > 0 ? currentTime : 0
         
-        if currentTime > predictedStreamDuration {
-            Log.info("reached end of audio")
-            seek(toNeedle: 0)
-            pause()
-            delegate?.didEndPlaying()
-        }
         needle = (currentTime + currentTimeOffset)
     }
     

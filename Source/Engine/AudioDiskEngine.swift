@@ -64,7 +64,7 @@ class AudioDiskEngine: AudioEngine {
             audioSampleRate = Float(audioFormat?.sampleRate ?? 44100)
             audioLengthSeconds = Float(audioLengthSamples) / audioSampleRate
             duration = Duration(audioLengthSeconds)
-            bufferedSeconds = SAAudioAvailabilityRange(startingNeedle: 0, durationLoadedByNetwork: duration, isPlayable: true)
+            bufferedSeconds = SAAudioAvailabilityRange(startingNeedle: 0, durationLoadedByNetwork: duration, predictedDurationToLoad: duration, isPlayable: true)
         } else {
             Log.monitor("Could not load downloaded file with url: \(url)")
         }
@@ -98,7 +98,7 @@ class AudioDiskEngine: AudioEngine {
             if state == .resumed {
                 state = .suspended
             }
-            delegate?.didEndPlaying()
+            playingStatus = .ended
         }
         
         guard audioSampleRate != 0 else {

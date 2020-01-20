@@ -39,7 +39,7 @@ pod 'SwiftAudioPlayer'
 To play remote audio:
 ```swift
 let url = URL(string: "https://randomwebsite.com/audio.mp3")!
-SAPlayer.shared.initializeAudio(withRemoteUrl: url)
+SAPlayer.shared.startRemoteAudio(withRemoteUrl: url)
 SAPlayer.shared.play()
 ```
 
@@ -121,8 +121,8 @@ Access the player and all of its fields and functions through `SAPlayer.shared`.
 ### Playing Audio (Basic Commands)
 
 To set up player with audio to play, use either: 
-* `initializeSavedAudio(withSavedUrl url: URL, mediaInfo: SALockScreenInfo?)` to play audio that is saved on the device.
-* `initializeRemoteAudio(withRemoteUrl url: URL, mediaInfo: SALockScreenInfo?)` to play audio streamed from a remote location.
+* `startSavedAudio(withSavedUrl url: URL, mediaInfo: SALockScreenInfo?)` to play audio that is saved on the device.
+* `startRemoteAudio(withRemoteUrl url: URL, mediaInfo: SALockScreenInfo?)` to play audio streamed from a remote location.
 
 Both of these expect a URL of the location of the audio and an optional media information to display on the lockscreen. 
 
@@ -252,7 +252,7 @@ Changes in the duration of the current initialized audio. Especially helpful for
 ### PlayingStatus
 Payload = `SAPlayingStatus`
 
-Changes in the playing status of the player. Can be one of the following 3: `playing`, `paused`, `buffering`.
+Changes in the playing status of the player. Can be one of the following 4: `playing`, `paused`, `buffering`, `ended` (audio ended).
 
 ### StreamingBuffer
 Payload = `SAAudioAvailabilityRange`

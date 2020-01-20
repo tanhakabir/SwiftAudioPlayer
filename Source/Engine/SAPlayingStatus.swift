@@ -30,4 +30,5 @@ public enum SAPlayingStatus {
     case playing
     case paused
     case buffering
+    case ended
 }

@@ -60,6 +60,18 @@ class SAPlayerPresenter {
         urlKeyMap[url.key] = url
     }
     
+    func handleClear() {
+        needle = nil
+        duration = nil
+        key = nil
+        mediaInfo = nil
+        delegate?.clearLockScreenInfo()
+        
+        AudioClockDirector.shared.detachFromChangesInDuration(withID: durationRef)
+        AudioClockDirector.shared.detachFromChangesInNeedle(withID: needleRef)
+        AudioClockDirector.shared.detachFromChangesInPlayingStatus(withID: playingStatusRef)
+    }
+    
     func handlePlaySavedAudio(withSavedUrl url: URL) {
         attachForUpdates(url: url)
         delegate?.startAudioDownloaded(withSavedUrl: url)

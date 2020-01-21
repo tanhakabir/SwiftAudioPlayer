@@ -59,7 +59,7 @@ class ViewController: UIViewController {
             self.currentUrlLocationLabel.text = "remote url: \(selectedAudio.url.absoluteString)"
         }
     }
-    
+    var freq:[Int] = [0,0,0,0,0,0,0,0,0,0]
     @IBOutlet weak var currentUrlLocationLabel: UILabel!
     @IBOutlet weak var bufferProgress: UIProgressView!
     @IBOutlet weak var scrubberSlider: UISlider!
@@ -183,6 +183,16 @@ class ViewController: UIViewController {
         let node = AVAudioUnitReverb()
         SAPlayer.shared.audioModifiers.append(node)
         node.wetDryMix = 300
+        let frequency:[Int] = [60,170,310,600,1000,3000,6000,12000,14000,16000]
+        let node2 = AVAudioUnitEQ(numberOfBands:frequency.count)
+        node2.globalGain = 1
+        for i in 0...(node2.bands.count-1) {
+            node2.bands[i].frequency  = Float(frequency[i])
+            node2.bands[i].gain       = 0
+            node2.bands[i].bypass     = false
+            node2.bands[i].filterType = .parametric
+        }
+        SAPlayer.shared.audioModifiers.append(node2)
     }
 
     override func didReceiveMemoryWarning() {
@@ -275,6 +285,19 @@ class ViewController: UIViewController {
     
     @IBAction func skipForwardTouched(_ sender: Any) {
         SAPlayer.shared.skipForward()
+    }
+    @IBAction func setEqualizerValue(_ sender: Any) {
+        if let slider = sender as? UISlider{
+            print("slider of index:", slider.tag, "is changed to", slider.value)
+            freq[slider.tag] = Int(slider.value)
+            print("current frequency : ",freq)
+            if let node = SAPlayer.shared.audioModifiers[2] as? AVAudioUnitEQ{
+                for i in 0...(node.bands.count - 1){
+                    node.bands[i].gain = Float(freq[i])
+                }
+            }
+        }
+        
     }
     
 }

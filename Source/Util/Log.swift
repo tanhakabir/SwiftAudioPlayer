@@ -9,21 +9,22 @@
 import Foundation
 import os.log
 
+// Possible levels of log messages to log
+enum LogLevel: Int {
+    case DEBUG = 1
+    case INFO = 2
+    case WARN = 3
+    case ERROR = 4
+    case EXTERNAL_DEBUG = 5
+    case MONITOR = 6
+    case TEST = 7
+}
+
+// Specify which types of log messages to display. Default level is set to WARN, which means Log will print any log messages of type only WARN, ERROR, MONITOR, and TEST. To print DEBUG and INFO logs, set the level to a lower value.
+var logLevel: LogLevel = LogLevel.MONITOR
+
 class Log {
     private init() {}
-    
-    // Possible levels of log messages to log
-    public enum LogLevel: Int {
-        case DEBUG = 1
-        case INFO = 2
-        case WARN = 3
-        case ERROR = 4
-        case MONITOR = 5
-        case TEST = 6
-    }
-    
-    // Specify which types of log messages to display. Default level is set to WARN, which means Log will print any log messages of type only WARN, ERROR, MONITOR, and TEST. To print DEBUG and INFO logs, set the level to a lower value.
-    public static var logLevel: LogLevel = LogLevel.MONITOR
     
     // Used for OSLog
     private static let SUBSYSTEM: String = "com.SwiftAudioPlayer"
@@ -68,6 +69,11 @@ class Log {
             let log = OSLog(subsystem: SUBSYSTEM, category: "ERROR 🛑🛑🛑🛑")
             os_log("%@:%@:%d:: %@", log: log, fileName, functionName, lineNumber, "\(logMessage)")
         }
+        
+        if logLevel.rawValue <= LogLevel.EXTERNAL_DEBUG.rawValue {
+            let log = OSLog(subsystem: SUBSYSTEM, category: "WARNING")
+            os_log("%@:%@:%d:: %@", log: log, fileName, functionName, lineNumber, "\(logMessage)")
+        }
     }
     
     /**
@@ -86,7 +92,7 @@ class Log {
     public static func monitor(_ logMessage: Any, classPath: String = #file, functionName: String = #function, lineNumber: Int = #line) {
         let fileName = URLUtil.getNameFromStringPath(classPath)
         if logLevel.rawValue <= LogLevel.ERROR.rawValue {
-            let log = OSLog(subsystem: SUBSYSTEM, category: "MONITOR 🔥🔥🔥🔥")
+            let log = OSLog(subsystem: SUBSYSTEM, category: "ERROR 🔥🔥🔥🔥")
             os_log("%@:%@:%d:: %@", log: log, fileName, functionName, lineNumber, "\(logMessage)")
         }
     }
@@ -108,6 +114,11 @@ class Log {
         let fileName = URLUtil.getNameFromStringPath(classPath)
         if logLevel.rawValue <= LogLevel.WARN.rawValue {
             let log = OSLog(subsystem: SUBSYSTEM, category: "WARN  ⚠️⚠️⚠️⚠️")
+            os_log("%@:%@:%d:: %@", log: log, fileName, functionName, lineNumber, "\(logMessage)")
+        }
+        
+        if logLevel.rawValue <= LogLevel.EXTERNAL_DEBUG.rawValue {
+            let log = OSLog(subsystem: SUBSYSTEM, category: "DEBUG")
             os_log("%@:%@:%d:: %@", log: log, fileName, functionName, lineNumber, "\(logMessage)")
         }
     }

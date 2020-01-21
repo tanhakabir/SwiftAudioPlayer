@@ -57,38 +57,39 @@ public enum ConverterError: LocalizedError {
     public var errorDescription: String? {
         switch self {
         case .cannotLockQueue:
-            print("Failed to lock queue")
+            Log.warn("Failed to lock queue")
             return "Failed to lock queue"
         case .converterFailed(let status):
+            Log.warn(localizedDescriptionFromConverterError(status))
             return localizedDescriptionFromConverterError(status)
         case .failedToCreateDestinationFormat:
-            print("Failed to create a destination (processing) format")
+            Log.warn("Failed to create a destination (processing) format")
             return "Failed to create a destination (processing) format"
         case .failedToCreatePCMBuffer:
-            print("Failed to create PCM buffer for reading data")
+            Log.warn("Failed to create PCM buffer for reading data")
             return "Failed to create PCM buffer for reading data"
         case .notEnoughData:
-            print("Not enough data for read-conversion operation")
+            Log.warn("Not enough data for read-conversion operation")
             return "Not enough data for read-conversion operation"
         case .parserMissingDataFormat:
-            print("Parser is missing a valid data format")
+            Log.warn("Parser is missing a valid data format")
             return "Parser is missing a valid data format"
         case .reachedEndOfFile:
-            print("Reached the end of the file")
+            Log.warn("Reached the end of the file")
             return "Reached the end of the file"
         case .unableToCreateConverter(let status):
             return localizedDescriptionFromConverterError(status)
         case .superConcerningShouldNeverHappen:
-            print("Weird unexpected reader error. Should not have happened")
+            Log.warn("Weird unexpected reader error. Should not have happened")
             return "Weird unexpected reader error. Should not have happened"
         case .cannotCreatePCMBufferWithoutConverter:
-            print("Could not create a PCM Buffer because reader does not have a converter yet")
+            Log.warn("Could not create a PCM Buffer because reader does not have a converter yet")
             return "Could not create a PCM Buffer because reader does not have a converter yet"
         case .throttleParsingBuffersForEngine:
-            print("Preventing the reader from creating more PCM buffers since the player has more than 60 seconds of audio already to play")
+            Log.warn("Preventing the reader from creating more PCM buffers since the player has more than 60 seconds of audio already to play")
             return "Preventing the reader from creating more PCM buffers since the player has more than 60 seconds of audio already to play"
         case .failedToCreateParser:
-            print("Could not create a parser")
+            Log.warn("Could not create a parser")
             return "Could not create a parser"
         }
     }

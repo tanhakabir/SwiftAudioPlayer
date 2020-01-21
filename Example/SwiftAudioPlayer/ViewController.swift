@@ -103,6 +103,8 @@ class ViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        SAPlayer.shared.DEBUG_MODE = true
+        
         isPlayable = false
         selectedAudio = AudioInfo(index: 0)
         

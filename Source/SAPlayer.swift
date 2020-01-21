@@ -27,6 +27,16 @@ import Foundation
 import AVFoundation
 
 public class SAPlayer {
+    public var DEBUG_MODE: Bool = false {
+        didSet {
+            if(DEBUG_MODE) {
+                logLevel = LogLevel.EXTERNAL_DEBUG
+            } else {
+                logLevel = LogLevel.MONITOR
+            }
+        }
+    }
+    
     /**
      Access to the player.
      */

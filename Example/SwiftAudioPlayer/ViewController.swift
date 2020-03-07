@@ -272,7 +272,9 @@ class ViewController: UIViewController {
             SAPlayer.shared.startRemoteAudio(withRemoteUrl: selectedAudio.url)
             streamButton.setTitle("Cancel streaming", for: .normal)
             downloadButton.isEnabled = false
+            isStreaming = true
         } else {
+            print("TODO Actually cancel streaming")
             // TODO
         }
     }

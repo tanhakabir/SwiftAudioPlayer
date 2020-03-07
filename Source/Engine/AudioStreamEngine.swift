@@ -291,6 +291,7 @@ class AudioStreamEngine: AudioEngine {
     }
     
     override func invalidate() {
+        super.invalidate()
         converter.invalidate()
     }
 }

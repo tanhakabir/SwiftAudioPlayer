@@ -293,7 +293,7 @@ extension AudioStreamWorker: URLSessionDataDelegate {
             return
         }
         
-        guard self.task == task else {
+        if self.task != task && self.task != nil {
             Log.error("stream_error not the same task 3901833")
             return
         }

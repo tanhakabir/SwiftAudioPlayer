@@ -151,6 +151,8 @@ class ViewController: UIViewController {
             
             if buffer.bufferingProgress >= 0.99 {
                 self.streamButton.isEnabled = false
+            } else {
+                self.streamButton.isEnabled = true
             }
             
             self.isPlayable = buffer.isReadyForPlaying

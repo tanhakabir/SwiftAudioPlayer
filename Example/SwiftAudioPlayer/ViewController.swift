@@ -151,6 +151,8 @@ class ViewController: UIViewController {
             
             if buffer.bufferingProgress >= 0.99 {
                 self.streamButton.isEnabled = false
+            } else {
+                self.streamButton.isEnabled = true
             }
             
             self.isPlayable = buffer.isReadyForPlaying
@@ -274,8 +276,10 @@ class ViewController: UIViewController {
             downloadButton.isEnabled = false
             isStreaming = true
         } else {
-            print("TODO Actually cancel streaming")
-            // TODO
+            SAPlayer.shared.stopStreamingRemoteAudio()
+            streamButton.setTitle("Stream", for: .normal)
+            downloadButton.isEnabled = true
+            isStreaming = false
         }
     }
     

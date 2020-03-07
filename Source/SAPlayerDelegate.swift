@@ -32,6 +32,7 @@ protocol SAPlayerDelegate: AnyObject, LockScreenViewProtocol {
     
     func startAudioDownloaded(withSavedUrl url: AudioURL)
     func startAudioStreamed(withRemoteUrl url: AudioURL)
+    func clearEngine()
     func playEngine()
     func pauseEngine()
     func seekEngine(toNeedle needle: Needle) //TODO ensure that engine cleans up out of bounds

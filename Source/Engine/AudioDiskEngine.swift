@@ -136,6 +136,7 @@ class AudioDiskEngine: AudioEngine {
     }
     
     override func invalidate() {
+        super.invalidate()
         //Nothing to invalidate for disk
     }
 }

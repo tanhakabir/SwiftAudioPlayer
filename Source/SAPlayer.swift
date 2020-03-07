@@ -312,6 +312,10 @@ extension SAPlayer {
         presenter.handlePlayStreamedAudio(withRemoteUrl: url)
     }
     
+    public func stopStreamingRemoteAudio() {
+        presenter.handleStopStreamingAudio()
+    }
+    
     /**
      Resets the player to the state before initializing audio and setting media info.
      */
@@ -334,6 +338,12 @@ extension SAPlayer: SAPlayerDelegate {
         player?.pause()
         player?.invalidate()
         player = AudioStreamEngine(withRemoteUrl: url, delegate: presenter)
+    }
+    
+    func clearEngine() {
+        player?.pause()
+        player?.invalidate()
+        player = nil
     }
     
     func playEngine() {

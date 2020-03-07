@@ -83,9 +83,7 @@ class SAPlayerPresenter {
     }
     
     private func attachForUpdates(url: URL) {
-        AudioClockDirector.shared.detachFromChangesInDuration(withID: durationRef)
-        AudioClockDirector.shared.detachFromChangesInNeedle(withID: needleRef)
-        AudioClockDirector.shared.detachFromChangesInPlayingStatus(withID: playingStatusRef)
+        detachFromUpdates()
         
         self.key = url.key
         urlKeyMap[url.key] = url
@@ -123,6 +121,17 @@ class SAPlayerPresenter {
             
             self.isPlaying = isPlaying
         })
+    }
+    
+    private func detachFromUpdates() {
+        AudioClockDirector.shared.detachFromChangesInDuration(withID: durationRef)
+        AudioClockDirector.shared.detachFromChangesInNeedle(withID: needleRef)
+        AudioClockDirector.shared.detachFromChangesInPlayingStatus(withID: playingStatusRef)
+    }
+    
+    func handleStopStreamingAudio() {
+        delegate?.clearEngine()
+        detachFromUpdates()
     }
     
     @available(iOS 10.0, *)

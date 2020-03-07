@@ -274,8 +274,10 @@ class ViewController: UIViewController {
             downloadButton.isEnabled = false
             isStreaming = true
         } else {
-            print("TODO Actually cancel streaming")
-            // TODO
+            SAPlayer.shared.stopStreamingRemoteAudio()
+            streamButton.setTitle("Stream", for: .normal)
+            downloadButton.isEnabled = true
+            isStreaming = false
         }
     }
     

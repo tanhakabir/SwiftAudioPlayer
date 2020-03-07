@@ -243,7 +243,7 @@ extension AudioStreamWorker: URLSessionDataDelegate {
         }
         
         guard self.task == dataTask else {
-            Log.error("stream_error not the same task") //Probably because of seek
+            Log.error("stream_error not the same task 638283") //Probably because of seek
             return
         }
         
@@ -271,7 +271,7 @@ extension AudioStreamWorker: URLSessionDataDelegate {
         }
         
         guard self.task == dataTask else {
-            Log.error("stream_error not the same task")
+            Log.error("stream_error not the same task 517253")
             return
         }
         
@@ -294,7 +294,7 @@ extension AudioStreamWorker: URLSessionDataDelegate {
         }
         
         guard self.task == task else {
-            Log.error("stream_error not the same task")
+            Log.error("stream_error not the same task 3901833")
             return
         }
         

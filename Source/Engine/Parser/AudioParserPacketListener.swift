@@ -3,7 +3,7 @@
 //  SwiftAudioPlayer
 //
 //  Created by Tanha Kabir on 2019-01-29.
-//  Copyright © 2019 Tanha Kabir, Jon Mercer
+//  Copyright © 2019 Tanha Kabir, Jon Mercer, Moy Inzunza
 //
 //  This file was modified and adapted from https://github.com/syedhali/AudioStreamer
 //  which was released under Apache License 2.0. Apache License 2.0 requires explicit
@@ -32,7 +32,19 @@
 import Foundation
 import AVFoundation
 
-func ParserPacketListener(_ context: UnsafeMutableRawPointer, _ byteCount: UInt32, _ packetCount: UInt32, _ streamData: UnsafeRawPointer, _ packetDescriptions: UnsafeMutablePointer<AudioStreamPacketDescription>) {
+#if swift(>=5.3)
+func ParserPacketListener (_ context: UnsafeMutableRawPointer, _ byteCount: UInt32, _ packetCount: UInt32, _ streamData: UnsafeRawPointer, _ packetDescriptions: UnsafeMutablePointer<AudioStreamPacketDescription>?) {
+    parserPacket(context, byteCount, packetCount, streamData, packetDescriptions!)
+}
+
+#else
+func ParserPacketListener (_ context: UnsafeMutableRawPointer, _ byteCount: UInt32, _ packetCount: UInt32, _ streamData: UnsafeRawPointer, _ packetDescriptions: UnsafeMutablePointer<AudioStreamPacketDescription>) {
+    parserPacket(context, byteCount, packetCount, streamData, packetDescriptions)
+}
+#endif
+
+func parserPacket(_ context: UnsafeMutableRawPointer, _ byteCount: UInt32, _ packetCount: UInt32, _ streamData: UnsafeRawPointer, _ packetDescriptions: UnsafeMutablePointer<AudioStreamPacketDescription>){
+    
     let selfAudioParser = Unmanaged<AudioParser>.fromOpaque(context).takeUnretainedValue()
     
     //bug in core audio where this could be nil
@@ -68,4 +80,5 @@ func ParserPacketListener(_ context: UnsafeMutableRawPointer, _ byteCount: UInt3
             selfAudioParser.audioPackets.append((nil, audioPacketData))
         }
     }
+    
 }

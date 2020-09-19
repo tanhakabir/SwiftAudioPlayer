@@ -34,6 +34,11 @@ pod 'SwiftAudioPlayer'
 
 ### Usage
 
+Import the player at the top:
+```swift
+import SwiftAudioPlayer
+```
+
 **Important:** For app in background downloading please refer to [note](#important-step-for-background-downloads).
 
 To play remote audio:

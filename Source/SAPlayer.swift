@@ -109,6 +109,10 @@ public class SAPlayer {
          }
          ````
          Please look at [forums.developer.apple.com/thread/5874](https://forums.developer.apple.com/thread/5874) and [forums.developer.apple.com/thread/6050](https://forums.developer.apple.com/thread/6050) for more details.
+     
+     For more details on pitch modifiers for playback rate changes please look at [developer.apple.com/forums/thread/6050](https://developer.apple.com/forums/thread/6050).
+     
+     To remove this default pitch modifier for playback rate changes, remove the node by calling `SAPlayer.shared.clearAudioModifiers()`.
      */
     public var audioModifiers: [AVAudioUnit] = []
     
@@ -179,6 +183,22 @@ public class SAPlayer {
         }
         
         audioModifiers.append(AVAudioUnitTimePitch(audioComponentDescription: componentDescription))
+    }
+    
+    /**
+     Clears all [AVAudioUnit](https://developer.apple.com/documentation/avfoundation/audio_track_engineering/audio_engine_building_blocks/audio_enhancements) modifiers intended to be used for realtime audio manipulation.
+     */
+    public func clearAudioModifiers() {
+        audioModifiers.removeAll()
+    }
+    
+    /**
+     Append an [AVAudioUnit](https://developer.apple.com/documentation/avfoundation/audio_track_engineering/audio_engine_building_blocks/audio_enhancements) modifier to the list of modifiers used for realtime audio manipulation. The modifier will be added to the end of the list.
+
+     - Parameter modifier: The modifier to append.
+     */
+    public func addAudioModifier(_ modifer: AVAudioUnit) {
+        audioModifiers.append(modifer)
     }
     
     /**
@@ -266,6 +286,23 @@ extension SAPlayer {
     /**
      If using an AVAudioUnitTimePitch, it's important to notify the player that the rate at which the audio playing has changed to keep the media player in the lockscreen up to date. This is only important for playback rate changes.
      
+     - Note: By default this engine has added a pitch modifier node to change the pitch so that on playback rate changes of spoken word the pitch isn't shifted.
+     
+     The component description of this node is:
+     ````
+     var componentDescription: AudioComponentDescription {
+        get {
+            var ret = AudioComponentDescription()
+            ret.componentType = kAudioUnitType_FormatConverter
+            ret.componentSubType = kAudioUnitSubType_AUiPodTimeOther
+            return ret
+        }
+     }
+     ````
+     Please look at [forums.developer.apple.com/thread/5874](https://forums.developer.apple.com/thread/5874) and [forums.developer.apple.com/thread/6050](https://forums.developer.apple.com/thread/6050) for more details.
+     
+     For more details on pitch modifiers for playback rate changes please look at [developer.apple.com/forums/thread/6050](https://developer.apple.com/forums/thread/6050).
+     
      - Parameter rate: The current rate at which the audio is playing.
      */
     public func playbackRateOfAudioChanged(rate: Float) {
@@ -276,6 +313,23 @@ extension SAPlayer {
      Sets up player to play audio that has been saved on the device.
      
      - Important: If intending to use [AVAudioUnit](https://developer.apple.com/documentation/avfoundation/audio_track_engineering/audio_engine_building_blocks/audio_enhancements) audio modifiers during playback, the list of audio modifiers under `SAPlayer.shared.audioModifiers` must be finalized before calling this function. After all realtime audio manipulations within the this will be effective.
+     
+     - Note: The default list already has an AVAudioUnitTimePitch node first in the list. This node is specifically set to change the rate of audio without changing the pitch of the audio (intended for changing the rate of spoken word).
+     
+         The component description of this node is:
+         ````
+         var componentDescription: AudioComponentDescription {
+            get {
+                var ret = AudioComponentDescription()
+                ret.componentType = kAudioUnitType_FormatConverter
+                ret.componentSubType = kAudioUnitSubType_AUiPodTimeOther
+                return ret
+            }
+         }
+         ````
+         Please look at [forums.developer.apple.com/thread/5874](https://forums.developer.apple.com/thread/5874) and [forums.developer.apple.com/thread/6050](https://forums.developer.apple.com/thread/6050) for more details.
+     
+     To remove this default pitch modifier for playback rate changes, remove the node by calling `SAPlayer.shared.clearAudioModifiers()`.
      
      - Parameter withSavedUrl: The URL of the audio saved on the device.
      - Parameter mediaInfo: The media information of the audio to show on the lockscreen media player (optional).
@@ -295,6 +349,23 @@ extension SAPlayer {
      Sets up player to play audio that will be streamed from a remote location. After this is called, it will connect to the server and start to receive and process data. The player is not playable the SAAudioAvailabilityRange notifies that player is ready for playing (you can subscribe to these updates through `SAPlayer.Updates.StreamingBuffer`). You can alternatively see when the player is available to play by subscribing to `SAPlayer.Updates.PlayingStatus` and waiting for a status that isn't `.buffering`.
      
      - Important: If intending to use [AVAudioUnit](https://developer.apple.com/documentation/avfoundation/audio_track_engineering/audio_engine_building_blocks/audio_enhancements) audio modifiers during playback, the list of audio modifiers under `SAPlayer.shared.audioModifiers` must be finalized before calling this function. After all realtime audio manipulations within the this will be effective.
+     
+     - Note: The default list already has an AVAudioUnitTimePitch node first in the list. This node is specifically set to change the rate of audio without changing the pitch of the audio (intended for changing the rate of spoken word).
+     
+         The component description of this node is:
+         ````
+         var componentDescription: AudioComponentDescription {
+            get {
+                var ret = AudioComponentDescription()
+                ret.componentType = kAudioUnitType_FormatConverter
+                ret.componentSubType = kAudioUnitSubType_AUiPodTimeOther
+                return ret
+            }
+         }
+         ````
+         Please look at [forums.developer.apple.com/thread/5874](https://forums.developer.apple.com/thread/5874) and [forums.developer.apple.com/thread/6050](https://forums.developer.apple.com/thread/6050) for more details.
+     
+     To remove this default pitch modifier for playback rate changes, remove the node by calling `SAPlayer.shared.clearAudioModifiers()`.
      
      - Note: Subscribe to `SAPlayer.Updates.StreamingBuffer` to see updates in streaming progress.
      

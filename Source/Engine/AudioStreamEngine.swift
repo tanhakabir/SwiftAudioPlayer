@@ -170,9 +170,20 @@ class AudioStreamEngine: AudioEngine {
             
             Log.debug("processed buffer for engine of frame length \(nextScheduledBuffer.frameLength)")
             queue.async { [weak self] in
-                self?.playerNode.scheduleBuffer(nextScheduledBuffer) {
-                    self?.numberOfBuffersScheduledInTotal -= 1
-                    self?.pollForNextBufferRecursionHelper()
+                if #available(iOS 11.0, *) {
+                    self?.playerNode.scheduleBuffer(nextScheduledBuffer, completionCallbackType: .dataPlayedBack) { _ in
+                        DispatchQueue.main.async {
+                            self?.numberOfBuffersScheduledInTotal -= 1
+                            self?.pollForNextBufferRecursionHelper()
+                        }
+                    }
+                } else {
+                    self?.playerNode.scheduleBuffer(nextScheduledBuffer) {
+                        DispatchQueue.main.async {
+                            self?.numberOfBuffersScheduledInTotal -= 1
+                            self?.pollForNextBufferRecursionHelper()
+                        }
+                    }
                 }
             }
             
@@ -195,9 +206,20 @@ class AudioStreamEngine: AudioEngine {
             numberOfBuffersScheduledInTotal += 1
             
             queue.async { [weak self] in
-                self?.playerNode.scheduleBuffer(nextScheduledBuffer) {
-                    self?.numberOfBuffersScheduledInTotal -= 1
-                    self?.pollForNextBufferRecursionHelper()
+                if #available(iOS 11.0, *) {
+                    self?.playerNode.scheduleBuffer(nextScheduledBuffer, completionCallbackType: .dataPlayedBack) { _ in
+                        DispatchQueue.main.async {
+                            self?.numberOfBuffersScheduledInTotal -= 1
+                            self?.pollForNextBufferRecursionHelper()
+                        }
+                    }
+                } else {
+                    self?.playerNode.scheduleBuffer(nextScheduledBuffer) {
+                        DispatchQueue.main.async {
+                            self?.numberOfBuffersScheduledInTotal -= 1
+                            self?.pollForNextBufferRecursionHelper()
+                        }
+                    }
                 }
                 
             }
@@ -259,9 +281,8 @@ class AudioStreamEngine: AudioEngine {
         
         self.needle = needle //to tick while paused
         
-        queue.sync { [weak self] in
-            self?.seekHelperDispatchQueue(needle: needle)
-        }
+        self.seekHelperDispatchQueue(needle: needle)
+        
     }
     
     /**

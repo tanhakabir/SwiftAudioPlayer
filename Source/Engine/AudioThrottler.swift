@@ -114,29 +114,31 @@ class AudioThrottler: AudioThrottleable {
         self.delegate = delegate
         
         AudioDataManager.shared.startStream(withRemoteURL: url) { [weak self] (pto: StreamProgressPTO) in
-            guard let self = self else {return}
-            Log.debug("received stream data of size \(pto.getData().count) and progress: \(pto.getProgress())")
-            self.delegate?.didUpdate(networkStreamProgress: pto.getProgress())
-            
-            if let totalBytesExpected = pto.getTotalBytesExpected() {
-                self.totalBytesExpected = totalBytesExpected
-            }
-            
-            let lastItem = self.networkData.last
-            let startoffset = lastItem == nil ? self.byteOffsetBecauseOfSeek : lastItem!.endOffset + 1
-            let wrappedNetworkData = NetworkDataWrapper(startingOffset: startoffset, data: pto.getData())
-            lastItem?.next = wrappedNetworkData
-            self.networkData.append(wrappedNetworkData)
-            
-            if !self.shouldThrottle {
-                Log.debug("sending up packet from stream untrottled at start: \(wrappedNetworkData.startOffset)")
-                //NOTE: the order here matters.
-                //We have to set to true before sending up to be processed because
-                //tellByteOffset() is ran in a separate thread than this one
-                //We got in a state where 10% of the time an episode will keep polling because
-                //the first 30 buffers have not been filled
-                wrappedNetworkData.alreadySent = true
-                delegate.shouldProcess(networkData: wrappedNetworkData.data)
+            DispatchQueue.main.async {
+                guard let self = self else {return}
+                Log.debug("received stream data of size \(pto.getData().count) and progress: \(pto.getProgress())")
+                self.delegate?.didUpdate(networkStreamProgress: pto.getProgress())
+                
+                if let totalBytesExpected = pto.getTotalBytesExpected() {
+                    self.totalBytesExpected = totalBytesExpected
+                }
+                
+                let lastItem = self.networkData.last
+                let startoffset = lastItem == nil ? self.byteOffsetBecauseOfSeek : lastItem!.endOffset + 1
+                let wrappedNetworkData = NetworkDataWrapper(startingOffset: startoffset, data: pto.getData())
+                lastItem?.next = wrappedNetworkData
+                self.networkData.append(wrappedNetworkData)
+                
+                if !self.shouldThrottle {
+                    Log.debug("sending up packet from stream untrottled at start: \(wrappedNetworkData.startOffset)")
+                    //NOTE: the order here matters.
+                    //We have to set to true before sending up to be processed because
+                    //tellByteOffset() is ran in a separate thread than this one
+                    //We got in a state where 10% of the time an episode will keep polling because
+                    //the first 30 buffers have not been filled
+                    wrappedNetworkData.alreadySent = true
+                    delegate.shouldProcess(networkData: wrappedNetworkData.data)
+                }
             }
         }
     }

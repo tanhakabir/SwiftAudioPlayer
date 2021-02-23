@@ -32,6 +32,7 @@ protocol AudioDataManagable {
     var allowCellular: Bool { get set }
     
     func setBackgroundCompletionHandler(_ completionHandler: @escaping () -> ())
+    func setAllowCellularDownloadPreference(_ preference: Bool)
     
     func clear()
     
@@ -51,7 +52,7 @@ protocol AudioDataManagable {
 }
 
 class AudioDataManager: AudioDataManagable {
-    var allowCellular: Bool = false
+    var allowCellular: Bool = true
     
     static let shared: AudioDataManagable = AudioDataManager()
     
@@ -97,6 +98,10 @@ class AudioDataManager: AudioDataManagable {
     
     func setBackgroundCompletionHandler(_ completionHandler: @escaping () -> ()) {
         backgroundCompletion = completionHandler
+    }
+    
+    func setAllowCellularDownloadPreference(_ preference: Bool) {
+        allowCellular = preference
     }
     
     func attach(callback: @escaping (_ id: ID, _ progress: Double)->()) {

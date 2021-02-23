@@ -199,6 +199,12 @@ And use the following to stop any active or prevent future downloads of the corr
 func cancelDownload(withRemoteUrl url: URL)
 ```
 
+By default downloading will be allowed on cellular data. If you would like to turn this off set:
+```swift
+SAPlayer.Downloader.allowUsingCellularData = false
+```
+You can also retrieve what preference you have set for cellular downloads through `allowUsingCellularData`.
+
 ### Manage Downloaded
 
 Use the following to manage downloaded audio files.

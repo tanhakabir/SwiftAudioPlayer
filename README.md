@@ -123,6 +123,10 @@ SwiftAudioPlayer is available under the MIT license. See the LICENSE file for mo
 
 Access the player and all of its fields and functions through `SAPlayer.shared`.
 
+### Supported file types
+
+Known supported file types are `.mp3` and `.wav`.
+
 ### Playing Audio (Basic Commands)
 
 To set up player with audio to play, use either: 

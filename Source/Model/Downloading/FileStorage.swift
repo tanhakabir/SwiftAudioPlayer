@@ -103,12 +103,15 @@ extension FileStorage {
         }
         
         static func locate(_ id: ID) -> URL? {
-            let urls = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)
-            
-            for url in urls {
-                if url.absoluteString.contains(id) && url.pathExtension != "" {
-                    _ = getUrl(givenId: id, andFileExtension: url.pathExtension)
-                    return url
+            let folderUrls = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)
+            guard folderUrls.count != 0 else { return nil }
+
+            if let urls = try? FileManager.default.contentsOfDirectory(at: folderUrls[0], includingPropertiesForKeys: nil) {
+                for url in urls {
+                    if url.absoluteString.contains(id) && url.pathExtension != "" {
+                        _ = getUrl(givenId: id, andFileExtension: url.pathExtension)
+                        return url
+                    }
                 }
             }
             return nil

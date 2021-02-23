@@ -83,7 +83,7 @@ public enum ConverterError: LocalizedError {
             Log.warn("Weird unexpected reader error. Should not have happened")
             return "Weird unexpected reader error. Should not have happened"
         case .cannotCreatePCMBufferWithoutConverter:
-            Log.warn("Could not create a PCM Buffer because reader does not have a converter yet")
+            Log.debug("Could not create a PCM Buffer because reader does not have a converter yet")
             return "Could not create a PCM Buffer because reader does not have a converter yet"
         case .throttleParsingBuffersForEngine:
             Log.warn("Preventing the reader from creating more PCM buffers since the player has more than 60 seconds of audio already to play")

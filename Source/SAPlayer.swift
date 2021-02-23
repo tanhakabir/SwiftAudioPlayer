@@ -57,6 +57,17 @@ public class SAPlayer {
     }
     
     /**
+    Access the player node of the engine. Node is nil if player has not been initialized with audio.
+     
+     - Important: Changes to the engine and this node are not safe guarded, thus unknown behaviour can arise from changing the engine or this node. Just be wary and read [documentation of AVAudioEngine](https://developer.apple.com/documentation/avfoundation/avaudioengine) well when modifying,
+    */
+    public var playerNode: AVAudioPlayerNode? {
+        get {
+            return player?.playerNode
+        }
+    }
+    
+    /**
     Corresponding to the overall volume of the player. Volume's default value is 1.0 and the range of valid values is 0.0 to 1.0. Volume is nil if no audio has been initialized yet.
     */
     public var volume: Float? {

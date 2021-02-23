@@ -290,6 +290,16 @@ class AudioStreamEngine: AudioEngine {
         updateNetworkBufferRange()
     }
     
+    override func pause() {
+        queue.async { [weak self] in
+            self?.pauseHelperDispatchQueue()
+        }
+    }
+    
+    private func pauseHelperDispatchQueue() {
+        super.pause()
+    }
+    
     override func invalidate() {
         super.invalidate()
         converter.invalidate()

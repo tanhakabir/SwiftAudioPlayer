@@ -42,6 +42,15 @@ protocol AudioThrottleable {
 }
 
 class AudioThrottler: AudioThrottleable {
+    enum State: String {
+        case INIT
+        case WAITING_FOR_DATA
+        case RECEIVING_DATA
+        case PUSH_DATA
+        case END_OF_DATA
+        case CLEAN_UP
+    }
+    
     private class NetworkDataWrapper: NSObject {
         let startOffset: UInt
         var data: Data
@@ -93,6 +102,7 @@ class AudioThrottler: AudioThrottleable {
     //Init
     let url: AudioURL
     weak var delegate: AudioThrottleDelegate?
+    private var state: State
     
     private var networkData: [NetworkDataWrapper] = []
     var shouldThrottle = false
@@ -110,12 +120,16 @@ class AudioThrottler: AudioThrottleable {
     var largestPollingOffsetDifference: UInt64 = 1
     
     required init(withRemoteUrl url: AudioURL, withDelegate delegate: AudioThrottleDelegate) {
+        self.state = .INIT
         self.url = url
         self.delegate = delegate
         
+        self.state = .WAITING_FOR_DATA
         AudioDataManager.shared.startStream(withRemoteURL: url) { [weak self] (pto: StreamProgressPTO) in
-            guard let self = self else {return}
-            Log.debug("received stream data of size \(pto.getData().count) and progress: \(pto.getProgress())")
+            guard let self = self else { return }
+            self.state = .RECEIVING_DATA
+            
+            Log.debug("received stream data of size \(pto.getData().count) and progress: \(pto.getProgress())", state: self.state.rawValue)
             self.delegate?.didUpdate(networkStreamProgress: pto.getProgress())
             
             if let totalBytesExpected = pto.getTotalBytesExpected() {
@@ -129,7 +143,7 @@ class AudioThrottler: AudioThrottleable {
             self.networkData.append(wrappedNetworkData)
             
             if !self.shouldThrottle {
-                Log.debug("sending up packet from stream untrottled at start: \(wrappedNetworkData.startOffset)")
+                Log.debug("sending up packet from stream untrottled at start: \(wrappedNetworkData.startOffset)", state: self.state.rawValue)
                 //NOTE: the order here matters.
                 //We have to set to true before sending up to be processed because
                 //tellByteOffset() is ran in a separate thread than this one
@@ -152,14 +166,14 @@ class AudioThrottler: AudioThrottleable {
     }
     
     func tellByteOffset(offset: UInt64) {
-        Log.debug("offset \(offset)")
+        Log.debug("offset \(offset)", state: self.state.rawValue)
         
         for wrappedNetworkData in networkData {
             if wrappedNetworkData.containsOffset(UInt(offset)) {
-                Log.debug("offset: \(offset) within network packet of range: \(wrappedNetworkData.startOffset) to \(wrappedNetworkData.endOffset) is next sent: \(wrappedNetworkData.isNextSent())")
+                Log.debug("offset: \(offset) within network packet of range: \(wrappedNetworkData.startOffset) to \(wrappedNetworkData.endOffset) is next sent: \(wrappedNetworkData.isNextSent())", state: self.state.rawValue)
                 
                 if wrappedNetworkData.alreadySent {
-                    Log.debug("already sent offset: \(offset) within network packet of range: \(wrappedNetworkData.startOffset) to \(wrappedNetworkData.endOffset)")
+                    Log.debug("already sent offset: \(offset) within network packet of range: \(wrappedNetworkData.startOffset) to \(wrappedNetworkData.endOffset)", state: self.state.rawValue)
                     
                     var bytesSent: UInt = 0
                     var current = wrappedNetworkData
@@ -169,14 +183,14 @@ class AudioThrottler: AudioThrottleable {
                     while bytesSent < largestPollingOffsetDifference {
                         if let next = current.next {
                             if !next.alreadySent {
-                                Log.info("Sending next network packet with range: \(next.startOffset) to \(next.endOffset), have sent \(bytesSent) bytes so far from \(largestPollingOffsetDifference) bytes")
+                                Log.info("Sending next network packet with range: \(next.startOffset) to \(next.endOffset), have sent \(bytesSent) bytes so far from \(largestPollingOffsetDifference) bytes", self.state.rawValue)
                                 next.alreadySent = true
                                 delegate?.shouldProcess(networkData: next.data)
                             }
                             bytesSent += next.byteCount
                             current = next
                         } else {
-                            Log.debug("next package doesn't exist, bytes sent so far: \(bytesSent)")
+                            Log.debug("next package doesn't exist, bytes sent so far: \(bytesSent)", state: self.state.rawValue)
                             return
                         }
                     }
@@ -184,7 +198,7 @@ class AudioThrottler: AudioThrottleable {
                     return
                 }
                 
-                Log.info("Found network packet  to send with range: \(wrappedNetworkData.startOffset) to \(wrappedNetworkData.endOffset)")
+                Log.info("Found network packet  to send with range: \(wrappedNetworkData.startOffset) to \(wrappedNetworkData.endOffset)", self.state.rawValue)
                 wrappedNetworkData.alreadySent = true
                 delegate?.shouldProcess(networkData: wrappedNetworkData.data)
                 return
@@ -193,7 +207,7 @@ class AudioThrottler: AudioThrottleable {
     }
     
     func tellSeek(offset: UInt64) {
-        Log.info("seek with offset: \(offset)")
+        Log.info("seek with offset: \(offset)", self.state.rawValue)
         
         if networkData.count == 0 {
             byteOffsetBecauseOfSeek = UInt(offset)
@@ -225,7 +239,7 @@ class AudioThrottler: AudioThrottleable {
                 
                 d.alreadySent = false
                 wrappedData.alreadySent = true
-                Log.info("\(d) ::: \(wrappedData)")
+                Log.info("\(d) ::: \(wrappedData)", self.state.rawValue)
                 
                 delegate?.shouldProcess(networkData: wrappedData.data)
                 return

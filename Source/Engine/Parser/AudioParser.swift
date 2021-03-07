@@ -113,10 +113,13 @@ class AudioParser: AudioParsable {
         didSet {
             if let audioPacketByteSize = audioPackets.last?.0?.mDataByteSize {
                 sumOfParsedAudioBytes += audioPacketByteSize
-                numberOfPacketsParsed += 1
+            } else if let audioPacketByteSize = audioPackets.last?.1.count { // for uncompressed audio there are no descriptors to say how many bytes of audio are in this packet so we approximate by data size
+                sumOfParsedAudioBytes += UInt32(audioPacketByteSize)
             }
             
-            //TODO: duration will not work with WAV or AIFF
+            numberOfPacketsParsed += 1
+            
+            //TODO: duration will not be accurate with WAV or AIFF
         }
     }
     
@@ -204,7 +207,7 @@ class AudioParser: AudioParsable {
     private func getOffset(fromPacketIndex index: AVAudioPacketCount) -> UInt64? {
         //Clear current buffer if we have audio format
         guard fileAudioFormat != nil, let bytesPerPacket = self.averageBytesPerPacket else {
-            Log.error("should not get here")
+            Log.error("should not get here \(String(describing: fileAudioFormat)) and \(String(describing: self.averageBytesPerPacket))")
             return nil
         }
         

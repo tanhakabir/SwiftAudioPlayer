@@ -34,7 +34,7 @@ import AVFoundation
 
 #if swift(>=5.3)
 func ParserPacketListener (_ context: UnsafeMutableRawPointer, _ byteCount: UInt32, _ packetCount: UInt32, _ streamData: UnsafeRawPointer, _ packetDescriptions: UnsafeMutablePointer<AudioStreamPacketDescription>?) {
-    parserPacket(context, byteCount, packetCount, streamData, packetDescriptions!)
+    parserPacket(context, byteCount, packetCount, streamData, packetDescriptions)
 }
 
 #else
@@ -43,16 +43,12 @@ func ParserPacketListener (_ context: UnsafeMutableRawPointer, _ byteCount: UInt
 }
 #endif
 
-func parserPacket(_ context: UnsafeMutableRawPointer, _ byteCount: UInt32, _ packetCount: UInt32, _ streamData: UnsafeRawPointer, _ packetDescriptions: UnsafeMutablePointer<AudioStreamPacketDescription>){
+func parserPacket(_ context: UnsafeMutableRawPointer, _ byteCount: UInt32, _ packetCount: UInt32, _ streamData: UnsafeRawPointer, _ packetDescriptions: UnsafeMutablePointer<AudioStreamPacketDescription>?){
     
     let selfAudioParser = Unmanaged<AudioParser>.fromOpaque(context).takeUnretainedValue()
     
-    //bug in core audio where this could be nil
-    let packetDescriptionOrNil: UnsafeMutablePointer<AudioStreamPacketDescription>? = packetDescriptions
-    let isCompressed = packetDescriptionOrNil != nil
-    
     guard let fileAudioFormat = selfAudioParser.fileAudioFormat else {
-        Log.monitor("shouldnot have reached packet listener without a data format")
+        Log.monitor("should not have reached packet listener without a data format")
         return
     }
     
@@ -62,15 +58,17 @@ func parserPacket(_ context: UnsafeMutableRawPointer, _ byteCount: UInt32, _ pac
     }
     
     //TODO refactor this after we get it working
-    if isCompressed {
+    if let compressedPacketDescriptions = packetDescriptions {  // is compressed audio (.mp3)
+        Log.debug("compressed audio")
         for i in 0 ..< Int(packetCount) {
-            let audioPacketDescription = packetDescriptions[i]
+            let audioPacketDescription = compressedPacketDescriptions[i]
             let audioPacketStart = Int(audioPacketDescription.mStartOffset)
             let audioPacketSize = Int(audioPacketDescription.mDataByteSize)
             let audioPacketData = Data(bytes: streamData.advanced(by: audioPacketStart), count: audioPacketSize)
             selfAudioParser.audioPackets.append((audioPacketDescription,audioPacketData))
         }
-    } else {
+    } else { // not compressed audio (.wav)
+        Log.debug("uncompressed audio")
         let format = fileAudioFormat.streamDescription.pointee
         let bytesPerAudioPacket = Int(format.mBytesPerPacket)
         for i in 0 ..< Int(packetCount) {

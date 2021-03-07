@@ -127,7 +127,7 @@ class AudioThrottler: AudioThrottleable {
         self.state = .WAITING_FOR_DATA
         AudioDataManager.shared.startStream(withRemoteURL: url) { [weak self] (pto: StreamProgressPTO) in
             guard let self = self else { return }
-            self.state = .RECEIVING_DATA
+            if !self.shouldThrottle { self.state = .RECEIVING_DATA }
             
             Log.debug("received stream data of size \(pto.getData().count) and progress: \(pto.getProgress())", state: self.state.rawValue)
             self.delegate?.didUpdate(networkStreamProgress: pto.getProgress())
@@ -143,6 +143,7 @@ class AudioThrottler: AudioThrottleable {
             self.networkData.append(wrappedNetworkData)
             
             if !self.shouldThrottle {
+                self.state = .PUSH_DATA
                 Log.debug("sending up packet from stream untrottled at start: \(wrappedNetworkData.startOffset)", state: self.state.rawValue)
                 //NOTE: the order here matters.
                 //We have to set to true before sending up to be processed because
@@ -157,6 +158,7 @@ class AudioThrottler: AudioThrottleable {
     
     func tellAudioFormatFound() {
         shouldThrottle = true //the above layer has enough info that we can throttle
+        self.state = .RECEIVING_DATA
     }
     
     func tellBytesPerAudioPacket(count: UInt64) {
@@ -183,6 +185,7 @@ class AudioThrottler: AudioThrottleable {
                     while bytesSent < largestPollingOffsetDifference {
                         if let next = current.next {
                             if !next.alreadySent {
+                                self.state = .PUSH_DATA
                                 Log.info("Sending next network packet with range: \(next.startOffset) to \(next.endOffset), have sent \(bytesSent) bytes so far from \(largestPollingOffsetDifference) bytes", self.state.rawValue)
                                 next.alreadySent = true
                                 delegate?.shouldProcess(networkData: next.data)
@@ -191,6 +194,7 @@ class AudioThrottler: AudioThrottleable {
                             current = next
                         } else {
                             Log.debug("next package doesn't exist, bytes sent so far: \(bytesSent)", state: self.state.rawValue)
+                            self.state = .END_OF_DATA
                             return
                         }
                     }
@@ -200,8 +204,11 @@ class AudioThrottler: AudioThrottleable {
                 
                 Log.info("Found network packet  to send with range: \(wrappedNetworkData.startOffset) to \(wrappedNetworkData.endOffset)", self.state.rawValue)
                 wrappedNetworkData.alreadySent = true
+                self.state = .PUSH_DATA
                 delegate?.shouldProcess(networkData: wrappedNetworkData.data)
                 return
+            } else {
+                self.state = .END_OF_DATA
             }
         }
     }
@@ -256,5 +263,6 @@ class AudioThrottler: AudioThrottleable {
     
     func invalidate() {
         AudioDataManager.shared.deleteStream(withRemoteURL: url)
+        self.state = .CLEAN_UP
     }
 }

@@ -8,7 +8,7 @@
 
 Pod::Spec.new do |s|
   s.name             = 'SwiftAudioPlayer'
-  s.version          = '2.13.0'
+  s.version          = '2.13.1'
   s.summary          = 'SwiftAudioPlayer is a Swift based audio player that can handle streaming from a remote location and audio manipulation.'
 
 # This description is used to generate tags and improve search results.
@@ -25,7 +25,7 @@ SwiftAudioPlayer is a Swift based audio player that can handle streaming from a 
   # s.screenshots     = 'www.example.com/screenshots_1', 'www.example.com/screenshots_2'
   s.license          = { :type => 'MIT', :file => 'LICENSE' }
   s.author           = { 'tanhakabir' => 'tanhakabir.ca@gmail.com', 'JonMercer' => 'mercer.jon@gmail.com' }
-  s.source           = { :git => 'https://github.com/tanhakabir/SwiftAudioPlayer.git', :tag => s.version.to_s }
+  s.source           = { :git => 'https://github.com/jw1540/SwiftAudioPlayer.git', :tag => s.version.to_s }
   # s.social_media_url = 'https://twitter.com/<TWITTER_USERNAME>'
 
   s.ios.deployment_target = '10.0'

@@ -182,6 +182,10 @@ extension SAPlayerPresenter {
     func handleScrubbingIntervalsChanged() {
         delegate?.updateLockscreenSkipIntervals()
     }
+    
+    func handleSkippingSilences(_ bool: Bool) {
+        delegate?.handleSkippingSilences(bool)
+    }
 }
 
 //MARK:- For lock screen

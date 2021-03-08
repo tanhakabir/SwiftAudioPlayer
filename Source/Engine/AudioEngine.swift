@@ -141,7 +141,8 @@ class AudioEngine: AudioEngineProtocol {
         } else {
             engine.connect(playerNode, to: engine.mainMixerNode, format: engineAudioFormat)
         }
-        
+
+        connectVolumeTap()
         engine.prepare()
     }
     
@@ -150,6 +151,7 @@ class AudioEngine: AudioEngineProtocol {
         if state == .resumed {
             engine.stop()
         }
+        removeVolumeTap()
     }
     
     func updateIsPlaying() {
@@ -200,5 +202,53 @@ class AudioEngine: AudioEngineProtocol {
     
     func invalidate() {
         
+    }
+
+    private func scaledPower(power: Float) -> Float {
+            guard power.isFinite else { return 0.0 }
+            let minDb: Float = -80.0
+            if power < minDb {
+                return 0.0
+            } else if power >= 1.0 {
+                return 1.0
+            } else {
+                return (abs(minDb) - abs(power)) / abs(minDb)
+            }
+        }
+
+    private func connectVolumeTap() {
+        let format = engine.mainMixerNode.outputFormat(forBus: 0)
+        engine.mainMixerNode.installTap(onBus: 0, bufferSize: 1024, format: format) { [weak self] buffer, when in
+            guard let self = self, SAPlayer.shared.skipSilences else { return }
+            guard let channelData = buffer.floatChannelData else {
+                return
+            }
+
+            let channelDataValue = channelData.pointee
+            let channelDataValueArray = stride(from: 0,
+                                               to: Int(buffer.frameLength),
+                                               by: buffer.stride).map { channelDataValue[$0] }
+
+            let rms = sqrt(channelDataValueArray.map { $0 * $0 }.reduce(0, +) / Float(buffer.frameLength))
+
+            let avgPower = 20 * log10(rms)
+
+            let meterLevel = self.scaledPower(power: avgPower)
+            if meterLevel < 0.6 {
+                self.changeRate(to: 1.5)
+            } else {
+                self.changeRate(to: 1)
+            }
+        }
+    }
+
+    private func removeVolumeTap() {
+        engine.mainMixerNode.removeTap(onBus: 0)
+    }
+
+    private func changeRate(to rate: Float) {
+        guard let node = SAPlayer.shared.audioModifiers.first as? AVAudioUnitTimePitch else { return }
+        node.rate = rate
+        SAPlayer.shared.playbackRateOfAudioChanged(rate: rate)
     }
 }

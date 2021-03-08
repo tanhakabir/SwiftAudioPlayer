@@ -44,6 +44,8 @@ public class SAPlayer {
     
     private var presenter: SAPlayerPresenter!
     private var player: AudioEngine?
+    private var timer: Timer?
+    var skipSilences: Bool = false
     
     /**
     Access the engine of the player. Engine is nil if player has not been initialized with audio.
@@ -194,6 +196,11 @@ public class SAPlayer {
         }
         
         audioModifiers.append(AVAudioUnitTimePitch(audioComponentDescription: componentDescription))
+    }
+
+    deinit {
+        timer?.invalidate()
+        timer = nil
     }
     
     /**
@@ -405,6 +412,10 @@ extension SAPlayer {
         player = nil
         presenter.handleClear()
     }
+
+    public func enableSkipSilences(_ bool: Bool) {
+        presenter.handleSkippingSilences(bool)
+    }
 }
 
 
@@ -457,6 +468,16 @@ extension SAPlayer: SAPlayerDelegate {
         var seekToNeedle = needle < 0 ? 0 : needle
         seekToNeedle = needle > Needle(duration ?? 0) ? Needle(duration ?? 0) : needle
         player?.seek(toNeedle: seekToNeedle)
+    }
+
+    func handleSkippingSilences(_ bool: Bool) {
+        skipSilences = bool
+    }
+
+    public func pause(after delay: Double) {
+        timer = Timer.scheduledTimer(withTimeInterval: delay, repeats: false, block: { [weak self] _ in
+            self?.presenter.handleTogglePlayingAndPausing()
+        })
     }
 }
 

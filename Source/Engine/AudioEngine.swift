@@ -205,16 +205,16 @@ class AudioEngine: AudioEngineProtocol {
     }
 
     private func scaledPower(power: Float) -> Float {
-            guard power.isFinite else { return 0.0 }
-            let minDb: Float = -80.0
-            if power < minDb {
-                return 0.0
-            } else if power >= 1.0 {
-                return 1.0
-            } else {
-                return (abs(minDb) - abs(power)) / abs(minDb)
-            }
+        guard power.isFinite else { return 0.0 }
+        let minDb: Float = -80.0
+        if power < minDb {
+            return 0.0
+        } else if power >= 1.0 {
+            return 1.0
+        } else {
+            return (abs(minDb) - abs(power)) / abs(minDb)
         }
+    }
 
     private func connectVolumeTap() {
         let format = engine.mainMixerNode.outputFormat(forBus: 0)

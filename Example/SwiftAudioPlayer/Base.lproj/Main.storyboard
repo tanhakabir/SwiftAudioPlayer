@@ -137,6 +137,20 @@
                                     <action selector="skipSilencesSwitched:" destination="vXZ-lx-hvc" eventType="valueChanged" id="p7X-Y8-7hO"/>
                                 </connections>
                             </switch>
+                            <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" on="YES" translatesAutoresizingMaskIntoConstraints="NO" id="IGe-aU-Y6D">
+                                <rect key="frame" x="226" y="540" width="49" height="31"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <connections>
+                                    <action selector="sleepSwitched:" destination="vXZ-lx-hvc" eventType="valueChanged" id="noa-m8-VHy"/>
+                                </connections>
+                            </switch>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Sleep After 5 s" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="vf6-kr-yWa">
+                                <rect key="frame" x="83" y="545" width="112" height="21"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
                         </subviews>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
@@ -198,6 +212,7 @@
                         <outlet property="skipBackwardButton" destination="tFH-sY-Xu9" id="LwM-2S-m6F"/>
                         <outlet property="skipForwardButton" destination="0QE-3F-a4G" id="cQ7-b7-pW7"/>
                         <outlet property="skipSilencesSwitch" destination="2cn-E5-TeQ" id="TRI-IT-YJT"/>
+                        <outlet property="sleepSwitch" destination="IGe-aU-Y6D" id="BZn-9C-hOk"/>
                         <outlet property="streamButton" destination="6d9-Bc-hIz" id="DZe-ga-3RV"/>
                     </connections>
                 </viewController>

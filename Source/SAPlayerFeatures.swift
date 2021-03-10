@@ -33,7 +33,7 @@ extension SAPlayer {
                     let meterLevel = self.scaledPower(power: avgPower)
                     Log.test(meterLevel)
                     if meterLevel < 0.6 {
-                        self.changeRate(to: 3)
+                        self.changeRate(to: 1.5)
                     } else {
                         self.changeRate(to: 1)
                     }

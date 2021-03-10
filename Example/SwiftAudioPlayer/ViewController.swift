@@ -310,5 +310,16 @@ class ViewController: UIViewController {
         
     }
     
+    @IBOutlet weak var skipSilencesSwitch: UISwitch!
+    
+    @IBAction func skipSilencesSwitched(_ sender: Any) {
+        print("switch is \(skipSilencesSwitch.isOn)")
+        
+        if skipSilencesSwitch.isOn {
+            SAPlayer.Features.SkipSilences.enable()
+        } else {
+            SAPlayer.Features.SkipSilences.disable()
+        }
+    }
 }
 

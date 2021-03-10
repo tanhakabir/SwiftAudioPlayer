@@ -31,7 +31,7 @@ extension SAPlayer {
                     let avgPower = 20 * log10(rms)
 
                     let meterLevel = self.scaledPower(power: avgPower)
-                    Log.test(meterLevel)
+                    Log.debug("meterLevel: \(meterLevel)")
                     if meterLevel < 0.6 {
                         self.changeRate(to: 1.5)
                     } else {
@@ -64,7 +64,6 @@ extension SAPlayer {
             private static func changeRate(to rate: Float) {
                 guard let node = SAPlayer.shared.audioModifiers.first as? AVAudioUnitTimePitch else { return }
                 node.rate = rate
-                Log.test(rate)
                 SAPlayer.shared.playbackRateOfAudioChanged(rate: rate)
             }
         }

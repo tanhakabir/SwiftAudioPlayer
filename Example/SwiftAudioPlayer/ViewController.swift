@@ -110,7 +110,7 @@ class ViewController: UIViewController {
         isPlayable = false
         selectedAudio = AudioInfo(index: 0)
         
-        addRandomModifiers()
+//        addRandomModifiers()
         
         _ = SAPlayer.Updates.Duration.subscribe { [weak self] (url, duration) in
             guard let self = self else { return }

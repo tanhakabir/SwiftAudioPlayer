@@ -57,6 +57,15 @@ public class SAPlayer {
     }
     
     /**
+    Unique ID for the current engine. This will be nil if no audio has been initialized which means no engine exists.
+    */
+    public var engineUID: String? {
+        get {
+            return player?.key
+        }
+    }
+    
+    /**
     Access the player node of the engine. Node is nil if player has not been initialized with audio.
      
      - Important: Changes to the engine and this node are not safe guarded, thus unknown behaviour can arise from changing the engine or this node. Just be wary and read [documentation of AVAudioEngine](https://developer.apple.com/documentation/avfoundation/avaudioengine) well when modifying,

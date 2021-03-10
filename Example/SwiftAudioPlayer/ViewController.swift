@@ -229,10 +229,7 @@ class ViewController: UIViewController {
     @IBAction func rateChanged(_ sender: Any) {
         let speed = rateSlider.value
         rateLabel.text = "rate: \(speed)x"
-        if let node = SAPlayer.shared.audioModifiers[0] as? AVAudioUnitTimePitch {
-            node.rate = speed
-            SAPlayer.shared.playbackRateOfAudioChanged(rate: speed)
-        }
+        SAPlayer.shared.rate = speed
     }
     @IBAction func reverbChanged(_ sender: Any) {
         let reverb = reverbSlider.value
@@ -313,12 +310,10 @@ class ViewController: UIViewController {
     @IBOutlet weak var skipSilencesSwitch: UISwitch!
     
     @IBAction func skipSilencesSwitched(_ sender: Any) {
-        print("switch is \(skipSilencesSwitch.isOn)")
-        
         if skipSilencesSwitch.isOn {
-            SAPlayer.Features.SkipSilences.enable()
+            _ = SAPlayer.Features.SkipSilences.enable()
         } else {
-            SAPlayer.Features.SkipSilences.disable()
+            _ = SAPlayer.Features.SkipSilences.disable()
         }
     }
 }

@@ -27,6 +27,7 @@ import Foundation
 import AVFoundation
 
 protocol AudioEngineProtocol {
+    var key: Key { get }
     var engine: AVAudioEngine { get set }
     func play()
     func pause()
@@ -41,7 +42,7 @@ protocol AudioEngineDelegate: AnyObject {
 
 class AudioEngine: AudioEngineProtocol {
     weak var delegate:AudioEngineDelegate?
-    let key:Key
+    var key:Key
     
     var engine = AVAudioEngine()
     let playerNode = AVAudioPlayerNode()

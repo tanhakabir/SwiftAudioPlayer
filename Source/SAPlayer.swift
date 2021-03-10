@@ -84,6 +84,30 @@ public class SAPlayer {
     }
     
     /**
+    Corresponding to the rate of audio playback. This rate assumes use of the default rate modifier at the first index of `audioModifiers`; if you removed that modifier than this will be nil. If no audio has been initialized then this will also be nil.
+    */
+    public var rate: Float? {
+        get {
+            return (audioModifiers.first as? AVAudioUnitTimePitch)?.rate
+        }
+        
+        set {
+            guard let value = newValue else { return }
+            guard let node = audioModifiers.first as? AVAudioUnitTimePitch else { return }
+            
+            node.rate = value
+            playbackRateOfAudioChanged(rate: value)
+            
+            // if skip silences was on, reset it to have the new rate
+            // TODO fix this to rate being broadcasted and handled in only Features.SkipSilences https://github.com/tanhakabir/SwiftAudioPlayer/issues/77
+//            if Features.SkipSilences.enabled && !(value == rate ?? 1.0 - 0.5 || value == rate ?? 1.0 + 0.5) {
+//                _ = Features.SkipSilences.disable()
+//                _ = Features.SkipSilences.enable()
+//            }
+        }
+    }
+    
+    /**
      Corresponding to the skipping forward button on the media player on the lockscreen. Default is set to 30 seconds.
      */
     public var skipForwardSeconds: Double = 30 {

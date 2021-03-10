@@ -9,13 +9,35 @@ import Foundation
 import AVFoundation
 
 extension SAPlayer {
+    /**
+     Special features for audio manipulation. These are examples of manipulations you can do with the player outside of this library. This is just an aggregation of community contibuted ones.
+     
+     - Note: These features assume default state of the player and `audioModifiers` meaning some expect the first audio modifier to be the default `AVAudioUnitTimePitch` that comes with the SAPlayer.
+     */
     public struct Features {
+        
+        /**
+         Feature to skip silences in spoken word audio. The player will speed up the rate of audio playback when silence is detected.
+         
+         - Important: The first audio modifier must be the default `AVAudioUnitTimePitch` that comes with the SAPlayer for this feature to work.
+         */
         public struct SkipSilences {
+            
+            static var enabled: Bool = false
+            
+            /**
+             Enable feature to skip silences in spoken word audio. The player will speed up the rate of audio playback when silence is detected. This can be called at any point of audio playback.
+             
+             - Important: The first audio modifier must be the default `AVAudioUnitTimePitch` that comes with the SAPlayer for this feature to work.
+             */
             public static func enable() -> Bool {
                 guard let engine = SAPlayer.shared.engine else { return false }
                 
                 Log.info("enabling skip silences feature")
+                enabled = true
+                let originalRate = SAPlayer.shared.rate ?? 1.0
                 let format = engine.mainMixerNode.outputFormat(forBus: 0)
+                
                 engine.mainMixerNode.installTap(onBus: 0, bufferSize: 1024, format: format) { buffer, when in
                     guard let channelData = buffer.floatChannelData else {
                         return
@@ -33,19 +55,28 @@ extension SAPlayer {
                     let meterLevel = self.scaledPower(power: avgPower)
                     Log.debug("meterLevel: \(meterLevel)")
                     if meterLevel < 0.6 {
-                        self.changeRate(to: 1.5)
+                        SAPlayer.shared.rate = originalRate + 0.5
+                        Log.test("speed up rate to \(String(describing: SAPlayer.shared.rate))")
                     } else {
-                        self.changeRate(to: 1)
+                        SAPlayer.shared.rate = originalRate
+                        Log.test("slow down rate to \(String(describing: SAPlayer.shared.rate))")
                     }
                 }
                 
                 return true
             }
             
+            /**
+             Disable feature to skip silences in spoken word audio. The player will speed up the rate of audio playback when silence is detected. This can be called at any point of audio playback.
+             
+             - Important: The first audio modifier must be the default `AVAudioUnitTimePitch` that comes with the SAPlayer for this feature to work.
+             */
             public static func disable() -> Bool {
+                // TODO fix disabling on speed up portion and being stuck at faster speed https://github.com/tanhakabir/SwiftAudioPlayer/issues/76
                 guard let engine = SAPlayer.shared.engine else { return false }
                 Log.info("disabling skip silences feature")
                 engine.mainMixerNode.removeTap(onBus: 0)
+                enabled = false
                 return true
             }
             
@@ -59,12 +90,6 @@ extension SAPlayer {
                 } else {
                     return (abs(minDb) - abs(power)) / abs(minDb)
                 }
-            }
-            
-            private static func changeRate(to rate: Float) {
-                guard let node = SAPlayer.shared.audioModifiers.first as? AVAudioUnitTimePitch else { return }
-                node.rate = rate
-                SAPlayer.shared.playbackRateOfAudioChanged(rate: rate)
             }
         }
     }

@@ -38,6 +38,8 @@ extension SAPlayer {
                 let originalRate = SAPlayer.shared.rate ?? 1.0
                 let format = engine.mainMixerNode.outputFormat(forBus: 0)
                 
+                
+                // look at documentation here to get an understanding of what is happening here: https://www.raywenderlich.com/5154-avaudioengine-tutorial-for-ios-getting-started#toc-anchor-005
                 engine.mainMixerNode.installTap(onBus: 0, bufferSize: 1024, format: format) { buffer, when in
                     guard let channelData = buffer.floatChannelData else {
                         return
@@ -54,7 +56,7 @@ extension SAPlayer {
 
                     let meterLevel = self.scaledPower(power: avgPower)
                     Log.debug("meterLevel: \(meterLevel)")
-                    if meterLevel < 0.6 {
+                    if meterLevel < 0.6 { // below 0.6 decibels is below audible audio
                         SAPlayer.shared.rate = originalRate + 0.5
                         Log.test("speed up rate to \(String(describing: SAPlayer.shared.rate))")
                     } else {

@@ -17,7 +17,7 @@ class ViewController: UIViewController {
         var url: URL {
             switch index {
             case 0:
-                return URL(string: "https://cdn.fastlearner.media/bensound-rumble.mp3")!
+                return URL(string: "https://www.fesliyanstudios.com/musicfiles/2019-04-23_-_Trusted_Advertising_-_www.fesliyanstudios.com/15SecVersion2019-04-23_-_Trusted_Advertising_-_www.fesliyanstudios.com.mp3")!
             case 1:
                 return URL(string: "https://chtbl.com/track/18338/traffic.libsyn.com/secure/acquired/acquired_-_armrev_2.mp3?dest-id=376122")!
             case 2:
@@ -183,6 +183,13 @@ class ViewController: UIViewController {
                 return
             }
         }
+
+        _ = SAPlayer.Updates.AudioQueue.subscribe { [weak self] key, forthcomingPlaybackUrl in
+            guard let self = self else { return }
+            /// we update the selected audio. this is a little contrived, but allows us to update outlets
+            self.selectedAudio = AudioInfo(index: 1)
+            print("💥 Received queue update 💥")
+        }
     }
     
     func addRandomModifiers() {
@@ -309,6 +316,9 @@ class ViewController: UIViewController {
         }
         
     }
-    
+
+    @IBAction func queueButtonDidTap(_ sender: Any) {
+        SAPlayer.shared.queue(remoteUrl: AudioInfo(index: 1).url)
+    }
 }
 

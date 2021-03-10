@@ -197,6 +197,33 @@ extension SAPlayer {
                 DownloadProgressDirector.shared.detach(withID: id)
             }
         }
+
+        public struct AudioQueue {
+            /**
+             Subscribe to updates to changes in the progress of your audio queue. When streaming audio playback completes
+             and continues onto the next track, the closure is invoked.
+
+             - Note: It's recommended to have a weak reference to a class that uses this function
+
+             - Parameter closure: The closure that will receive the updates of the changes in duration.
+             - Parameter url: The corresponding remote URL for the forthcoming audio file.
+             - Returns: the id for the subscription in the case you would like to unsubscribe to updates for the closure.
+             */
+            public static func subscribe(_ closure: @escaping (_ key: String, _ newUrl: URL) -> ()) -> UInt {
+                return AudioClockDirector.shared.attachToChangesInQueue(closure: { (key, url) in
+                    closure(key, url)
+                })
+            }
+
+            /**
+             Stop recieving updates of changes in download progress.
+
+             - Parameter id: The closure with this id will stop receiving updates.
+             */
+            public static func unsubscribe(_ id: UInt) {
+                AudioQueueDirector.shared.detach(withID: id)
+            }
+        }
     }
 }
 

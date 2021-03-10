@@ -3,7 +3,7 @@ This application makes use of the following third party libraries:
 
 ## SwiftAudioPlayer
 
-Copyright (c) 2019 tanhakabir <tanhakabir.ca@gmail.com>
+Copyright (c) 2019 Tanha Kabir <tanhakabir.ca@gmail.com>, Jon Mercer <mercer.jon@gmail.com>
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal

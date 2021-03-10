@@ -7,467 +7,465 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		27E3EC64A90305ACA68AE35A7DC597E0 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5A16F4CFC63FAC439D7A04994F579A03 /* Foundation.framework */; };
-		2A421C2A94DF56A00FF73322C6B470C8 /* SwiftAudioPlayer-umbrella.h in Headers */ = {isa = PBXBuildFile; fileRef = 0E268C8D5FBBF7E0E790D3AA6A70FEC2 /* SwiftAudioPlayer-umbrella.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		3A31FEF49CC8C3B757EEB4EBCC9BCCF4 /* Pods-SwiftAudioPlayer_Tests-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = 351771425C270B04BF2A07F0262DA192 /* Pods-SwiftAudioPlayer_Tests-dummy.m */; };
-		418D41690EF20077112E2BE86E32FB6A /* Pods-SwiftAudioPlayer_Example-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = AB41D88A2C694FBDF26EA56381EED25F /* Pods-SwiftAudioPlayer_Example-dummy.m */; };
-		79D8DF73FA7CDD6E266BAE71D46E035F /* Pods-SwiftAudioPlayer_Tests-umbrella.h in Headers */ = {isa = PBXBuildFile; fileRef = 50C71346CE708A211A5AFAC20BAE48CB /* Pods-SwiftAudioPlayer_Tests-umbrella.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		831B263D357A5FA2DDC7B1AE4B374092 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5A16F4CFC63FAC439D7A04994F579A03 /* Foundation.framework */; };
-		8F93DB166237195ED222EE55B6404625 /* Pods-SwiftAudioPlayer_Example-umbrella.h in Headers */ = {isa = PBXBuildFile; fileRef = 3B0B76CB1439F4D361322144E5A65C3A /* Pods-SwiftAudioPlayer_Example-umbrella.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		A40DBE292391D9CA00F86146 /* Data.swift in Sources */ = {isa = PBXBuildFile; fileRef = A40DBE282391D9C900F86146 /* Data.swift */; };
-		A41AA0D2238BB9B600A467E1 /* SAPlayingStatus.swift in Sources */ = {isa = PBXBuildFile; fileRef = A41AA0D1238BB9B600A467E1 /* SAPlayingStatus.swift */; };
-		A4681FC6220113880018AB51 /* SAPlayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = A4681F8D2200E00E0018AB51 /* SAPlayer.swift */; };
-		A4681FC72201138B0018AB51 /* SAPlayerDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = A4681F912200E1950018AB51 /* SAPlayerDelegate.swift */; };
-		A4681FC82201138E0018AB51 /* SAPlayerPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = A4681F8F2200E1450018AB51 /* SAPlayerPresenter.swift */; };
-		A4681FC9220113920018AB51 /* LockScreenViewProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = A4681FBE22010ECF0018AB51 /* LockScreenViewProtocol.swift */; };
-		A4681FCA220113940018AB51 /* AudioClockDirector.swift in Sources */ = {isa = PBXBuildFile; fileRef = A4681F852200DA8B0018AB51 /* AudioClockDirector.swift */; };
-		A4681FCB220113980018AB51 /* AudioEngine.swift in Sources */ = {isa = PBXBuildFile; fileRef = A4681F822200D9150018AB51 /* AudioEngine.swift */; };
-		A4681FCC2201139B0018AB51 /* AudioDiskEngine.swift in Sources */ = {isa = PBXBuildFile; fileRef = A4681F942200E2220018AB51 /* AudioDiskEngine.swift */; };
-		A4681FCD2201139E0018AB51 /* AudioStreamEngine.swift in Sources */ = {isa = PBXBuildFile; fileRef = A4681FBC220100AB0018AB51 /* AudioStreamEngine.swift */; };
-		A4681FCE220113A20018AB51 /* AudioConverter.swift in Sources */ = {isa = PBXBuildFile; fileRef = A4681FB62200FE090018AB51 /* AudioConverter.swift */; };
-		A4681FCF220113A40018AB51 /* AudioConverterListener.swift in Sources */ = {isa = PBXBuildFile; fileRef = A4681FBA2201002F0018AB51 /* AudioConverterListener.swift */; };
-		A4681FD0220113A70018AB51 /* AudioConverterErrors.swift in Sources */ = {isa = PBXBuildFile; fileRef = A4681FB82200FE7F0018AB51 /* AudioConverterErrors.swift */; };
-		A4681FD1220113AF0018AB51 /* AudioParsable.swift in Sources */ = {isa = PBXBuildFile; fileRef = A4681FAB2200F8490018AB51 /* AudioParsable.swift */; };
-		A4681FD2220113B20018AB51 /* AudioParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = A4681FAD2200F8E90018AB51 /* AudioParser.swift */; };
-		A4681FD3220113B60018AB51 /* AudioParserPropertyListener.swift in Sources */ = {isa = PBXBuildFile; fileRef = A4681FB12200FB020018AB51 /* AudioParserPropertyListener.swift */; };
-		A4681FD4220113BA0018AB51 /* AudioParserPacketListener.swift in Sources */ = {isa = PBXBuildFile; fileRef = A4681FB32200FC520018AB51 /* AudioParserPacketListener.swift */; };
-		A4681FD5220113BD0018AB51 /* AudioParserErrors.swift in Sources */ = {isa = PBXBuildFile; fileRef = A4681FAF2200FA6C0018AB51 /* AudioParserErrors.swift */; };
-		A4681FD6220113BF0018AB51 /* AudioThrottler.swift in Sources */ = {isa = PBXBuildFile; fileRef = A4681FA82200F5A20018AB51 /* AudioThrottler.swift */; };
-		A4681FD7220113C30018AB51 /* StreamProgressPTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = A4681FA62200F0130018AB51 /* StreamProgressPTO.swift */; };
-		A4681FD8220113C60018AB51 /* AudioDataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = A4681F992200E3D90018AB51 /* AudioDataManager.swift */; };
-		A4681FD9220113CD0018AB51 /* AudioStreamWorker.swift in Sources */ = {isa = PBXBuildFile; fileRef = A4681F9C2200E4B40018AB51 /* AudioStreamWorker.swift */; };
-		A4681FDA220113D00018AB51 /* StreamProgressDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = A4681F9E2200E5DE0018AB51 /* StreamProgressDTO.swift */; };
-		A4681FDB220113D40018AB51 /* FileStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = A4681FA42200E7920018AB51 /* FileStorage.swift */; };
-		A4681FDC220113D70018AB51 /* AudioDownloadWorker.swift in Sources */ = {isa = PBXBuildFile; fileRef = A4681FA22200E6710018AB51 /* AudioDownloadWorker.swift */; };
-		A4681FDD220113DC0018AB51 /* URL.swift in Sources */ = {isa = PBXBuildFile; fileRef = A4681F962200E2E20018AB51 /* URL.swift */; };
-		A4681FDE220113DE0018AB51 /* Date.swift in Sources */ = {isa = PBXBuildFile; fileRef = A4681F892200DB3C0018AB51 /* Date.swift */; };
-		A4681FDF220113E20018AB51 /* DirectorThreadSafeClosures.swift in Sources */ = {isa = PBXBuildFile; fileRef = A4681F872200DAD50018AB51 /* DirectorThreadSafeClosures.swift */; };
-		A4681FE0220113E40018AB51 /* Log.swift in Sources */ = {isa = PBXBuildFile; fileRef = A4681F802200D0500018AB51 /* Log.swift */; };
-		A4681FE1220113E70018AB51 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = A4681F8B2200DDD50018AB51 /* Constants.swift */; };
-		A4B4CC122223ED2A0045554B /* SAPlayerDownloader.swift in Sources */ = {isa = PBXBuildFile; fileRef = A4B4CC112223ED2A0045554B /* SAPlayerDownloader.swift */; };
-		A4FBA6B2221B538E00D5A353 /* DownloadProgressDirector.swift in Sources */ = {isa = PBXBuildFile; fileRef = A49B78C3221A78DE00BBA862 /* DownloadProgressDirector.swift */; };
-		A4FBA6B5221B74C900D5A353 /* SALockScreenInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = A4FBA6B3221B74C900D5A353 /* SALockScreenInfo.swift */; };
-		A4FBA6B7221BAC3D00D5A353 /* SAPlayerUpdateSubscription.swift in Sources */ = {isa = PBXBuildFile; fileRef = A4FBA6B6221BAC3D00D5A353 /* SAPlayerUpdateSubscription.swift */; };
-		A4FBA6B9221BAF8700D5A353 /* SAAudioAvailabilityRange.swift in Sources */ = {isa = PBXBuildFile; fileRef = A4FBA6B8221BAF8700D5A353 /* SAAudioAvailabilityRange.swift */; };
-		B73D01578ABBDB6FF402D868A6C547FF /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5A16F4CFC63FAC439D7A04994F579A03 /* Foundation.framework */; };
-		E08AD6157EF688FE832F866CBCDA3532 /* SwiftAudioPlayer-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = FB83B3B4253D41C37C5563D34D450BF8 /* SwiftAudioPlayer-dummy.m */; };
+		01F5C943A540E7B6C3E13C2D3E0E905B /* SwiftAudioPlayer-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = BAFB6630A5B99BC92EF915712C4E6192 /* SwiftAudioPlayer-dummy.m */; };
+		0430BE893477DC13F268ED66838353F6 /* AudioDataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = B22A63A2769B8A9012744BBD732DA765 /* AudioDataManager.swift */; };
+		074F505025F848CF0036F92C /* AudioQueueDirector.swift in Sources */ = {isa = PBXBuildFile; fileRef = 074F504F25F848CF0036F92C /* AudioQueueDirector.swift */; };
+		09AE259515907ED84637E8EDA4106E85 /* SAPlayerDownloader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E9E95E5AABE8D8A85E3E333C407B408 /* SAPlayerDownloader.swift */; };
+		0C9DE62363652F6262B39AA0A5B563E9 /* AudioClockDirector.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D6D80431948D19FF5B8D583D3F82BA6 /* AudioClockDirector.swift */; };
+		15199327F189A8C36411B3D7D1FBE3E8 /* LockScreenViewProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 477E143DF39615105A34805F99504FCC /* LockScreenViewProtocol.swift */; };
+		1AA674C19025019ADF981251EBBB73FB /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 73010CC983E3809BECEE5348DA1BB8C6 /* Foundation.framework */; };
+		1AC92A23C370B5B0F83F6A03C0677A51 /* SAAudioAvailabilityRange.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA4969BEBA420D1835C0CCC7DA62DEA0 /* SAAudioAvailabilityRange.swift */; };
+		2944F07EC955175CA738AF57B8747D88 /* Log.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6614C09C2321D08C4A790DD1A6EEBE4 /* Log.swift */; };
+		29F27235C421445B79111FDF776E0D84 /* SAAudioQueue.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBFD66BEF439759DC517EB5CD4149ED7 /* SAAudioQueue.swift */; };
+		33A4A7F3B882A36CD201673D9E610893 /* AudioConverter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6187BF1824934ECD4B504962DFF34DD0 /* AudioConverter.swift */; };
+		59F78BAB8A3CB523142BEB89E6214805 /* AudioDownloadWorker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31E608F644E1028F62BF90E40D1AEB01 /* AudioDownloadWorker.swift */; };
+		5C20F518E9603AA9DF9C3DB99EFA148E /* Pods-SwiftAudioPlayer_Example-umbrella.h in Headers */ = {isa = PBXBuildFile; fileRef = 2699A71ECAD0E1F815AEDD77FE7AA6E3 /* Pods-SwiftAudioPlayer_Example-umbrella.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		5CA966200B51E95A392F04D38AD23633 /* SAPlayerPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70DCFC350AD7F8446B42ECA3BC034786 /* SAPlayerPresenter.swift */; };
+		61D5382FAE6DC5BC23721F09C37B1354 /* AudioThrottler.swift in Sources */ = {isa = PBXBuildFile; fileRef = C33C19523F2C63F52E9AED4E86C7F6AE /* AudioThrottler.swift */; };
+		61E62F9A052E84D747195C992670C348 /* AudioParserPacketListener.swift in Sources */ = {isa = PBXBuildFile; fileRef = 845E0EE7DE0BCC809DE82F0F882C77BE /* AudioParserPacketListener.swift */; };
+		6449D85F3ED3A7D8A62EA06884EDC13E /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 73010CC983E3809BECEE5348DA1BB8C6 /* Foundation.framework */; };
+		6C19BC2F4524D8FD9B210387CF372C88 /* AudioEngine.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CEC548388343A8B41587F9B6DBE8D7B /* AudioEngine.swift */; };
+		71C7A6BBD5FC387CF41392C09ABB0AE0 /* AudioParserErrors.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A4E863F10D5CF856E14EEC08F96CC4D /* AudioParserErrors.swift */; };
+		77DF3B2784B0A2543B4D63C151AB9CC9 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = F34268C17B14DC173F302AFA9825D391 /* Constants.swift */; };
+		7ACAAB070D98D16DE201D995BFBB568D /* URL.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1DBB6DD787015A3B7AEDD0094B695B0E /* URL.swift */; };
+		85C84ACD00C98869E30506B51A47FC7A /* AudioParserPropertyListener.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7D9E8CBCA093178FE2F56BC6915B5A8E /* AudioParserPropertyListener.swift */; };
+		87C5035466A77FF3C1B64B2696D14644 /* AudioDiskEngine.swift in Sources */ = {isa = PBXBuildFile; fileRef = A230AF4690207082AF977404BBF70D72 /* AudioDiskEngine.swift */; };
+		8A41D6EB548FF0209E7EAE88D05A4EAA /* AudioConverterListener.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F0AA769C6B0B6F24E8AB8B7BBCBBE54 /* AudioConverterListener.swift */; };
+		8D3B827274579A4D1B468E429E202A8E /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 73010CC983E3809BECEE5348DA1BB8C6 /* Foundation.framework */; };
+		8F22506623B05463AC4465BD3A237D35 /* Date.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AA75EA1133EB8A0FA84585284B47998 /* Date.swift */; };
+		9AA2A4CCDFE955B81F867F3691DC0FE9 /* SAPlayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5745DA62AA64167ACAD0CE689B2B8CAA /* SAPlayer.swift */; };
+		9AE502BE48067663FAA4FA4BB41B95F9 /* AudioConverterErrors.swift in Sources */ = {isa = PBXBuildFile; fileRef = 149B306CD0CC67BA483D5F92A74C3ED7 /* AudioConverterErrors.swift */; };
+		A06D6C02C0DE18746A17425CD4214948 /* SAPlayingStatus.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEC87E4E067B91688FF278EB1DE663F1 /* SAPlayingStatus.swift */; };
+		A53AD46F322F1707E39AD28450CA4080 /* AudioStreamEngine.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0524E6FD463D81612148BFA92906CBA7 /* AudioStreamEngine.swift */; };
+		AEB16DCE4B8D725F5F5E6170677C62F4 /* AudioParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 591E56E2EC80B7C8DCF68AB5C679EB92 /* AudioParser.swift */; };
+		AF6948ED5F784D8A87F7FE7E9CF151D8 /* Pods-SwiftAudioPlayer_Tests-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = 5ACCB8B9F45CC005EE8F24258D3DEBF8 /* Pods-SwiftAudioPlayer_Tests-dummy.m */; };
+		B1B3B17570706A40CE2C196B4586458A /* SAPlayerUpdateSubscription.swift in Sources */ = {isa = PBXBuildFile; fileRef = A322B1BD43FC5694F52336B282900A14 /* SAPlayerUpdateSubscription.swift */; };
+		BD7554ADC443B699D91A015996A818B5 /* DownloadProgressDirector.swift in Sources */ = {isa = PBXBuildFile; fileRef = 667DE202FF1540412039E14512D9BEE3 /* DownloadProgressDirector.swift */; };
+		CA786E320ED8F7C9D14B086B865D2E90 /* Pods-SwiftAudioPlayer_Example-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = 01592DDDF22A613BCE6D5ED16D5C5362 /* Pods-SwiftAudioPlayer_Example-dummy.m */; };
+		CAD2B4DB4E4684AF2D0A72D01D7893BE /* SwiftAudioPlayer-umbrella.h in Headers */ = {isa = PBXBuildFile; fileRef = D12773D08724B70373533AAF3D3A6CCE /* SwiftAudioPlayer-umbrella.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		CB9848F5F5535509C5AC8C8612B6877D /* Data.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E867420DC94680B0B0F8643CDE0C546 /* Data.swift */; };
+		CE81D16F9DC9CDE76E59D49E06931716 /* StreamProgressDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = 315E040DF693BD6EFFA2D8A663D51AC6 /* StreamProgressDTO.swift */; };
+		DC423303D4FD5E698D13126C02F1369F /* Pods-SwiftAudioPlayer_Tests-umbrella.h in Headers */ = {isa = PBXBuildFile; fileRef = 614C961E4516BAFE8938F512537309B6 /* Pods-SwiftAudioPlayer_Tests-umbrella.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		E2B4D27ED44A6332F7836E2EDA2BAFCA /* StreamProgressPTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F799B3A44C415B8827A45EC52EE78F7 /* StreamProgressPTO.swift */; };
+		E6A1D9B0AC2823041986C1B95BC42D13 /* DirectorThreadSafeClosures.swift in Sources */ = {isa = PBXBuildFile; fileRef = A069EF173FBE680FEA3D0BF27C12E771 /* DirectorThreadSafeClosures.swift */; };
+		F31838E303E7D6F08DB3A445BFED24D4 /* AudioStreamWorker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71EC910A688045D7E60695711F6CA403 /* AudioStreamWorker.swift */; };
+		F3284A7900BCBB31C9B2A6AB718DA0C0 /* FileStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 92B769D72EE52B714C1A68443D926648 /* FileStorage.swift */; };
+		F57C826A1A574FCC08CD0EF69FC8C77E /* SALockScreenInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB0001170CC9CE858E6F865DEB8EFDE9 /* SALockScreenInfo.swift */; };
+		F78D754B81990563F21DBEB45131E88C /* AudioParsable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5983822453B45085BFBA69CDF0FE4BD0 /* AudioParsable.swift */; };
+		FC4A93CD5C217605E4597CEBF2E39A48 /* SAPlayerDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A136A134F8372D03E1943E7100A6FD4 /* SAPlayerDelegate.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
-		87F13419A579FD5681636A037129209E /* PBXContainerItemProxy */ = {
+		59B8B006AAD15D2DFC47F6A8DA7C385D /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
-			containerPortal = D41D8CD98F00B204E9800998ECF8427E /* Project object */;
+			containerPortal = BFDFE7DC352907FC980B868725387E98 /* Project object */;
 			proxyType = 1;
-			remoteGlobalIDString = E50DAD13FFD3FC8036073A58BF8423D4;
-			remoteInfo = SwiftAudioPlayer;
-		};
-		E3FF9FF67EAA9666CEFDE6E31C200575 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = D41D8CD98F00B204E9800998ECF8427E /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = 042ACE071BA515F4DE0E0C8007C3F0EE;
+			remoteGlobalIDString = CCDC8A10F713045CA7359BD391E0C06C;
 			remoteInfo = "Pods-SwiftAudioPlayer_Example";
+		};
+		998550830B87603AC6E4D0A3D4EC2775 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = BFDFE7DC352907FC980B868725387E98 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = FBFDAF801D749F87A32FC2773FFE7390;
+			remoteInfo = SwiftAudioPlayer;
 		};
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		021F5296D5C8C9F9BEB226481231ABF0 /* Pods-SwiftAudioPlayer_Tests-acknowledgements.markdown */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; path = "Pods-SwiftAudioPlayer_Tests-acknowledgements.markdown"; sourceTree = "<group>"; };
-		030E0D4C0BE29E2606B0BCB65B9BBC42 /* Pods-SwiftAudioPlayer_Tests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-SwiftAudioPlayer_Tests.release.xcconfig"; sourceTree = "<group>"; };
-		0B3AF0F1A1DF1101E93137959D2E5F24 /* Pods-SwiftAudioPlayer_Example-acknowledgements.markdown */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; path = "Pods-SwiftAudioPlayer_Example-acknowledgements.markdown"; sourceTree = "<group>"; };
-		0E268C8D5FBBF7E0E790D3AA6A70FEC2 /* SwiftAudioPlayer-umbrella.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "SwiftAudioPlayer-umbrella.h"; sourceTree = "<group>"; };
-		15DF3E7F1B5E10B1BBE49D3E9A67C938 /* LICENSE */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; path = LICENSE; sourceTree = "<group>"; };
-		16FCEC9685DAD30C0013E9ECD938611E /* Info.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		305774DC5582C6E1BA1511DED1ECB225 /* Pods-SwiftAudioPlayer_Tests-frameworks.sh */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.script.sh; path = "Pods-SwiftAudioPlayer_Tests-frameworks.sh"; sourceTree = "<group>"; };
-		314D056517A7B04FFAFF279157B7ADBB /* Pods-SwiftAudioPlayer_Tests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-SwiftAudioPlayer_Tests.debug.xcconfig"; sourceTree = "<group>"; };
-		351771425C270B04BF2A07F0262DA192 /* Pods-SwiftAudioPlayer_Tests-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "Pods-SwiftAudioPlayer_Tests-dummy.m"; sourceTree = "<group>"; };
-		3B0B76CB1439F4D361322144E5A65C3A /* Pods-SwiftAudioPlayer_Example-umbrella.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "Pods-SwiftAudioPlayer_Example-umbrella.h"; sourceTree = "<group>"; };
-		3F45E3A0690F048214FCE84887950057 /* SwiftAudioPlayer-prefix.pch */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "SwiftAudioPlayer-prefix.pch"; sourceTree = "<group>"; };
-		41C6A056512760933DE244855EF94DF0 /* Pods-SwiftAudioPlayer_Tests.modulemap */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.module; path = "Pods-SwiftAudioPlayer_Tests.modulemap"; sourceTree = "<group>"; };
-		509D93CD81F074F6E7C4B9DE13210ACF /* Pods_SwiftAudioPlayer_Example.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_SwiftAudioPlayer_Example.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		50C71346CE708A211A5AFAC20BAE48CB /* Pods-SwiftAudioPlayer_Tests-umbrella.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "Pods-SwiftAudioPlayer_Tests-umbrella.h"; sourceTree = "<group>"; };
-		55AB0CDF00C23619C7F54FE21D0C9534 /* Pods-SwiftAudioPlayer_Example-frameworks.sh */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.script.sh; path = "Pods-SwiftAudioPlayer_Example-frameworks.sh"; sourceTree = "<group>"; };
-		5A16F4CFC63FAC439D7A04994F579A03 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS11.3.sdk/System/Library/Frameworks/Foundation.framework; sourceTree = DEVELOPER_DIR; };
-		69AF5444212FEC2674325627F26305AD /* Pods-SwiftAudioPlayer_Example.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-SwiftAudioPlayer_Example.release.xcconfig"; sourceTree = "<group>"; };
-		6EC04ECC8F7CB2AF2E4E042A6A8ECFA1 /* SwiftAudioPlayer.podspec */ = {isa = PBXFileReference; explicitFileType = text.script.ruby; includeInIndex = 1; path = SwiftAudioPlayer.podspec; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
-		70839C5AD428953FAF3091E814FF6E31 /* Pods-SwiftAudioPlayer_Example.modulemap */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.module; path = "Pods-SwiftAudioPlayer_Example.modulemap"; sourceTree = "<group>"; };
-		782193D2A4B5EA65A5A468B871418969 /* SwiftAudioPlayer.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = SwiftAudioPlayer.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		8F12318E3F0F591F1C2ACAE6F204F753 /* Pods-SwiftAudioPlayer_Tests-resources.sh */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.script.sh; path = "Pods-SwiftAudioPlayer_Tests-resources.sh"; sourceTree = "<group>"; };
-		93A4A3777CF96A4AAC1D13BA6DCCEA73 /* Podfile */ = {isa = PBXFileReference; explicitFileType = text.script.ruby; includeInIndex = 1; name = Podfile; path = ../Podfile; sourceTree = SOURCE_ROOT; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
-		9622E16E03B20FC0C41123BA8A50C1F0 /* Pods-SwiftAudioPlayer_Tests-acknowledgements.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = "Pods-SwiftAudioPlayer_Tests-acknowledgements.plist"; sourceTree = "<group>"; };
-		99925F09FC9C6EA4B9C0508F4E2D1FE2 /* Info.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		A19C8F889C787C19BE4123C1896AF501 /* Pods-SwiftAudioPlayer_Example-resources.sh */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.script.sh; path = "Pods-SwiftAudioPlayer_Example-resources.sh"; sourceTree = "<group>"; };
-		A39F2A138CF40C1051CA9E227429A86D /* SwiftAudioPlayer.modulemap */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.module; path = SwiftAudioPlayer.modulemap; sourceTree = "<group>"; };
-		A40DBE282391D9C900F86146 /* Data.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Data.swift; sourceTree = "<group>"; };
-		A41AA0D1238BB9B600A467E1 /* SAPlayingStatus.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SAPlayingStatus.swift; sourceTree = "<group>"; };
-		A4523BC8220A0B3C0079C4BC /* Credited_LICENSE */ = {isa = PBXFileReference; lastKnownFileType = text; path = Credited_LICENSE; sourceTree = "<group>"; };
-		A4681F802200D0500018AB51 /* Log.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Log.swift; sourceTree = "<group>"; };
-		A4681F822200D9150018AB51 /* AudioEngine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioEngine.swift; sourceTree = "<group>"; };
-		A4681F852200DA8B0018AB51 /* AudioClockDirector.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioClockDirector.swift; sourceTree = "<group>"; };
-		A4681F872200DAD50018AB51 /* DirectorThreadSafeClosures.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DirectorThreadSafeClosures.swift; sourceTree = "<group>"; };
-		A4681F892200DB3C0018AB51 /* Date.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Date.swift; sourceTree = "<group>"; };
-		A4681F8B2200DDD50018AB51 /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
-		A4681F8D2200E00E0018AB51 /* SAPlayer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SAPlayer.swift; sourceTree = "<group>"; };
-		A4681F8F2200E1450018AB51 /* SAPlayerPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SAPlayerPresenter.swift; sourceTree = "<group>"; };
-		A4681F912200E1950018AB51 /* SAPlayerDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SAPlayerDelegate.swift; sourceTree = "<group>"; };
-		A4681F942200E2220018AB51 /* AudioDiskEngine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioDiskEngine.swift; sourceTree = "<group>"; };
-		A4681F962200E2E20018AB51 /* URL.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = URL.swift; sourceTree = "<group>"; };
-		A4681F992200E3D90018AB51 /* AudioDataManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = AudioDataManager.swift; path = ../../Source/Model/AudioDataManager.swift; sourceTree = "<group>"; };
-		A4681F9C2200E4B40018AB51 /* AudioStreamWorker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = AudioStreamWorker.swift; path = ../../Model/Streaming/AudioStreamWorker.swift; sourceTree = "<group>"; };
-		A4681F9E2200E5DE0018AB51 /* StreamProgressDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = StreamProgressDTO.swift; path = ../../Model/Streaming/StreamProgressDTO.swift; sourceTree = "<group>"; };
-		A4681FA22200E6710018AB51 /* AudioDownloadWorker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = AudioDownloadWorker.swift; path = ../../Model/Downloading/AudioDownloadWorker.swift; sourceTree = "<group>"; };
-		A4681FA42200E7920018AB51 /* FileStorage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = FileStorage.swift; path = ../../Model/Downloading/FileStorage.swift; sourceTree = "<group>"; };
-		A4681FA62200F0130018AB51 /* StreamProgressPTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = StreamProgressPTO.swift; path = ../Model/StreamProgressPTO.swift; sourceTree = "<group>"; };
-		A4681FA82200F5A20018AB51 /* AudioThrottler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioThrottler.swift; sourceTree = "<group>"; };
-		A4681FAB2200F8490018AB51 /* AudioParsable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioParsable.swift; sourceTree = "<group>"; };
-		A4681FAD2200F8E90018AB51 /* AudioParser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioParser.swift; sourceTree = "<group>"; };
-		A4681FAF2200FA6C0018AB51 /* AudioParserErrors.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioParserErrors.swift; sourceTree = "<group>"; };
-		A4681FB12200FB020018AB51 /* AudioParserPropertyListener.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioParserPropertyListener.swift; sourceTree = "<group>"; };
-		A4681FB32200FC520018AB51 /* AudioParserPacketListener.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioParserPacketListener.swift; sourceTree = "<group>"; };
-		A4681FB62200FE090018AB51 /* AudioConverter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioConverter.swift; sourceTree = "<group>"; };
-		A4681FB82200FE7F0018AB51 /* AudioConverterErrors.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioConverterErrors.swift; sourceTree = "<group>"; };
-		A4681FBA2201002F0018AB51 /* AudioConverterListener.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioConverterListener.swift; sourceTree = "<group>"; };
-		A4681FBC220100AB0018AB51 /* AudioStreamEngine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioStreamEngine.swift; sourceTree = "<group>"; };
-		A4681FBE22010ECF0018AB51 /* LockScreenViewProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LockScreenViewProtocol.swift; sourceTree = "<group>"; };
-		A49B78C3221A78DE00BBA862 /* DownloadProgressDirector.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DownloadProgressDirector.swift; sourceTree = "<group>"; };
-		A4B4CC112223ED2A0045554B /* SAPlayerDownloader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SAPlayerDownloader.swift; sourceTree = "<group>"; };
-		A4FBA6B3221B74C900D5A353 /* SALockScreenInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SALockScreenInfo.swift; sourceTree = "<group>"; };
-		A4FBA6B6221BAC3D00D5A353 /* SAPlayerUpdateSubscription.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SAPlayerUpdateSubscription.swift; sourceTree = "<group>"; };
-		A4FBA6B8221BAF8700D5A353 /* SAAudioAvailabilityRange.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SAAudioAvailabilityRange.swift; sourceTree = "<group>"; };
-		AB41D88A2C694FBDF26EA56381EED25F /* Pods-SwiftAudioPlayer_Example-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "Pods-SwiftAudioPlayer_Example-dummy.m"; sourceTree = "<group>"; };
-		B8C829A46249957CD3056074B5CC0BBB /* README.md */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
-		B9A6DFC8AB64B139080060EA639B3A7D /* Info.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		BCAD67E3D7744FEFA5B221BDA7B25B20 /* SwiftAudioPlayer.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = SwiftAudioPlayer.xcconfig; sourceTree = "<group>"; };
-		BF5B667B9103284C373811A04411C7C1 /* Pods-SwiftAudioPlayer_Example-acknowledgements.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = "Pods-SwiftAudioPlayer_Example-acknowledgements.plist"; sourceTree = "<group>"; };
-		E1C110BCB4A9F826B59DC6905BAB3C6E /* Pods-SwiftAudioPlayer_Example.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-SwiftAudioPlayer_Example.debug.xcconfig"; sourceTree = "<group>"; };
-		F3E4AB96148429D903B6E5DAEB19C4C1 /* Pods_SwiftAudioPlayer_Tests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_SwiftAudioPlayer_Tests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		FB83B3B4253D41C37C5563D34D450BF8 /* SwiftAudioPlayer-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "SwiftAudioPlayer-dummy.m"; sourceTree = "<group>"; };
+		01592DDDF22A613BCE6D5ED16D5C5362 /* Pods-SwiftAudioPlayer_Example-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "Pods-SwiftAudioPlayer_Example-dummy.m"; sourceTree = "<group>"; };
+		02FE86ABB1A64A64E453EFFE30845511 /* SwiftAudioPlayer-prefix.pch */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "SwiftAudioPlayer-prefix.pch"; sourceTree = "<group>"; };
+		0353AE7BC123D60C531BF738F864039B /* Pods-SwiftAudioPlayer_Example.modulemap */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.module; path = "Pods-SwiftAudioPlayer_Example.modulemap"; sourceTree = "<group>"; };
+		0524E6FD463D81612148BFA92906CBA7 /* AudioStreamEngine.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = AudioStreamEngine.swift; sourceTree = "<group>"; };
+		074F504F25F848CF0036F92C /* AudioQueueDirector.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = AudioQueueDirector.swift; path = Source/AudioQueueDirector.swift; sourceTree = "<group>"; };
+		0AA75EA1133EB8A0FA84585284B47998 /* Date.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = Date.swift; sourceTree = "<group>"; };
+		0CEC548388343A8B41587F9B6DBE8D7B /* AudioEngine.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = AudioEngine.swift; sourceTree = "<group>"; };
+		0E867420DC94680B0B0F8643CDE0C546 /* Data.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = Data.swift; sourceTree = "<group>"; };
+		149B306CD0CC67BA483D5F92A74C3ED7 /* AudioConverterErrors.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = AudioConverterErrors.swift; sourceTree = "<group>"; };
+		1608B6253E6B509017DD3AB41C232DC0 /* Pods-SwiftAudioPlayer_Example.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-SwiftAudioPlayer_Example.release.xcconfig"; sourceTree = "<group>"; };
+		1DBB6DD787015A3B7AEDD0094B695B0E /* URL.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = URL.swift; sourceTree = "<group>"; };
+		2699A71ECAD0E1F815AEDD77FE7AA6E3 /* Pods-SwiftAudioPlayer_Example-umbrella.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "Pods-SwiftAudioPlayer_Example-umbrella.h"; sourceTree = "<group>"; };
+		278ABFB8B195BB5F440AA8CE6B6A3310 /* Pods-SwiftAudioPlayer_Example.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-SwiftAudioPlayer_Example.debug.xcconfig"; sourceTree = "<group>"; };
+		2A4E863F10D5CF856E14EEC08F96CC4D /* AudioParserErrors.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = AudioParserErrors.swift; sourceTree = "<group>"; };
+		2B099A7070F5EFFAE9467E56D59B00FB /* Pods-SwiftAudioPlayer_Example-frameworks.sh */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.script.sh; path = "Pods-SwiftAudioPlayer_Example-frameworks.sh"; sourceTree = "<group>"; };
+		315E040DF693BD6EFFA2D8A663D51AC6 /* StreamProgressDTO.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = StreamProgressDTO.swift; sourceTree = "<group>"; };
+		31E608F644E1028F62BF90E40D1AEB01 /* AudioDownloadWorker.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = AudioDownloadWorker.swift; sourceTree = "<group>"; };
+		3A2042793D09C9427EAC5F1DAEAA3DFB /* Pods-SwiftAudioPlayer_Tests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-SwiftAudioPlayer_Tests.release.xcconfig"; sourceTree = "<group>"; };
+		3E33EE175AB41681150AE2C0644D61F8 /* Pods_SwiftAudioPlayer_Tests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_SwiftAudioPlayer_Tests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		3E9E95E5AABE8D8A85E3E333C407B408 /* SAPlayerDownloader.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = SAPlayerDownloader.swift; path = Source/SAPlayerDownloader.swift; sourceTree = "<group>"; };
+		3F799B3A44C415B8827A45EC52EE78F7 /* StreamProgressPTO.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = StreamProgressPTO.swift; sourceTree = "<group>"; };
+		477E143DF39615105A34805F99504FCC /* LockScreenViewProtocol.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = LockScreenViewProtocol.swift; path = Source/LockScreenViewProtocol.swift; sourceTree = "<group>"; };
+		5573DCA125CB4113FBBC31F9F87B28B1 /* Pods-SwiftAudioPlayer_Tests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-SwiftAudioPlayer_Tests.debug.xcconfig"; sourceTree = "<group>"; };
+		5745DA62AA64167ACAD0CE689B2B8CAA /* SAPlayer.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = SAPlayer.swift; path = Source/SAPlayer.swift; sourceTree = "<group>"; };
+		591E56E2EC80B7C8DCF68AB5C679EB92 /* AudioParser.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = AudioParser.swift; sourceTree = "<group>"; };
+		5983822453B45085BFBA69CDF0FE4BD0 /* AudioParsable.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = AudioParsable.swift; sourceTree = "<group>"; };
+		5ACCB8B9F45CC005EE8F24258D3DEBF8 /* Pods-SwiftAudioPlayer_Tests-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "Pods-SwiftAudioPlayer_Tests-dummy.m"; sourceTree = "<group>"; };
+		614C961E4516BAFE8938F512537309B6 /* Pods-SwiftAudioPlayer_Tests-umbrella.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "Pods-SwiftAudioPlayer_Tests-umbrella.h"; sourceTree = "<group>"; };
+		6187BF1824934ECD4B504962DFF34DD0 /* AudioConverter.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = AudioConverter.swift; sourceTree = "<group>"; };
+		665BE73C0B6A2B9C13FD5E1000F0629C /* LICENSE */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; path = LICENSE; sourceTree = "<group>"; };
+		667DE202FF1540412039E14512D9BEE3 /* DownloadProgressDirector.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = DownloadProgressDirector.swift; path = Source/DownloadProgressDirector.swift; sourceTree = "<group>"; };
+		6A136A134F8372D03E1943E7100A6FD4 /* SAPlayerDelegate.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = SAPlayerDelegate.swift; path = Source/SAPlayerDelegate.swift; sourceTree = "<group>"; };
+		6A3E36B835AED8BDD63FCD5AABBBFA42 /* Pods-SwiftAudioPlayer_Tests-acknowledgements.markdown */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; path = "Pods-SwiftAudioPlayer_Tests-acknowledgements.markdown"; sourceTree = "<group>"; };
+		70DCFC350AD7F8446B42ECA3BC034786 /* SAPlayerPresenter.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = SAPlayerPresenter.swift; path = Source/SAPlayerPresenter.swift; sourceTree = "<group>"; };
+		71EC910A688045D7E60695711F6CA403 /* AudioStreamWorker.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = AudioStreamWorker.swift; sourceTree = "<group>"; };
+		729EF40CC1A5898FB2E7AC2C67F9130F /* Pods-SwiftAudioPlayer_Example-acknowledgements.markdown */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; path = "Pods-SwiftAudioPlayer_Example-acknowledgements.markdown"; sourceTree = "<group>"; };
+		73010CC983E3809BECEE5348DA1BB8C6 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS14.0.sdk/System/Library/Frameworks/Foundation.framework; sourceTree = DEVELOPER_DIR; };
+		73246B2A86D655BC03B6E0F711DC6026 /* SwiftAudioPlayer.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = SwiftAudioPlayer.release.xcconfig; sourceTree = "<group>"; };
+		7BE76F62EF73B75DE7EA3B084EE6F68A /* Pods-SwiftAudioPlayer_Tests.modulemap */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.module; path = "Pods-SwiftAudioPlayer_Tests.modulemap"; sourceTree = "<group>"; };
+		7D9E8CBCA093178FE2F56BC6915B5A8E /* AudioParserPropertyListener.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = AudioParserPropertyListener.swift; sourceTree = "<group>"; };
+		7F0AA769C6B0B6F24E8AB8B7BBCBBE54 /* AudioConverterListener.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = AudioConverterListener.swift; sourceTree = "<group>"; };
+		83B657B7BABCD4038B13A585732EB898 /* SwiftAudioPlayer.modulemap */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.module; path = SwiftAudioPlayer.modulemap; sourceTree = "<group>"; };
+		845E0EE7DE0BCC809DE82F0F882C77BE /* AudioParserPacketListener.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = AudioParserPacketListener.swift; sourceTree = "<group>"; };
+		92B769D72EE52B714C1A68443D926648 /* FileStorage.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = FileStorage.swift; sourceTree = "<group>"; };
+		9D6D80431948D19FF5B8D583D3F82BA6 /* AudioClockDirector.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = AudioClockDirector.swift; path = Source/AudioClockDirector.swift; sourceTree = "<group>"; };
+		9D940727FF8FB9C785EB98E56350EF41 /* Podfile */ = {isa = PBXFileReference; explicitFileType = text.script.ruby; includeInIndex = 1; indentWidth = 2; name = Podfile; path = ../Podfile; sourceTree = SOURCE_ROOT; tabWidth = 2; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
+		A069EF173FBE680FEA3D0BF27C12E771 /* DirectorThreadSafeClosures.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = DirectorThreadSafeClosures.swift; sourceTree = "<group>"; };
+		A230AF4690207082AF977404BBF70D72 /* AudioDiskEngine.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = AudioDiskEngine.swift; sourceTree = "<group>"; };
+		A322B1BD43FC5694F52336B282900A14 /* SAPlayerUpdateSubscription.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = SAPlayerUpdateSubscription.swift; path = Source/SAPlayerUpdateSubscription.swift; sourceTree = "<group>"; };
+		B22A63A2769B8A9012744BBD732DA765 /* AudioDataManager.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = AudioDataManager.swift; sourceTree = "<group>"; };
+		BAFB6630A5B99BC92EF915712C4E6192 /* SwiftAudioPlayer-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "SwiftAudioPlayer-dummy.m"; sourceTree = "<group>"; };
+		C22F4015FA8DC1E6015AB4DD7112623C /* Pods-SwiftAudioPlayer_Tests-acknowledgements.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = "Pods-SwiftAudioPlayer_Tests-acknowledgements.plist"; sourceTree = "<group>"; };
+		C2FA0B8A9B99F0550442A6165187BEBB /* SwiftAudioPlayer.podspec */ = {isa = PBXFileReference; explicitFileType = text.script.ruby; includeInIndex = 1; indentWidth = 2; path = SwiftAudioPlayer.podspec; sourceTree = "<group>"; tabWidth = 2; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
+		C33C19523F2C63F52E9AED4E86C7F6AE /* AudioThrottler.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = AudioThrottler.swift; sourceTree = "<group>"; };
+		C3B41312F8396B95C75790B2D0FCE01A /* README.md */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
+		CA4969BEBA420D1835C0CCC7DA62DEA0 /* SAAudioAvailabilityRange.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = SAAudioAvailabilityRange.swift; sourceTree = "<group>"; };
+		CAB4302DEE4BB08D19FAB891068538CC /* SwiftAudioPlayer.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = SwiftAudioPlayer.debug.xcconfig; sourceTree = "<group>"; };
+		D12773D08724B70373533AAF3D3A6CCE /* SwiftAudioPlayer-umbrella.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "SwiftAudioPlayer-umbrella.h"; sourceTree = "<group>"; };
+		D6614C09C2321D08C4A790DD1A6EEBE4 /* Log.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = Log.swift; sourceTree = "<group>"; };
+		DA5D451E02C3497AD5337D0B45A97D80 /* Pods_SwiftAudioPlayer_Example.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_SwiftAudioPlayer_Example.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		DBFD66BEF439759DC517EB5CD4149ED7 /* SAAudioQueue.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = SAAudioQueue.swift; path = Source/SAAudioQueue.swift; sourceTree = "<group>"; };
+		DDB833C5776D685910785570691A0E1E /* Pods-SwiftAudioPlayer_Example-Info.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = "Pods-SwiftAudioPlayer_Example-Info.plist"; sourceTree = "<group>"; };
+		DEC87E4E067B91688FF278EB1DE663F1 /* SAPlayingStatus.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = SAPlayingStatus.swift; sourceTree = "<group>"; };
+		E1F0C4F7A8164EAA0AA2FAAFB3EE7D39 /* SwiftAudioPlayer.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = SwiftAudioPlayer.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		E703DCB56D2D592A6027A5A20FD7AE96 /* SwiftAudioPlayer-Info.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = "SwiftAudioPlayer-Info.plist"; sourceTree = "<group>"; };
+		E8F9CD0AE9E7DDC778C9CBBFA0ACA1E1 /* Pods-SwiftAudioPlayer_Example-acknowledgements.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = "Pods-SwiftAudioPlayer_Example-acknowledgements.plist"; sourceTree = "<group>"; };
+		F34268C17B14DC173F302AFA9825D391 /* Constants.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
+		FB0001170CC9CE858E6F865DEB8EFDE9 /* SALockScreenInfo.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = SALockScreenInfo.swift; path = Source/SALockScreenInfo.swift; sourceTree = "<group>"; };
+		FF041EBFBA7118B2F848983117BE1330 /* Pods-SwiftAudioPlayer_Tests-Info.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = "Pods-SwiftAudioPlayer_Tests-Info.plist"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
-		31B37A0E7E48CFAEE05556BB4620B198 /* Frameworks */ = {
+		5B10C87ED07C346E4A14368D9078DC91 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				B73D01578ABBDB6FF402D868A6C547FF /* Foundation.framework in Frameworks */,
+				1AA674C19025019ADF981251EBBB73FB /* Foundation.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		49686412FC8A53B147231E5FFCB22675 /* Frameworks */ = {
+		73EA4855B9934FDBD65528A4041BD0EE /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				27E3EC64A90305ACA68AE35A7DC597E0 /* Foundation.framework in Frameworks */,
+				8D3B827274579A4D1B468E429E202A8E /* Foundation.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		803A4909FC17367A14C1DB8D57E2E3E4 /* Frameworks */ = {
+		CF5987BEF0AA9A75E1DC7E17E729DD11 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				831B263D357A5FA2DDC7B1AE4B374092 /* Foundation.framework in Frameworks */,
+				6449D85F3ED3A7D8A62EA06884EDC13E /* Foundation.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		21D946895A4F57F51246F3EBCF330719 /* Products */ = {
+		04957E152E05D5D8710F8D6CFCBA1160 /* SwiftAudioPlayer */ = {
 			isa = PBXGroup;
 			children = (
-				509D93CD81F074F6E7C4B9DE13210ACF /* Pods_SwiftAudioPlayer_Example.framework */,
-				F3E4AB96148429D903B6E5DAEB19C4C1 /* Pods_SwiftAudioPlayer_Tests.framework */,
-				782193D2A4B5EA65A5A468B871418969 /* SwiftAudioPlayer.framework */,
-			);
-			name = Products;
-			sourceTree = "<group>";
-		};
-		41C7F403DA52FBC5C40644BB0E824CAA /* SwiftAudioPlayer */ = {
-			isa = PBXGroup;
-			children = (
-				A4681FE2220117B50018AB51 /* Source */,
-				840F8E752B4437107D761C28D4EE8D0B /* Pod */,
-				EAE1BCB45D8F275CE4428674B5151284 /* Support Files */,
+				074F504F25F848CF0036F92C /* AudioQueueDirector.swift */,
+				9D6D80431948D19FF5B8D583D3F82BA6 /* AudioClockDirector.swift */,
+				667DE202FF1540412039E14512D9BEE3 /* DownloadProgressDirector.swift */,
+				477E143DF39615105A34805F99504FCC /* LockScreenViewProtocol.swift */,
+				DBFD66BEF439759DC517EB5CD4149ED7 /* SAAudioQueue.swift */,
+				FB0001170CC9CE858E6F865DEB8EFDE9 /* SALockScreenInfo.swift */,
+				5745DA62AA64167ACAD0CE689B2B8CAA /* SAPlayer.swift */,
+				6A136A134F8372D03E1943E7100A6FD4 /* SAPlayerDelegate.swift */,
+				3E9E95E5AABE8D8A85E3E333C407B408 /* SAPlayerDownloader.swift */,
+				70DCFC350AD7F8446B42ECA3BC034786 /* SAPlayerPresenter.swift */,
+				A322B1BD43FC5694F52336B282900A14 /* SAPlayerUpdateSubscription.swift */,
+				FDC338F2CA803686047F862D86ECF2B8 /* Engine */,
+				25E59126B3CEAC992774A857E3074ADE /* Model */,
+				BA9C111122DEF4CDFF6B93C2B3971EE1 /* Pod */,
+				2812D7BE9E448BA0DE8E32A01F0899CB /* Support Files */,
+				FB596868647CE1C2A865797A93676DF3 /* Util */,
 			);
 			name = SwiftAudioPlayer;
 			path = ../..;
 			sourceTree = "<group>";
 		};
-		58A11B1F1C3F0E40EA2170F36FBD3963 /* Pods-SwiftAudioPlayer_Tests */ = {
+		25E59126B3CEAC992774A857E3074ADE /* Model */ = {
 			isa = PBXGroup;
 			children = (
-				B9A6DFC8AB64B139080060EA639B3A7D /* Info.plist */,
-				41C6A056512760933DE244855EF94DF0 /* Pods-SwiftAudioPlayer_Tests.modulemap */,
-				021F5296D5C8C9F9BEB226481231ABF0 /* Pods-SwiftAudioPlayer_Tests-acknowledgements.markdown */,
-				9622E16E03B20FC0C41123BA8A50C1F0 /* Pods-SwiftAudioPlayer_Tests-acknowledgements.plist */,
-				351771425C270B04BF2A07F0262DA192 /* Pods-SwiftAudioPlayer_Tests-dummy.m */,
-				305774DC5582C6E1BA1511DED1ECB225 /* Pods-SwiftAudioPlayer_Tests-frameworks.sh */,
-				8F12318E3F0F591F1C2ACAE6F204F753 /* Pods-SwiftAudioPlayer_Tests-resources.sh */,
-				50C71346CE708A211A5AFAC20BAE48CB /* Pods-SwiftAudioPlayer_Tests-umbrella.h */,
-				314D056517A7B04FFAFF279157B7ADBB /* Pods-SwiftAudioPlayer_Tests.debug.xcconfig */,
-				030E0D4C0BE29E2606B0BCB65B9BBC42 /* Pods-SwiftAudioPlayer_Tests.release.xcconfig */,
+				B22A63A2769B8A9012744BBD732DA765 /* AudioDataManager.swift */,
+				3F799B3A44C415B8827A45EC52EE78F7 /* StreamProgressPTO.swift */,
+				26EAF81D2B2A4F1757FCB5AD0701A231 /* Downloading */,
+				36A0C0FB23D0E072688BC288332435DC /* Streaming */,
 			);
-			name = "Pods-SwiftAudioPlayer_Tests";
-			path = "Target Support Files/Pods-SwiftAudioPlayer_Tests";
+			name = Model;
+			path = Source/Model;
 			sourceTree = "<group>";
 		};
-		5E0D919E635D23B70123790B8308F8EF /* iOS */ = {
+		26EAF81D2B2A4F1757FCB5AD0701A231 /* Downloading */ = {
 			isa = PBXGroup;
 			children = (
-				5A16F4CFC63FAC439D7A04994F579A03 /* Foundation.framework */,
-			);
-			name = iOS;
-			sourceTree = "<group>";
-		};
-		5F444B7A1C462A30A1CA4CCD3A7CF7B0 /* Targets Support Files */ = {
-			isa = PBXGroup;
-			children = (
-				7A1BF739CA787A0721205A514982467D /* Pods-SwiftAudioPlayer_Example */,
-				58A11B1F1C3F0E40EA2170F36FBD3963 /* Pods-SwiftAudioPlayer_Tests */,
-			);
-			name = "Targets Support Files";
-			sourceTree = "<group>";
-		};
-		7A1BF739CA787A0721205A514982467D /* Pods-SwiftAudioPlayer_Example */ = {
-			isa = PBXGroup;
-			children = (
-				99925F09FC9C6EA4B9C0508F4E2D1FE2 /* Info.plist */,
-				70839C5AD428953FAF3091E814FF6E31 /* Pods-SwiftAudioPlayer_Example.modulemap */,
-				0B3AF0F1A1DF1101E93137959D2E5F24 /* Pods-SwiftAudioPlayer_Example-acknowledgements.markdown */,
-				BF5B667B9103284C373811A04411C7C1 /* Pods-SwiftAudioPlayer_Example-acknowledgements.plist */,
-				AB41D88A2C694FBDF26EA56381EED25F /* Pods-SwiftAudioPlayer_Example-dummy.m */,
-				55AB0CDF00C23619C7F54FE21D0C9534 /* Pods-SwiftAudioPlayer_Example-frameworks.sh */,
-				A19C8F889C787C19BE4123C1896AF501 /* Pods-SwiftAudioPlayer_Example-resources.sh */,
-				3B0B76CB1439F4D361322144E5A65C3A /* Pods-SwiftAudioPlayer_Example-umbrella.h */,
-				E1C110BCB4A9F826B59DC6905BAB3C6E /* Pods-SwiftAudioPlayer_Example.debug.xcconfig */,
-				69AF5444212FEC2674325627F26305AD /* Pods-SwiftAudioPlayer_Example.release.xcconfig */,
-			);
-			name = "Pods-SwiftAudioPlayer_Example";
-			path = "Target Support Files/Pods-SwiftAudioPlayer_Example";
-			sourceTree = "<group>";
-		};
-		7DB346D0F39D3F0E887471402A8071AB = {
-			isa = PBXGroup;
-			children = (
-				93A4A3777CF96A4AAC1D13BA6DCCEA73 /* Podfile */,
-				D2A5FF8756A6E3EEEA69006E1A3C81F7 /* Development Pods */,
-				BC3CA7F9E30CC8F7E2DD044DD34432FC /* Frameworks */,
-				21D946895A4F57F51246F3EBCF330719 /* Products */,
-				5F444B7A1C462A30A1CA4CCD3A7CF7B0 /* Targets Support Files */,
-			);
-			sourceTree = "<group>";
-		};
-		840F8E752B4437107D761C28D4EE8D0B /* Pod */ = {
-			isa = PBXGroup;
-			children = (
-				15DF3E7F1B5E10B1BBE49D3E9A67C938 /* LICENSE */,
-				B8C829A46249957CD3056074B5CC0BBB /* README.md */,
-				6EC04ECC8F7CB2AF2E4E042A6A8ECFA1 /* SwiftAudioPlayer.podspec */,
-				A4523BC8220A0B3C0079C4BC /* Credited_LICENSE */,
-			);
-			name = Pod;
-			sourceTree = "<group>";
-		};
-		A4681F842200D91D0018AB51 /* Util */ = {
-			isa = PBXGroup;
-			children = (
-				A4681F8B2200DDD50018AB51 /* Constants.swift */,
-				A4681F802200D0500018AB51 /* Log.swift */,
-				A4681F872200DAD50018AB51 /* DirectorThreadSafeClosures.swift */,
-				A4681F892200DB3C0018AB51 /* Date.swift */,
-				A4681F962200E2E20018AB51 /* URL.swift */,
-				A40DBE282391D9C900F86146 /* Data.swift */,
-			);
-			path = Util;
-			sourceTree = "<group>";
-		};
-		A4681F932200E2020018AB51 /* Engine */ = {
-			isa = PBXGroup;
-			children = (
-				A41AA0D1238BB9B600A467E1 /* SAPlayingStatus.swift */,
-				A4FBA6B8221BAF8700D5A353 /* SAAudioAvailabilityRange.swift */,
-				A4681F822200D9150018AB51 /* AudioEngine.swift */,
-				A4681F942200E2220018AB51 /* AudioDiskEngine.swift */,
-				A4681FBC220100AB0018AB51 /* AudioStreamEngine.swift */,
-				A4681FB52200FDF30018AB51 /* Converter */,
-				A4681FAA2200F8280018AB51 /* Parser */,
-				A4681FA82200F5A20018AB51 /* AudioThrottler.swift */,
-			);
-			path = Engine;
-			sourceTree = "<group>";
-		};
-		A4681F9B2200E4850018AB51 /* Model */ = {
-			isa = PBXGroup;
-			children = (
-				A4681F992200E3D90018AB51 /* AudioDataManager.swift */,
-				A4681FA62200F0130018AB51 /* StreamProgressPTO.swift */,
-				A4681FA02200E5F50018AB51 /* Streaming */,
-				A4681FA12200E6540018AB51 /* Downloading */,
-			);
-			path = Model;
-			sourceTree = "<group>";
-		};
-		A4681FA02200E5F50018AB51 /* Streaming */ = {
-			isa = PBXGroup;
-			children = (
-				A4681F9E2200E5DE0018AB51 /* StreamProgressDTO.swift */,
-				A4681F9C2200E4B40018AB51 /* AudioStreamWorker.swift */,
-			);
-			path = Streaming;
-			sourceTree = "<group>";
-		};
-		A4681FA12200E6540018AB51 /* Downloading */ = {
-			isa = PBXGroup;
-			children = (
-				A4681FA22200E6710018AB51 /* AudioDownloadWorker.swift */,
-				A4681FA42200E7920018AB51 /* FileStorage.swift */,
+				31E608F644E1028F62BF90E40D1AEB01 /* AudioDownloadWorker.swift */,
+				92B769D72EE52B714C1A68443D926648 /* FileStorage.swift */,
 			);
 			path = Downloading;
 			sourceTree = "<group>";
 		};
-		A4681FAA2200F8280018AB51 /* Parser */ = {
+		2812D7BE9E448BA0DE8E32A01F0899CB /* Support Files */ = {
 			isa = PBXGroup;
 			children = (
-				A4681FAB2200F8490018AB51 /* AudioParsable.swift */,
-				A4681FAD2200F8E90018AB51 /* AudioParser.swift */,
-				A4681FB12200FB020018AB51 /* AudioParserPropertyListener.swift */,
-				A4681FB32200FC520018AB51 /* AudioParserPacketListener.swift */,
-				A4681FAF2200FA6C0018AB51 /* AudioParserErrors.swift */,
-			);
-			path = Parser;
-			sourceTree = "<group>";
-		};
-		A4681FB52200FDF30018AB51 /* Converter */ = {
-			isa = PBXGroup;
-			children = (
-				A4681FB62200FE090018AB51 /* AudioConverter.swift */,
-				A4681FBA2201002F0018AB51 /* AudioConverterListener.swift */,
-				A4681FB82200FE7F0018AB51 /* AudioConverterErrors.swift */,
-			);
-			path = Converter;
-			sourceTree = "<group>";
-		};
-		A4681FE2220117B50018AB51 /* Source */ = {
-			isa = PBXGroup;
-			children = (
-				A4FBA6B3221B74C900D5A353 /* SALockScreenInfo.swift */,
-				A4681F8D2200E00E0018AB51 /* SAPlayer.swift */,
-				A4FBA6B6221BAC3D00D5A353 /* SAPlayerUpdateSubscription.swift */,
-				A4B4CC112223ED2A0045554B /* SAPlayerDownloader.swift */,
-				A4681F912200E1950018AB51 /* SAPlayerDelegate.swift */,
-				A4681F8F2200E1450018AB51 /* SAPlayerPresenter.swift */,
-				A4681FBE22010ECF0018AB51 /* LockScreenViewProtocol.swift */,
-				A4681F852200DA8B0018AB51 /* AudioClockDirector.swift */,
-				A49B78C3221A78DE00BBA862 /* DownloadProgressDirector.swift */,
-				A4681F932200E2020018AB51 /* Engine */,
-				A4681F9B2200E4850018AB51 /* Model */,
-				A4681F842200D91D0018AB51 /* Util */,
-			);
-			path = Source;
-			sourceTree = "<group>";
-		};
-		BC3CA7F9E30CC8F7E2DD044DD34432FC /* Frameworks */ = {
-			isa = PBXGroup;
-			children = (
-				5E0D919E635D23B70123790B8308F8EF /* iOS */,
-			);
-			name = Frameworks;
-			sourceTree = "<group>";
-		};
-		D2A5FF8756A6E3EEEA69006E1A3C81F7 /* Development Pods */ = {
-			isa = PBXGroup;
-			children = (
-				41C7F403DA52FBC5C40644BB0E824CAA /* SwiftAudioPlayer */,
-			);
-			name = "Development Pods";
-			sourceTree = "<group>";
-		};
-		EAE1BCB45D8F275CE4428674B5151284 /* Support Files */ = {
-			isa = PBXGroup;
-			children = (
-				16FCEC9685DAD30C0013E9ECD938611E /* Info.plist */,
-				A39F2A138CF40C1051CA9E227429A86D /* SwiftAudioPlayer.modulemap */,
-				BCAD67E3D7744FEFA5B221BDA7B25B20 /* SwiftAudioPlayer.xcconfig */,
-				FB83B3B4253D41C37C5563D34D450BF8 /* SwiftAudioPlayer-dummy.m */,
-				3F45E3A0690F048214FCE84887950057 /* SwiftAudioPlayer-prefix.pch */,
-				0E268C8D5FBBF7E0E790D3AA6A70FEC2 /* SwiftAudioPlayer-umbrella.h */,
+				83B657B7BABCD4038B13A585732EB898 /* SwiftAudioPlayer.modulemap */,
+				BAFB6630A5B99BC92EF915712C4E6192 /* SwiftAudioPlayer-dummy.m */,
+				E703DCB56D2D592A6027A5A20FD7AE96 /* SwiftAudioPlayer-Info.plist */,
+				02FE86ABB1A64A64E453EFFE30845511 /* SwiftAudioPlayer-prefix.pch */,
+				D12773D08724B70373533AAF3D3A6CCE /* SwiftAudioPlayer-umbrella.h */,
+				CAB4302DEE4BB08D19FAB891068538CC /* SwiftAudioPlayer.debug.xcconfig */,
+				73246B2A86D655BC03B6E0F711DC6026 /* SwiftAudioPlayer.release.xcconfig */,
 			);
 			name = "Support Files";
 			path = "Example/Pods/Target Support Files/SwiftAudioPlayer";
 			sourceTree = "<group>";
 		};
+		36A0C0FB23D0E072688BC288332435DC /* Streaming */ = {
+			isa = PBXGroup;
+			children = (
+				71EC910A688045D7E60695711F6CA403 /* AudioStreamWorker.swift */,
+				315E040DF693BD6EFFA2D8A663D51AC6 /* StreamProgressDTO.swift */,
+			);
+			path = Streaming;
+			sourceTree = "<group>";
+		};
+		578452D2E740E91742655AC8F1636D1F /* iOS */ = {
+			isa = PBXGroup;
+			children = (
+				73010CC983E3809BECEE5348DA1BB8C6 /* Foundation.framework */,
+			);
+			name = iOS;
+			sourceTree = "<group>";
+		};
+		76043D432A44C1998BF35F6CE48534B8 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				DA5D451E02C3497AD5337D0B45A97D80 /* Pods_SwiftAudioPlayer_Example.framework */,
+				3E33EE175AB41681150AE2C0644D61F8 /* Pods_SwiftAudioPlayer_Tests.framework */,
+				E1F0C4F7A8164EAA0AA2FAAFB3EE7D39 /* SwiftAudioPlayer.framework */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		8131D98434E895A562C132EAE58384B3 /* Converter */ = {
+			isa = PBXGroup;
+			children = (
+				6187BF1824934ECD4B504962DFF34DD0 /* AudioConverter.swift */,
+				149B306CD0CC67BA483D5F92A74C3ED7 /* AudioConverterErrors.swift */,
+				7F0AA769C6B0B6F24E8AB8B7BBCBBE54 /* AudioConverterListener.swift */,
+			);
+			path = Converter;
+			sourceTree = "<group>";
+		};
+		88C834AD508079009343C5D4BF29CF2A /* Pods-SwiftAudioPlayer_Example */ = {
+			isa = PBXGroup;
+			children = (
+				0353AE7BC123D60C531BF738F864039B /* Pods-SwiftAudioPlayer_Example.modulemap */,
+				729EF40CC1A5898FB2E7AC2C67F9130F /* Pods-SwiftAudioPlayer_Example-acknowledgements.markdown */,
+				E8F9CD0AE9E7DDC778C9CBBFA0ACA1E1 /* Pods-SwiftAudioPlayer_Example-acknowledgements.plist */,
+				01592DDDF22A613BCE6D5ED16D5C5362 /* Pods-SwiftAudioPlayer_Example-dummy.m */,
+				2B099A7070F5EFFAE9467E56D59B00FB /* Pods-SwiftAudioPlayer_Example-frameworks.sh */,
+				DDB833C5776D685910785570691A0E1E /* Pods-SwiftAudioPlayer_Example-Info.plist */,
+				2699A71ECAD0E1F815AEDD77FE7AA6E3 /* Pods-SwiftAudioPlayer_Example-umbrella.h */,
+				278ABFB8B195BB5F440AA8CE6B6A3310 /* Pods-SwiftAudioPlayer_Example.debug.xcconfig */,
+				1608B6253E6B509017DD3AB41C232DC0 /* Pods-SwiftAudioPlayer_Example.release.xcconfig */,
+			);
+			name = "Pods-SwiftAudioPlayer_Example";
+			path = "Target Support Files/Pods-SwiftAudioPlayer_Example";
+			sourceTree = "<group>";
+		};
+		BA9C111122DEF4CDFF6B93C2B3971EE1 /* Pod */ = {
+			isa = PBXGroup;
+			children = (
+				665BE73C0B6A2B9C13FD5E1000F0629C /* LICENSE */,
+				C3B41312F8396B95C75790B2D0FCE01A /* README.md */,
+				C2FA0B8A9B99F0550442A6165187BEBB /* SwiftAudioPlayer.podspec */,
+			);
+			name = Pod;
+			sourceTree = "<group>";
+		};
+		BD0307EAF3C88CF2F375B68E0DC209E7 /* Targets Support Files */ = {
+			isa = PBXGroup;
+			children = (
+				88C834AD508079009343C5D4BF29CF2A /* Pods-SwiftAudioPlayer_Example */,
+				D977D833373634B093089DDAE2F5B252 /* Pods-SwiftAudioPlayer_Tests */,
+			);
+			name = "Targets Support Files";
+			sourceTree = "<group>";
+		};
+		CF1408CF629C7361332E53B88F7BD30C = {
+			isa = PBXGroup;
+			children = (
+				9D940727FF8FB9C785EB98E56350EF41 /* Podfile */,
+				FF41AAF473D1803B42FBD2BB4AA81B81 /* Development Pods */,
+				D210D550F4EA176C3123ED886F8F87F5 /* Frameworks */,
+				76043D432A44C1998BF35F6CE48534B8 /* Products */,
+				BD0307EAF3C88CF2F375B68E0DC209E7 /* Targets Support Files */,
+			);
+			sourceTree = "<group>";
+		};
+		D210D550F4EA176C3123ED886F8F87F5 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				578452D2E740E91742655AC8F1636D1F /* iOS */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		D6AD041D7E9F7E723191D1F1888D3C17 /* Parser */ = {
+			isa = PBXGroup;
+			children = (
+				5983822453B45085BFBA69CDF0FE4BD0 /* AudioParsable.swift */,
+				591E56E2EC80B7C8DCF68AB5C679EB92 /* AudioParser.swift */,
+				2A4E863F10D5CF856E14EEC08F96CC4D /* AudioParserErrors.swift */,
+				845E0EE7DE0BCC809DE82F0F882C77BE /* AudioParserPacketListener.swift */,
+				7D9E8CBCA093178FE2F56BC6915B5A8E /* AudioParserPropertyListener.swift */,
+			);
+			path = Parser;
+			sourceTree = "<group>";
+		};
+		D977D833373634B093089DDAE2F5B252 /* Pods-SwiftAudioPlayer_Tests */ = {
+			isa = PBXGroup;
+			children = (
+				7BE76F62EF73B75DE7EA3B084EE6F68A /* Pods-SwiftAudioPlayer_Tests.modulemap */,
+				6A3E36B835AED8BDD63FCD5AABBBFA42 /* Pods-SwiftAudioPlayer_Tests-acknowledgements.markdown */,
+				C22F4015FA8DC1E6015AB4DD7112623C /* Pods-SwiftAudioPlayer_Tests-acknowledgements.plist */,
+				5ACCB8B9F45CC005EE8F24258D3DEBF8 /* Pods-SwiftAudioPlayer_Tests-dummy.m */,
+				FF041EBFBA7118B2F848983117BE1330 /* Pods-SwiftAudioPlayer_Tests-Info.plist */,
+				614C961E4516BAFE8938F512537309B6 /* Pods-SwiftAudioPlayer_Tests-umbrella.h */,
+				5573DCA125CB4113FBBC31F9F87B28B1 /* Pods-SwiftAudioPlayer_Tests.debug.xcconfig */,
+				3A2042793D09C9427EAC5F1DAEAA3DFB /* Pods-SwiftAudioPlayer_Tests.release.xcconfig */,
+			);
+			name = "Pods-SwiftAudioPlayer_Tests";
+			path = "Target Support Files/Pods-SwiftAudioPlayer_Tests";
+			sourceTree = "<group>";
+		};
+		FB596868647CE1C2A865797A93676DF3 /* Util */ = {
+			isa = PBXGroup;
+			children = (
+				F34268C17B14DC173F302AFA9825D391 /* Constants.swift */,
+				0E867420DC94680B0B0F8643CDE0C546 /* Data.swift */,
+				0AA75EA1133EB8A0FA84585284B47998 /* Date.swift */,
+				A069EF173FBE680FEA3D0BF27C12E771 /* DirectorThreadSafeClosures.swift */,
+				D6614C09C2321D08C4A790DD1A6EEBE4 /* Log.swift */,
+				1DBB6DD787015A3B7AEDD0094B695B0E /* URL.swift */,
+			);
+			name = Util;
+			path = Source/Util;
+			sourceTree = "<group>";
+		};
+		FDC338F2CA803686047F862D86ECF2B8 /* Engine */ = {
+			isa = PBXGroup;
+			children = (
+				A230AF4690207082AF977404BBF70D72 /* AudioDiskEngine.swift */,
+				0CEC548388343A8B41587F9B6DBE8D7B /* AudioEngine.swift */,
+				0524E6FD463D81612148BFA92906CBA7 /* AudioStreamEngine.swift */,
+				C33C19523F2C63F52E9AED4E86C7F6AE /* AudioThrottler.swift */,
+				CA4969BEBA420D1835C0CCC7DA62DEA0 /* SAAudioAvailabilityRange.swift */,
+				DEC87E4E067B91688FF278EB1DE663F1 /* SAPlayingStatus.swift */,
+				8131D98434E895A562C132EAE58384B3 /* Converter */,
+				D6AD041D7E9F7E723191D1F1888D3C17 /* Parser */,
+			);
+			name = Engine;
+			path = Source/Engine;
+			sourceTree = "<group>";
+		};
+		FF41AAF473D1803B42FBD2BB4AA81B81 /* Development Pods */ = {
+			isa = PBXGroup;
+			children = (
+				04957E152E05D5D8710F8D6CFCBA1160 /* SwiftAudioPlayer */,
+			);
+			name = "Development Pods";
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXHeadersBuildPhase section */
-		AA9057375F0CEA1E442959B20DF00E0B /* Headers */ = {
+		1E5481B221E9489DF2F82A70AAE3F8D9 /* Headers */ = {
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				8F93DB166237195ED222EE55B6404625 /* Pods-SwiftAudioPlayer_Example-umbrella.h in Headers */,
+				CAD2B4DB4E4684AF2D0A72D01D7893BE /* SwiftAudioPlayer-umbrella.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		C2905C5CE4C51FA9A0A41869F9E821EF /* Headers */ = {
+		7067272B8DD872BC0AF7CB0F1DBFC062 /* Headers */ = {
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				2A421C2A94DF56A00FF73322C6B470C8 /* SwiftAudioPlayer-umbrella.h in Headers */,
+				DC423303D4FD5E698D13126C02F1369F /* Pods-SwiftAudioPlayer_Tests-umbrella.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		C50DC2824A5C90AA1AAE358E0C12E6B7 /* Headers */ = {
+		74458A7A611235C189B2C9AF733575AB /* Headers */ = {
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				79D8DF73FA7CDD6E266BAE71D46E035F /* Pods-SwiftAudioPlayer_Tests-umbrella.h in Headers */,
+				5C20F518E9603AA9DF9C3DB99EFA148E /* Pods-SwiftAudioPlayer_Example-umbrella.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXHeadersBuildPhase section */
 
 /* Begin PBXNativeTarget section */
-		042ACE071BA515F4DE0E0C8007C3F0EE /* Pods-SwiftAudioPlayer_Example */ = {
+		4BAA5ED1C9E278EBBAF267DD5239A597 /* Pods-SwiftAudioPlayer_Tests */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = DA07CA03664346357070A678C7F08806 /* Build configuration list for PBXNativeTarget "Pods-SwiftAudioPlayer_Example" */;
+			buildConfigurationList = 06962C2ECCEAF807C813926A188282C7 /* Build configuration list for PBXNativeTarget "Pods-SwiftAudioPlayer_Tests" */;
 			buildPhases = (
-				B81A9C6902127665A927FD080F5C7ADC /* Sources */,
-				49686412FC8A53B147231E5FFCB22675 /* Frameworks */,
-				AA9057375F0CEA1E442959B20DF00E0B /* Headers */,
+				7067272B8DD872BC0AF7CB0F1DBFC062 /* Headers */,
+				F450379B3EDA0B5932B8536120D7DC3A /* Sources */,
+				5B10C87ED07C346E4A14368D9078DC91 /* Frameworks */,
+				3E77E602DF945762A2E427F751BDF93D /* Resources */,
 			);
 			buildRules = (
 			);
 			dependencies = (
-				CBF70B43290826D842876F967E485F75 /* PBXTargetDependency */,
-			);
-			name = "Pods-SwiftAudioPlayer_Example";
-			productName = "Pods-SwiftAudioPlayer_Example";
-			productReference = 509D93CD81F074F6E7C4B9DE13210ACF /* Pods_SwiftAudioPlayer_Example.framework */;
-			productType = "com.apple.product-type.framework";
-		};
-		A455B739F55DBA3F45939DAA2BB29B9A /* Pods-SwiftAudioPlayer_Tests */ = {
-			isa = PBXNativeTarget;
-			buildConfigurationList = A59179EF652A1F2B2035C657587E70FD /* Build configuration list for PBXNativeTarget "Pods-SwiftAudioPlayer_Tests" */;
-			buildPhases = (
-				784016011805A5C16DE580B7FBA6018E /* Sources */,
-				803A4909FC17367A14C1DB8D57E2E3E4 /* Frameworks */,
-				C50DC2824A5C90AA1AAE358E0C12E6B7 /* Headers */,
-			);
-			buildRules = (
-			);
-			dependencies = (
-				AF25C99DAB24D1A671A8406107B314E6 /* PBXTargetDependency */,
+				F0DDC01AB11A8A55279F718D792CAAD1 /* PBXTargetDependency */,
 			);
 			name = "Pods-SwiftAudioPlayer_Tests";
 			productName = "Pods-SwiftAudioPlayer_Tests";
-			productReference = F3E4AB96148429D903B6E5DAEB19C4C1 /* Pods_SwiftAudioPlayer_Tests.framework */;
+			productReference = 3E33EE175AB41681150AE2C0644D61F8 /* Pods_SwiftAudioPlayer_Tests.framework */;
 			productType = "com.apple.product-type.framework";
 		};
-		E50DAD13FFD3FC8036073A58BF8423D4 /* SwiftAudioPlayer */ = {
+		CCDC8A10F713045CA7359BD391E0C06C /* Pods-SwiftAudioPlayer_Example */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 7A4CFA3460E9F29496F86A90046F0265 /* Build configuration list for PBXNativeTarget "SwiftAudioPlayer" */;
+			buildConfigurationList = 79E53B8884049680DD904D9139B18929 /* Build configuration list for PBXNativeTarget "Pods-SwiftAudioPlayer_Example" */;
 			buildPhases = (
-				64CE53C9FB938FEC3FFB8C6DEF95FB13 /* Sources */,
-				31B37A0E7E48CFAEE05556BB4620B198 /* Frameworks */,
-				C2905C5CE4C51FA9A0A41869F9E821EF /* Headers */,
+				74458A7A611235C189B2C9AF733575AB /* Headers */,
+				3730C20BF9F582CA0152962F6B3E330B /* Sources */,
+				CF5987BEF0AA9A75E1DC7E17E729DD11 /* Frameworks */,
+				99FDE446D8964204234119CD41D845C5 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				53929991640198D114A8C69F01A51E42 /* PBXTargetDependency */,
+			);
+			name = "Pods-SwiftAudioPlayer_Example";
+			productName = "Pods-SwiftAudioPlayer_Example";
+			productReference = DA5D451E02C3497AD5337D0B45A97D80 /* Pods_SwiftAudioPlayer_Example.framework */;
+			productType = "com.apple.product-type.framework";
+		};
+		FBFDAF801D749F87A32FC2773FFE7390 /* SwiftAudioPlayer */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 2612C21349E5CBDD7BC089D0BA2A18E9 /* Build configuration list for PBXNativeTarget "SwiftAudioPlayer" */;
+			buildPhases = (
+				1E5481B221E9489DF2F82A70AAE3F8D9 /* Headers */,
+				5E6420BE7DFC6DB81AFDE4538B2DE829 /* Sources */,
+				73EA4855B9934FDBD65528A4041BD0EE /* Frameworks */,
+				89710ADF581FBB126FE040058CA1950C /* Resources */,
 			);
 			buildRules = (
 			);
@@ -475,27 +473,19 @@
 			);
 			name = SwiftAudioPlayer;
 			productName = SwiftAudioPlayer;
-			productReference = 782193D2A4B5EA65A5A468B871418969 /* SwiftAudioPlayer.framework */;
+			productReference = E1F0C4F7A8164EAA0AA2FAAFB3EE7D39 /* SwiftAudioPlayer.framework */;
 			productType = "com.apple.product-type.framework";
 		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
-		D41D8CD98F00B204E9800998ECF8427E /* Project object */ = {
+		BFDFE7DC352907FC980B868725387E98 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastSwiftUpdateCheck = 0930;
-				LastUpgradeCheck = 1010;
-				TargetAttributes = {
-					042ACE071BA515F4DE0E0C8007C3F0EE = {
-						LastSwiftMigration = 1010;
-					};
-					E50DAD13FFD3FC8036073A58BF8423D4 = {
-						LastSwiftMigration = 1120;
-					};
-				};
+				LastSwiftUpdateCheck = 1100;
+				LastUpgradeCheck = 1100;
 			};
-			buildConfigurationList = 2D8E8EC45A3A1A1D94AE762CB5028504 /* Build configuration list for PBXProject "Pods" */;
+			buildConfigurationList = 4821239608C13582E20E6DA73FD5F1F9 /* Build configuration list for PBXProject "Pods" */;
 			compatibilityVersion = "Xcode 3.2";
 			developmentRegion = en;
 			hasScannedForEncodings = 0;
@@ -503,100 +493,257 @@
 				en,
 				Base,
 			);
-			mainGroup = 7DB346D0F39D3F0E887471402A8071AB;
-			productRefGroup = 21D946895A4F57F51246F3EBCF330719 /* Products */;
+			mainGroup = CF1408CF629C7361332E53B88F7BD30C;
+			productRefGroup = 76043D432A44C1998BF35F6CE48534B8 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				042ACE071BA515F4DE0E0C8007C3F0EE /* Pods-SwiftAudioPlayer_Example */,
-				A455B739F55DBA3F45939DAA2BB29B9A /* Pods-SwiftAudioPlayer_Tests */,
-				E50DAD13FFD3FC8036073A58BF8423D4 /* SwiftAudioPlayer */,
+				CCDC8A10F713045CA7359BD391E0C06C /* Pods-SwiftAudioPlayer_Example */,
+				4BAA5ED1C9E278EBBAF267DD5239A597 /* Pods-SwiftAudioPlayer_Tests */,
+				FBFDAF801D749F87A32FC2773FFE7390 /* SwiftAudioPlayer */,
 			);
 		};
 /* End PBXProject section */
 
+/* Begin PBXResourcesBuildPhase section */
+		3E77E602DF945762A2E427F751BDF93D /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		89710ADF581FBB126FE040058CA1950C /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		99FDE446D8964204234119CD41D845C5 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
 /* Begin PBXSourcesBuildPhase section */
-		64CE53C9FB938FEC3FFB8C6DEF95FB13 /* Sources */ = {
+		3730C20BF9F582CA0152962F6B3E330B /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				A41AA0D2238BB9B600A467E1 /* SAPlayingStatus.swift in Sources */,
-				A4681FDC220113D70018AB51 /* AudioDownloadWorker.swift in Sources */,
-				A4681FD8220113C60018AB51 /* AudioDataManager.swift in Sources */,
-				A4681FD1220113AF0018AB51 /* AudioParsable.swift in Sources */,
-				A4681FD2220113B20018AB51 /* AudioParser.swift in Sources */,
-				A4681FCF220113A40018AB51 /* AudioConverterListener.swift in Sources */,
-				A4681FE1220113E70018AB51 /* Constants.swift in Sources */,
-				A40DBE292391D9CA00F86146 /* Data.swift in Sources */,
-				A4FBA6B5221B74C900D5A353 /* SALockScreenInfo.swift in Sources */,
-				A4681FC6220113880018AB51 /* SAPlayer.swift in Sources */,
-				A4FBA6B7221BAC3D00D5A353 /* SAPlayerUpdateSubscription.swift in Sources */,
-				A4681FC72201138B0018AB51 /* SAPlayerDelegate.swift in Sources */,
-				A4681FD5220113BD0018AB51 /* AudioParserErrors.swift in Sources */,
-				A4681FC9220113920018AB51 /* LockScreenViewProtocol.swift in Sources */,
-				A4681FD6220113BF0018AB51 /* AudioThrottler.swift in Sources */,
-				A4681FCC2201139B0018AB51 /* AudioDiskEngine.swift in Sources */,
-				A4681FDE220113DE0018AB51 /* Date.swift in Sources */,
-				A4681FDA220113D00018AB51 /* StreamProgressDTO.swift in Sources */,
-				A4681FDB220113D40018AB51 /* FileStorage.swift in Sources */,
-				A4681FD4220113BA0018AB51 /* AudioParserPacketListener.swift in Sources */,
-				E08AD6157EF688FE832F866CBCDA3532 /* SwiftAudioPlayer-dummy.m in Sources */,
-				A4681FDD220113DC0018AB51 /* URL.swift in Sources */,
-				A4681FC82201138E0018AB51 /* SAPlayerPresenter.swift in Sources */,
-				A4681FD3220113B60018AB51 /* AudioParserPropertyListener.swift in Sources */,
-				A4681FCA220113940018AB51 /* AudioClockDirector.swift in Sources */,
-				A4B4CC122223ED2A0045554B /* SAPlayerDownloader.swift in Sources */,
-				A4681FD0220113A70018AB51 /* AudioConverterErrors.swift in Sources */,
-				A4FBA6B2221B538E00D5A353 /* DownloadProgressDirector.swift in Sources */,
-				A4681FD7220113C30018AB51 /* StreamProgressPTO.swift in Sources */,
-				A4681FE0220113E40018AB51 /* Log.swift in Sources */,
-				A4681FCE220113A20018AB51 /* AudioConverter.swift in Sources */,
-				A4FBA6B9221BAF8700D5A353 /* SAAudioAvailabilityRange.swift in Sources */,
-				A4681FCD2201139E0018AB51 /* AudioStreamEngine.swift in Sources */,
-				A4681FD9220113CD0018AB51 /* AudioStreamWorker.swift in Sources */,
-				A4681FDF220113E20018AB51 /* DirectorThreadSafeClosures.swift in Sources */,
-				A4681FCB220113980018AB51 /* AudioEngine.swift in Sources */,
+				CA786E320ED8F7C9D14B086B865D2E90 /* Pods-SwiftAudioPlayer_Example-dummy.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		784016011805A5C16DE580B7FBA6018E /* Sources */ = {
+		5E6420BE7DFC6DB81AFDE4538B2DE829 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				3A31FEF49CC8C3B757EEB4EBCC9BCCF4 /* Pods-SwiftAudioPlayer_Tests-dummy.m in Sources */,
+				0C9DE62363652F6262B39AA0A5B563E9 /* AudioClockDirector.swift in Sources */,
+				33A4A7F3B882A36CD201673D9E610893 /* AudioConverter.swift in Sources */,
+				074F505025F848CF0036F92C /* AudioQueueDirector.swift in Sources */,
+				9AE502BE48067663FAA4FA4BB41B95F9 /* AudioConverterErrors.swift in Sources */,
+				8A41D6EB548FF0209E7EAE88D05A4EAA /* AudioConverterListener.swift in Sources */,
+				0430BE893477DC13F268ED66838353F6 /* AudioDataManager.swift in Sources */,
+				87C5035466A77FF3C1B64B2696D14644 /* AudioDiskEngine.swift in Sources */,
+				59F78BAB8A3CB523142BEB89E6214805 /* AudioDownloadWorker.swift in Sources */,
+				6C19BC2F4524D8FD9B210387CF372C88 /* AudioEngine.swift in Sources */,
+				F78D754B81990563F21DBEB45131E88C /* AudioParsable.swift in Sources */,
+				AEB16DCE4B8D725F5F5E6170677C62F4 /* AudioParser.swift in Sources */,
+				71C7A6BBD5FC387CF41392C09ABB0AE0 /* AudioParserErrors.swift in Sources */,
+				61E62F9A052E84D747195C992670C348 /* AudioParserPacketListener.swift in Sources */,
+				85C84ACD00C98869E30506B51A47FC7A /* AudioParserPropertyListener.swift in Sources */,
+				A53AD46F322F1707E39AD28450CA4080 /* AudioStreamEngine.swift in Sources */,
+				F31838E303E7D6F08DB3A445BFED24D4 /* AudioStreamWorker.swift in Sources */,
+				61D5382FAE6DC5BC23721F09C37B1354 /* AudioThrottler.swift in Sources */,
+				77DF3B2784B0A2543B4D63C151AB9CC9 /* Constants.swift in Sources */,
+				CB9848F5F5535509C5AC8C8612B6877D /* Data.swift in Sources */,
+				8F22506623B05463AC4465BD3A237D35 /* Date.swift in Sources */,
+				E6A1D9B0AC2823041986C1B95BC42D13 /* DirectorThreadSafeClosures.swift in Sources */,
+				BD7554ADC443B699D91A015996A818B5 /* DownloadProgressDirector.swift in Sources */,
+				F3284A7900BCBB31C9B2A6AB718DA0C0 /* FileStorage.swift in Sources */,
+				15199327F189A8C36411B3D7D1FBE3E8 /* LockScreenViewProtocol.swift in Sources */,
+				2944F07EC955175CA738AF57B8747D88 /* Log.swift in Sources */,
+				1AC92A23C370B5B0F83F6A03C0677A51 /* SAAudioAvailabilityRange.swift in Sources */,
+				29F27235C421445B79111FDF776E0D84 /* SAAudioQueue.swift in Sources */,
+				F57C826A1A574FCC08CD0EF69FC8C77E /* SALockScreenInfo.swift in Sources */,
+				9AA2A4CCDFE955B81F867F3691DC0FE9 /* SAPlayer.swift in Sources */,
+				FC4A93CD5C217605E4597CEBF2E39A48 /* SAPlayerDelegate.swift in Sources */,
+				09AE259515907ED84637E8EDA4106E85 /* SAPlayerDownloader.swift in Sources */,
+				5CA966200B51E95A392F04D38AD23633 /* SAPlayerPresenter.swift in Sources */,
+				B1B3B17570706A40CE2C196B4586458A /* SAPlayerUpdateSubscription.swift in Sources */,
+				A06D6C02C0DE18746A17425CD4214948 /* SAPlayingStatus.swift in Sources */,
+				CE81D16F9DC9CDE76E59D49E06931716 /* StreamProgressDTO.swift in Sources */,
+				E2B4D27ED44A6332F7836E2EDA2BAFCA /* StreamProgressPTO.swift in Sources */,
+				01F5C943A540E7B6C3E13C2D3E0E905B /* SwiftAudioPlayer-dummy.m in Sources */,
+				7ACAAB070D98D16DE201D995BFBB568D /* URL.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		B81A9C6902127665A927FD080F5C7ADC /* Sources */ = {
+		F450379B3EDA0B5932B8536120D7DC3A /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				418D41690EF20077112E2BE86E32FB6A /* Pods-SwiftAudioPlayer_Example-dummy.m in Sources */,
+				AF6948ED5F784D8A87F7FE7E9CF151D8 /* Pods-SwiftAudioPlayer_Tests-dummy.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
-		AF25C99DAB24D1A671A8406107B314E6 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			name = "Pods-SwiftAudioPlayer_Example";
-			target = 042ACE071BA515F4DE0E0C8007C3F0EE /* Pods-SwiftAudioPlayer_Example */;
-			targetProxy = E3FF9FF67EAA9666CEFDE6E31C200575 /* PBXContainerItemProxy */;
-		};
-		CBF70B43290826D842876F967E485F75 /* PBXTargetDependency */ = {
+		53929991640198D114A8C69F01A51E42 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			name = SwiftAudioPlayer;
-			target = E50DAD13FFD3FC8036073A58BF8423D4 /* SwiftAudioPlayer */;
-			targetProxy = 87F13419A579FD5681636A037129209E /* PBXContainerItemProxy */;
+			target = FBFDAF801D749F87A32FC2773FFE7390 /* SwiftAudioPlayer */;
+			targetProxy = 998550830B87603AC6E4D0A3D4EC2775 /* PBXContainerItemProxy */;
+		};
+		F0DDC01AB11A8A55279F718D792CAAD1 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = "Pods-SwiftAudioPlayer_Example";
+			target = CCDC8A10F713045CA7359BD391E0C06C /* Pods-SwiftAudioPlayer_Example */;
+			targetProxy = 59B8B006AAD15D2DFC47F6A8DA7C385D /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
 /* Begin XCBuildConfiguration section */
-		8B33C5230DE4A9DFA6D8F46505DD7AF7 /* Debug */ = {
+		10A57492008872916AEFF060D7799604 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = CAB4302DEE4BB08D19FAB891068538CC /* SwiftAudioPlayer.debug.xcconfig */;
+			buildSettings = {
+				CLANG_ENABLE_OBJC_WEAK = NO;
+				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=watchos*]" = "";
+				CURRENT_PROJECT_VERSION = 1;
+				DEFINES_MODULE = YES;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				GCC_PREFIX_HEADER = "Target Support Files/SwiftAudioPlayer/SwiftAudioPlayer-prefix.pch";
+				INFOPLIST_FILE = "Target Support Files/SwiftAudioPlayer/SwiftAudioPlayer-Info.plist";
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				MODULEMAP_FILE = "Target Support Files/SwiftAudioPlayer/SwiftAudioPlayer.modulemap";
+				PRODUCT_MODULE_NAME = SwiftAudioPlayer;
+				PRODUCT_NAME = SwiftAudioPlayer;
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "$(inherited) ";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VERSIONING_SYSTEM = "apple-generic";
+				VERSION_INFO_PREFIX = "";
+			};
+			name = Debug;
+		};
+		48FC8D054A70DB0619DA2B21708201BA /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 5573DCA125CB4113FBBC31F9F87B28B1 /* Pods-SwiftAudioPlayer_Tests.debug.xcconfig */;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = NO;
+				CLANG_ENABLE_OBJC_WEAK = NO;
+				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=watchos*]" = "";
+				CURRENT_PROJECT_VERSION = 1;
+				DEFINES_MODULE = YES;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				INFOPLIST_FILE = "Target Support Files/Pods-SwiftAudioPlayer_Tests/Pods-SwiftAudioPlayer_Tests-Info.plist";
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				MACH_O_TYPE = staticlib;
+				MODULEMAP_FILE = "Target Support Files/Pods-SwiftAudioPlayer_Tests/Pods-SwiftAudioPlayer_Tests.modulemap";
+				OTHER_LDFLAGS = "";
+				OTHER_LIBTOOLFLAGS = "";
+				PODS_ROOT = "$(SRCROOT)";
+				PRODUCT_BUNDLE_IDENTIFIER = "org.cocoapods.${PRODUCT_NAME:rfc1034identifier}";
+				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VERSIONING_SYSTEM = "apple-generic";
+				VERSION_INFO_PREFIX = "";
+			};
+			name = Debug;
+		};
+		58C8CD5E357CA2E40E29BA3E2E74D72C /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 73246B2A86D655BC03B6E0F711DC6026 /* SwiftAudioPlayer.release.xcconfig */;
+			buildSettings = {
+				CLANG_ENABLE_OBJC_WEAK = NO;
+				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=watchos*]" = "";
+				CURRENT_PROJECT_VERSION = 1;
+				DEFINES_MODULE = YES;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				GCC_PREFIX_HEADER = "Target Support Files/SwiftAudioPlayer/SwiftAudioPlayer-prefix.pch";
+				INFOPLIST_FILE = "Target Support Files/SwiftAudioPlayer/SwiftAudioPlayer-Info.plist";
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				MODULEMAP_FILE = "Target Support Files/SwiftAudioPlayer/SwiftAudioPlayer.modulemap";
+				PRODUCT_MODULE_NAME = SwiftAudioPlayer;
+				PRODUCT_NAME = SwiftAudioPlayer;
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "$(inherited) ";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VALIDATE_PRODUCT = YES;
+				VERSIONING_SYSTEM = "apple-generic";
+				VERSION_INFO_PREFIX = "";
+			};
+			name = Release;
+		};
+		7C4764BA0E17CD44EF10E921BB4E5294 /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 1608B6253E6B509017DD3AB41C232DC0 /* Pods-SwiftAudioPlayer_Example.release.xcconfig */;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = NO;
+				CLANG_ENABLE_OBJC_WEAK = NO;
+				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=watchos*]" = "";
+				CURRENT_PROJECT_VERSION = 1;
+				DEFINES_MODULE = YES;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				INFOPLIST_FILE = "Target Support Files/Pods-SwiftAudioPlayer_Example/Pods-SwiftAudioPlayer_Example-Info.plist";
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				MACH_O_TYPE = staticlib;
+				MODULEMAP_FILE = "Target Support Files/Pods-SwiftAudioPlayer_Example/Pods-SwiftAudioPlayer_Example.modulemap";
+				OTHER_LDFLAGS = "";
+				OTHER_LIBTOOLFLAGS = "";
+				PODS_ROOT = "$(SRCROOT)";
+				PRODUCT_BUNDLE_IDENTIFIER = "org.cocoapods.${PRODUCT_NAME:rfc1034identifier}";
+				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VALIDATE_PRODUCT = YES;
+				VERSIONING_SYSTEM = "apple-generic";
+				VERSION_INFO_PREFIX = "";
+			};
+			name = Release;
+		};
+		7EE7A78859F657F6BEFC651185B43192 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
@@ -619,14 +766,141 @@
 				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
 				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
 				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
 				CLANG_WARN_STRICT_PROTOTYPES = YES;
 				CLANG_WARN_SUSPICIOUS_MOVE = YES;
 				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
-				CODE_SIGNING_ALLOWED = NO;
-				CODE_SIGNING_REQUIRED = NO;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"POD_CONFIGURATION_RELEASE=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				STRIP_INSTALLED_PRODUCT = NO;
+				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
+				SWIFT_VERSION = 5.0;
+				SYMROOT = "${SRCROOT}/../build";
+			};
+			name = Release;
+		};
+		8BEF2FA9FFC33A4EC2D075C2D8AF26D9 /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 3A2042793D09C9427EAC5F1DAEAA3DFB /* Pods-SwiftAudioPlayer_Tests.release.xcconfig */;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = NO;
+				CLANG_ENABLE_OBJC_WEAK = NO;
+				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=watchos*]" = "";
+				CURRENT_PROJECT_VERSION = 1;
+				DEFINES_MODULE = YES;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				INFOPLIST_FILE = "Target Support Files/Pods-SwiftAudioPlayer_Tests/Pods-SwiftAudioPlayer_Tests-Info.plist";
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				MACH_O_TYPE = staticlib;
+				MODULEMAP_FILE = "Target Support Files/Pods-SwiftAudioPlayer_Tests/Pods-SwiftAudioPlayer_Tests.modulemap";
+				OTHER_LDFLAGS = "";
+				OTHER_LIBTOOLFLAGS = "";
+				PODS_ROOT = "$(SRCROOT)";
+				PRODUCT_BUNDLE_IDENTIFIER = "org.cocoapods.${PRODUCT_NAME:rfc1034identifier}";
+				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VALIDATE_PRODUCT = YES;
+				VERSIONING_SYSTEM = "apple-generic";
+				VERSION_INFO_PREFIX = "";
+			};
+			name = Release;
+		};
+		AE2AC532427FFDA54E0AF7B9F042B843 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 278ABFB8B195BB5F440AA8CE6B6A3310 /* Pods-SwiftAudioPlayer_Example.debug.xcconfig */;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = NO;
+				CLANG_ENABLE_OBJC_WEAK = NO;
+				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=watchos*]" = "";
+				CURRENT_PROJECT_VERSION = 1;
+				DEFINES_MODULE = YES;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				INFOPLIST_FILE = "Target Support Files/Pods-SwiftAudioPlayer_Example/Pods-SwiftAudioPlayer_Example-Info.plist";
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				MACH_O_TYPE = staticlib;
+				MODULEMAP_FILE = "Target Support Files/Pods-SwiftAudioPlayer_Example/Pods-SwiftAudioPlayer_Example.modulemap";
+				OTHER_LDFLAGS = "";
+				OTHER_LIBTOOLFLAGS = "";
+				PODS_ROOT = "$(SRCROOT)";
+				PRODUCT_BUNDLE_IDENTIFIER = "org.cocoapods.${PRODUCT_NAME:rfc1034identifier}";
+				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VERSIONING_SYSTEM = "apple-generic";
+				VERSION_INFO_PREFIX = "";
+			};
+			name = Debug;
+		};
+		D299434AB35E7FD6F7921C8EF24742FF /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
@@ -647,320 +921,58 @@
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
-				MTL_ENABLE_DEBUG_INFO = YES;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
 				ONLY_ACTIVE_ARCH = YES;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				STRIP_INSTALLED_PRODUCT = NO;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 5.0;
 				SYMROOT = "${SRCROOT}/../build";
 			};
 			name = Debug;
-		};
-		8FB894269622E1A5F9C7EDF6D23562D8 /* Debug */ = {
-			isa = XCBuildConfiguration;
-			baseConfigurationReference = BCAD67E3D7744FEFA5B221BDA7B25B20 /* SwiftAudioPlayer.xcconfig */;
-			buildSettings = {
-				CODE_SIGN_IDENTITY = "";
-				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
-				"CODE_SIGN_IDENTITY[sdk=watchos*]" = "";
-				CURRENT_PROJECT_VERSION = 1;
-				DEFINES_MODULE = YES;
-				DYLIB_COMPATIBILITY_VERSION = 1;
-				DYLIB_CURRENT_VERSION = 1;
-				DYLIB_INSTALL_NAME_BASE = "@rpath";
-				GCC_PREFIX_HEADER = "Target Support Files/SwiftAudioPlayer/SwiftAudioPlayer-prefix.pch";
-				INFOPLIST_FILE = "Target Support Files/SwiftAudioPlayer/Info.plist";
-				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
-				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
-				MODULEMAP_FILE = "Target Support Files/SwiftAudioPlayer/SwiftAudioPlayer.modulemap";
-				PRODUCT_MODULE_NAME = SwiftAudioPlayer;
-				PRODUCT_NAME = SwiftAudioPlayer;
-				SDKROOT = iphoneos;
-				SKIP_INSTALL = YES;
-				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "$(inherited) ";
-				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
-				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
-				VERSIONING_SYSTEM = "apple-generic";
-				VERSION_INFO_PREFIX = "";
-			};
-			name = Debug;
-		};
-		9C916088CF1DF380EF48442C7F229CE0 /* Release */ = {
-			isa = XCBuildConfiguration;
-			baseConfigurationReference = BCAD67E3D7744FEFA5B221BDA7B25B20 /* SwiftAudioPlayer.xcconfig */;
-			buildSettings = {
-				CODE_SIGN_IDENTITY = "";
-				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
-				"CODE_SIGN_IDENTITY[sdk=watchos*]" = "";
-				CURRENT_PROJECT_VERSION = 1;
-				DEFINES_MODULE = YES;
-				DYLIB_COMPATIBILITY_VERSION = 1;
-				DYLIB_CURRENT_VERSION = 1;
-				DYLIB_INSTALL_NAME_BASE = "@rpath";
-				GCC_PREFIX_HEADER = "Target Support Files/SwiftAudioPlayer/SwiftAudioPlayer-prefix.pch";
-				INFOPLIST_FILE = "Target Support Files/SwiftAudioPlayer/Info.plist";
-				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
-				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
-				MODULEMAP_FILE = "Target Support Files/SwiftAudioPlayer/SwiftAudioPlayer.modulemap";
-				PRODUCT_MODULE_NAME = SwiftAudioPlayer;
-				PRODUCT_NAME = SwiftAudioPlayer;
-				SDKROOT = iphoneos;
-				SKIP_INSTALL = YES;
-				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "$(inherited) ";
-				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
-				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
-				VALIDATE_PRODUCT = YES;
-				VERSIONING_SYSTEM = "apple-generic";
-				VERSION_INFO_PREFIX = "";
-			};
-			name = Release;
-		};
-		A0D83911D05B740864CEE37C389FE977 /* Debug */ = {
-			isa = XCBuildConfiguration;
-			baseConfigurationReference = E1C110BCB4A9F826B59DC6905BAB3C6E /* Pods-SwiftAudioPlayer_Example.debug.xcconfig */;
-			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = NO;
-				CLANG_ENABLE_MODULES = YES;
-				CODE_SIGN_IDENTITY = "";
-				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
-				"CODE_SIGN_IDENTITY[sdk=watchos*]" = "";
-				CURRENT_PROJECT_VERSION = 1;
-				DEFINES_MODULE = YES;
-				DYLIB_COMPATIBILITY_VERSION = 1;
-				DYLIB_CURRENT_VERSION = 1;
-				DYLIB_INSTALL_NAME_BASE = "@rpath";
-				INFOPLIST_FILE = "Target Support Files/Pods-SwiftAudioPlayer_Example/Info.plist";
-				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
-				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
-				MACH_O_TYPE = staticlib;
-				MODULEMAP_FILE = "Target Support Files/Pods-SwiftAudioPlayer_Example/Pods-SwiftAudioPlayer_Example.modulemap";
-				OTHER_LDFLAGS = "";
-				OTHER_LIBTOOLFLAGS = "";
-				PODS_ROOT = "$(SRCROOT)";
-				PRODUCT_BUNDLE_IDENTIFIER = "org.cocoapods.${PRODUCT_NAME:rfc1034identifier}";
-				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
-				SDKROOT = iphoneos;
-				SKIP_INSTALL = YES;
-				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
-				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
-				SWIFT_VERSION = 4.2;
-				TARGETED_DEVICE_FAMILY = "1,2";
-				VERSIONING_SYSTEM = "apple-generic";
-				VERSION_INFO_PREFIX = "";
-			};
-			name = Debug;
-		};
-		B42B54097A876E8A982CBF5DAA91B1AB /* Release */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				ALWAYS_SEARCH_USER_PATHS = NO;
-				CLANG_ANALYZER_NONNULL = YES;
-				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
-				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
-				CLANG_CXX_LIBRARY = "libc++";
-				CLANG_ENABLE_MODULES = YES;
-				CLANG_ENABLE_OBJC_ARC = YES;
-				CLANG_ENABLE_OBJC_WEAK = YES;
-				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
-				CLANG_WARN_BOOL_CONVERSION = YES;
-				CLANG_WARN_COMMA = YES;
-				CLANG_WARN_CONSTANT_CONVERSION = YES;
-				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
-				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
-				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
-				CLANG_WARN_EMPTY_BODY = YES;
-				CLANG_WARN_ENUM_CONVERSION = YES;
-				CLANG_WARN_INFINITE_RECURSION = YES;
-				CLANG_WARN_INT_CONVERSION = YES;
-				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
-				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
-				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
-				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
-				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
-				CLANG_WARN_STRICT_PROTOTYPES = YES;
-				CLANG_WARN_SUSPICIOUS_MOVE = YES;
-				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
-				CLANG_WARN_UNREACHABLE_CODE = YES;
-				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
-				CODE_SIGNING_ALLOWED = NO;
-				CODE_SIGNING_REQUIRED = NO;
-				COPY_PHASE_STRIP = NO;
-				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
-				ENABLE_NS_ASSERTIONS = NO;
-				ENABLE_STRICT_OBJC_MSGSEND = YES;
-				GCC_C_LANGUAGE_STANDARD = gnu11;
-				GCC_NO_COMMON_BLOCKS = YES;
-				GCC_PREPROCESSOR_DEFINITIONS = (
-					"POD_CONFIGURATION_RELEASE=1",
-					"$(inherited)",
-				);
-				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
-				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
-				GCC_WARN_UNDECLARED_SELECTOR = YES;
-				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
-				GCC_WARN_UNUSED_FUNCTION = YES;
-				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
-				MTL_ENABLE_DEBUG_INFO = NO;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				STRIP_INSTALLED_PRODUCT = NO;
-				SWIFT_COMPILATION_MODE = wholemodule;
-				SYMROOT = "${SRCROOT}/../build";
-			};
-			name = Release;
-		};
-		D272822AECD211C2CF39EF80BE4F8704 /* Release */ = {
-			isa = XCBuildConfiguration;
-			baseConfigurationReference = 69AF5444212FEC2674325627F26305AD /* Pods-SwiftAudioPlayer_Example.release.xcconfig */;
-			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = NO;
-				CLANG_ENABLE_MODULES = YES;
-				CODE_SIGN_IDENTITY = "";
-				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
-				"CODE_SIGN_IDENTITY[sdk=watchos*]" = "";
-				CURRENT_PROJECT_VERSION = 1;
-				DEFINES_MODULE = YES;
-				DYLIB_COMPATIBILITY_VERSION = 1;
-				DYLIB_CURRENT_VERSION = 1;
-				DYLIB_INSTALL_NAME_BASE = "@rpath";
-				INFOPLIST_FILE = "Target Support Files/Pods-SwiftAudioPlayer_Example/Info.plist";
-				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
-				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
-				MACH_O_TYPE = staticlib;
-				MODULEMAP_FILE = "Target Support Files/Pods-SwiftAudioPlayer_Example/Pods-SwiftAudioPlayer_Example.modulemap";
-				OTHER_LDFLAGS = "";
-				OTHER_LIBTOOLFLAGS = "";
-				PODS_ROOT = "$(SRCROOT)";
-				PRODUCT_BUNDLE_IDENTIFIER = "org.cocoapods.${PRODUCT_NAME:rfc1034identifier}";
-				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
-				SDKROOT = iphoneos;
-				SKIP_INSTALL = YES;
-				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
-				SWIFT_VERSION = 4.2;
-				TARGETED_DEVICE_FAMILY = "1,2";
-				VALIDATE_PRODUCT = YES;
-				VERSIONING_SYSTEM = "apple-generic";
-				VERSION_INFO_PREFIX = "";
-			};
-			name = Release;
-		};
-		E754824C2E623DCAD96773D67F451F3F /* Debug */ = {
-			isa = XCBuildConfiguration;
-			baseConfigurationReference = 314D056517A7B04FFAFF279157B7ADBB /* Pods-SwiftAudioPlayer_Tests.debug.xcconfig */;
-			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = NO;
-				CODE_SIGN_IDENTITY = "";
-				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
-				"CODE_SIGN_IDENTITY[sdk=watchos*]" = "";
-				CURRENT_PROJECT_VERSION = 1;
-				DEFINES_MODULE = YES;
-				DYLIB_COMPATIBILITY_VERSION = 1;
-				DYLIB_CURRENT_VERSION = 1;
-				DYLIB_INSTALL_NAME_BASE = "@rpath";
-				INFOPLIST_FILE = "Target Support Files/Pods-SwiftAudioPlayer_Tests/Info.plist";
-				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
-				IPHONEOS_DEPLOYMENT_TARGET = 9.3;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
-				MACH_O_TYPE = staticlib;
-				MODULEMAP_FILE = "Target Support Files/Pods-SwiftAudioPlayer_Tests/Pods-SwiftAudioPlayer_Tests.modulemap";
-				OTHER_LDFLAGS = "";
-				OTHER_LIBTOOLFLAGS = "";
-				PODS_ROOT = "$(SRCROOT)";
-				PRODUCT_BUNDLE_IDENTIFIER = "org.cocoapods.${PRODUCT_NAME:rfc1034identifier}";
-				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
-				SDKROOT = iphoneos;
-				SKIP_INSTALL = YES;
-				TARGETED_DEVICE_FAMILY = "1,2";
-				VERSIONING_SYSTEM = "apple-generic";
-				VERSION_INFO_PREFIX = "";
-			};
-			name = Debug;
-		};
-		FE93E0DF7CB23B865130F18DCC81C442 /* Release */ = {
-			isa = XCBuildConfiguration;
-			baseConfigurationReference = 030E0D4C0BE29E2606B0BCB65B9BBC42 /* Pods-SwiftAudioPlayer_Tests.release.xcconfig */;
-			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = NO;
-				CODE_SIGN_IDENTITY = "";
-				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
-				"CODE_SIGN_IDENTITY[sdk=watchos*]" = "";
-				CURRENT_PROJECT_VERSION = 1;
-				DEFINES_MODULE = YES;
-				DYLIB_COMPATIBILITY_VERSION = 1;
-				DYLIB_CURRENT_VERSION = 1;
-				DYLIB_INSTALL_NAME_BASE = "@rpath";
-				INFOPLIST_FILE = "Target Support Files/Pods-SwiftAudioPlayer_Tests/Info.plist";
-				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
-				IPHONEOS_DEPLOYMENT_TARGET = 9.3;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
-				MACH_O_TYPE = staticlib;
-				MODULEMAP_FILE = "Target Support Files/Pods-SwiftAudioPlayer_Tests/Pods-SwiftAudioPlayer_Tests.modulemap";
-				OTHER_LDFLAGS = "";
-				OTHER_LIBTOOLFLAGS = "";
-				PODS_ROOT = "$(SRCROOT)";
-				PRODUCT_BUNDLE_IDENTIFIER = "org.cocoapods.${PRODUCT_NAME:rfc1034identifier}";
-				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
-				SDKROOT = iphoneos;
-				SKIP_INSTALL = YES;
-				TARGETED_DEVICE_FAMILY = "1,2";
-				VALIDATE_PRODUCT = YES;
-				VERSIONING_SYSTEM = "apple-generic";
-				VERSION_INFO_PREFIX = "";
-			};
-			name = Release;
 		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		2D8E8EC45A3A1A1D94AE762CB5028504 /* Build configuration list for PBXProject "Pods" */ = {
+		06962C2ECCEAF807C813926A188282C7 /* Build configuration list for PBXNativeTarget "Pods-SwiftAudioPlayer_Tests" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				8B33C5230DE4A9DFA6D8F46505DD7AF7 /* Debug */,
-				B42B54097A876E8A982CBF5DAA91B1AB /* Release */,
+				48FC8D054A70DB0619DA2B21708201BA /* Debug */,
+				8BEF2FA9FFC33A4EC2D075C2D8AF26D9 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		7A4CFA3460E9F29496F86A90046F0265 /* Build configuration list for PBXNativeTarget "SwiftAudioPlayer" */ = {
+		2612C21349E5CBDD7BC089D0BA2A18E9 /* Build configuration list for PBXNativeTarget "SwiftAudioPlayer" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				8FB894269622E1A5F9C7EDF6D23562D8 /* Debug */,
-				9C916088CF1DF380EF48442C7F229CE0 /* Release */,
+				10A57492008872916AEFF060D7799604 /* Debug */,
+				58C8CD5E357CA2E40E29BA3E2E74D72C /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		A59179EF652A1F2B2035C657587E70FD /* Build configuration list for PBXNativeTarget "Pods-SwiftAudioPlayer_Tests" */ = {
+		4821239608C13582E20E6DA73FD5F1F9 /* Build configuration list for PBXProject "Pods" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				E754824C2E623DCAD96773D67F451F3F /* Debug */,
-				FE93E0DF7CB23B865130F18DCC81C442 /* Release */,
+				D299434AB35E7FD6F7921C8EF24742FF /* Debug */,
+				7EE7A78859F657F6BEFC651185B43192 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		DA07CA03664346357070A678C7F08806 /* Build configuration list for PBXNativeTarget "Pods-SwiftAudioPlayer_Example" */ = {
+		79E53B8884049680DD904D9139B18929 /* Build configuration list for PBXNativeTarget "Pods-SwiftAudioPlayer_Example" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				A0D83911D05B740864CEE37C389FE977 /* Debug */,
-				D272822AECD211C2CF39EF80BE4F8704 /* Release */,
+				AE2AC532427FFDA54E0AF7B9F042B843 /* Debug */,
+				7C4764BA0E17CD44EF10E921BB4E5294 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
-	rootObject = D41D8CD98F00B204E9800998ECF8427E /* Project object */;
+	rootObject = BFDFE7DC352907FC980B868725387E98 /* Project object */;
 }

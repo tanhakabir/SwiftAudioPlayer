@@ -33,12 +33,14 @@ class AudioClockDirector {
     private var durationClosures: DirectorThreadSafeClosures<Duration> = DirectorThreadSafeClosures()
     private var playingStatusClosures: DirectorThreadSafeClosures<SAPlayingStatus> = DirectorThreadSafeClosures()
     private var bufferClosures: DirectorThreadSafeClosures<SAAudioAvailabilityRange> = DirectorThreadSafeClosures()
+    private var audioQueueClosures: DirectorThreadSafeClosures<URL> = DirectorThreadSafeClosures()
     
     private init() {}
     
     func create() {}
     
     func clear() {
+        audioQueueClosures.clear()
         needleClosures.clear()
         durationClosures.clear()
         playingStatusClosures.clear()
@@ -69,6 +71,11 @@ class AudioClockDirector {
     func attachToChangesInBufferedRange(closure: @escaping (Key, SAAudioAvailabilityRange) throws -> Void) -> UInt{
         return bufferClosures.attach(closure: closure)
     }
+
+
+    func attachToChangesInQueue(closure: @escaping (Key, URL) throws -> Void) -> UInt {
+        return audioQueueClosures.attach(closure: closure)
+    }
     
     
     // MARK: - Detaches
@@ -86,6 +93,10 @@ class AudioClockDirector {
     
     func detachFromChangesInBufferedRange(withID id: UInt) {
         bufferClosures.detach(id: id)
+    }
+
+    func detatchFromChangesInQueue(withID id: UInt) {
+        audioQueueClosures.detach(id: id)
     }
 }
 
@@ -111,5 +122,11 @@ extension AudioClockDirector {
 extension AudioClockDirector {
     func changeInAudioBuffered(_ key: Key, buffered: SAAudioAvailabilityRange) {
         bufferClosures.broadcast(key: key, payload: buffered)
+    }
+}
+
+extension AudioClockDirector {
+    func changeInQueue(_ key: Key, url: URL) {
+        audioQueueClosures.broadcast(key: key, payload: url)
     }
 }

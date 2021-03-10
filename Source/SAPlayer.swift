@@ -416,6 +416,10 @@ extension SAPlayer {
     public func enableSkipSilences(_ bool: Bool) {
         presenter.handleSkippingSilences(bool)
     }
+
+    public func queue(remoteUrl: URL) {
+        presenter.queue(remoteUrl: remoteUrl)
+    }
 }
 
 
@@ -428,8 +432,10 @@ extension SAPlayer: SAPlayerDelegate {
     }
     
     func startAudioStreamed(withRemoteUrl url: AudioURL) {
-        player?.pause()
-        player?.invalidate()
+        /// Because we support queueing, we want to clear off any existing players.
+        /// Therefore, instantiate new player every time, destroy any existing ones.
+        /// This prevents a crash where an owning engine already exists.
+        clearEngine()
         player = AudioStreamEngine(withRemoteUrl: url, delegate: presenter)
     }
     

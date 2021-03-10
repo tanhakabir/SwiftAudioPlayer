@@ -287,7 +287,7 @@
 			files = (
 			);
 			inputPaths = (
-				"${SRCROOT}/Pods/Target Support Files/Pods-SwiftAudioPlayer_Example/Pods-SwiftAudioPlayer_Example-frameworks.sh",
+				"${PODS_ROOT}/Target Support Files/Pods-SwiftAudioPlayer_Example/Pods-SwiftAudioPlayer_Example-frameworks.sh",
 				"${BUILT_PRODUCTS_DIR}/SwiftAudioPlayer/SwiftAudioPlayer.framework",
 			);
 			name = "[CP] Embed Pods Frameworks";
@@ -296,7 +296,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-SwiftAudioPlayer_Example/Pods-SwiftAudioPlayer_Example-frameworks.sh\"\n";
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-SwiftAudioPlayer_Example/Pods-SwiftAudioPlayer_Example-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 		DC23879B37E28D8BDDB8317F /* [CP] Check Pods Manifest.lock */ = {

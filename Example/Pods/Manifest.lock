@@ -1,5 +1,5 @@
 PODS:
-  - SwiftAudioPlayer (0.1.0)
+  - SwiftAudioPlayer (2.13.1)
 
 DEPENDENCIES:
   - SwiftAudioPlayer (from `../`)
@@ -9,8 +9,8 @@ EXTERNAL SOURCES:
     :path: "../"
 
 SPEC CHECKSUMS:
-  SwiftAudioPlayer: abfeb4ac2467cdd7b5b8a5cb442780184ea172bc
+  SwiftAudioPlayer: 1e0139b746e8ef63f548ad90d9c3d82f42481a13
 
 PODFILE CHECKSUM: 84ea27746bf895da86125356a8d0df7a323c4c08
 
-COCOAPODS: 1.5.3
+COCOAPODS: 1.10.1

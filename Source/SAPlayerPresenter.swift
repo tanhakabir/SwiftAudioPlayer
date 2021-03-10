@@ -37,6 +37,7 @@ class SAPlayerPresenter {
     private var key: String?
     private var isPlaying: SAPlayingStatus = .buffering
     private var mediaInfo: SALockScreenInfo?
+    private var queue: SAAudioQueue<URL> = .init()
     
     private var urlKeyMap: [Key: URL] = [:]
     
@@ -48,8 +49,6 @@ class SAPlayerPresenter {
         self.delegate = delegate
         
         delegate?.setLockScreenControls(presenter: self)
-        
-        prepareNextEpisodeToPlay()
     }
     
     func getUrl(forKey key: Key) -> URL? {
@@ -186,6 +185,10 @@ extension SAPlayerPresenter {
     func handleSkippingSilences(_ bool: Bool) {
         delegate?.handleSkippingSilences(bool)
     }
+
+    func queue(remoteUrl: URL) {
+        queue.append(item: remoteUrl)
+    }
 }
 
 //MARK:- For lock screen
@@ -202,15 +205,22 @@ extension SAPlayerPresenter: AudioEngineDelegate {
     }
     
     func didEndPlaying() {
-        // TODO
-//        playNextEpisode()
+        guard let key = queue.front?.key else { return }
+        guard let nextPlayableURL = queue.dequeue() else { return }
+        // We have to be on the main thread here. Seems like a hack but prevents the following:
+        // reason: 'required condition is false: nil == owningEngine || GetEngine() == owningEngine'
+        DispatchQueue.main.async {
+            self.prepareNextEpisodeToPlay(key: key, url: nextPlayableURL)
+            SAPlayer.shared.startRemoteAudio(withRemoteUrl: nextPlayableURL)
+            SAPlayer.shared.play()
+        }
     }
 }
 
 //MARK:- Autoplay
 //FIXME: This needs to be refactored
 extension SAPlayerPresenter {
-    func prepareNextEpisodeToPlay() {
-        // TODO
+    func prepareNextEpisodeToPlay(key: Key, url: URL) {
+        AudioClockDirector.shared.changeInQueue(key, url: url)
     }
 }

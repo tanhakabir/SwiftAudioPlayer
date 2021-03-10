@@ -92,5 +92,30 @@ extension SAPlayer {
                 }
             }
         }
+        
+        /**
+         Feature to pause the player after a delay. This will happen regardless of if another audio clip has started.
+         */
+        public struct SleepTimer {
+            static var timer: Timer?
+            
+            /**
+             Enable feature to pause the player after a delay. This will happen regardless of if another audio clip has started.
+             
+             - Parameter afterDelay: The number of seconds to wait before pausing the audio
+             */
+            public static func enable(afterDelay delay: Double) {
+                timer = Timer.scheduledTimer(withTimeInterval: delay, repeats: false, block: { _ in
+                    SAPlayer.shared.pause()
+                })
+            }
+            
+            /**
+             Disable feature to pause the player after a delay. 
+             */
+            public static func disable() {
+                timer?.invalidate()
+            }
+        }
     }
 }

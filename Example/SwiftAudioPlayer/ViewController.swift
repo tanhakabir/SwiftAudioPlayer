@@ -316,5 +316,14 @@ class ViewController: UIViewController {
             _ = SAPlayer.Features.SkipSilences.disable()
         }
     }
+    @IBOutlet weak var sleepSwitch: UISwitch!
+    
+    @IBAction func sleepSwitched(_ sender: Any) {
+        if sleepSwitch.isOn {
+            _ = SAPlayer.Features.SleepTimer.enable(afterDelay: 5.0)
+        } else {
+            _ = SAPlayer.Features.SleepTimer.disable()
+        }
+    }
 }
 

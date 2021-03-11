@@ -351,8 +351,6 @@
 		A4681FE2220117B50018AB51 /* Source */ = {
 			isa = PBXGroup;
 			children = (
-				A470FE0625F9ADF800F135FF /* AudioClockDirector.swift */,
-				A470FE0725F9ADF800F135FF /* DownloadProgressDirector.swift */,
 				A4FBA6B3221B74C900D5A353 /* SALockScreenInfo.swift */,
 				A4681F8D2200E00E0018AB51 /* SAPlayer.swift */,
 				A411CE4525F9609D0039E1CD /* SAPlayerFeatures.swift */,
@@ -362,10 +360,20 @@
 				A4681F8F2200E1450018AB51 /* SAPlayerPresenter.swift */,
 				A4681FBE22010ECF0018AB51 /* LockScreenViewProtocol.swift */,
 				A4681F932200E2020018AB51 /* Engine */,
+				A470FE0D25F9AE1800F135FF /* Directors */,
 				A4681F9B2200E4850018AB51 /* Model */,
 				A4681F842200D91D0018AB51 /* Util */,
 			);
 			path = Source;
+			sourceTree = "<group>";
+		};
+		A470FE0D25F9AE1800F135FF /* Directors */ = {
+			isa = PBXGroup;
+			children = (
+				A470FE0725F9ADF800F135FF /* DownloadProgressDirector.swift */,
+				A470FE0625F9ADF800F135FF /* AudioClockDirector.swift */,
+			);
+			path = Directors;
 			sourceTree = "<group>";
 		};
 		BC3CA7F9E30CC8F7E2DD044DD34432FC /* Frameworks */ = {

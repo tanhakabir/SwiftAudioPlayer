@@ -21,7 +21,6 @@
 		A4681FC72201138B0018AB51 /* SAPlayerDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = A4681F912200E1950018AB51 /* SAPlayerDelegate.swift */; };
 		A4681FC82201138E0018AB51 /* SAPlayerPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = A4681F8F2200E1450018AB51 /* SAPlayerPresenter.swift */; };
 		A4681FC9220113920018AB51 /* LockScreenViewProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = A4681FBE22010ECF0018AB51 /* LockScreenViewProtocol.swift */; };
-		A4681FCA220113940018AB51 /* AudioClockDirector.swift in Sources */ = {isa = PBXBuildFile; fileRef = A4681F852200DA8B0018AB51 /* AudioClockDirector.swift */; };
 		A4681FCB220113980018AB51 /* AudioEngine.swift in Sources */ = {isa = PBXBuildFile; fileRef = A4681F822200D9150018AB51 /* AudioEngine.swift */; };
 		A4681FCC2201139B0018AB51 /* AudioDiskEngine.swift in Sources */ = {isa = PBXBuildFile; fileRef = A4681F942200E2220018AB51 /* AudioDiskEngine.swift */; };
 		A4681FCD2201139E0018AB51 /* AudioStreamEngine.swift in Sources */ = {isa = PBXBuildFile; fileRef = A4681FBC220100AB0018AB51 /* AudioStreamEngine.swift */; };
@@ -45,8 +44,9 @@
 		A4681FDF220113E20018AB51 /* DirectorThreadSafeClosures.swift in Sources */ = {isa = PBXBuildFile; fileRef = A4681F872200DAD50018AB51 /* DirectorThreadSafeClosures.swift */; };
 		A4681FE0220113E40018AB51 /* Log.swift in Sources */ = {isa = PBXBuildFile; fileRef = A4681F802200D0500018AB51 /* Log.swift */; };
 		A4681FE1220113E70018AB51 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = A4681F8B2200DDD50018AB51 /* Constants.swift */; };
+		A470FE0825F9ADF800F135FF /* AudioClockDirector.swift in Sources */ = {isa = PBXBuildFile; fileRef = A470FE0625F9ADF800F135FF /* AudioClockDirector.swift */; };
+		A470FE0925F9ADF800F135FF /* DownloadProgressDirector.swift in Sources */ = {isa = PBXBuildFile; fileRef = A470FE0725F9ADF800F135FF /* DownloadProgressDirector.swift */; };
 		A4B4CC122223ED2A0045554B /* SAPlayerDownloader.swift in Sources */ = {isa = PBXBuildFile; fileRef = A4B4CC112223ED2A0045554B /* SAPlayerDownloader.swift */; };
-		A4FBA6B2221B538E00D5A353 /* DownloadProgressDirector.swift in Sources */ = {isa = PBXBuildFile; fileRef = A49B78C3221A78DE00BBA862 /* DownloadProgressDirector.swift */; };
 		A4FBA6B5221B74C900D5A353 /* SALockScreenInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = A4FBA6B3221B74C900D5A353 /* SALockScreenInfo.swift */; };
 		A4FBA6B7221BAC3D00D5A353 /* SAPlayerUpdateSubscription.swift in Sources */ = {isa = PBXBuildFile; fileRef = A4FBA6B6221BAC3D00D5A353 /* SAPlayerUpdateSubscription.swift */; };
 		A4FBA6B9221BAF8700D5A353 /* SAAudioAvailabilityRange.swift in Sources */ = {isa = PBXBuildFile; fileRef = A4FBA6B8221BAF8700D5A353 /* SAAudioAvailabilityRange.swift */; };
@@ -104,7 +104,6 @@
 		A4523BC8220A0B3C0079C4BC /* Credited_LICENSE */ = {isa = PBXFileReference; lastKnownFileType = text; path = Credited_LICENSE; sourceTree = "<group>"; };
 		A4681F802200D0500018AB51 /* Log.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Log.swift; sourceTree = "<group>"; };
 		A4681F822200D9150018AB51 /* AudioEngine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioEngine.swift; sourceTree = "<group>"; };
-		A4681F852200DA8B0018AB51 /* AudioClockDirector.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioClockDirector.swift; sourceTree = "<group>"; };
 		A4681F872200DAD50018AB51 /* DirectorThreadSafeClosures.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DirectorThreadSafeClosures.swift; sourceTree = "<group>"; };
 		A4681F892200DB3C0018AB51 /* Date.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Date.swift; sourceTree = "<group>"; };
 		A4681F8B2200DDD50018AB51 /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
@@ -130,7 +129,8 @@
 		A4681FBA2201002F0018AB51 /* AudioConverterListener.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioConverterListener.swift; sourceTree = "<group>"; };
 		A4681FBC220100AB0018AB51 /* AudioStreamEngine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioStreamEngine.swift; sourceTree = "<group>"; };
 		A4681FBE22010ECF0018AB51 /* LockScreenViewProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LockScreenViewProtocol.swift; sourceTree = "<group>"; };
-		A49B78C3221A78DE00BBA862 /* DownloadProgressDirector.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DownloadProgressDirector.swift; sourceTree = "<group>"; };
+		A470FE0625F9ADF800F135FF /* AudioClockDirector.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AudioClockDirector.swift; sourceTree = "<group>"; };
+		A470FE0725F9ADF800F135FF /* DownloadProgressDirector.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DownloadProgressDirector.swift; sourceTree = "<group>"; };
 		A4B4CC112223ED2A0045554B /* SAPlayerDownloader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SAPlayerDownloader.swift; sourceTree = "<group>"; };
 		A4FBA6B3221B74C900D5A353 /* SALockScreenInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SALockScreenInfo.swift; sourceTree = "<group>"; };
 		A4FBA6B6221BAC3D00D5A353 /* SAPlayerUpdateSubscription.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SAPlayerUpdateSubscription.swift; sourceTree = "<group>"; };
@@ -269,15 +269,6 @@
 			name = Pod;
 			sourceTree = "<group>";
 		};
-		A411CEC425F9AC550039E1CD /* Directors */ = {
-			isa = PBXGroup;
-			children = (
-				A4681F852200DA8B0018AB51 /* AudioClockDirector.swift */,
-				A49B78C3221A78DE00BBA862 /* DownloadProgressDirector.swift */,
-			);
-			path = Directors;
-			sourceTree = "<group>";
-		};
 		A4681F842200D91D0018AB51 /* Util */ = {
 			isa = PBXGroup;
 			children = (
@@ -360,6 +351,8 @@
 		A4681FE2220117B50018AB51 /* Source */ = {
 			isa = PBXGroup;
 			children = (
+				A470FE0625F9ADF800F135FF /* AudioClockDirector.swift */,
+				A470FE0725F9ADF800F135FF /* DownloadProgressDirector.swift */,
 				A4FBA6B3221B74C900D5A353 /* SALockScreenInfo.swift */,
 				A4681F8D2200E00E0018AB51 /* SAPlayer.swift */,
 				A411CE4525F9609D0039E1CD /* SAPlayerFeatures.swift */,
@@ -369,7 +362,6 @@
 				A4681F8F2200E1450018AB51 /* SAPlayerPresenter.swift */,
 				A4681FBE22010ECF0018AB51 /* LockScreenViewProtocol.swift */,
 				A4681F932200E2020018AB51 /* Engine */,
-				A411CEC425F9AC550039E1CD /* Directors */,
 				A4681F9B2200E4850018AB51 /* Model */,
 				A4681F842200D91D0018AB51 /* Util */,
 			);
@@ -531,6 +523,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A470FE0925F9ADF800F135FF /* DownloadProgressDirector.swift in Sources */,
 				A41AA0D2238BB9B600A467E1 /* SAPlayingStatus.swift in Sources */,
 				A4681FDC220113D70018AB51 /* AudioDownloadWorker.swift in Sources */,
 				A4681FD8220113C60018AB51 /* AudioDataManager.swift in Sources */,
@@ -555,13 +548,12 @@
 				A4681FDD220113DC0018AB51 /* URL.swift in Sources */,
 				A4681FC82201138E0018AB51 /* SAPlayerPresenter.swift in Sources */,
 				A4681FD3220113B60018AB51 /* AudioParserPropertyListener.swift in Sources */,
-				A4681FCA220113940018AB51 /* AudioClockDirector.swift in Sources */,
 				A4B4CC122223ED2A0045554B /* SAPlayerDownloader.swift in Sources */,
 				A4681FD0220113A70018AB51 /* AudioConverterErrors.swift in Sources */,
-				A4FBA6B2221B538E00D5A353 /* DownloadProgressDirector.swift in Sources */,
 				A4681FD7220113C30018AB51 /* StreamProgressPTO.swift in Sources */,
 				A4681FE0220113E40018AB51 /* Log.swift in Sources */,
 				A4681FCE220113A20018AB51 /* AudioConverter.swift in Sources */,
+				A470FE0825F9ADF800F135FF /* AudioClockDirector.swift in Sources */,
 				A4FBA6B9221BAF8700D5A353 /* SAAudioAvailabilityRange.swift in Sources */,
 				A4681FCD2201139E0018AB51 /* AudioStreamEngine.swift in Sources */,
 				A411CE4625F9609D0039E1CD /* SAPlayerFeatures.swift in Sources */,

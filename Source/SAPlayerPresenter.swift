@@ -28,6 +28,11 @@ import AVFoundation
 import MediaPlayer
 
 class SAPlayerPresenter {
+    enum Location {
+        case remote
+        case disk
+    }
+    
     weak var delegate: SAPlayerDelegate?
     var shouldPlayImmediately = false //for auto-play
     
@@ -43,13 +48,12 @@ class SAPlayerPresenter {
     var durationRef:UInt = 0
     var needleRef:UInt = 0
     var playingStatusRef:UInt = 0
+    var audioQueue: [(Location, URL)] = []
     
     init(delegate: SAPlayerDelegate?) {
         self.delegate = delegate
         
         delegate?.setLockScreenControls(presenter: self)
-        
-        prepareNextEpisodeToPlay()
     }
     
     func getUrl(forKey key: Key) -> URL? {
@@ -61,6 +65,8 @@ class SAPlayerPresenter {
     }
     
     func handleClear() {
+        delegate?.clearEngine()
+        
         needle = nil
         duration = nil
         key = nil
@@ -73,13 +79,29 @@ class SAPlayerPresenter {
     }
     
     func handlePlaySavedAudio(withSavedUrl url: URL) {
+        // Because we support queueing, we want to clear off any existing players.
+        // Therefore, instantiate new player every time, destroy any existing ones.
+        // This prevents a crash where an owning engine already exists.
+        handleClear()
         attachForUpdates(url: url)
         delegate?.startAudioDownloaded(withSavedUrl: url)
     }
     
     func handlePlayStreamedAudio(withRemoteUrl url: URL) {
+        // Because we support queueing, we want to clear off any existing players.
+        // Therefore, instantiate new player every time, destroy any existing ones.
+        // This prevents a crash where an owning engine already exists.
+        handleClear()
         attachForUpdates(url: url)
         delegate?.startAudioStreamed(withRemoteUrl: url)
+    }
+    
+    func handleQueueStreamedAudio(withRemoteUrl url: URL) {
+        audioQueue.append((.remote, url))
+    }
+    
+    func handleQueueSavedAudio(withSavedUrl url: URL) {
+        audioQueue.append((.disk, url))
     }
     
     private func attachForUpdates(url: URL) {
@@ -198,15 +220,38 @@ extension SAPlayerPresenter: AudioEngineDelegate {
     }
     
     func didEndPlaying() {
-        // TODO
-//        playNextEpisode()
+        Log.test("end of audio")
+        playNextAudioIfExists()
     }
 }
 
 //MARK:- Autoplay
-//FIXME: This needs to be refactored
 extension SAPlayerPresenter {
-    func prepareNextEpisodeToPlay() {
-        // TODO
+    func playNextAudioIfExists() {
+        Log.test("will try to play next audio")
+        guard audioQueue.count > 0 else {
+            Log.info("no queued audio")
+            return
+        }
+        let nextAudioURL = audioQueue.removeFirst()
+        let key = nextAudioURL.1.key
+        
+        // We have to be on the main thread here. Seems like a hack but prevents the following:
+        // reason: 'required condition is false: nil == owningEngine || GetEngine() == owningEngine'
+//        DispatchQueue.main.async { [weak self] in
+//            guard let self = self else { return }
+            Log.test(nextAudioURL)
+        AudioQueueDirector.shared.changeInQueue(key, url: nextAudioURL.1)
+        
+        switch nextAudioURL.0 {
+        case .remote:
+            self.handlePlayStreamedAudio(withRemoteUrl: nextAudioURL.1)
+            break
+        case .disk:
+            self.handlePlaySavedAudio(withSavedUrl: nextAudioURL.1)
+        }
+        
+            self.handlePlay()
+//        }
     }
 }

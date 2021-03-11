@@ -28,7 +28,7 @@ import AVFoundation
 
 protocol AudioEngineProtocol {
     var key: Key { get }
-    var engine: AVAudioEngine { get set }
+    var engine: AVAudioEngine { get }
     func play()
     func pause()
     func seek(toNeedle needle: Needle)
@@ -44,8 +44,10 @@ class AudioEngine: AudioEngineProtocol {
     weak var delegate:AudioEngineDelegate?
     var key:Key
     
+    private var queue = DispatchQueue(label: "SwiftAudioPlayer.Engine", qos: .userInitiated)
+    
     var engine = AVAudioEngine()
-    let playerNode = AVAudioPlayerNode()
+    var playerNode = AVAudioPlayerNode()
     
     var timer: Timer?
     
@@ -114,6 +116,15 @@ class AudioEngine: AudioEngineProtocol {
         self.key = url.key
         self.delegate = delegate
         
+        queue = DispatchQueue(label: "SwiftAudioPlayer.Engine\(key)", qos: .userInitiated)
+        
+        queue.async { [weak self] in
+            guard let self = self else { return }
+            self.initHelper(engineAudioFormat)
+        }
+    }
+    
+    func initHelper(_ engineAudioFormat: AVAudioFormat) {
         engine.attach(playerNode)
         
         for node in SAPlayer.shared.audioModifiers {
@@ -147,15 +158,20 @@ class AudioEngine: AudioEngineProtocol {
     }
     
     deinit {
-        timer?.invalidate()
-        if state == .resumed {
-            engine.stop()
+        queue.async { [weak self] in
+            guard let self = self else { return }
+            
+            self.timer?.invalidate()
+            if self.state == .resumed {
+                self.engine.stop()
+            }
         }
     }
     
     func updateIsPlaying() {
         if !bufferedSeconds.isPlayable {
-            if bufferedSeconds.bufferingProgress > 0.999 {
+            // if most of the audio is buffered for long audio or in short audio there isn't many seconds left to buffer it means wwe've reached the end of the audio
+            if bufferedSeconds.bufferingProgress > 0.99 || bufferedSeconds.secondsLeftToBuffer < 5 {
                 playingStatus = .ended
             } else {
                 playingStatus = .buffering
@@ -163,35 +179,47 @@ class AudioEngine: AudioEngineProtocol {
             return
         }
         
-        let isPlaying = engine.isRunning && playerNode.isPlaying
-        playingStatus = isPlaying ? .playing : .paused
+        queue.async { [weak self] in
+            guard let self = self else { return }
+            
+            let isPlaying = self.engine.isRunning ?? false && self.playerNode.isPlaying
+            self.playingStatus = isPlaying ? .playing : .paused
+        }
     }
     
     func play() {
-        // https://stackoverflow.com/questions/36754934/update-mpremotecommandcenter-play-pause-button
-        if !engine.isRunning {
-            do {
-                try engine.start()
-                
-            } catch let error {
-                Log.monitor(error.localizedDescription)
+        queue.async { [weak self] in
+            guard let self = self else { return }
+            
+            // https://stackoverflow.com/questions/36754934/update-mpremotecommandcenter-play-pause-button
+            if !(self.engine.isRunning ?? true) {
+                do {
+                    try self.engine.start()
+                    
+                } catch let error {
+                    Log.monitor(error.localizedDescription)
+                }
             }
-        }
-        
-        playerNode.play()
-        
-        if state == .suspended {
-            state = .resumed
+            
+            self.playerNode.play()
+            
+            if self.state == .suspended {
+                self.state = .resumed
+            }
         }
     }
     
     func pause() {
-        // https://stackoverflow.com/questions/36754934/update-mpremotecommandcenter-play-pause-button
-        playerNode.pause()
-        engine.pause()
-        
-        if state == .resumed {
-            state = .suspended
+        queue.async { [weak self] in
+            guard let self = self else { return }
+            
+            // https://stackoverflow.com/questions/36754934/update-mpremotecommandcenter-play-pause-button
+            self.playerNode.pause()
+            self.engine.pause()
+            
+            if self.state == .resumed {
+                self.state = .suspended
+            }
         }
     }
     

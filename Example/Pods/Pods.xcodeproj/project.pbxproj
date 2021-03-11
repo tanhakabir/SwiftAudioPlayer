@@ -269,6 +269,15 @@
 			name = Pod;
 			sourceTree = "<group>";
 		};
+		A411CEC425F9AC550039E1CD /* Directors */ = {
+			isa = PBXGroup;
+			children = (
+				A4681F852200DA8B0018AB51 /* AudioClockDirector.swift */,
+				A49B78C3221A78DE00BBA862 /* DownloadProgressDirector.swift */,
+			);
+			path = Directors;
+			sourceTree = "<group>";
+		};
 		A4681F842200D91D0018AB51 /* Util */ = {
 			isa = PBXGroup;
 			children = (
@@ -359,9 +368,8 @@
 				A4681F912200E1950018AB51 /* SAPlayerDelegate.swift */,
 				A4681F8F2200E1450018AB51 /* SAPlayerPresenter.swift */,
 				A4681FBE22010ECF0018AB51 /* LockScreenViewProtocol.swift */,
-				A4681F852200DA8B0018AB51 /* AudioClockDirector.swift */,
-				A49B78C3221A78DE00BBA862 /* DownloadProgressDirector.swift */,
 				A4681F932200E2020018AB51 /* Engine */,
+				A411CEC425F9AC550039E1CD /* Directors */,
 				A4681F9B2200E4850018AB51 /* Model */,
 				A4681F842200D91D0018AB51 /* Util */,
 			);

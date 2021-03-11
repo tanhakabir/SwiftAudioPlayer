@@ -17,7 +17,7 @@ class ViewController: UIViewController {
         var url: URL {
             switch index {
             case 0:
-                return URL(string: "https://cdn.fastlearner.media/bensound-rumble.mp3")!
+                return URL(string: "https://www.fesliyanstudios.com/musicfiles/2019-04-23_-_Trusted_Advertising_-_www.fesliyanstudios.com/15SecVersion2019-04-23_-_Trusted_Advertising_-_www.fesliyanstudios.com.mp3")!
             case 1:
                 return URL(string: "https://chtbl.com/track/18338/traffic.libsyn.com/secure/acquired/acquired_-_armrev_2.mp3?dest-id=376122")!
             case 2:
@@ -105,7 +105,7 @@ class ViewController: UIViewController {
         
         SAPlayer.Downloader.allowUsingCellularData = true
         
-        SAPlayer.shared.DEBUG_MODE = true
+//        SAPlayer.shared.DEBUG_MODE = true
         
         isPlayable = false
         selectedAudio = AudioInfo(index: 0)
@@ -127,7 +127,9 @@ class ViewController: UIViewController {
             
             guard self.duration != 0 else { return }
             
-            self.scrubberSlider.value = Float(position/self.duration)
+            DispatchQueue.main.async {
+                self.scrubberSlider.value = Float(position/self.duration)
+            }
         }
         
         _ = SAPlayer.Updates.AudioDownloading.subscribe { [weak self] (url, progress) in
@@ -149,7 +151,9 @@ class ViewController: UIViewController {
             
             if self.duration == 0.0 { return }
             
-            self.bufferProgress.progress = Float(buffer.bufferingProgress)
+            DispatchQueue.main.async {
+                self.bufferProgress.progress = Float(buffer.bufferingProgress)
+            }
             
             if buffer.bufferingProgress >= 0.99 {
                 self.streamButton.isEnabled = false
@@ -164,24 +168,33 @@ class ViewController: UIViewController {
             guard let self = self else { return }
             guard url == self.selectedAudio.url || url == self.savedUrls[self.selectedAudio] else { return }
             
-            switch playing {
-            case .playing:
-                self.isPlayable = true
-                self.playPauseButton.setTitle("Pause", for: .normal)
-                return
-            case .paused:
-                self.isPlayable = true
-                self.playPauseButton.setTitle("Play", for: .normal)
-                return
-            case .buffering:
-                self.isPlayable = false
-                self.playPauseButton.setTitle("Loading", for: .normal)
-                return
-            case .ended:
-                self.isPlayable = false
-                self.playPauseButton.setTitle("Done", for: .normal)
-                return
+            DispatchQueue.main.async {
+                switch playing {
+                case .playing:
+                    self.isPlayable = true
+                    self.playPauseButton.setTitle("Pause", for: .normal)
+                    return
+                case .paused:
+                    self.isPlayable = true
+                    self.playPauseButton.setTitle("Play", for: .normal)
+                    return
+                case .buffering:
+                    self.isPlayable = false
+                    self.playPauseButton.setTitle("Loading", for: .normal)
+                    return
+                case .ended:
+                    self.isPlayable = false
+                    self.playPauseButton.setTitle("Done", for: .normal)
+                    return
+                }
             }
+        }
+        
+        _ = SAPlayer.Updates.AudioQueue.subscribe { [weak self] key, forthcomingPlaybackUrl in
+            guard let self = self else { return }
+            /// we update the selected audio. this is a little contrived, but allows us to update outlets
+            self.selectedAudio = AudioInfo(index: 1)
+            print("💥 Received queue update 💥")
         }
     }
     
@@ -214,6 +227,8 @@ class ViewController: UIViewController {
         SAPlayer.shared.mediaInfo = SALockScreenInfo(title: selectedAudio.title, artist: selectedAudio.artist, artwork: UIImage(), releaseDate: selectedAudio.releaseDate)
         
         //        if let savedUrl = savedUrls[selectedAudio] {}
+        scrubberSlider.value = 0
+        bufferProgress.progress = 0
     }
     @IBAction func scrubberStartedSeeking(_ sender: UISlider) {
         beingSeeked = true
@@ -237,6 +252,10 @@ class ViewController: UIViewController {
         if let node = SAPlayer.shared.audioModifiers[1] as? AVAudioUnitReverb {
             node.wetDryMix = reverb
         }
+    }
+    @IBAction func queueTouched(_ sender: Any) {
+        SAPlayer.shared.queueRemoteAudio(withRemoteUrl: selectedAudio.url)
+        print("queue: \(SAPlayer.shared.audioQueued)")
     }
     
     @IBAction func downloadTouched(_ sender: Any) {

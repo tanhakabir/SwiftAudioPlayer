@@ -61,7 +61,7 @@ class AudioStreamEngine: AudioEngine {
     private let MIN_BUFFERS_TO_BE_PLAYABLE = 1
     private let PCM_BUFFER_SIZE: AVAudioFrameCount = 8192
     
-    private let queue = DispatchQueue(label: "SwiftAudioPlayer.engine", qos: .userInitiated)
+    private let queue = DispatchQueue(label: "SwiftAudioPlayer.StreamEngine", qos: .userInitiated)
     
     //From init
     private var converter: AudioConvertable!

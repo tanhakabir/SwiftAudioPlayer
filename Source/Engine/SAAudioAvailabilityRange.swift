@@ -56,6 +56,12 @@ public struct SAAudioAvailabilityRange {
         }
     }
     
+    var secondsLeftToBuffer: Double {
+        get {
+            return predictedDurationToLoad - (startingNeedle + durationLoadedByNetwork)
+        }
+    }
+    
     public func contains(_ needle: Double) -> Bool {
         return needle >= startingNeedle && (needle - startingNeedle) < durationLoadedByNetwork
     }

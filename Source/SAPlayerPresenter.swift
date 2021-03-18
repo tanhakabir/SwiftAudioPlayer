@@ -143,6 +143,11 @@ class SAPlayerPresenter {
             
             self.isPlaying = isPlaying
             
+            if(self.isPlaying == .paused && self.shouldPlayImmediately) {
+                self.shouldPlayImmediately = false
+                self.handlePlay()
+            }
+            
             if(self.isPlaying == .ended) {
                 self.playNextAudioIfExists()
             }
@@ -257,6 +262,8 @@ extension SAPlayerPresenter {
             case .disk:
                 self.handlePlaySavedAudio(withSavedUrl: nextAudioURL.1)
             }
+            
+            self.shouldPlayImmediately = true
         }
     }
 }

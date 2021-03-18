@@ -227,11 +227,6 @@ extension SAPlayerPresenter: AudioEngineDelegate {
     func didError() {
         Log.monitor("We should have handled engine error")
     }
-    
-    func didEndPlaying() {
-        Log.test("end of audio")
-        playNextAudioIfExists()
-    }
 }
 
 //MARK:- Autoplay

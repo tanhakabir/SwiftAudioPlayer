@@ -145,13 +145,17 @@ class AudioStreamEngine: AudioEngine {
         
         let timeInterval = 1 / (converter.engineAudioFormat.sampleRate / Double(PCM_BUFFER_SIZE))
         
-        Timer.scheduledTimer(withTimeInterval: timeInterval / 32, repeats: true) { [weak self] (timer: Timer) in
-            self?.timer = timer
-            self?.pollForNextBuffer()
-            self?.updateNetworkBufferRange()
-            self?.updateNeedle()
-            self?.updateIsPlaying()
-            self?.updateDuration()
+        timer = Timer.scheduledTimer(withTimeInterval: timeInterval / 32, repeats: true) { [weak self] (timer: Timer) in
+            guard let self = self else {
+                timer.invalidate()
+                return
+            }
+            self.timer = timer
+            self.pollForNextBuffer()
+            self.updateNetworkBufferRange()
+            self.updateNeedle()
+            self.updateIsPlaying()
+            self.updateDuration()
         }
     }
     
@@ -164,15 +168,24 @@ class AudioStreamEngine: AudioEngine {
         guard shouldPollForNextBuffer else { return }
         
         do {
-            let nextScheduledBuffer = try converter.pullBuffer(withSize: PCM_BUFFER_SIZE)
+            var nextScheduledBuffer: AVAudioPCMBuffer! = try converter.pullBuffer(withSize: PCM_BUFFER_SIZE)
             numberOfBuffersScheduledFromPoll += 1
             numberOfBuffersScheduledInTotal += 1
             
             Log.debug("processed buffer for engine of frame length \(nextScheduledBuffer.frameLength)")
             queue.async { [weak self] in
-                self?.playerNode.scheduleBuffer(nextScheduledBuffer) {
-                    self?.numberOfBuffersScheduledInTotal -= 1
-                    self?.pollForNextBufferRecursionHelper()
+                if #available(iOS 11.0, *) {
+                    self?.playerNode.scheduleBuffer(nextScheduledBuffer, completionCallbackType: .dataRendered, completionHandler: { (_) in
+                        nextScheduledBuffer = nil
+                        self?.numberOfBuffersScheduledInTotal -= 1
+                        self?.pollForNextBufferRecursionHelper()
+                    })
+                } else {
+                    self?.playerNode.scheduleBuffer(nextScheduledBuffer) {
+                        nextScheduledBuffer = nil
+                        self?.numberOfBuffersScheduledInTotal -= 1
+                        self?.pollForNextBufferRecursionHelper()
+                    }
                 }
             }
             

@@ -10,6 +10,20 @@ This player was built for [podcasting](https://chameleonpodcast.com/). We origin
 
 Thus, using [AudioToolbox](https://developer.apple.com/documentation/audiotoolbox), we are able to stream audio and convert the downloaded data into usable data for the AVAudioEngine to play. For an overview of our solution check out our [blog post](https://medium.com/chameleon-podcast/creating-an-advanced-streaming-audio-engine-for-ios-9fbc7aef4115).
 
+### Basic Features
+
+1. Realtime audio manipulation that includes going up to 10x speed, using [equalizers and other manipulations](https://developer.apple.com/documentation/avfaudio/avaudiouniteq)
+1. Stream online audio using AVAudioEngine
+1. Play locally saved audio with the same API
+1. Download audio
+1. Queue up downloaded and streamed audio for autoplay
+1. You're able to install taps and any other AVAudioEngine features to do cool things like skipping silences
+
+### Special Features
+These are community supported audio manipulation features using this audio engine. You can implement your own version of these features and you can look at [SAPlayerFeatures](https://github.com/tanhakabir/SwiftAudioPlayer/blob/master/Source/SAPlayerFeatures.swift) to learn how they were implemented using the library.
+1. Skip silences in audio
+1. Sleep timer to stop playing audio after a delay
+
 ### Requirements
 
 iOS 10.0 and higher.
@@ -145,6 +159,16 @@ togglePlayAndPause()
 seekTo(seconds: Double)
 skipForward()
 skipBackwards()
+```
+
+### Queuing Audio for Autoplay
+
+You can queue either remote or locally saved audio to be played automatically next. 
+
+To queue:
+```swift
+SAPlayer.shared.queueSavedAudio(withSavedUrl: C://random_folder/audio.mp3) // or
+SAPlayer.shared.queueRemoteAudio(withRemoteUrl: https://randomwebsite.com/audio.mp3)
 ```
 
 #### Important

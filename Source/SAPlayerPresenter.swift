@@ -142,6 +142,10 @@ class SAPlayerPresenter {
             }
             
             self.isPlaying = isPlaying
+            
+            if(self.isPlaying == .ended) {
+                self.playNextAudioIfExists()
+            }
         })
     }
     
@@ -228,7 +232,7 @@ extension SAPlayerPresenter: AudioEngineDelegate {
 //MARK:- Autoplay
 extension SAPlayerPresenter {
     func playNextAudioIfExists() {
-        Log.test("will try to play next audio")
+        Log.info("looking foor next audio in queue to play")
         guard audioQueue.count > 0 else {
             Log.info("no queued audio")
             return
@@ -236,27 +240,23 @@ extension SAPlayerPresenter {
         let nextAudioURL = audioQueue.removeFirst()
         let key = nextAudioURL.1.key
         
-        // We have to be on the main thread here. Seems like a hack but prevents the following:
-        // reason: 'required condition is false: nil == owningEngine || GetEngine() == owningEngine'
-//        DispatchQueue.main.async { [weak self] in
-//            guard let self = self else { return }
-            Log.test(nextAudioURL)
+
+        Log.info("getting ready to play \(nextAudioURL)")
         AudioQueueDirector.shared.changeInQueue(key, url: nextAudioURL.1)
         
-//        Timer.scheduledTimer(withTimeInterval: 1.0, repeats: false) { [weak self] (_) in
-//            guard let self = self else { return }
+        handleClear()
+        
+        // We need to give a second to clean up the previous engine properly. Deinit takes some time.
+        Timer.scheduledTimer(withTimeInterval: 1.0, repeats: false) { [weak self] (_) in
+            guard let self = self else { return }
             
-            self.delegate?.clearEngine()
-//        }
-        
-        Log.test("cleared engine")
-        
-        switch nextAudioURL.0 {
-        case .remote:
-            self.handlePlayStreamedAudio(withRemoteUrl: nextAudioURL.1)
-            break
-        case .disk:
-            self.handlePlaySavedAudio(withSavedUrl: nextAudioURL.1)
+            switch nextAudioURL.0 {
+            case .remote:
+                self.handlePlayStreamedAudio(withRemoteUrl: nextAudioURL.1)
+                break
+            case .disk:
+                self.handlePlaySavedAudio(withSavedUrl: nextAudioURL.1)
+            }
         }
     }
 }

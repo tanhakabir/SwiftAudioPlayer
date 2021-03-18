@@ -503,6 +503,7 @@ extension SAPlayer: SAPlayerDelegate {
         player?.pause()
         player?.invalidate()
         player = nil
+        Log.info("cleared engine")
     }
     
     func playEngine() {

@@ -47,8 +47,6 @@ class AudioEngine: AudioEngineProtocol {
     var engine: AVAudioEngine!
     var playerNode: AVAudioPlayerNode!
     
-    var timer: Timer?
-    
     static let defaultEngineAudioFormat: AVAudioFormat = AVAudioFormat(commonFormat: .pcmFormatFloat32, sampleRate: 44100, channels: 2, interleaved: false)!
     
     var state:TimerState = .suspended
@@ -78,12 +76,7 @@ class AudioEngine: AudioEngineProtocol {
             guard playingStatus != oldValue, let status = playingStatus else {
                 return
             }
-            
-            if status == .ended {
-                timer?.invalidate()
-                delegate?.didEndPlaying()
-            }
-            
+ 
             AudioClockDirector.shared.audioPlayingStatusWasChanged(key, status: status)
         }
     }
@@ -155,9 +148,6 @@ class AudioEngine: AudioEngineProtocol {
     }
     
     deinit {
-        Log.test("deinit")
-
-        timer = nil
         if state == .resumed {
             engine.stop()
         }
@@ -167,7 +157,29 @@ class AudioEngine: AudioEngineProtocol {
         
         engine = nil
         playerNode = nil
-        Log.test("done deinit")
+        Log.info("deinit AVAudioEngine for \(key)")
+    }
+    
+    func doRepeatedly(timeInterval: Double, _ closure: @escaping () -> ()) {
+        // A common error in AVAudioEngine is 'required condition is false: nil == owningEngine || GetEngine() == owningEngine'
+        // where there can only be one instance of engine running at a time and if there is already one when trying to start
+        // a new one then this error will be thrown.
+        
+        // To handle this error we need to make sure we properly dispose of the engine when done using. In the case of timers, a
+        // repeating timer will maintain a strong reference to the body even if you state that you wanted a weak reference to self
+        // to mitigate this for repeating timers, you can either call timer.invalidate() properly or don't use repeat block timers.
+        // To be in better control of references and to mitigate any unforeseen issues, I decided to implement a recurisive version
+        // of the repeat block timer so I'm in full control of when to invalidate.
+        
+        Timer.scheduledTimer(withTimeInterval: timeInterval, repeats: false) { [weak self] (timer: Timer) in
+            guard let self = self else { return }
+            guard self.playingStatus != .ended else {
+                self.delegate = nil
+                return
+            }
+            closure()
+            self.doRepeatedly(timeInterval: timeInterval, closure)
+        }
     }
     
     func updateIsPlaying() {
@@ -180,10 +192,10 @@ class AudioEngine: AudioEngineProtocol {
             return
         }
         
-//        let isPlaying = engine.isRunning && playerNode.isPlaying
-//        playingStatus = isPlaying ? .playing : .paused
+        let isPlaying = engine.isRunning && playerNode.isPlaying
+        playingStatus = isPlaying ? .playing : .paused
         
-        playingStatus = .paused
+//        playingStatus = .paused
     }
     
     func play() {

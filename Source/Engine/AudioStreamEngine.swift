@@ -145,12 +145,10 @@ class AudioStreamEngine: AudioEngine {
         
         let timeInterval = 1 / (converter.engineAudioFormat.sampleRate / Double(PCM_BUFFER_SIZE))
         
-        timer = Timer.scheduledTimer(withTimeInterval: timeInterval / 32, repeats: true) { [weak self] (timer: Timer) in
-            guard let self = self else {
-                timer.invalidate()
-                return
-            }
-            self.timer = timer
+        doRepeatedly(timeInterval: timeInterval) { [weak self] in
+            guard let self = self else { return }
+            guard self.playingStatus != .ended else { return }
+            
             self.pollForNextBuffer()
             self.updateNetworkBufferRange()
             self.updateNeedle()
@@ -175,6 +173,7 @@ class AudioStreamEngine: AudioEngine {
             Log.debug("processed buffer for engine of frame length \(nextScheduledBuffer.frameLength)")
             queue.async { [weak self] in
                 if #available(iOS 11.0, *) {
+                    // to make sure the pcm buffers are properly free'd from memory we need to nil them after the player has used them
                     self?.playerNode.scheduleBuffer(nextScheduledBuffer, completionCallbackType: .dataRendered, completionHandler: { (_) in
                         nextScheduledBuffer = nil
                         self?.numberOfBuffersScheduledInTotal -= 1

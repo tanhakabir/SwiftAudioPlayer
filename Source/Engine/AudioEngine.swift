@@ -36,7 +36,6 @@ protocol AudioEngineProtocol {
 }
 
 protocol AudioEngineDelegate: AnyObject {
-    func didEndPlaying() //for auto play
     func didError()
 }
 

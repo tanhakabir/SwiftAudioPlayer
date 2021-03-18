@@ -56,8 +56,28 @@ public struct SAAudioAvailabilityRange {
         }
     }
     
+    var secondsLeftToBuffer: Double {
+        get {
+            return predictedDurationToLoad - (startingNeedle + durationLoadedByNetwork)
+        }
+    }
+    
     public func contains(_ needle: Double) -> Bool {
         return needle >= startingNeedle && (needle - startingNeedle) < durationLoadedByNetwork
+    }
+    
+    public func reachedEndOfAudio(needle: Double) -> Bool {
+        var needleAtEnd = false
+        
+        if(totalDurationBuffered > 0 && needle > 0) {
+            needleAtEnd = needle >= totalDurationBuffered - 1
+        }
+        
+        // if most of the audio is buffered for long audio or in short audio there isn't many seconds left to buffer it means wwe've reached the end of the audio
+        
+        let isBuffered = (bufferingProgress > 0.99 || secondsLeftToBuffer < 5)
+        
+        return isBuffered && needleAtEnd
     }
     
     public func isCompletelyBuffered() -> Bool {

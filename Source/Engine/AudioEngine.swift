@@ -27,7 +27,8 @@ import Foundation
 import AVFoundation
 
 protocol AudioEngineProtocol {
-    var engine: AVAudioEngine { get set }
+    var key: Key { get }
+    var engine: AVAudioEngine! { get }
     func play()
     func pause()
     func seek(toNeedle needle: Needle)
@@ -35,18 +36,15 @@ protocol AudioEngineProtocol {
 }
 
 protocol AudioEngineDelegate: AnyObject {
-    func didEndPlaying() //for auto play
     func didError()
 }
 
 class AudioEngine: AudioEngineProtocol {
     weak var delegate:AudioEngineDelegate?
-    let key:Key
+    var key:Key
     
-    var engine = AVAudioEngine()
-    let playerNode = AVAudioPlayerNode()
-    
-    var timer: Timer?
+    var engine: AVAudioEngine!
+    var playerNode: AVAudioPlayerNode!
     
     static let defaultEngineAudioFormat: AVAudioFormat = AVAudioFormat(commonFormat: .pcmFormatFloat32, sampleRate: 44100, channels: 2, interleaved: false)!
     
@@ -77,11 +75,7 @@ class AudioEngine: AudioEngineProtocol {
             guard playingStatus != oldValue, let status = playingStatus else {
                 return
             }
-            
-            if status == .ended {
-                delegate?.didEndPlaying()
-            }
-            
+ 
             AudioClockDirector.shared.audioPlayingStatusWasChanged(key, status: status)
         }
     }
@@ -113,6 +107,13 @@ class AudioEngine: AudioEngineProtocol {
         self.key = url.key
         self.delegate = delegate
         
+        engine = AVAudioEngine()
+        playerNode = AVAudioPlayerNode()
+        
+        initHelper(engineAudioFormat)
+    }
+    
+    func initHelper(_ engineAudioFormat: AVAudioFormat) {
         engine.attach(playerNode)
         
         for node in SAPlayer.shared.audioModifiers {
@@ -146,15 +147,43 @@ class AudioEngine: AudioEngineProtocol {
     }
     
     deinit {
-        timer?.invalidate()
         if state == .resumed {
             engine.stop()
+        }
+        
+        engine.disconnectNodeInput(self.playerNode)
+        engine.detach(self.playerNode)
+        
+        engine = nil
+        playerNode = nil
+        Log.info("deinit AVAudioEngine for \(key)")
+    }
+    
+    func doRepeatedly(timeInterval: Double, _ closure: @escaping () -> ()) {
+        // A common error in AVAudioEngine is 'required condition is false: nil == owningEngine || GetEngine() == owningEngine'
+        // where there can only be one instance of engine running at a time and if there is already one when trying to start
+        // a new one then this error will be thrown.
+        
+        // To handle this error we need to make sure we properly dispose of the engine when done using. In the case of timers, a
+        // repeating timer will maintain a strong reference to the body even if you state that you wanted a weak reference to self
+        // to mitigate this for repeating timers, you can either call timer.invalidate() properly or don't use repeat block timers.
+        // To be in better control of references and to mitigate any unforeseen issues, I decided to implement a recurisive version
+        // of the repeat block timer so I'm in full control of when to invalidate.
+        
+        Timer.scheduledTimer(withTimeInterval: timeInterval, repeats: false) { [weak self] (timer: Timer) in
+            guard let self = self else { return }
+            guard self.playingStatus != .ended else {
+                self.delegate = nil
+                return
+            }
+            closure()
+            self.doRepeatedly(timeInterval: timeInterval, closure)
         }
     }
     
     func updateIsPlaying() {
         if !bufferedSeconds.isPlayable {
-            if bufferedSeconds.bufferingProgress > 0.999 {
+            if bufferedSeconds.reachedEndOfAudio(needle: needle) {
                 playingStatus = .ended
             } else {
                 playingStatus = .buffering
@@ -164,11 +193,13 @@ class AudioEngine: AudioEngineProtocol {
         
         let isPlaying = engine.isRunning && playerNode.isPlaying
         playingStatus = isPlaying ? .playing : .paused
+        
+//        playingStatus = .paused
     }
     
     func play() {
         // https://stackoverflow.com/questions/36754934/update-mpremotecommandcenter-play-pause-button
-        if !engine.isRunning {
+        if !(engine.isRunning) {
             do {
                 try engine.start()
                 

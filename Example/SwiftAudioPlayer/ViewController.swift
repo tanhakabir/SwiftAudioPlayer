@@ -11,54 +11,8 @@ import SwiftAudioPlayer
 import AVFoundation
 
 class ViewController: UIViewController {
-    struct AudioInfo: Hashable {
-        let index: Int
-        
-        var url: URL {
-            switch index {
-            case 0:
-                return URL(string: "https://cdn.fastlearner.media/bensound-rumble.mp3")!
-            case 1:
-                return URL(string: "https://chtbl.com/track/18338/traffic.libsyn.com/secure/acquired/acquired_-_armrev_2.mp3?dest-id=376122")!
-            case 2:
-                return URL(string: "https://backtracks.fm/ycombinator/pr/0f685f72-29b1-11e9-9bcf-0ece7a7d2472/111---jake-klamka-and-kevin-hale---y-combinator.mp3?s=1&amp;sd=1&amp;u=1549423185")!
-            default:
-                return URL(string: "https://cdn.fastlearner.media/bensound-rumble.mp3")!
-            }
-        }
-        
-        var title: String {
-            switch index {
-            case 0:
-                return "Soundbite"
-            case 1:
-                return "Acquired"
-            case 2:
-                return "Y Combinator"
-            default:
-                return "Soundbite"
-            }
-        }
-        
-        let artist: String = "SwiftAudioPlayer Sample App"
-        let releaseDate: Int = 1550790640
-    }
+    var selectedAudio: AudioInfo = AudioInfo(index: 0)
     
-    var savedUrls: [AudioInfo: URL] = [:]
-    
-    var selectedAudio: AudioInfo = AudioInfo(index: 0) {
-        didSet {
-            if SAPlayer.Downloader.isDownloaded(withRemoteUrl: selectedAudio.url) {
-                downloadButton.setTitle("Delete downloaded", for: .normal)
-                streamButton.isEnabled = false
-            } else {
-                downloadButton.setTitle("Download", for: .normal)
-                streamButton.isEnabled = true
-            }
-            
-            self.currentUrlLocationLabel.text = "remote url: \(selectedAudio.url.absoluteString)"
-        }
-    }
     var freq:[Int] = [0,0,0,0,0,0,0,0,0,0]
     @IBOutlet weak var currentUrlLocationLabel: UILabel!
     @IBOutlet weak var bufferProgress: UIProgressView!
@@ -84,7 +38,18 @@ class ViewController: UIViewController {
     var isStreaming: Bool = false
     var beingSeeked: Bool = false
     
+    
+    var downloadId: UInt?
+    var durationId: UInt?
+    var bufferId: UInt?
+    var playingStatusId: UInt?
+    var queueId: UInt?
+    var elapsedId: UInt?
+
     var duration: Double = 0.0
+    var playbackStatus: SAPlayingStatus = .paused
+    
+    var lastPlayedAudioIndex: Int?
     
     var isPlayable: Bool = false {
         didSet {
@@ -105,84 +70,15 @@ class ViewController: UIViewController {
         
         SAPlayer.Downloader.allowUsingCellularData = true
         
-        SAPlayer.shared.DEBUG_MODE = true
+//        SAPlayer.shared.DEBUG_MODE = true
         
         isPlayable = false
-        selectedAudio = AudioInfo(index: 0)
+        checkIfAudioDownloaded()
+        selectAudio(atIndex: 0)
         
-        addRandomModifiers()
+//        addRandomModifiers()
         
-        _ = SAPlayer.Updates.Duration.subscribe { [weak self] (url, duration) in
-            guard let self = self else { return }
-            guard url == self.selectedAudio.url || url == self.savedUrls[self.selectedAudio] else { return }
-            self.durationLabel.text = SAPlayer.prettifyTimestamp(duration)
-            self.duration = duration
-        }
-        
-        _ = SAPlayer.Updates.ElapsedTime.subscribe { [weak self] (url, position) in
-            guard let self = self else { return }
-            guard url == self.selectedAudio.url || url == self.savedUrls[self.selectedAudio] else { return }
-            
-            self.currentTimestampLabel.text = SAPlayer.prettifyTimestamp(position)
-            
-            guard self.duration != 0 else { return }
-            
-            self.scrubberSlider.value = Float(position/self.duration)
-        }
-        
-        _ = SAPlayer.Updates.AudioDownloading.subscribe { [weak self] (url, progress) in
-            guard let self = self else { return }
-            guard url == self.selectedAudio.url else { return }
-            
-            if self.isDownloading {
-                DispatchQueue.main.async {
-                    UIView.performWithoutAnimation {
-                        self.downloadButton.setTitle("Cancel \(String(format: "%.2f", (progress * 100)))%", for: .normal)
-                    }
-                }
-            }
-        }
-        
-        _ = SAPlayer.Updates.StreamingBuffer.subscribe{ [weak self] (url, buffer) in
-            guard let self = self else { return }
-            guard url == self.selectedAudio.url || url == self.savedUrls[self.selectedAudio] else { return }
-            
-            if self.duration == 0.0 { return }
-            
-            self.bufferProgress.progress = Float(buffer.bufferingProgress)
-            
-            if buffer.bufferingProgress >= 0.99 {
-                self.streamButton.isEnabled = false
-            } else {
-                self.streamButton.isEnabled = true
-            }
-            
-            self.isPlayable = buffer.isReadyForPlaying
-        }
-        
-        _ = SAPlayer.Updates.PlayingStatus.subscribe { [weak self] (url, playing) in
-            guard let self = self else { return }
-            guard url == self.selectedAudio.url || url == self.savedUrls[self.selectedAudio] else { return }
-            
-            switch playing {
-            case .playing:
-                self.isPlayable = true
-                self.playPauseButton.setTitle("Pause", for: .normal)
-                return
-            case .paused:
-                self.isPlayable = true
-                self.playPauseButton.setTitle("Play", for: .normal)
-                return
-            case .buffering:
-                self.isPlayable = false
-                self.playPauseButton.setTitle("Loading", for: .normal)
-                return
-            case .ended:
-                self.isPlayable = false
-                self.playPauseButton.setTitle("Done", for: .normal)
-                return
-            }
-        }
+        subscribeToChanges()
     }
     
     func addRandomModifiers() {
@@ -209,12 +105,146 @@ class ViewController: UIViewController {
     @IBAction func audioSelected(_ sender: Any) {
         let selected = audioSelector.selectedSegmentIndex
         
-        selectedAudio = AudioInfo(index: selected)
+        selectAudio(atIndex: selected)
+    }
+    
+    func selectAudio(atIndex i: Int) {
+        selectedAudio.setIndex(i)
         
-        SAPlayer.shared.mediaInfo = SALockScreenInfo(title: selectedAudio.title, artist: selectedAudio.artist, artwork: UIImage(), releaseDate: selectedAudio.releaseDate)
+        if selectedAudio.savedUrl != nil {
+            downloadButton.setTitle("Delete downloaded", for: .normal)
+            streamButton.isEnabled = false
+        } else {
+            downloadButton.setTitle("Download", for: .normal)
+            streamButton.isEnabled = true
+        }
+        
+        if let savedUrl = selectedAudio.savedUrl {
+            self.currentUrlLocationLabel.text = "saved url: \(savedUrl.absoluteString)"
+        } else {
+            self.currentUrlLocationLabel.text = "remote url: \(selectedAudio.url.absoluteString)"
+        }
         
         //        if let savedUrl = savedUrls[selectedAudio] {}
+        scrubberSlider.value = 0
+        bufferProgress.progress = 0
+        
+//        unsubscribeFromChanges()
+//        subscribeToChanges()
+        
+        SAPlayer.shared.mediaInfo = SALockScreenInfo(title: selectedAudio.title, artist: selectedAudio.artist, artwork: UIImage(), releaseDate: selectedAudio.releaseDate)
     }
+    
+    func checkIfAudioDownloaded() {
+        for i in 0...2 {
+            if let savedUrl = SAPlayer.Downloader.getSavedUrl(forRemoteUrl: selectedAudio.getUrl(atIndex: i)) {
+                selectedAudio.addSavedUrl(savedUrl, atIndex: i)
+            }
+        }
+    }
+    
+    func subscribeToChanges() {
+        durationId = SAPlayer.Updates.Duration.subscribe { [weak self] (url, duration) in
+            guard let self = self else { return }
+            guard url == self.selectedAudio.savedUrl || url == self.selectedAudio.url else { return }
+            self.durationLabel.text = SAPlayer.prettifyTimestamp(duration)
+            self.duration = duration
+        }
+        
+        elapsedId = SAPlayer.Updates.ElapsedTime.subscribe { [weak self] (url, position) in
+            guard let self = self else { return }
+            guard url == self.selectedAudio.savedUrl || url == self.selectedAudio.url else { return }
+            
+            self.currentTimestampLabel.text = SAPlayer.prettifyTimestamp(position)
+            
+            guard self.duration != 0 else { return }
+            
+            self.scrubberSlider.value = Float(position/self.duration)
+        }
+        
+        downloadId = SAPlayer.Updates.AudioDownloading.subscribe { [weak self] (url, progress) in
+            guard let self = self else { return }
+            guard url == self.selectedAudio.url else { return }
+            
+            if self.isDownloading {
+                DispatchQueue.main.async {
+                    UIView.performWithoutAnimation {
+                        self.downloadButton.setTitle("Cancel \(String(format: "%.2f", (progress * 100)))%", for: .normal)
+                    }
+                }
+            }
+        }
+        
+        bufferId = SAPlayer.Updates.StreamingBuffer.subscribe{ [weak self] (url, buffer) in
+            guard let self = self else { return }
+            guard url == self.selectedAudio.savedUrl || url == self.selectedAudio.url else { return }
+            
+            if self.duration == 0.0 { return }
+            
+            self.bufferProgress.progress = Float(buffer.bufferingProgress)
+            
+            if buffer.bufferingProgress >= 0.99 {
+                self.streamButton.isEnabled = false
+            } else {
+                self.streamButton.isEnabled = true
+            }
+            
+            self.isPlayable = buffer.isReadyForPlaying
+        }
+        
+        playingStatusId = SAPlayer.Updates.PlayingStatus.subscribe { [weak self] (url, playing) in
+            guard let self = self else { return }
+            guard url == self.selectedAudio.savedUrl || url == self.selectedAudio.url else { return }
+            
+            self.playbackStatus = playing
+            
+            switch playing {
+            case .playing:
+                self.isPlayable = true
+                self.playPauseButton.setTitle("Pause", for: .normal)
+                return
+            case .paused:
+                self.isPlayable = true
+                self.playPauseButton.setTitle("Play", for: .normal)
+                return
+            case .buffering:
+                self.isPlayable = false
+                self.playPauseButton.setTitle("Loading", for: .normal)
+                return
+            case .ended:
+                self.isPlayable = false
+                self.playPauseButton.setTitle("Done", for: .normal)
+                return
+            }
+        }
+        
+        queueId = SAPlayer.Updates.AudioQueue.subscribe { [weak self] key, forthcomingPlaybackUrl in
+            guard let self = self else { return }
+            /// we update the selected audio. this is a little contrived, but allows us to update outlets
+            if let indexFound = self.selectedAudio.getIndex(forURL: forthcomingPlaybackUrl) {
+                self.selectAudio(atIndex: indexFound)
+            }
+            print("💥 Received queue update 💥")
+        }
+    }
+    
+    func unsubscribeFromChanges() {
+        guard let durationId = self.durationId,
+              let elapsedId = self.elapsedId,
+              let downloadId = self.downloadId,
+              let queueId = self.queueId,
+              let bufferId = self.bufferId,
+              let playingStatusId = self.playingStatusId else { return }
+        
+        SAPlayer.Updates.Duration.unsubscribe(durationId)
+        SAPlayer.Updates.ElapsedTime.unsubscribe(elapsedId)
+        SAPlayer.Updates.AudioDownloading.unsubscribe(downloadId)
+        SAPlayer.Updates.AudioQueue.unsubscribe(queueId)
+        SAPlayer.Updates.StreamingBuffer.unsubscribe(bufferId)
+        SAPlayer.Updates.PlayingStatus.unsubscribe(playingStatusId)
+    }
+    
+    
     @IBAction func scrubberStartedSeeking(_ sender: UISlider) {
         beingSeeked = true
     }
@@ -229,10 +259,7 @@ class ViewController: UIViewController {
     @IBAction func rateChanged(_ sender: Any) {
         let speed = rateSlider.value
         rateLabel.text = "rate: \(speed)x"
-        if let node = SAPlayer.shared.audioModifiers[0] as? AVAudioUnitTimePitch {
-            node.rate = speed
-            SAPlayer.shared.playbackRateOfAudioChanged(rate: speed)
-        }
+        SAPlayer.shared.rate = speed
     }
     @IBAction func reverbChanged(_ sender: Any) {
         let reverb = reverbSlider.value
@@ -241,11 +268,21 @@ class ViewController: UIViewController {
             node.wetDryMix = reverb
         }
     }
+    @IBAction func queueTouched(_ sender: Any) {
+        if let savedUrl = selectedAudio.savedUrl {
+            SAPlayer.shared.queueSavedAudio(withSavedUrl: savedUrl)
+        } else {
+            SAPlayer.shared.queueRemoteAudio(withRemoteUrl: selectedAudio.url)
+        }
+        
+        print("queue: \(SAPlayer.shared.audioQueued)")
+    }
     
     @IBAction func downloadTouched(_ sender: Any) {
         if !isDownloading {
             if let savedUrl = SAPlayer.Downloader.getSavedUrl(forRemoteUrl: selectedAudio.url) {
                 SAPlayer.Downloader.deleteDownloaded(withSavedUrl: savedUrl)
+                selectedAudio.deleteSavedUrl()
                 downloadButton.setTitle("Download", for: .normal)
                 streamButton.isEnabled = true
                 isDownloading = false
@@ -256,9 +293,10 @@ class ViewController: UIViewController {
                     guard let self = self else { return }
                     DispatchQueue.main.async {
                         self.currentUrlLocationLabel.text = "saved to: \(url.lastPathComponent)"
-                        self.savedUrls[self.selectedAudio] = url
+                        self.selectedAudio.addSavedUrl(url)
                         
                         SAPlayer.shared.startSavedAudio(withSavedUrl: url)
+                        self.lastPlayedAudioIndex = self.selectedAudio.index
                     }
                 })
                 streamButton.isEnabled = false
@@ -274,6 +312,7 @@ class ViewController: UIViewController {
     @IBAction func streamTouched(_ sender: Any) {
         if !isStreaming {
             SAPlayer.shared.startRemoteAudio(withRemoteUrl: selectedAudio.url)
+            lastPlayedAudioIndex = selectedAudio.index
             streamButton.setTitle("Cancel streaming", for: .normal)
             downloadButton.isEnabled = false
             isStreaming = true
@@ -286,6 +325,16 @@ class ViewController: UIViewController {
     }
     
     @IBAction func playPauseTouched(_ sender: Any) {
+//        if lastPlayedAudioIndex != selectedAudio.index {
+//            if let savedUrl = selectedAudio.savedUrl {
+//                SAPlayer.shared.startSavedAudio(withSavedUrl: savedUrl)
+//            } else {
+//                SAPlayer.shared.startRemoteAudio(withRemoteUrl: selectedAudio.url)
+//            }
+//
+//            return
+//        }
+        
         SAPlayer.shared.togglePlayAndPause()
     }
     
@@ -310,5 +359,23 @@ class ViewController: UIViewController {
         
     }
     
+    @IBOutlet weak var skipSilencesSwitch: UISwitch!
+    
+    @IBAction func skipSilencesSwitched(_ sender: Any) {
+        if skipSilencesSwitch.isOn {
+            _ = SAPlayer.Features.SkipSilences.enable()
+        } else {
+            _ = SAPlayer.Features.SkipSilences.disable()
+        }
+    }
+    @IBOutlet weak var sleepSwitch: UISwitch!
+    
+    @IBAction func sleepSwitched(_ sender: Any) {
+        if sleepSwitch.isOn {
+            _ = SAPlayer.Features.SleepTimer.enable(afterDelay: 5.0)
+        } else {
+            _ = SAPlayer.Features.SleepTimer.disable()
+        }
+    }
 }
 

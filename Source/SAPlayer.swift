@@ -57,6 +57,15 @@ public class SAPlayer {
     }
     
     /**
+    Unique ID for the current engine. This will be nil if no audio has been initialized which means no engine exists.
+    */
+    public var engineUID: String? {
+        get {
+            return player?.key
+        }
+    }
+    
+    /**
     Access the player node of the engine. Node is nil if player has not been initialized with audio.
      
      - Important: Changes to the engine and this node are not safe guarded, thus unknown behaviour can arise from changing the engine or this node. Just be wary and read [documentation of AVAudioEngine](https://developer.apple.com/documentation/avfoundation/avaudioengine) well when modifying,
@@ -80,6 +89,47 @@ public class SAPlayer {
             guard value >= 0.0 && value <= 1.0 else { return }
             
             player?.engine.mainMixerNode.volume = value
+        }
+    }
+    
+    /**
+    Corresponding to the rate of audio playback. This rate assumes use of the default rate modifier at the first index of `audioModifiers`; if you removed that modifier than this will be nil. If no audio has been initialized then this will also be nil.
+     
+     - Note: By default this engine has added a pitch modifier node to change the pitch so that on playback rate changes of spoken word the pitch isn't shifted.
+     
+     The component description of this node is:
+     ````
+     var componentDescription: AudioComponentDescription {
+        get {
+            var ret = AudioComponentDescription()
+            ret.componentType = kAudioUnitType_FormatConverter
+            ret.componentSubType = kAudioUnitSubType_AUiPodTimeOther
+            return ret
+        }
+     }
+     ````
+     Please look at [forums.developer.apple.com/thread/5874](https://forums.developer.apple.com/thread/5874) and [forums.developer.apple.com/thread/6050](https://forums.developer.apple.com/thread/6050) for more details.
+     
+     For more details on pitch modifiers for playback rate changes please look at [developer.apple.com/forums/thread/6050](https://developer.apple.com/forums/thread/6050).
+    */
+    public var rate: Float? {
+        get {
+            return (audioModifiers.first as? AVAudioUnitTimePitch)?.rate
+        }
+        
+        set {
+            guard let value = newValue else { return }
+            guard let node = audioModifiers.first as? AVAudioUnitTimePitch else { return }
+            
+            node.rate = value
+            playbackRateOfAudioChanged(rate: value)
+            
+            // if skip silences was on, reset it to have the new rate
+            // TODO fix this to rate being broadcasted and handled in only Features.SkipSilences https://github.com/tanhakabir/SwiftAudioPlayer/issues/77
+//            if Features.SkipSilences.enabled && !(value == rate ?? 1.0 - 0.5 || value == rate ?? 1.0 + 0.5) {
+//                _ = Features.SkipSilences.disable()
+//                _ = Features.SkipSilences.enable()
+//            }
         }
     }
     
@@ -126,6 +176,17 @@ public class SAPlayer {
      To remove this default pitch modifier for playback rate changes, remove the node by calling `SAPlayer.shared.clearAudioModifiers()`.
      */
     public var audioModifiers: [AVAudioUnit] = []
+    
+    /**
+     List of audio URLs queued for playback.
+     */
+    public var audioQueued: [URL] {
+        get {
+            return presenter.audioQueue.map { (queued) -> URL in
+                return queued.1
+            }
+        }
+    }
     
     /**
      Total duration of current audio initialized. Returns nil if no audio is initialized in player.
@@ -394,15 +455,35 @@ extension SAPlayer {
         presenter.handlePlayStreamedAudio(withRemoteUrl: url)
     }
     
+    /**
+     Stops any streaming in progress.
+     */
     public func stopStreamingRemoteAudio() {
         presenter.handleStopStreamingAudio()
+    }
+    
+    /**
+     Queues remote audio to be played next. The URLs in the queue can be both remote or on disk but once the queued audio starts playing it will start buffering and loading then. This means no guarantee for a 'gapless' playback where there might be several moments in between one audio ending and another starting due to buffering remote audio.
+     
+     - Parameter withRemoteUrl: The URL of the remote audio.
+     */
+    public func queueRemoteAudio(withRemoteUrl url: URL) {
+        presenter.handleQueueStreamedAudio(withRemoteUrl: url)
+    }
+    
+    /**
+     Queues saved audio to be played next. The URLs in the queuecan be both remote or on disk but once the queued audio starts playing it will start buffering and loading then. This means no guarantee for a 'gapless' playback where there might be several moments in between one audio ending and another starting due to buffering remote audio.
+     
+     - Parameter withSavedUrl: The URL of the audio saved on the device.
+     */
+    public func queueSavedAudio(withSavedUrl url: URL) {
+        presenter.handleQueueSavedAudio(withSavedUrl: url)
     }
     
     /**
      Resets the player to the state before initializing audio and setting media info.
      */
     public func clear() {
-        player = nil
         presenter.handleClear()
     }
 }
@@ -411,14 +492,10 @@ extension SAPlayer {
 //MARK: - Internal implementation of delegate
 extension SAPlayer: SAPlayerDelegate {
     func startAudioDownloaded(withSavedUrl url: AudioURL) {
-        player?.pause()
-        player?.invalidate()
         player = AudioDiskEngine(withSavedUrl: url, delegate: presenter)
     }
     
     func startAudioStreamed(withRemoteUrl url: AudioURL) {
-        player?.pause()
-        player?.invalidate()
         player = AudioStreamEngine(withRemoteUrl: url, delegate: presenter)
     }
     
@@ -426,6 +503,7 @@ extension SAPlayer: SAPlayerDelegate {
         player?.pause()
         player?.invalidate()
         player = nil
+        Log.info("cleared engine")
     }
     
     func playEngine() {

@@ -70,11 +70,14 @@ class AudioDiskEngine: AudioEngine {
         }
         
         
-        Timer.scheduledTimer(withTimeInterval: 0.2, repeats: true) { [weak self] (timer: Timer) in
-            guard let _ = self else { return }
-            self?.timer = timer
-            self?.updateIsPlaying()
-            self?.updateNeedle()
+        timer = Timer.scheduledTimer(withTimeInterval: 0.2, repeats: true) { [weak self] (timer: Timer) in
+            guard let self = self else {
+                timer.invalidate()
+                return
+            }
+            self.timer = timer
+            self.updateIsPlaying()
+            self.updateNeedle()
         }
         
         scheduleAudioFile()

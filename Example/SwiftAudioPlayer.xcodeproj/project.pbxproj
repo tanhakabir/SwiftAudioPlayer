@@ -14,6 +14,7 @@
 		607FACDD1AFB9204008FA782 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 607FACDC1AFB9204008FA782 /* Images.xcassets */; };
 		607FACE01AFB9204008FA782 /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 607FACDE1AFB9204008FA782 /* LaunchScreen.xib */; };
 		607FACEC1AFB9204008FA782 /* Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 607FACEB1AFB9204008FA782 /* Tests.swift */; };
+		A470FEE2260303DA00F135FF /* Model.swift in Sources */ = {isa = PBXBuildFile; fileRef = A470FEE1260303DA00F135FF /* Model.swift */; };
 		E5808EC0557FB2395AA56468 /* Pods_SwiftAudioPlayer_Example.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1E5C0E3F3235B6FFE85EF425 /* Pods_SwiftAudioPlayer_Example.framework */; };
 /* End PBXBuildFile section */
 
@@ -43,6 +44,7 @@
 		607FACEA1AFB9204008FA782 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		607FACEB1AFB9204008FA782 /* Tests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Tests.swift; sourceTree = "<group>"; };
 		65A66AB4C3016E8BB53FF3E0 /* Pods-SwiftAudioPlayer_Example.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SwiftAudioPlayer_Example.debug.xcconfig"; path = "Pods/Target Support Files/Pods-SwiftAudioPlayer_Example/Pods-SwiftAudioPlayer_Example.debug.xcconfig"; sourceTree = "<group>"; };
+		A470FEE1260303DA00F135FF /* Model.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Model.swift; sourceTree = "<group>"; };
 		AF6A2C6BF79C291056D27D5D /* SwiftAudioPlayer.podspec */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; name = SwiftAudioPlayer.podspec; path = ../SwiftAudioPlayer.podspec; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
 		BBD877782CC67FBCC7BF7532 /* Pods-SwiftAudioPlayer_Tests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SwiftAudioPlayer_Tests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-SwiftAudioPlayer_Tests/Pods-SwiftAudioPlayer_Tests.debug.xcconfig"; sourceTree = "<group>"; };
 		DA80DEA33D13EC91EB531881 /* README.md */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = net.daringfireball.markdown; name = README.md; path = ../README.md; sourceTree = "<group>"; };
@@ -115,6 +117,7 @@
 			children = (
 				607FACD51AFB9204008FA782 /* AppDelegate.swift */,
 				607FACD71AFB9204008FA782 /* ViewController.swift */,
+				A470FEE1260303DA00F135FF /* Model.swift */,
 				607FACD91AFB9204008FA782 /* Main.storyboard */,
 				607FACDC1AFB9204008FA782 /* Images.xcassets */,
 				607FACDE1AFB9204008FA782 /* LaunchScreen.xib */,
@@ -324,6 +327,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A470FEE2260303DA00F135FF /* Model.swift in Sources */,
 				607FACD81AFB9204008FA782 /* ViewController.swift in Sources */,
 				607FACD61AFB9204008FA782 /* AppDelegate.swift in Sources */,
 			);

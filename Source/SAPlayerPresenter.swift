@@ -243,6 +243,14 @@ extension SAPlayerPresenter {
             Log.test(nextAudioURL)
         AudioQueueDirector.shared.changeInQueue(key, url: nextAudioURL.1)
         
+//        Timer.scheduledTimer(withTimeInterval: 1.0, repeats: false) { [weak self] (_) in
+//            guard let self = self else { return }
+            
+            self.delegate?.clearEngine()
+//        }
+        
+        Log.test("cleared engine")
+        
         switch nextAudioURL.0 {
         case .remote:
             self.handlePlayStreamedAudio(withRemoteUrl: nextAudioURL.1)
@@ -250,8 +258,5 @@ extension SAPlayerPresenter {
         case .disk:
             self.handlePlaySavedAudio(withSavedUrl: nextAudioURL.1)
         }
-        
-            self.handlePlay()
-//        }
     }
 }

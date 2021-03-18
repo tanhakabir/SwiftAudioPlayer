@@ -28,7 +28,7 @@ import AVFoundation
 
 protocol AudioEngineProtocol {
     var key: Key { get }
-    var engine: AVAudioEngine { get }
+    var engine: AVAudioEngine! { get }
     func play()
     func pause()
     func seek(toNeedle needle: Needle)
@@ -44,10 +44,8 @@ class AudioEngine: AudioEngineProtocol {
     weak var delegate:AudioEngineDelegate?
     var key:Key
     
-    private var queue = DispatchQueue(label: "SwiftAudioPlayer.Engine", qos: .userInitiated)
-    
-    var engine = AVAudioEngine()
-    var playerNode = AVAudioPlayerNode()
+    var engine: AVAudioEngine!
+    var playerNode: AVAudioPlayerNode!
     
     var timer: Timer?
     
@@ -82,6 +80,7 @@ class AudioEngine: AudioEngineProtocol {
             }
             
             if status == .ended {
+                timer?.invalidate()
                 delegate?.didEndPlaying()
             }
             
@@ -116,12 +115,10 @@ class AudioEngine: AudioEngineProtocol {
         self.key = url.key
         self.delegate = delegate
         
-        queue = DispatchQueue(label: "SwiftAudioPlayer.Engine\(key)", qos: .userInitiated)
+        engine = AVAudioEngine()
+        playerNode = AVAudioPlayerNode()
         
-        queue.async { [weak self] in
-            guard let self = self else { return }
-            self.initHelper(engineAudioFormat)
-        }
+        initHelper(engineAudioFormat)
     }
     
     func initHelper(_ engineAudioFormat: AVAudioFormat) {
@@ -158,20 +155,24 @@ class AudioEngine: AudioEngineProtocol {
     }
     
     deinit {
-        queue.async { [weak self] in
-            guard let self = self else { return }
-            
-            self.timer?.invalidate()
-            if self.state == .resumed {
-                self.engine.stop()
-            }
+        Log.test("deinit")
+
+        timer = nil
+        if state == .resumed {
+            engine.stop()
         }
+        
+        engine.disconnectNodeInput(self.playerNode)
+        engine.detach(self.playerNode)
+        
+        engine = nil
+        playerNode = nil
+        Log.test("done deinit")
     }
     
     func updateIsPlaying() {
         if !bufferedSeconds.isPlayable {
-            // if most of the audio is buffered for long audio or in short audio there isn't many seconds left to buffer it means wwe've reached the end of the audio
-            if bufferedSeconds.bufferingProgress > 0.99 || bufferedSeconds.secondsLeftToBuffer < 5 {
+            if bufferedSeconds.reachedEndOfAudio(needle: needle) {
                 playingStatus = .ended
             } else {
                 playingStatus = .buffering
@@ -179,47 +180,37 @@ class AudioEngine: AudioEngineProtocol {
             return
         }
         
-        queue.async { [weak self] in
-            guard let self = self else { return }
-            
-            let isPlaying = self.engine.isRunning ?? false && self.playerNode.isPlaying
-            self.playingStatus = isPlaying ? .playing : .paused
-        }
+//        let isPlaying = engine.isRunning && playerNode.isPlaying
+//        playingStatus = isPlaying ? .playing : .paused
+        
+        playingStatus = .paused
     }
     
     func play() {
-        queue.async { [weak self] in
-            guard let self = self else { return }
-            
-            // https://stackoverflow.com/questions/36754934/update-mpremotecommandcenter-play-pause-button
-            if !(self.engine.isRunning ?? true) {
-                do {
-                    try self.engine.start()
-                    
-                } catch let error {
-                    Log.monitor(error.localizedDescription)
-                }
+        // https://stackoverflow.com/questions/36754934/update-mpremotecommandcenter-play-pause-button
+        if !(engine.isRunning) {
+            do {
+                try engine.start()
+                
+            } catch let error {
+                Log.monitor(error.localizedDescription)
             }
-            
-            self.playerNode.play()
-            
-            if self.state == .suspended {
-                self.state = .resumed
-            }
+        }
+        
+        playerNode.play()
+        
+        if state == .suspended {
+            state = .resumed
         }
     }
     
     func pause() {
-        queue.async { [weak self] in
-            guard let self = self else { return }
-            
-            // https://stackoverflow.com/questions/36754934/update-mpremotecommandcenter-play-pause-button
-            self.playerNode.pause()
-            self.engine.pause()
-            
-            if self.state == .resumed {
-                self.state = .suspended
-            }
+        // https://stackoverflow.com/questions/36754934/update-mpremotecommandcenter-play-pause-button
+        playerNode.pause()
+        engine.pause()
+        
+        if state == .resumed {
+            state = .suspended
         }
     }
     

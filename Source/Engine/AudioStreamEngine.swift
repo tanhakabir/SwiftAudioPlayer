@@ -137,7 +137,7 @@ class AudioStreamEngine: AudioEngine {
         Log.info(url)
         super.init(url: url, delegate: delegate, engineAudioFormat: AudioEngine.defaultEngineAudioFormat)
         do {
-            converter = try AudioConverter(withRemoteUrl: url, toEngineAudioFormat: AudioEngine.defaultEngineAudioFormat)
+            converter = try AudioConverter(withRemoteUrl: url, toEngineAudioFormat: AudioEngine.defaultEngineAudioFormat, withPCMBufferSize: PCM_BUFFER_SIZE)
         } catch {
             delegate?.didError()
         }
@@ -166,7 +166,7 @@ class AudioStreamEngine: AudioEngine {
         guard shouldPollForNextBuffer else { return }
         
         do {
-            var nextScheduledBuffer: AVAudioPCMBuffer! = try converter.pullBuffer(withSize: PCM_BUFFER_SIZE)
+            var nextScheduledBuffer: AVAudioPCMBuffer! = try converter.pullBuffer()
             numberOfBuffersScheduledFromPoll += 1
             numberOfBuffersScheduledInTotal += 1
             

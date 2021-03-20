@@ -149,7 +149,7 @@ class AudioStreamEngine: AudioEngine {
             guard let self = self else { return }
             guard self.playingStatus != .ended else { return }
             
-            self.pollForNextBuffer()
+            self.pollForNextBufferRecursive()
             self.updateNetworkBufferRange()
             self.updateNeedle()
             self.updateIsPlaying()
@@ -162,7 +162,7 @@ class AudioStreamEngine: AudioEngine {
     //Called when
     //1. First time audio is finally parsed
     //2. When we run to the end of the network buffer and we're waiting again
-    private func pollForNextBuffer() {
+    private func pollForNextBufferRecursive() {
         guard shouldPollForNextBuffer else { return }
         
         do {
@@ -177,13 +177,13 @@ class AudioStreamEngine: AudioEngine {
                     self?.playerNode.scheduleBuffer(nextScheduledBuffer, completionCallbackType: .dataRendered, completionHandler: { (_) in
                         nextScheduledBuffer = nil
                         self?.numberOfBuffersScheduledInTotal -= 1
-                        self?.pollForNextBufferRecursionHelper()
+                        self?.pollForNextBufferRecursive()
                     })
                 } else {
                     self?.playerNode.scheduleBuffer(nextScheduledBuffer) {
                         nextScheduledBuffer = nil
                         self?.numberOfBuffersScheduledInTotal -= 1
-                        self?.pollForNextBufferRecursionHelper()
+                        self?.pollForNextBufferRecursive()
                     }
                 }
             }
@@ -192,32 +192,6 @@ class AudioStreamEngine: AudioEngine {
         } catch ConverterError.reachedEndOfFile {
             Log.info(ConverterError.reachedEndOfFile.localizedDescription)
         } catch ConverterError.notEnoughData {
-            Log.debug(ConverterError.notEnoughData.localizedDescription)
-        } catch ConverterError.superConcerningShouldNeverHappen {
-            Log.error(ConverterError.superConcerningShouldNeverHappen.localizedDescription)
-        } catch {
-            Log.debug(error.localizedDescription)
-        }
-    }
-    
-    private func pollForNextBufferRecursionHelper() {
-        do {
-            let nextScheduledBuffer = try converter.pullBuffer(withSize: PCM_BUFFER_SIZE)
-            Log.debug("processed buffer for engine of frame lengthL \(nextScheduledBuffer.frameLength)")
-            numberOfBuffersScheduledInTotal += 1
-            
-            queue.async { [weak self] in
-                self?.playerNode.scheduleBuffer(nextScheduledBuffer) {
-                    self?.numberOfBuffersScheduledInTotal -= 1
-                    self?.pollForNextBufferRecursionHelper()
-                }
-                
-            }
-            
-        } catch ConverterError.reachedEndOfFile {
-            Log.info(ConverterError.reachedEndOfFile.localizedDescription)
-        } catch ConverterError.notEnoughData {
-            shouldPollForNextBuffer = true
             Log.debug(ConverterError.notEnoughData.localizedDescription)
         } catch ConverterError.superConcerningShouldNeverHappen {
             Log.error(ConverterError.superConcerningShouldNeverHappen.localizedDescription)

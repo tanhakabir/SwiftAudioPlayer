@@ -33,7 +33,7 @@ iOS 10.0 and higher.
 ### Running the Example Project
 
 1. Clone repo
-2. CD to directory
+2. CD to the `Example` folder where the Example app lives
 3. Run `pod install` in terminal
 4. Build and run
 

@@ -36,8 +36,8 @@ import AudioToolbox
 protocol AudioConvertable {
     var engineAudioFormat: AVAudioFormat {get}
     
-    init(withRemoteUrl url: AudioURL, toEngineAudioFormat: AVAudioFormat) throws
-    func pullBuffer(withSize size: AVAudioFrameCount) throws -> AVAudioPCMBuffer
+    init(withRemoteUrl url: AudioURL, toEngineAudioFormat: AVAudioFormat, withPCMBufferSize size: AVAudioFrameCount) throws
+    func pullBuffer() throws -> AVAudioPCMBuffer
     func pollPredictedDuration() -> Duration?
     func pollNetworkAudioAvailabilityRange() -> (Needle, Duration)
     func seek(_ needle: Needle)
@@ -70,13 +70,20 @@ class AudioConverter: AudioConvertable {
     
     //From protocol
     public var engineAudioFormat: AVAudioFormat
+    let pcmBufferSize: AVAudioFrameCount
     
     //Field
     var converter: AudioConverterRef? //set by AudioConverterNew
     var currentAudioPacketIndex: AVAudioPacketCount = 0
     
-    required init(withRemoteUrl url: AudioURL, toEngineAudioFormat: AVAudioFormat) throws {
+    // use to store reference to the allocated buffers from the converter to properly deallocate them before the next packet is being converted
+    var converterBuffer: UnsafeMutableRawPointer?
+    var converterDescriptions: UnsafeMutablePointer<AudioStreamPacketDescription>?
+    
+    required init(withRemoteUrl url: AudioURL, toEngineAudioFormat: AVAudioFormat, withPCMBufferSize size: AVAudioFrameCount) throws {
         self.engineAudioFormat = toEngineAudioFormat
+        self.pcmBufferSize = size
+        
         do {
             parser = try AudioParser(withRemoteUrl: url, parsedFileAudioFormatCallback: {
                 [weak self] (fileAudioFormat: AVAudioFormat) in
@@ -108,17 +115,17 @@ class AudioConverter: AudioConvertable {
         }
     }
     
-    func pullBuffer(withSize size: AVAudioFrameCount) throws -> AVAudioPCMBuffer {
+    func pullBuffer() throws -> AVAudioPCMBuffer {
         guard let converter = converter else {
             Log.debug("reader_error trying to read before converter has been created")
             throw ConverterError.cannotCreatePCMBufferWithoutConverter
         }
         
-        guard let pcmBuffer = AVAudioPCMBuffer(pcmFormat: engineAudioFormat, frameCapacity: size) else {
+        guard let pcmBuffer = AVAudioPCMBuffer(pcmFormat: engineAudioFormat, frameCapacity: pcmBufferSize) else {
             Log.monitor(ConverterError.failedToCreatePCMBuffer.errorDescription as Any)
             throw ConverterError.failedToCreatePCMBuffer
         }
-        pcmBuffer.frameLength = size
+        pcmBuffer.frameLength = pcmBufferSize
         
         /**
          The whole thing is wrapped in queue.sync() because the converter listener
@@ -127,7 +134,7 @@ class AudioConverter: AudioConvertable {
          */
         return try queue.sync { () -> AVAudioPCMBuffer in
             let framesPerPacket = engineAudioFormat.streamDescription.pointee.mFramesPerPacket
-            var numberOfPacketsWeWantTheBufferToFill = size / framesPerPacket
+            var numberOfPacketsWeWantTheBufferToFill = pcmBuffer.frameLength / framesPerPacket
             
             let context = unsafeBitCast(self, to: UnsafeMutableRawPointer.self)
             let status = AudioConverterFillComplexBuffer(converter, ConverterListener, context, &numberOfPacketsWeWantTheBufferToFill, pcmBuffer.mutableAudioBufferList, nil)

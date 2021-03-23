@@ -76,6 +76,10 @@ class AudioConverter: AudioConvertable {
     var converter: AudioConverterRef? //set by AudioConverterNew
     var currentAudioPacketIndex: AVAudioPacketCount = 0
     
+    // use to store reference to the allocated buffers from the converter to properly deallocate them before the next packet is being converted
+    var converterBuffer: UnsafeMutableRawPointer?
+    var converterDescriptions: UnsafeMutablePointer<AudioStreamPacketDescription>?
+    
     required init(withRemoteUrl url: AudioURL, toEngineAudioFormat: AVAudioFormat, withPCMBufferSize size: AVAudioFrameCount) throws {
         self.engineAudioFormat = toEngineAudioFormat
         self.pcmBufferSize = size

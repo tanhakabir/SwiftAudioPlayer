@@ -166,7 +166,7 @@ class AudioStreamEngine: AudioEngine {
         guard shouldPollForNextBuffer else { return }
         
         do {
-            let nextScheduledBuffer: AVAudioPCMBuffer! = try converter.pullBuffer()
+            var nextScheduledBuffer: AVAudioPCMBuffer! = try converter.pullBuffer()
             numberOfBuffersScheduledFromPoll += 1
             numberOfBuffersScheduledInTotal += 1
             
@@ -175,11 +175,13 @@ class AudioStreamEngine: AudioEngine {
                 if #available(iOS 11.0, *) {
                     // to make sure the pcm buffers are properly free'd from memory we need to nil them after the player has used them
                     self?.playerNode.scheduleBuffer(nextScheduledBuffer, completionCallbackType: .dataRendered, completionHandler: { (_) in
+                        nextScheduledBuffer = nil
                         self?.numberOfBuffersScheduledInTotal -= 1
                         self?.pollForNextBufferRecursive()
                     })
                 } else {
                     self?.playerNode.scheduleBuffer(nextScheduledBuffer) {
+                        nextScheduledBuffer = nil
                         self?.numberOfBuffersScheduledInTotal -= 1
                         self?.pollForNextBufferRecursive()
                     }

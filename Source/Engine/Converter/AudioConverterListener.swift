@@ -65,10 +65,6 @@ func ConverterListener(_ converter: AudioConverterRef, _ packetCount: UnsafeMuta
         return ReaderShouldNotHappenError
     }
     
-    Log.test(ioData)
-    
-    ioData.pointee.mBuffers.mData?.deallocate()
-    
     // Copy data over (note we've only processing a single packet of data at a time)
     var packet = audioPacket.1
     let packetByteCount = packet.count //this is not the count of an array
@@ -94,8 +90,6 @@ func ConverterListener(_ converter: AudioConverterRef, _ packetCount: UnsafeMuta
     
     //we've successfully given a packet to the LPCM buffer now we can process the next audio packet
     selfAudioConverter.currentAudioPacketIndex = selfAudioConverter.currentAudioPacketIndex + 1
-    
-    Log.test(selfAudioConverter.currentAudioPacketIndex)
     
     return noErr
 }

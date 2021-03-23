@@ -65,6 +65,10 @@ func ConverterListener(_ converter: AudioConverterRef, _ packetCount: UnsafeMuta
         return ReaderShouldNotHappenError
     }
     
+    if let lastBuffer = selfAudioConverter.converterBuffer {
+        lastBuffer.deallocate()
+    }
+    
     // Copy data over (note we've only processing a single packet of data at a time)
     var packet = audioPacket.1
     let packetByteCount = packet.count //this is not the count of an array
@@ -74,6 +78,12 @@ func ConverterListener(_ converter: AudioConverterRef, _ packetCount: UnsafeMuta
         memcpy((ioData.pointee.mBuffers.mData?.assumingMemoryBound(to: UInt8.self))!, bytes, packetByteCount)
     })
     ioData.pointee.mBuffers.mDataByteSize = UInt32(packetByteCount)
+    
+    selfAudioConverter.converterBuffer = ioData.pointee.mBuffers.mData
+    
+    if let lastDescription = selfAudioConverter.converterDescriptions {
+        lastDescription.deallocate()
+    }
     
     // Handle packet descriptions for compressed formats (MP3, AAC, etc)
     let fileFormatDescription = fileAudioFormat.streamDescription.pointee
@@ -85,6 +95,8 @@ func ConverterListener(_ converter: AudioConverterRef, _ packetCount: UnsafeMuta
         outPacketDescriptions?.pointee?.pointee.mStartOffset = 0
         outPacketDescriptions?.pointee?.pointee.mVariableFramesInPacket = 0
     }
+    
+    selfAudioConverter.converterDescriptions = outPacketDescriptions?.pointee
     
     packetCount.pointee = 1
     

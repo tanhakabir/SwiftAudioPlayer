@@ -68,7 +68,7 @@ class ViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        SAPlayer.Downloader.allowUsingCellularData = true
+        SAPlayer.Network.CellularData.allowUsage = true
         
 //        SAPlayer.shared.DEBUG_MODE = true
         

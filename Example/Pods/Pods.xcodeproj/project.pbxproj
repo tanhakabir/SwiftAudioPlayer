@@ -17,6 +17,7 @@
 		A40DBE292391D9CA00F86146 /* Data.swift in Sources */ = {isa = PBXBuildFile; fileRef = A40DBE282391D9C900F86146 /* Data.swift */; };
 		A411CE4625F9609D0039E1CD /* SAPlayerFeatures.swift in Sources */ = {isa = PBXBuildFile; fileRef = A411CE4525F9609D0039E1CD /* SAPlayerFeatures.swift */; };
 		A41AA0D2238BB9B600A467E1 /* SAPlayingStatus.swift in Sources */ = {isa = PBXBuildFile; fileRef = A41AA0D1238BB9B600A467E1 /* SAPlayingStatus.swift */; };
+		A42157B22609BF8900253D01 /* SAPlayerNetwork.swift in Sources */ = {isa = PBXBuildFile; fileRef = A42157B12609BF8900253D01 /* SAPlayerNetwork.swift */; };
 		A4681FC6220113880018AB51 /* SAPlayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = A4681F8D2200E00E0018AB51 /* SAPlayer.swift */; };
 		A4681FC72201138B0018AB51 /* SAPlayerDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = A4681F912200E1950018AB51 /* SAPlayerDelegate.swift */; };
 		A4681FC82201138E0018AB51 /* SAPlayerPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = A4681F8F2200E1450018AB51 /* SAPlayerPresenter.swift */; };
@@ -103,6 +104,7 @@
 		A40DBE282391D9C900F86146 /* Data.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Data.swift; sourceTree = "<group>"; };
 		A411CE4525F9609D0039E1CD /* SAPlayerFeatures.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SAPlayerFeatures.swift; sourceTree = "<group>"; };
 		A41AA0D1238BB9B600A467E1 /* SAPlayingStatus.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SAPlayingStatus.swift; sourceTree = "<group>"; };
+		A42157B12609BF8900253D01 /* SAPlayerNetwork.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SAPlayerNetwork.swift; sourceTree = "<group>"; };
 		A4523BC8220A0B3C0079C4BC /* Credited_LICENSE */ = {isa = PBXFileReference; lastKnownFileType = text; path = Credited_LICENSE; sourceTree = "<group>"; };
 		A4681F802200D0500018AB51 /* Log.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Log.swift; sourceTree = "<group>"; };
 		A4681F822200D9150018AB51 /* AudioEngine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioEngine.swift; sourceTree = "<group>"; };
@@ -361,6 +363,7 @@
 				A411CE4525F9609D0039E1CD /* SAPlayerFeatures.swift */,
 				A4FBA6B6221BAC3D00D5A353 /* SAPlayerUpdateSubscription.swift */,
 				A4B4CC112223ED2A0045554B /* SAPlayerDownloader.swift */,
+				A42157B12609BF8900253D01 /* SAPlayerNetwork.swift */,
 				A4681F912200E1950018AB51 /* SAPlayerDelegate.swift */,
 				A4681F8F2200E1450018AB51 /* SAPlayerPresenter.swift */,
 				A4681FBE22010ECF0018AB51 /* LockScreenViewProtocol.swift */,
@@ -548,6 +551,7 @@
 				A4681FE1220113E70018AB51 /* Constants.swift in Sources */,
 				A40DBE292391D9CA00F86146 /* Data.swift in Sources */,
 				A4FBA6B5221B74C900D5A353 /* SALockScreenInfo.swift in Sources */,
+				A42157B22609BF8900253D01 /* SAPlayerNetwork.swift in Sources */,
 				A4681FC6220113880018AB51 /* SAPlayer.swift in Sources */,
 				A4FBA6B7221BAC3D00D5A353 /* SAPlayerUpdateSubscription.swift in Sources */,
 				A4681FC72201138B0018AB51 /* SAPlayerDelegate.swift in Sources */,

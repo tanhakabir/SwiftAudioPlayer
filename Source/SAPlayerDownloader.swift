@@ -100,14 +100,5 @@ extension SAPlayer {
         public static func setBackgroundCompletionHandler(_ completionHandler: @escaping () -> ()) {
             AudioDataManager.shared.setBackgroundCompletionHandler(completionHandler)
         }
-        
-        /**
-         Whether downloading audio on cellular data is allowed. By default this is set to `true`.
-         */
-        public static var allowUsingCellularData = true {
-            didSet {
-                AudioDataManager.shared.setAllowCellularDownloadPreference(allowUsingCellularData)
-            }
-        }
     }
 }

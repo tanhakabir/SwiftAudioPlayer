@@ -17,6 +17,7 @@ Thus, using [AudioToolbox](https://developer.apple.com/documentation/audiotoolbo
 1. Play locally saved audio with the same API
 1. Download audio
 1. Queue up downloaded and streamed audio for autoplay
+1. Uses only 1-2% CPU for optimal performance for the rest of your app
 1. You're able to install taps and any other AVAudioEngine features to do cool things like skipping silences
 
 ### Special Features

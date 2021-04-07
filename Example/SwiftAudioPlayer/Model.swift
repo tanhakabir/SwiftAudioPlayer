@@ -13,7 +13,7 @@ struct AudioInfo: Hashable {
     
     var urls: [URL] = [URL(string: "https://www.fesliyanstudios.com/musicfiles/2019-04-23_-_Trusted_Advertising_-_www.fesliyanstudios.com/15SecVersion2019-04-23_-_Trusted_Advertising_-_www.fesliyanstudios.com.mp3")!,
                        URL(string: "https://chtbl.com/track/18338/traffic.libsyn.com/secure/acquired/acquired_-_armrev_2.mp3?dest-id=376122")!,
-                       URL(string: "https://backtracks.fm/ycombinator/pr/0f685f72-29b1-11e9-9bcf-0ece7a7d2472/111---jake-klamka-and-kevin-hale---y-combinator.mp3?s=1&amp;sd=1&amp;u=1549423185")!]
+                       URL(string: "https://ice6.somafm.com/groovesalad-256-mp3")!]
     
     var url: URL {
         switch index {
@@ -33,9 +33,9 @@ struct AudioInfo: Hashable {
         case 0:
             return "Soundbite"
         case 1:
-            return "Acquired"
+            return "Podcast"
         case 2:
-            return "Y Combinator"
+            return "Radio"
         default:
             return "Soundbite"
         }

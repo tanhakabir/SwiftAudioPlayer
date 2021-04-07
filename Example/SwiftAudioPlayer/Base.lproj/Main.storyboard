@@ -72,8 +72,8 @@
                                 <rect key="frame" x="16" y="60" width="343" height="32"/>
                                 <segments>
                                     <segment title="Soundbite"/>
-                                    <segment title="Acquired"/>
-                                    <segment title="Y Combinator"/>
+                                    <segment title="Podcast"/>
+                                    <segment title="Radio"/>
                                 </segments>
                                 <connections>
                                     <action selector="audioSelected:" destination="vXZ-lx-hvc" eventType="valueChanged" id="oYE-yq-348"/>

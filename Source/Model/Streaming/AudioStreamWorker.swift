@@ -44,7 +44,7 @@ import Foundation
 protocol AudioDataStreamable {
     //if user taps download then starts to stream
     init(progressCallback: @escaping (_ id: ID, _ dto: StreamProgressDTO) -> (), doneCallback: @escaping (_ id: ID, _ error: Error?)->Bool) //Bool is should save or not
-    func start(withID id: ID, withRemoteURL url: URL, withInitialData data: Data?, andTotalBytesExpectedPreviously previousTotalBytesExpected: Int64?)
+    func start(withID id: ID, withRemoteURL url: URL, withInitialData data: Data?, andTotalBytesExpectedPreviously previousTotalBytesExpected: Int64?, withUserAgent userAgent: String?)
     func pause(withId id: ID)
     func resume(withId id: ID)
     func stop(withId id: ID)//FIXME: with persistent play we should return a Data so that download can resume
@@ -95,7 +95,7 @@ class AudioStreamWorker:NSObject, AudioDataStreamable {
         self.session = URLSession(configuration: config, delegate: self, delegateQueue: nil) //TODO: should we use ephemeral
     }
     
-    func start(withID id: ID, withRemoteURL url: URL, withInitialData data: Data? = nil, andTotalBytesExpectedPreviously previousTotalBytesExpected: Int64? = nil) {
+    func start(withID id: ID, withRemoteURL url: URL, withInitialData data: Data? = nil, andTotalBytesExpectedPreviously previousTotalBytesExpected: Int64? = nil, withUserAgent userAgent: String?) {
         Log.info("selfID: \(self.id ?? "none"), paramID: \(id) initialData: \(data?.count ?? 0)")
         
         killPreviousTaskIfNeeded()

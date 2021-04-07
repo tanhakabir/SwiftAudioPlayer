@@ -29,8 +29,6 @@ protocol AudioDataManagable {
     var numberOfQueued: Int { get }
     var numberOfActive: Int { get }
     
-    var allowCellular: Bool { get set }
-    
     func setBackgroundCompletionHandler(_ completionHandler: @escaping () -> ())
     func setAllowCellularDownloadPreference(_ preference: Bool)
     
@@ -53,6 +51,7 @@ protocol AudioDataManagable {
 
 class AudioDataManager: AudioDataManagable {
     var allowCellular: Bool = true
+    var userAgent: String?
     
     static let shared: AudioDataManagable = AudioDataManager()
     
@@ -104,6 +103,10 @@ class AudioDataManager: AudioDataManagable {
         allowCellular = preference
     }
     
+    func setUserAgent(_ userAgent: String) {
+        self.userAgent = userAgent
+    }
+    
     func attach(callback: @escaping (_ id: ID, _ progress: Double)->()) {
         globalDownloadProgressCallback = callback
     }
@@ -128,7 +131,7 @@ extension AudioDataManager {
         
         downloadWorker.stop(withID: url.key) { [weak self] (fetchedData: Data?, totalBytesExpected: Int64?) in
             self?.downloadWorker.pauseAllActive()
-            self?.streamWorker.start(withID: url.key, withRemoteURL: url, withInitialData: fetchedData, andTotalBytesExpectedPreviously: totalBytesExpected)
+            self?.streamWorker.start(withID: url.key, withRemoteURL: url, withInitialData: fetchedData, andTotalBytesExpectedPreviously: totalBytesExpected, withUserAgent: userAgent)
         }
     }
     

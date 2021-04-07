@@ -44,4 +44,10 @@ extension SAPlayer {
             }
         }
     }
+    
+    public struct Request {
+        public func setUserAgent(with userAgent: String) {
+            
+        }
+    }
 }

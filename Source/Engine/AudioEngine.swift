@@ -173,6 +173,7 @@ class AudioEngine: AudioEngineProtocol {
         Timer.scheduledTimer(withTimeInterval: timeInterval, repeats: false) { [weak self] (timer: Timer) in
             guard let self = self else { return }
             guard self.playingStatus != .ended else {
+//                Log.test("END TIMER")
                 self.delegate = nil
                 return
             }

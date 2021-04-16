@@ -71,6 +71,7 @@ class AudioStreamEngine: AudioEngine {
     
     private var numberOfBuffersScheduledInTotal = 0 {
         didSet {
+//            Log.test(numberOfBuffersScheduledInTotal)
             Log.debug("number of buffers scheduled in total: \(numberOfBuffersScheduledInTotal)")
             if numberOfBuffersScheduledInTotal == 0 {
                 pause()
@@ -86,6 +87,7 @@ class AudioStreamEngine: AudioEngine {
     private var numberOfBuffersScheduledFromPoll = 0 {
         didSet {
             if numberOfBuffersScheduledFromPoll > MAX_POLL_BUFFER_COUNT {
+//                Log.test("🛑  🛑   STOP POLLING")
                 shouldPollForNextBuffer = false
             }
             
@@ -149,7 +151,7 @@ class AudioStreamEngine: AudioEngine {
             guard let self = self else { return }
             guard self.playingStatus != .ended else { return }
             
-            self.pollForNextBufferRecursive()
+            self.pollForNextBuffer()
             self.updateNetworkBufferRange()
             self.updateNeedle()
             self.updateIsPlaying()
@@ -162,8 +164,15 @@ class AudioStreamEngine: AudioEngine {
     //Called when
     //1. First time audio is finally parsed
     //2. When we run to the end of the network buffer and we're waiting again
-    private func pollForNextBufferRecursive() {
+    private func pollForNextBuffer() {
         guard shouldPollForNextBuffer else { return }
+        
+//        Log.test("POLL INIT")
+        pollForNextBufferRecursive()
+    }
+    
+    private func pollForNextBufferRecursive() {
+//        Log.test("POLL")
         
         do {
             var nextScheduledBuffer: AVAudioPCMBuffer! = try converter.pullBuffer()
@@ -174,15 +183,17 @@ class AudioStreamEngine: AudioEngine {
             queue.async { [weak self] in
                 if #available(iOS 11.0, *) {
                     // to make sure the pcm buffers are properly free'd from memory we need to nil them after the player has used them
-                    self?.playerNode.scheduleBuffer(nextScheduledBuffer, completionCallbackType: .dataRendered, completionHandler: { (_) in
+                    self?.playerNode.scheduleBuffer(nextScheduledBuffer, completionCallbackType: .dataConsumed, completionHandler: { (_) in
                         nextScheduledBuffer = nil
                         self?.numberOfBuffersScheduledInTotal -= 1
+//                        Log.test("POLL DATA RENDERED")
                         self?.pollForNextBufferRecursive()
                     })
                 } else {
                     self?.playerNode.scheduleBuffer(nextScheduledBuffer) {
                         nextScheduledBuffer = nil
                         self?.numberOfBuffersScheduledInTotal -= 1
+//                        Log.test("POLL OLD")
                         self?.pollForNextBufferRecursive()
                     }
                 }

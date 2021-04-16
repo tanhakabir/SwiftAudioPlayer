@@ -27,74 +27,32 @@ import Foundation
 
 protocol AudioThrottleDelegate: AnyObject {
     func didUpdate(totalBytesExpected bytes: Int64)
-    func didUpdate(networkStreamProgress progress: Double)
     func shouldProcess(networkData data: Data)
 }
 
 protocol AudioThrottleable {
     init(withRemoteUrl url: AudioURL, withDelegate delegate: AudioThrottleDelegate)
-    func tellAudioFormatFound()
-    func tellByteOffset(offset: UInt64)
     func tellSeek(offset: UInt64)
-    func tellBytesPerAudioPacket(count: UInt64)
     func pollRangeOfBytesAvailable() -> (UInt64, UInt64)
     func invalidate()
+    
+    func getNextDataPacket() -> Data?
 }
 
 class AudioThrottler: AudioThrottleable {
-    private class NetworkDataWrapper: NSObject {
-        let startOffset: UInt
-        var data: Data
-        var alreadySent: Bool
-        var next: NetworkDataWrapper?
-        
-        var byteCount: UInt {
-            return UInt(data.count)
-        }
-        
-        var endOffset: UInt {
-            return startOffset + UInt(data.count) - 1
-        }
-        
-        init(startingOffset: UInt, data: Data) {
-            self.startOffset = startingOffset
-            self.data = data
-            self.alreadySent = false
-        }
-        
-        func containsOffset(_ offset: UInt) -> Bool {
-            return startOffset <= offset && offset <= endOffset
-        }
-        
-        func isNextSent() -> Bool {
-            return next?.alreadySent ?? false
-        }
-        
-        //FIXME: what is the offset was at the edge of the split? We will have empty data
-        func splitToRight(atOffset offset: UInt) -> NetworkDataWrapper {
-            let splitPoint:Int = Int(offset - startOffset)
-            let leftData = data.subdata(in: 0..<splitPoint)
-            let rightData = data.subdata(in: splitPoint..<data.count)
-            
-            data = leftData
-            
-            let rightWrapper:NetworkDataWrapper = NetworkDataWrapper(startingOffset: offset, data: rightData)
-            rightWrapper.next = next
-            next = rightWrapper
-            
-            return rightWrapper
-        }
-        
-        override var description: String {
-            return "startOffset:\(startOffset), endOffset:\(endOffset), dataCount:\(data.count), sent:\(alreadySent), next:\(next != nil ?"hasNext":"noNext")"
-        }
-    }
+    private let queue = DispatchQueue(label: "SwiftAudioPlayer.Throttler", qos: .userInitiated)
     
     //Init
     let url: AudioURL
     weak var delegate: AudioThrottleDelegate?
     
-    private var networkData: [NetworkDataWrapper] = []
+    private var networkData: [Data] = [] {
+        didSet {
+//            Log.test("NETWORK DATA \(networkData.count)")
+        }
+    }
+    private var lastSentDataPacketIndex = -1
+    
     var shouldThrottle = false
     var byteOffsetBecauseOfSeek: UInt = 0
     
@@ -116,131 +74,102 @@ class AudioThrottler: AudioThrottleable {
         AudioDataManager.shared.startStream(withRemoteURL: url) { [weak self] (pto: StreamProgressPTO) in
             guard let self = self else {return}
             Log.debug("received stream data of size \(pto.getData().count) and progress: \(pto.getProgress())")
-            self.delegate?.didUpdate(networkStreamProgress: pto.getProgress())
-            
+
             if let totalBytesExpected = pto.getTotalBytesExpected() {
                 self.totalBytesExpected = totalBytesExpected
             }
             
-            let lastItem = self.networkData.last
-            let startoffset = lastItem == nil ? self.byteOffsetBecauseOfSeek : lastItem!.endOffset + 1
-            let wrappedNetworkData = NetworkDataWrapper(startingOffset: startoffset, data: pto.getData())
-            lastItem?.next = wrappedNetworkData
-            self.networkData.append(wrappedNetworkData)
+            self.queue.async { [weak self] in
+                self?.networkData.append(pto.getData())
+            }
             
-            if !self.shouldThrottle {
-                Log.debug("sending up packet from stream untrottled at start: \(wrappedNetworkData.startOffset)")
-                //NOTE: the order here matters.
-                //We have to set to true before sending up to be processed because
-                //tellByteOffset() is ran in a separate thread than this one
-                //We got in a state where 10% of the time an episode will keep polling because
-                //the first 30 buffers have not been filled
-                wrappedNetworkData.alreadySent = true
-                delegate.shouldProcess(networkData: wrappedNetworkData.data)
-            }
+            Log.test("STREAMED DATA")
+            StreamingDownloadDirector.shared.didUpdate(url.key, networkStreamProgress: pto.getProgress())
         }
     }
-    
-    func tellAudioFormatFound() {
-        shouldThrottle = true //the above layer has enough info that we can throttle
-    }
-    
-    func tellBytesPerAudioPacket(count: UInt64) {
-        if count > largestPollingOffsetDifference {
-            largestPollingOffsetDifference = count
-        }
-    }
-    
-    func tellByteOffset(offset: UInt64) {
-        Log.debug("offset \(offset)")
-        
-        for wrappedNetworkData in networkData {
-            if wrappedNetworkData.containsOffset(UInt(offset)) {
-                Log.debug("offset: \(offset) within network packet of range: \(wrappedNetworkData.startOffset) to \(wrappedNetworkData.endOffset) is next sent: \(wrappedNetworkData.isNextSent())")
-                
-                if wrappedNetworkData.alreadySent {
-                    Log.debug("already sent offset: \(offset) within network packet of range: \(wrappedNetworkData.startOffset) to \(wrappedNetworkData.endOffset)")
-                    
-                    var bytesSent: UInt = 0
-                    var current = wrappedNetworkData
-                    
-                    // Sometimes the next data packet is smaller than a full audio chunk size, so we need to ensure we send up enough packets for the audio chunk. This prevented Issue #4 where tsreaming would randomly get stuck in a state needing more data up the chain.
-                    // https://github.com/tanhakabir/SwiftAudioPlayer/issues/4
-                    while bytesSent < largestPollingOffsetDifference {
-                        if let next = current.next {
-                            if !next.alreadySent {
-                                Log.info("Sending next network packet with range: \(next.startOffset) to \(next.endOffset), have sent \(bytesSent) bytes so far from \(largestPollingOffsetDifference) bytes")
-                                next.alreadySent = true
-                                delegate?.shouldProcess(networkData: next.data)
-                            }
-                            bytesSent += next.byteCount
-                            current = next
-                        } else {
-                            Log.debug("next package doesn't exist, bytes sent so far: \(bytesSent)")
-                            return
-                        }
-                    }
-                    
-                    return
-                }
-                
-                Log.info("Found network packet  to send with range: \(wrappedNetworkData.startOffset) to \(wrappedNetworkData.endOffset)")
-                wrappedNetworkData.alreadySent = true
-                delegate?.shouldProcess(networkData: wrappedNetworkData.data)
-                return
-            }
-        }
-    }
+
     
     func tellSeek(offset: UInt64) {
         Log.info("seek with offset: \(offset)")
         
+        self.queue.async { [weak self] in
+            Log.test("SEEKING")
+            self?.seekQueueHelper(offset)
+        }
+    }
+    
+    func seekQueueHelper(_ offset: UInt64) {
+        let offsetToFind = Int(offset) - Int(byteOffsetBecauseOfSeek)
+        
         if networkData.count == 0 {
             byteOffsetBecauseOfSeek = UInt(offset)
+            lastSentDataPacketIndex = -1
             AudioDataManager.shared.seekStream(withRemoteURL: url, toByteOffset: offset)
             
             networkData = []
             return
         }
         
-        if let finalOffset = networkData.last?.endOffset, let firstOffset = networkData.first?.startOffset {
-            if offset < firstOffset || offset > finalOffset {
-                byteOffsetBecauseOfSeek = UInt(offset)
-                AudioDataManager.shared.seekStream(withRemoteURL: url, toByteOffset: offset)
-                
-                networkData = []
-                return
-            }
+        if offset < byteOffsetBecauseOfSeek || offsetToFind > networkData.sum {
+            byteOffsetBecauseOfSeek = UInt(offset)
+            lastSentDataPacketIndex = -1
+            AudioDataManager.shared.seekStream(withRemoteURL: url, toByteOffset: offset)
+            
+            networkData = []
+            return
         }
         
-        for (i, d) in networkData.enumerated() {
-            if offset > d.endOffset {
-                d.alreadySent = false
-                continue
-            }
+        if let indexOfDataContainingOffset = networkData.getIndexContainingByteOffset(offsetToFind) {
+            lastSentDataPacketIndex = indexOfDataContainingOffset - 1
+        } else {
+            byteOffsetBecauseOfSeek = UInt(offset)
+            lastSentDataPacketIndex = -1
+            AudioDataManager.shared.seekStream(withRemoteURL: url, toByteOffset: offset)
             
-            if d.containsOffset(UInt(offset)) {
-                let wrappedData = d.splitToRight(atOffset: UInt(offset))
-                networkData.insert(wrappedData, at: i+1)
-                
-                d.alreadySent = false
-                wrappedData.alreadySent = true
-                Log.info("\(d) ::: \(wrappedData)")
-                
-                delegate?.shouldProcess(networkData: wrappedData.data)
-                return
-            }
+            networkData = []
         }
     }
     
     func pollRangeOfBytesAvailable() -> (UInt64, UInt64) {
-        let start = networkData.first?.startOffset ?? 0
-        let end = networkData.last?.endOffset ?? 0
+        let start = byteOffsetBecauseOfSeek
+        let end = networkData.sum + Int(byteOffsetBecauseOfSeek)
         
         return (UInt64(start), UInt64(end))
     }
     
+    func getNextDataPacket() -> Data? {
+        queue.sync { [weak self] in
+            guard lastSentDataPacketIndex < networkData.count - 1 else { return nil }
+            
+            self?.lastSentDataPacketIndex += 1
+            
+            return networkData[lastSentDataPacketIndex]
+        }
+    }
+    
     func invalidate() {
         AudioDataManager.shared.deleteStream(withRemoteURL: url)
+    }
+}
+
+extension Array where Element == Data {
+    var sum: Int {
+        get {
+            return self.reduce(0) { $0 + $1.count }
+        }
+    }
+    
+    func getIndexContainingByteOffset(_ offset: Int) -> Int? {
+        var dataCount = 0
+        
+        for (i, data) in self.enumerated() {
+            if offset >= dataCount && offset <= dataCount + data.count {
+                return i
+            }
+            
+            dataCount += data.count
+        }
+        
+        return nil
     }
 }

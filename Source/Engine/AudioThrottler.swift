@@ -89,7 +89,6 @@ class AudioThrottler: AudioThrottleable {
         Log.info("seek with offset: \(offset)")
         
         self.queue.async { [weak self] in
-            Log.test("SEEKING")
             self?.seekQueueHelper(offset)
         }
     }

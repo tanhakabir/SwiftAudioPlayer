@@ -171,10 +171,8 @@ class AudioEngine: AudioEngineProtocol {
         // of the repeat block timer so I'm in full control of when to invalidate.
         
         Timer.scheduledTimer(withTimeInterval: timeInterval, repeats: false) { [weak self] (timer: Timer) in
-            guard let self = self else { Log.test("😍 😍 😍 😍 😍 😍 END TIMER SELF")
-                return }
+            guard let self = self else { return }
             guard self.playingStatus != .ended else {
-                Log.test("😍 😍 😍 😍 😍 😍END TIMER")
                 self.delegate = nil
                 return
             }

@@ -116,7 +116,6 @@ class AudioConverter: AudioConvertable {
     }
     
     func pullBuffer() throws -> AVAudioPCMBuffer {
-        Log.test("PULL BUFFER")
         guard let converter = converter else {
             Log.debug("reader_error trying to read before converter has been created")
             throw ConverterError.cannotCreatePCMBufferWithoutConverter

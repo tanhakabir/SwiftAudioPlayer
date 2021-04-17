@@ -72,7 +72,6 @@ class AudioStreamEngine: AudioEngine {
     
     private var numberOfBuffersScheduledInTotal = 0 {
         didSet {
-            Log.test(numberOfBuffersScheduledInTotal)
             Log.debug("number of buffers scheduled in total: \(numberOfBuffersScheduledInTotal)")
             if numberOfBuffersScheduledInTotal == 0 {
                 pause()
@@ -157,29 +156,17 @@ class AudioStreamEngine: AudioEngine {
             guard key == url.key else { return }
 
             // polling for buffers when we receive data. This won't be throttled on fresh new audio or seeked audio but in all other cases it most likely will be throttled
-            self.pollForNextBuffer()
+            self.pollForNextBuffer() //  no buffer updates because thread issues if I try to update buffer status in streaming listener
         }
         
         
         let timeInterval = 1 / (converter.engineAudioFormat.sampleRate / Double(PCM_BUFFER_SIZE))
         
         doRepeatedly(timeInterval: timeInterval) { [weak self] in
-            Log.test(" 🛑 ✋ ✋ ✋ ✋ ✋ ✋ ✋ TIMER")
-            guard let self = self else {
-                Log.test("🛑 🛑 🛑 END TIMER SELF ")
-                return }
-            guard self.playingStatus != .ended else {
-                Log.test("🛑 🛑 🛑 ENDING TIMER")
-                return }
+            guard let self = self else { return }
+            guard self.playingStatus != .ended else { return }
             
-            
-            Log.test("✋ ✋ ✋ ✋ ✋ ✋ ✋ TIMER")
-            
-            self.pollForNextBuffer()
-            self.updateNetworkBufferRange() // thread issues if I try to update buffer status in streaming listener
-            self.updateNeedle()
-            self.updateIsPlaying()
-            self.updateDuration()
+            self.repeatedUpdates()
         }
     }
     
@@ -187,6 +174,14 @@ class AudioStreamEngine: AudioEngine {
         if let id = streamChangeListenerId {
             StreamingDownloadDirector.shared.detach(withID: id)
         }
+    }
+    
+    private func repeatedUpdates() {
+        self.pollForNextBuffer()
+        self.updateNetworkBufferRange() // thread issues if I try to update buffer status in streaming listener
+        self.updateNeedle()
+        self.updateIsPlaying()
+        self.updateDuration()
     }
     
     //MARK:- Timer loop
@@ -197,13 +192,10 @@ class AudioStreamEngine: AudioEngine {
     private func pollForNextBuffer() {
         guard shouldPollForNextBuffer else { return }
         
-        Log.test("POLL INIT")
         pollForNextBufferRecursive()
     }
     
     private func pollForNextBufferRecursive() {
-        Log.test("POLL")
-        
         do {
             var nextScheduledBuffer: AVAudioPCMBuffer! = try converter.pullBuffer()
             numberOfBuffersScheduledFromPoll += 1
@@ -216,14 +208,12 @@ class AudioStreamEngine: AudioEngine {
                     self?.playerNode.scheduleBuffer(nextScheduledBuffer, completionCallbackType: .dataConsumed, completionHandler: { (_) in
                         nextScheduledBuffer = nil
                         self?.numberOfBuffersScheduledInTotal -= 1
-                        Log.test("POLL DATA RENDERED")
                         self?.pollForNextBufferRecursive()
                     })
                 } else {
                     self?.playerNode.scheduleBuffer(nextScheduledBuffer) {
                         nextScheduledBuffer = nil
                         self?.numberOfBuffersScheduledInTotal -= 1
-                        Log.test("POLL OLD")
                         self?.pollForNextBufferRecursive()
                     }
                 }

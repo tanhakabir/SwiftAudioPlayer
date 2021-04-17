@@ -58,10 +58,10 @@ extension SAPlayer {
                     Log.debug("meterLevel: \(meterLevel)")
                     if meterLevel < 0.6 { // below 0.6 decibels is below audible audio
                         SAPlayer.shared.rate = originalRate + 0.5
-                        Log.test("speed up rate to \(String(describing: SAPlayer.shared.rate))")
+                        Log.debug("speed up rate to \(String(describing: SAPlayer.shared.rate))")
                     } else {
                         SAPlayer.shared.rate = originalRate
-                        Log.test("slow down rate to \(String(describing: SAPlayer.shared.rate))")
+                        Log.debug("slow down rate to \(String(describing: SAPlayer.shared.rate))")
                     }
                 }
                 

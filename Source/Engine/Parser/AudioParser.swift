@@ -161,7 +161,6 @@ class AudioParser: AudioParsable {
             if self.fileAudioFormat == nil {
                 self.processNextDataPacket()
             } else if self.audioPackets.count - self.lastSentAudioPacketIndex < self.MIN_PACKETS_TO_HAVE_AVAILABLE_BEFORE_THROTTLING_PARSING {
-                Log.test("UNTHROTTLED PARSING")
                 self.processNextDataPacket()
             }
         }
@@ -312,7 +311,6 @@ class AudioParser: AudioParsable {
             guard let self = self else { return }
             guard let data = d else { return }
             
-            Log.test("PROCESSING")
             Log.debug("processing data count: \(data.count) :: already had \(self.audioPackets.count) audio packets")
             self.shouldPreventPacketFromFillingUp = false
             do {

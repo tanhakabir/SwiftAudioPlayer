@@ -308,24 +308,27 @@ class AudioParser: AudioParsable {
     }
     
     private func processNextDataPacket() {
-        guard let data = throttler.getNextDataPacket() else { return }
-        
-        Log.test("PROCESSING")
-        Log.debug("processing data count: \(data.count) :: already had \(audioPackets.count) audio packets")
-        self.shouldPreventPacketFromFillingUp = false
-        do {
-            let sID = self.streamID!
-            let dataSize = data.count
+        throttler.getNextDataPacket { [weak self] (d) in
+            guard let self = self else { return }
+            guard let data = d else { return }
             
-            _ = try data.accessBytes({ (bytes: UnsafePointer<UInt8>) in
-                let result:OSStatus = AudioFileStreamParseBytes(sID, UInt32(dataSize), bytes, [])
-                guard result == noErr else {
-                    Log.monitor(ParserError.failedToParseBytes(result).errorDescription as Any)
-                    throw ParserError.failedToParseBytes(result)
-                }
-            })
-        } catch {
-            Log.monitor(error.localizedDescription)
+            Log.test("PROCESSING")
+            Log.debug("processing data count: \(data.count) :: already had \(self.audioPackets.count) audio packets")
+            self.shouldPreventPacketFromFillingUp = false
+            do {
+                let sID = self.streamID!
+                let dataSize = data.count
+                
+                _ = try data.accessBytes({ (bytes: UnsafePointer<UInt8>) in
+                    let result:OSStatus = AudioFileStreamParseBytes(sID, UInt32(dataSize), bytes, [])
+                    guard result == noErr else {
+                        Log.monitor(ParserError.failedToParseBytes(result).errorDescription as Any)
+                        throw ParserError.failedToParseBytes(result)
+                    }
+                })
+            } catch {
+                Log.monitor(error.localizedDescription)
+            }
         }
     }
     

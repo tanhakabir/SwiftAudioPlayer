@@ -35,7 +35,7 @@ protocol AudioThrottleable {
     func pollRangeOfBytesAvailable() -> (UInt64, UInt64)
     func invalidate()
     
-    func getNextDataPacket() -> Data?
+    func getNextDataPacket(_ callback: @escaping (Data?) -> ())
 }
 
 class AudioThrottler: AudioThrottleable {
@@ -135,13 +135,17 @@ class AudioThrottler: AudioThrottleable {
         return (UInt64(start), UInt64(end))
     }
     
-    func getNextDataPacket() -> Data? {
-        queue.sync { [weak self] in
-            guard lastSentDataPacketIndex < networkData.count - 1 else { return nil }
+    func getNextDataPacket(_ callback: @escaping (Data?) -> ()) {
+        queue.async { [weak self] in
+            guard let self = self else { return }
+            guard self.lastSentDataPacketIndex < self.networkData.count - 1 else {
+                callback(nil)
+                return
+            }
             
-            self?.lastSentDataPacketIndex += 1
+            self.lastSentDataPacketIndex += 1
             
-            return networkData[lastSentDataPacketIndex]
+            callback(self.networkData[self.lastSentDataPacketIndex])
         }
     }
     

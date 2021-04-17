@@ -31,7 +31,7 @@ protocol SAPlayerDelegate: AnyObject, LockScreenViewProtocol {
     var skipBackwardSeconds: Double { get set }
     
     func startAudioDownloaded(withSavedUrl url: AudioURL)
-    func startAudioStreamed(withRemoteUrl url: AudioURL)
+    func startAudioStreamed(withRemoteUrl url: AudioURL, bitrate: SAPlayerBitrate)
     func clearEngine()
     func playEngine()
     func pauseEngine()

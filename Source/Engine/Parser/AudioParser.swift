@@ -53,7 +53,8 @@ import AVFoundation
 //TODO: what if user seeks beyond the data we have? What if we're done but user seeks even further than what we have
 
 class AudioParser: AudioParsable {
-    private let MIN_PACKETS_TO_HAVE_AVAILABLE_BEFORE_THROTTLING_PARSING = 8192
+    private var MIN_PACKETS_TO_HAVE_AVAILABLE_BEFORE_THROTTLING_PARSING = 8192
+    private var framesPerBuffer: Int = 1
     
     //MARK:- For OS parser class
     var parsedAudioHeaderPacketCount: UInt64 = 0
@@ -63,6 +64,7 @@ class AudioParser: AudioParsable {
     public var fileAudioFormat: AVAudioFormat? {
         didSet {
             if let format = fileAudioFormat, oldValue == nil {
+                MIN_PACKETS_TO_HAVE_AVAILABLE_BEFORE_THROTTLING_PARSING = framesPerBuffer/Int(format.streamDescription.pointee.mFramesPerPacket)
                 parsedFileAudioFormatCallback(format)
             }
         }
@@ -145,8 +147,9 @@ class AudioParser: AudioParsable {
     
     var streamChangeListenerId: UInt?
     
-    init(withRemoteUrl url: AudioURL, parsedFileAudioFormatCallback: @escaping(AVAudioFormat) -> ()) throws {
+    init(withRemoteUrl url: AudioURL, bufferSize: Int,  parsedFileAudioFormatCallback: @escaping(AVAudioFormat) -> ()) throws {
         self.url = url
+        self.framesPerBuffer = bufferSize
         self.parsedFileAudioFormatCallback = parsedFileAudioFormatCallback
         
         streamChangeListenerId = StreamingDownloadDirector.shared.attach { [weak self] (key, progress) in

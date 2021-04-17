@@ -59,7 +59,7 @@ class AudioStreamEngine: AudioEngine {
     //Constants
     private let MAX_POLL_BUFFER_COUNT = 300 //Having one buffer in engine at a time is choppy.
     private let MIN_BUFFERS_TO_BE_PLAYABLE = 1
-    private let PCM_BUFFER_SIZE: AVAudioFrameCount = 8192
+    private var PCM_BUFFER_SIZE: AVAudioFrameCount = 8192
     
     private let queue = DispatchQueue(label: "SwiftAudioPlayer.StreamEngine", qos: .userInitiated)
     
@@ -135,9 +135,17 @@ class AudioStreamEngine: AudioEngine {
         }
     }
     
-    init(withRemoteUrl url: AudioURL, delegate:AudioEngineDelegate?) {
+    init(withRemoteUrl url: AudioURL, delegate:AudioEngineDelegate?, bitrate: SAPlayerBitrate) {
         Log.info(url)
         super.init(url: url, delegate: delegate, engineAudioFormat: AudioEngine.defaultEngineAudioFormat)
+        
+        switch bitrate {
+        case .high:
+            PCM_BUFFER_SIZE = 8192
+        case .low:
+            PCM_BUFFER_SIZE = 4096
+        }
+        
         do {
             converter = try AudioConverter(withRemoteUrl: url, toEngineAudioFormat: AudioEngine.defaultEngineAudioFormat, withPCMBufferSize: PCM_BUFFER_SIZE)
         } catch {

@@ -155,6 +155,7 @@ class AudioParser: AudioParsable {
         streamChangeListenerId = StreamingDownloadDirector.shared.attach { [weak self] (key, progress) in
             guard let self = self else { return }
             guard key == url.key else { return }
+            self.networkProgress = progress
             
             // initially parse a bunch of packets
             if self.fileAudioFormat == nil {
@@ -334,28 +335,5 @@ class AudioParser: AudioParsable {
 extension AudioParser: AudioThrottleDelegate {
     func didUpdate(totalBytesExpected bytes: Int64) {
         expectedFileSizeInBytes = UInt64(bytes)
-    }
-    
-    func didUpdate(networkStreamProgress progress: Double) {
-        networkProgress = progress
-    }
-    
-    func shouldProcess(networkData data: Data) {
-        Log.debug("processing data count: \(data.count) :: already had \(audioPackets.count) audio packets")
-        self.shouldPreventPacketFromFillingUp = false
-        do {
-            let sID = self.streamID!
-            let dataSize = data.count
-            
-            _ = try data.accessBytes({ (bytes: UnsafePointer<UInt8>) in
-                let result:OSStatus = AudioFileStreamParseBytes(sID, UInt32(dataSize), bytes, [])
-                guard result == noErr else {
-                    Log.monitor(ParserError.failedToParseBytes(result).errorDescription as Any)
-                    throw ParserError.failedToParseBytes(result)
-                }
-            })
-        } catch {
-            Log.monitor(error.localizedDescription)
-        }
     }
 }

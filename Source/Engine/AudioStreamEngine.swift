@@ -167,7 +167,7 @@ class AudioStreamEngine: AudioEngine {
             guard let self = self else { return }
             guard self.playingStatus != .ended else { return }
             
-//            self.pollForNextBuffer()
+            self.pollForNextBuffer()
             self.updateNetworkBufferRange() // thread issues if I try to update buffer status in streaming listener
             self.updateNeedle()
             self.updateIsPlaying()

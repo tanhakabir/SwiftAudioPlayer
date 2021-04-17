@@ -27,7 +27,6 @@ import Foundation
 
 protocol AudioThrottleDelegate: AnyObject {
     func didUpdate(totalBytesExpected bytes: Int64)
-    func shouldProcess(networkData data: Data)
 }
 
 protocol AudioThrottleable {
@@ -83,7 +82,6 @@ class AudioThrottler: AudioThrottleable {
                 self?.networkData.append(pto.getData())
             }
             
-            Log.test("STREAMED DATA")
             StreamingDownloadDirector.shared.didUpdate(url.key, networkStreamProgress: pto.getProgress())
         }
     }

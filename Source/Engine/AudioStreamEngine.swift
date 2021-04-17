@@ -164,8 +164,15 @@ class AudioStreamEngine: AudioEngine {
         let timeInterval = 1 / (converter.engineAudioFormat.sampleRate / Double(PCM_BUFFER_SIZE))
         
         doRepeatedly(timeInterval: timeInterval) { [weak self] in
-            guard let self = self else { return }
-            guard self.playingStatus != .ended else { return }
+            Log.test(" 🛑 ✋ ✋ ✋ ✋ ✋ ✋ ✋ TIMER")
+            guard let self = self else { Log.test("🛑 🛑 🛑 END TIMER SELF ")
+                return }
+            guard self.playingStatus != .ended else {
+                Log.test("🛑 🛑 🛑 ENDING TIMER")
+                return }
+            
+            
+            Log.test("✋ ✋ ✋ ✋ ✋ ✋ ✋ TIMER")
             
             self.pollForNextBuffer()
             self.updateNetworkBufferRange() // thread issues if I try to update buffer status in streaming listener

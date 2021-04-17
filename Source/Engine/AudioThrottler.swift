@@ -31,11 +31,10 @@ protocol AudioThrottleDelegate: AnyObject {
 
 protocol AudioThrottleable {
     init(withRemoteUrl url: AudioURL, withDelegate delegate: AudioThrottleDelegate)
+    func pullNextDataPacket(_ callback: @escaping (Data?) -> ())
     func tellSeek(offset: UInt64)
     func pollRangeOfBytesAvailable() -> (UInt64, UInt64)
     func invalidate()
-    
-    func getNextDataPacket(_ callback: @escaping (Data?) -> ())
 }
 
 class AudioThrottler: AudioThrottleable {
@@ -80,9 +79,8 @@ class AudioThrottler: AudioThrottleable {
             
             self.queue.async { [weak self] in
                 self?.networkData.append(pto.getData())
+                StreamingDownloadDirector.shared.didUpdate(url.key, networkStreamProgress: pto.getProgress())
             }
-            
-            StreamingDownloadDirector.shared.didUpdate(url.key, networkStreamProgress: pto.getProgress())
         }
     }
 
@@ -99,33 +97,33 @@ class AudioThrottler: AudioThrottleable {
     func seekQueueHelper(_ offset: UInt64) {
         let offsetToFind = Int(offset) - Int(byteOffsetBecauseOfSeek)
         
+        var shouldStartNewStream: Bool = false
+        
+        // if we have no data start a new stream after seek
         if networkData.count == 0 {
-            byteOffsetBecauseOfSeek = UInt(offset)
-            lastSentDataPacketIndex = -1
-            AudioDataManager.shared.seekStream(withRemoteURL: url, toByteOffset: offset)
-            
-            networkData = []
-            return
+            shouldStartNewStream = true
         }
         
+        // if what we're looking for is outside of available data, start a new stream
         if offset < byteOffsetBecauseOfSeek || offsetToFind > networkData.sum {
-            byteOffsetBecauseOfSeek = UInt(offset)
-            lastSentDataPacketIndex = -1
-            AudioDataManager.shared.seekStream(withRemoteURL: url, toByteOffset: offset)
-            
-            networkData = []
-            return
+            shouldStartNewStream = true
         }
         
+        // we should have the data within our cache. find it and save the index for the next pull
         if let indexOfDataContainingOffset = networkData.getIndexContainingByteOffset(offsetToFind) {
             lastSentDataPacketIndex = indexOfDataContainingOffset - 1
-        } else {
+        }
+        
+        if shouldStartNewStream {
             byteOffsetBecauseOfSeek = UInt(offset)
             lastSentDataPacketIndex = -1
             AudioDataManager.shared.seekStream(withRemoteURL: url, toByteOffset: offset)
             
             networkData = []
+            return
         }
+        
+        Log.error("83672 Should not get here")
     }
     
     func pollRangeOfBytesAvailable() -> (UInt64, UInt64) {
@@ -135,7 +133,7 @@ class AudioThrottler: AudioThrottleable {
         return (UInt64(start), UInt64(end))
     }
     
-    func getNextDataPacket(_ callback: @escaping (Data?) -> ()) {
+    func pullNextDataPacket(_ callback: @escaping (Data?) -> ()) {
         queue.async { [weak self] in
             guard let self = self else { return }
             guard self.lastSentDataPacketIndex < self.networkData.count - 1 else {

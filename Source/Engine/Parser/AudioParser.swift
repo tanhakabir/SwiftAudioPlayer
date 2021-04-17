@@ -53,7 +53,7 @@ import AVFoundation
 //TODO: what if user seeks beyond the data we have? What if we're done but user seeks even further than what we have
 
 class AudioParser: AudioParsable {
-    private var MIN_PACKETS_TO_HAVE_AVAILABLE_BEFORE_THROTTLING_PARSING = 8192
+    private var MIN_PACKETS_TO_HAVE_AVAILABLE_BEFORE_THROTTLING_PARSING = 8192  // this will be modified when we know the file format to be just enough packets to fill up 1 pcm buffer
     private var framesPerBuffer: Int = 1
     
     //MARK:- For OS parser class
@@ -308,7 +308,7 @@ class AudioParser: AudioParsable {
     }
     
     private func processNextDataPacket() {
-        throttler.getNextDataPacket { [weak self] (d) in
+        throttler.pullNextDataPacket { [weak self] (d) in
             guard let self = self else { return }
             guard let data = d else { return }
             

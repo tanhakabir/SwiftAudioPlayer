@@ -146,9 +146,9 @@ Known supported file types are `.mp3` and `.wav`.
 
 To set up player with audio to play, use either: 
 * `startSavedAudio(withSavedUrl url: URL, mediaInfo: SALockScreenInfo?)` to play audio that is saved on the device.
-* `startRemoteAudio(withRemoteUrl url: URL, mediaInfo: SALockScreenInfo?)` to play audio streamed from a remote location.
+* `startRemoteAudio(withRemoteUrl url: URL, bitrate: SAPlayerBitrate, mediaInfo: SALockScreenInfo?)` to play audio streamed from a remote location.
 
-Both of these expect a URL of the location of the audio and an optional media information to display on the lockscreen. 
+Both of these expect a URL of the location of the audio and an optional media information to display on the lockscreen.  For streamed audio you can optionally set the bitrate to be `.high` or `.low`. High is more performant but won't work well for radio streams; for radio streams you should use low. The default bitrate if you don't set it is `.high`.
 
 For streaming remote audio, subscribe to `SAPlayer.Updates.StreamingBuffer` for updates on streaming progress.
 

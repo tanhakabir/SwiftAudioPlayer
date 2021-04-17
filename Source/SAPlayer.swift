@@ -297,6 +297,14 @@ public class SAPlayer {
     }
 }
 
+public enum SAPlayerBitrate {
+    /// This bitrate is good for radio streams that are passing ittle amounts of audio data at a time. This will allow the player to process the audio data in a fast enough rate to not pause or get stuck playing. This rate however ends up using more CPU and is worse for your battery-life and performance of your app.
+    case low
+    
+    /// This bitrate is good for streaming saved audio files like podcasts where most of the audio data will be received from the remote server at the beginning in a short time. This rate is more performant by using much less CPU and being better for your battery-life and app performance.
+    case high // go for audio files being streamed. This is uses less CPU and
+}
+
 //MARK: - External Player Controls
 extension SAPlayer {
     /**
@@ -442,17 +450,18 @@ extension SAPlayer {
      - Note: Subscribe to `SAPlayer.Updates.StreamingBuffer` to see updates in streaming progress.
      
      - Parameter withRemoteUrl: The URL of the remote audio.
+     - Parameter bitrate: The bitrate of the streamed audio. By default the bitrate is set to high for streaming saved audio files. If you want to stream radios then you should use the `low` bitrate option.
      - Parameter mediaInfo: The media information of the audio to show on the lockscreen media player (optional).
      */
-    public func startRemoteAudio(withRemoteUrl url: URL, mediaInfo: SALockScreenInfo? = nil) {
+    public func startRemoteAudio(withRemoteUrl url: URL, bitrate: SAPlayerBitrate = .high, mediaInfo: SALockScreenInfo? = nil) {
         self.mediaInfo = mediaInfo
-        presenter.handlePlayStreamedAudio(withRemoteUrl: url)
+        presenter.handlePlayStreamedAudio(withRemoteUrl: url, bitrate: bitrate)
     }
     
     @available(*, deprecated, renamed: "startRemoteAudio")
     public func initializeRemoteAudio(withRemoteUrl url: URL, mediaInfo: SALockScreenInfo? = nil) {
         self.mediaInfo = mediaInfo
-        presenter.handlePlayStreamedAudio(withRemoteUrl: url)
+        presenter.handlePlayStreamedAudio(withRemoteUrl: url, bitrate: .high)
     }
     
     /**
@@ -495,8 +504,8 @@ extension SAPlayer: SAPlayerDelegate {
         player = AudioDiskEngine(withSavedUrl: url, delegate: presenter)
     }
     
-    func startAudioStreamed(withRemoteUrl url: AudioURL) {
-        player = AudioStreamEngine(withRemoteUrl: url, delegate: presenter)
+    func startAudioStreamed(withRemoteUrl url: AudioURL, bitrate: SAPlayerBitrate) {
+        player = AudioStreamEngine(withRemoteUrl: url, delegate: presenter, bitrate: bitrate)
     }
     
     func clearEngine() {

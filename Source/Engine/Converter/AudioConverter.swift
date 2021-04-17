@@ -85,7 +85,7 @@ class AudioConverter: AudioConvertable {
         self.pcmBufferSize = size
         
         do {
-            parser = try AudioParser(withRemoteUrl: url, parsedFileAudioFormatCallback: {
+            parser = try AudioParser(withRemoteUrl: url, bufferSize: Int(size), parsedFileAudioFormatCallback: {
                 [weak self] (fileAudioFormat: AVAudioFormat) in
                 guard let strongSelf = self else { return }
                 

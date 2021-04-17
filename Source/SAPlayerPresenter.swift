@@ -87,13 +87,13 @@ class SAPlayerPresenter {
         delegate?.startAudioDownloaded(withSavedUrl: url)
     }
     
-    func handlePlayStreamedAudio(withRemoteUrl url: URL) {
+    func handlePlayStreamedAudio(withRemoteUrl url: URL, bitrate: SAPlayerBitrate) {
         // Because we support queueing, we want to clear off any existing players.
         // Therefore, instantiate new player every time, destroy any existing ones.
         // This prevents a crash where an owning engine already exists.
         handleClear()
         attachForUpdates(url: url)
-        delegate?.startAudioStreamed(withRemoteUrl: url)
+        delegate?.startAudioStreamed(withRemoteUrl: url, bitrate: bitrate)
     }
     
     func handleQueueStreamedAudio(withRemoteUrl url: URL) {
@@ -252,7 +252,7 @@ extension SAPlayerPresenter {
             
             switch nextAudioURL.0 {
             case .remote:
-                self.handlePlayStreamedAudio(withRemoteUrl: nextAudioURL.1)
+                self.handlePlayStreamedAudio(withRemoteUrl: nextAudioURL.1, bitrate: .high) // TODO fix to add option for low birate
                 break
             case .disk:
                 self.handlePlaySavedAudio(withSavedUrl: nextAudioURL.1)

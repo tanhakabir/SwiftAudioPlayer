@@ -59,7 +59,7 @@ class AudioStreamEngine: AudioEngine {
     //Constants
     private let MAX_POLL_BUFFER_COUNT = 300 //Having one buffer in engine at a time is choppy.
     private let MIN_BUFFERS_TO_BE_PLAYABLE = 1
-    private let PCM_BUFFER_SIZE: AVAudioFrameCount = 8192
+    private var PCM_BUFFER_SIZE: AVAudioFrameCount = 8192
     
     private let queue = DispatchQueue(label: "SwiftAudioPlayer.StreamEngine", qos: .userInitiated)
     
@@ -68,10 +68,10 @@ class AudioStreamEngine: AudioEngine {
     
     //Fields
     private var currentTimeOffset: TimeInterval = 0
+    private var streamChangeListenerId: UInt?
     
     private var numberOfBuffersScheduledInTotal = 0 {
         didSet {
-//            Log.test(numberOfBuffersScheduledInTotal)
             Log.debug("number of buffers scheduled in total: \(numberOfBuffersScheduledInTotal)")
             if numberOfBuffersScheduledInTotal == 0 {
                 pause()
@@ -87,7 +87,6 @@ class AudioStreamEngine: AudioEngine {
     private var numberOfBuffersScheduledFromPoll = 0 {
         didSet {
             if numberOfBuffersScheduledFromPoll > MAX_POLL_BUFFER_COUNT {
-//                Log.test("🛑  🛑   STOP POLLING")
                 shouldPollForNextBuffer = false
             }
             
@@ -135,13 +134,29 @@ class AudioStreamEngine: AudioEngine {
         }
     }
     
-    init(withRemoteUrl url: AudioURL, delegate:AudioEngineDelegate?) {
+    init(withRemoteUrl url: AudioURL, delegate:AudioEngineDelegate?, bitrate: SAPlayerBitrate) {
         Log.info(url)
         super.init(url: url, delegate: delegate, engineAudioFormat: AudioEngine.defaultEngineAudioFormat)
+        
+        switch bitrate {
+        case .high:
+            PCM_BUFFER_SIZE = 8192
+        case .low:
+            PCM_BUFFER_SIZE = 4096
+        }
+        
         do {
             converter = try AudioConverter(withRemoteUrl: url, toEngineAudioFormat: AudioEngine.defaultEngineAudioFormat, withPCMBufferSize: PCM_BUFFER_SIZE)
         } catch {
             delegate?.didError()
+        }
+        
+        streamChangeListenerId = StreamingDownloadDirector.shared.attach { [weak self] (key, progress) in
+            guard let self = self else { return }
+            guard key == url.key else { return }
+
+            // polling for buffers when we receive data. This won't be throttled on fresh new audio or seeked audio but in all other cases it most likely will be throttled
+            self.pollForNextBuffer() //  no buffer updates because thread issues if I try to update buffer status in streaming listener
         }
         
         
@@ -151,12 +166,22 @@ class AudioStreamEngine: AudioEngine {
             guard let self = self else { return }
             guard self.playingStatus != .ended else { return }
             
-            self.pollForNextBuffer()
-            self.updateNetworkBufferRange()
-            self.updateNeedle()
-            self.updateIsPlaying()
-            self.updateDuration()
+            self.repeatedUpdates()
         }
+    }
+    
+    deinit {
+        if let id = streamChangeListenerId {
+            StreamingDownloadDirector.shared.detach(withID: id)
+        }
+    }
+    
+    private func repeatedUpdates() {
+        self.pollForNextBuffer()
+        self.updateNetworkBufferRange() // thread issues if I try to update buffer status in streaming listener
+        self.updateNeedle()
+        self.updateIsPlaying()
+        self.updateDuration()
     }
     
     //MARK:- Timer loop
@@ -167,13 +192,10 @@ class AudioStreamEngine: AudioEngine {
     private func pollForNextBuffer() {
         guard shouldPollForNextBuffer else { return }
         
-//        Log.test("POLL INIT")
         pollForNextBufferRecursive()
     }
     
     private func pollForNextBufferRecursive() {
-//        Log.test("POLL")
-        
         do {
             var nextScheduledBuffer: AVAudioPCMBuffer! = try converter.pullBuffer()
             numberOfBuffersScheduledFromPoll += 1
@@ -186,14 +208,12 @@ class AudioStreamEngine: AudioEngine {
                     self?.playerNode.scheduleBuffer(nextScheduledBuffer, completionCallbackType: .dataConsumed, completionHandler: { (_) in
                         nextScheduledBuffer = nil
                         self?.numberOfBuffersScheduledInTotal -= 1
-//                        Log.test("POLL DATA RENDERED")
                         self?.pollForNextBufferRecursive()
                     })
                 } else {
                     self?.playerNode.scheduleBuffer(nextScheduledBuffer) {
                         nextScheduledBuffer = nil
                         self?.numberOfBuffersScheduledInTotal -= 1
-//                        Log.test("POLL OLD")
                         self?.pollForNextBufferRecursive()
                     }
                 }
@@ -295,6 +315,16 @@ class AudioStreamEngine: AudioEngine {
     
     private func pauseHelperDispatchQueue() {
         super.pause()
+    }
+    
+    override func play() {
+        queue.async { [weak self] in
+            self?.playHelperDispatchQueue()
+        }
+    }
+    
+    private func playHelperDispatchQueue() {
+        super.play()
     }
     
     override func invalidate() {

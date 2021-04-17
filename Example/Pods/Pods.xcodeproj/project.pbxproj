@@ -48,6 +48,7 @@
 		A470FE0925F9ADF800F135FF /* DownloadProgressDirector.swift in Sources */ = {isa = PBXBuildFile; fileRef = A470FE0725F9ADF800F135FF /* DownloadProgressDirector.swift */; };
 		A470FE1C25F9AEB900F135FF /* AudioQueueDirector.swift in Sources */ = {isa = PBXBuildFile; fileRef = A470FE1B25F9AEB900F135FF /* AudioQueueDirector.swift */; };
 		A470FE2125F9AF1400F135FF /* AudioQueue.swift in Sources */ = {isa = PBXBuildFile; fileRef = A470FE2025F9AF1400F135FF /* AudioQueue.swift */; };
+		A4827771262A216C00B6918A /* StreamingDownloadDirector.swift in Sources */ = {isa = PBXBuildFile; fileRef = A4827770262A216C00B6918A /* StreamingDownloadDirector.swift */; };
 		A4B4CC122223ED2A0045554B /* SAPlayerDownloader.swift in Sources */ = {isa = PBXBuildFile; fileRef = A4B4CC112223ED2A0045554B /* SAPlayerDownloader.swift */; };
 		A4FBA6B5221B74C900D5A353 /* SALockScreenInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = A4FBA6B3221B74C900D5A353 /* SALockScreenInfo.swift */; };
 		A4FBA6B7221BAC3D00D5A353 /* SAPlayerUpdateSubscription.swift in Sources */ = {isa = PBXBuildFile; fileRef = A4FBA6B6221BAC3D00D5A353 /* SAPlayerUpdateSubscription.swift */; };
@@ -135,6 +136,7 @@
 		A470FE0725F9ADF800F135FF /* DownloadProgressDirector.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DownloadProgressDirector.swift; sourceTree = "<group>"; };
 		A470FE1B25F9AEB900F135FF /* AudioQueueDirector.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioQueueDirector.swift; sourceTree = "<group>"; };
 		A470FE2025F9AF1400F135FF /* AudioQueue.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioQueue.swift; sourceTree = "<group>"; };
+		A4827770262A216C00B6918A /* StreamingDownloadDirector.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StreamingDownloadDirector.swift; sourceTree = "<group>"; };
 		A4B4CC112223ED2A0045554B /* SAPlayerDownloader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SAPlayerDownloader.swift; sourceTree = "<group>"; };
 		A4FBA6B3221B74C900D5A353 /* SALockScreenInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SALockScreenInfo.swift; sourceTree = "<group>"; };
 		A4FBA6B6221BAC3D00D5A353 /* SAPlayerUpdateSubscription.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SAPlayerUpdateSubscription.swift; sourceTree = "<group>"; };
@@ -378,6 +380,7 @@
 				A470FE0725F9ADF800F135FF /* DownloadProgressDirector.swift */,
 				A470FE0625F9ADF800F135FF /* AudioClockDirector.swift */,
 				A470FE1B25F9AEB900F135FF /* AudioQueueDirector.swift */,
+				A4827770262A216C00B6918A /* StreamingDownloadDirector.swift */,
 			);
 			path = Directors;
 			sourceTree = "<group>";
@@ -553,6 +556,7 @@
 				A4681FC72201138B0018AB51 /* SAPlayerDelegate.swift in Sources */,
 				A4681FD5220113BD0018AB51 /* AudioParserErrors.swift in Sources */,
 				A4681FC9220113920018AB51 /* LockScreenViewProtocol.swift in Sources */,
+				A4827771262A216C00B6918A /* StreamingDownloadDirector.swift in Sources */,
 				A4681FD6220113BF0018AB51 /* AudioThrottler.swift in Sources */,
 				A4681FCC2201139B0018AB51 /* AudioDiskEngine.swift in Sources */,
 				A4681FDE220113DE0018AB51 /* Date.swift in Sources */,

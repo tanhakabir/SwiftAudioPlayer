@@ -1,9 +1,8 @@
 //
-//  SAPlayerDelegate.swift
+//  StreamingDownloadDirector.swift
 //  SwiftAudioPlayer
 //
-//  Created by Tanha Kabir on 2019-01-29.
-//  Copyright © 2019 Tanha Kabir, Jon Mercer
+//  Created by Tanha Kabir on 4/16/21.
 //
 //  Permission is hereby granted, free of charge, to any person obtaining a copy
 //  of this software and associated documentation files (the "Software"), to deal
@@ -24,16 +23,31 @@
 //  THE SOFTWARE.
 
 import Foundation
-import CoreMedia
 
-protocol SAPlayerDelegate: AnyObject, LockScreenViewProtocol {
-    var skipForwardSeconds: Double { get set }
-    var skipBackwardSeconds: Double { get set }
+class StreamingDownloadDirector {
+    static let shared = StreamingDownloadDirector()
     
-    func startAudioDownloaded(withSavedUrl url: AudioURL)
-    func startAudioStreamed(withRemoteUrl url: AudioURL, bitrate: SAPlayerBitrate)
-    func clearEngine()
-    func playEngine()
-    func pauseEngine()
-    func seekEngine(toNeedle needle: Needle) //TODO ensure that engine cleans up out of bounds
+    var closures: DirectorThreadSafeClosures<Double> = DirectorThreadSafeClosures()
+    
+    private init() {}
+    
+    func create() {}
+    
+    func clear() {
+        closures.clear()
+    }
+    
+    func attach(closure: @escaping (Key, Double) throws -> Void) -> UInt {
+        return closures.attach(closure: closure)
+    }
+    
+    func detach(withID id: UInt) {
+        closures.detach(id: id)
+    }
+}
+
+extension StreamingDownloadDirector {
+    func didUpdate(_ key: Key, networkStreamProgress: Double) {
+        closures.broadcast(key: key, payload: networkStreamProgress)
+    }
 }

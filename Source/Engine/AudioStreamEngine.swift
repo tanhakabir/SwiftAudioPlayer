@@ -165,7 +165,8 @@ class AudioStreamEngine: AudioEngine {
         
         doRepeatedly(timeInterval: timeInterval) { [weak self] in
             Log.test(" 🛑 ✋ ✋ ✋ ✋ ✋ ✋ ✋ TIMER")
-            guard let self = self else { Log.test("🛑 🛑 🛑 END TIMER SELF ")
+            guard let self = self else {
+                Log.test("🛑 🛑 🛑 END TIMER SELF ")
                 return }
             guard self.playingStatus != .ended else {
                 Log.test("🛑 🛑 🛑 ENDING TIMER")
@@ -324,6 +325,16 @@ class AudioStreamEngine: AudioEngine {
     
     private func pauseHelperDispatchQueue() {
         super.pause()
+    }
+    
+    override func play() {
+        queue.async { [weak self] in
+            self?.playHelperDispatchQueue()
+        }
+    }
+    
+    private func playHelperDispatchQueue() {
+        super.play()
     }
     
     override func invalidate() {

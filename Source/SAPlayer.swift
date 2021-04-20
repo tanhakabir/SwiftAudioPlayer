@@ -281,9 +281,8 @@ public class SAPlayer {
      */
     public static func prettifyTimestamp(_ timestamp: Double) -> String {
         let hours = Int(timestamp / 60 / 60)
-        let minutes = Int((timestamp - Double(hours * 60)) / 60)
-        
-        let secondsLeft = Int(timestamp) - (minutes * 60)
+        let minutes = Int((timestamp - Double(hours * 60 * 60)) / 60)
+        let secondsLeft = Int(timestamp - Double(hours * 60 * 60) - Double(minutes * 60))
         
         return "\(hours):\(String(format: "%02d", minutes)):\(String(format: "%02d", secondsLeft))"
     }

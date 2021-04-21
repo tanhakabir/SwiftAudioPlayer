@@ -24,6 +24,7 @@ extension SAPlayer {
         public struct SkipSilences {
             
             static var enabled: Bool = false
+            static var originalRate: Float = 1.0
             
             /**
              Enable feature to skip silences in spoken word audio. The player will speed up the rate of audio playback when silence is detected. This can be called at any point of audio playback.
@@ -35,7 +36,7 @@ extension SAPlayer {
                 
                 Log.info("enabling skip silences feature")
                 enabled = true
-                let originalRate = SAPlayer.shared.rate ?? 1.0
+                originalRate = SAPlayer.shared.rate ?? 1.0
                 let format = engine.mainMixerNode.outputFormat(forBus: 0)
                 
                 
@@ -74,10 +75,10 @@ extension SAPlayer {
              - Important: The first audio modifier must be the default `AVAudioUnitTimePitch` that comes with the SAPlayer for this feature to work.
              */
             public static func disable() -> Bool {
-                // TODO fix disabling on speed up portion and being stuck at faster speed https://github.com/tanhakabir/SwiftAudioPlayer/issues/76
                 guard let engine = SAPlayer.shared.engine else { return false }
                 Log.info("disabling skip silences feature")
                 engine.mainMixerNode.removeTap(onBus: 0)
+                SAPlayer.shared.rate = originalRate
                 enabled = false
                 return true
             }

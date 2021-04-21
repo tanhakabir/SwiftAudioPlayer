@@ -81,14 +81,14 @@ public class SAPlayer {
     */
     public var volume: Float? {
         get {
-            return player?.engine.mainMixerNode.volume
+            return player?.playerNode.volume
         }
         
         set {
             guard let value = newValue else { return }
             guard value >= 0.0 && value <= 1.0 else { return }
             
-            player?.engine.mainMixerNode.volume = value
+            player?.playerNode.volume = value
         }
     }
     

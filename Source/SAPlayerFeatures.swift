@@ -31,12 +31,12 @@ extension SAPlayer {
              
              - Important: The first audio modifier must be the default `AVAudioUnitTimePitch` that comes with the SAPlayer for this feature to work.
              */
-            public static func enable(fromRate rate: Float = SAPlayer.shared.rate ?? 1.0) -> Bool {
+            public static func enable() -> Bool {
                 guard let engine = SAPlayer.shared.engine else { return false }
                 
                 Log.info("enabling skip silences feature")
                 enabled = true
-                originalRate = rate
+                originalRate = SAPlayer.shared.rate ?? 1.0
                 let format = engine.mainMixerNode.outputFormat(forBus: 0)
                 
                 

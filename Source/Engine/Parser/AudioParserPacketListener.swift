@@ -65,7 +65,7 @@ func parserPacket(_ context: UnsafeMutableRawPointer, _ byteCount: UInt32, _ pac
             let audioPacketStart = Int(audioPacketDescription.mStartOffset)
             let audioPacketSize = Int(audioPacketDescription.mDataByteSize)
             let audioPacketData = Data(bytes: streamData.advanced(by: audioPacketStart), count: audioPacketSize)
-            selfAudioParser.audioPackets.append((audioPacketDescription,audioPacketData))
+            selfAudioParser.append(description: audioPacketDescription, data: audioPacketData)
         }
     } else { // not compressed audio (.wav)
         Log.debug("uncompressed audio")
@@ -75,7 +75,7 @@ func parserPacket(_ context: UnsafeMutableRawPointer, _ byteCount: UInt32, _ pac
             let audioPacketStart = i * bytesPerAudioPacket
             let audioPacketSize = bytesPerAudioPacket
             let audioPacketData = Data(bytes: streamData.advanced(by: audioPacketStart), count: audioPacketSize)
-            selfAudioParser.audioPackets.append((nil, audioPacketData))
+            selfAudioParser.append(description: nil, data: audioPacketData)
         }
     }
     

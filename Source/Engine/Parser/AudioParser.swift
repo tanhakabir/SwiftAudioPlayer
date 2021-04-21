@@ -105,7 +105,7 @@ class AudioParser: AudioParsable {
     
     var sumOfParsedAudioBytes:UInt32 = 0
     var numberOfPacketsParsed:UInt32 = 0
-    var audioPackets: [(AudioStreamPacketDescription?,Data)] = [] { 
+    var audioPackets: [(AudioStreamPacketDescription?,Data)] = [] {
         didSet {
             if let audioPacketByteSize = audioPackets.last?.0?.mDataByteSize {
                 sumOfParsedAudioBytes += audioPacketByteSize
@@ -118,6 +118,7 @@ class AudioParser: AudioParsable {
             //TODO: duration will not be accurate with WAV or AIFF
         }
     }
+    private let lockQueue = DispatchQueue(label: "SwiftAudioPlayer.Parser.packets.lock")
     var lastSentAudioPacketIndex = -1
     
     /**
@@ -152,20 +153,22 @@ class AudioParser: AudioParsable {
         self.framesPerBuffer = bufferSize
         self.parsedFileAudioFormatCallback = parsedFileAudioFormatCallback
         
+        self.throttler = AudioThrottler(withRemoteUrl: url, withDelegate: self)
+        
         streamChangeListenerId = StreamingDownloadDirector.shared.attach { [weak self] (key, progress) in
             guard let self = self else { return }
             guard key == url.key else { return }
             self.networkProgress = progress
             
             // initially parse a bunch of packets
-            if self.fileAudioFormat == nil {
-                self.processNextDataPacket()
-            } else if self.audioPackets.count - self.lastSentAudioPacketIndex < self.MIN_PACKETS_TO_HAVE_AVAILABLE_BEFORE_THROTTLING_PARSING {
-                self.processNextDataPacket()
+            self.lockQueue.sync {
+                if self.fileAudioFormat == nil {
+                    self.processNextDataPacket()
+                } else if self.audioPackets.count - self.lastSentAudioPacketIndex < self.MIN_PACKETS_TO_HAVE_AVAILABLE_BEFORE_THROTTLING_PARSING {
+                    self.processNextDataPacket()
+                }
             }
         }
-        
-        self.throttler = AudioThrottler(withRemoteUrl: url, withDelegate: self)
         
         let context = unsafeBitCast(self, to: UnsafeMutableRawPointer.self)
         //Open the stream and when we call parse data is fed into this stream
@@ -187,31 +190,48 @@ class AudioParser: AudioParsable {
         //     1. We've reached the end of the packet data and the file has been completely parsed
         //     2. We've reached the end of the data we currently have downloaded, but not the file
         let packetIndex = index - indexSeekOffset
-        let isEndOfData = packetIndex >= audioPackets.count
-        if isEndOfData {
-            if isParsingComplete {
-                throw ParserError.readerAskingBeyondEndOfFile
-            } else {
-                Log.debug("Tried to pull packet at index: \(packetIndex) when only have: \(audioPackets.count), we predict \(totalPredictedPacketCount) in total")
-                throw ParserError.notEnoughDataForReader
-            }
-        }
         
-        lastSentAudioPacketIndex = Int(packetIndex)
-        return audioPackets[Int(packetIndex)]
+        var exception: ParserError? = nil
+        var packet: (AudioStreamPacketDescription?, Data) = (nil, Data())
+        lockQueue.sync {
+            if packetIndex >= self.audioPackets.count {
+                if isParsingComplete {
+                    exception = ParserError.readerAskingBeyondEndOfFile
+                    return
+                } else {
+                    Log.debug("Tried to pull packet at index: \(packetIndex) when only have: \(self.audioPackets.count), we predict \(self.totalPredictedPacketCount) in total")
+                    exception = ParserError.notEnoughDataForReader
+                    return
+                }
+            }
+            
+            lastSentAudioPacketIndex = Int(packetIndex)
+            packet = audioPackets[Int(packetIndex)]
+        }
+        if let exception = exception {
+            throw exception
+        } else {
+            return packet
+        }
     }
     
     private func determineIfMoreDataNeedsToBeParsed(index: AVAudioPacketCount) {
-        if index > audioPackets.count - MIN_PACKETS_TO_HAVE_AVAILABLE_BEFORE_THROTTLING_PARSING {
-            processNextDataPacket()
+        lockQueue.sync {
+            if index > self.audioPackets.count - self.MIN_PACKETS_TO_HAVE_AVAILABLE_BEFORE_THROTTLING_PARSING {
+                self.processNextDataPacket()
+            }
         }
     }
     
     func tellSeek(toIndex index: AVAudioPacketCount) {
         //Already within the processed audio packets. Ignore
-        if indexSeekOffset <= index && index < audioPackets.count + Int(indexSeekOffset) {
-            return
+        var isIndexValid: Bool = true
+        lockQueue.sync {
+            if self.indexSeekOffset <= index && index < self.audioPackets.count + Int(self.indexSeekOffset) {
+                isIndexValid = false
+            }
         }
+        guard isIndexValid else { return }
         
         guard let byteOffset = getOffset(fromPacketIndex: index) else {
             return
@@ -223,10 +243,12 @@ class AudioParser: AudioParsable {
         // NOTE: Order matters. Need to prevent appending to the array before we clean it. Just in case
         // then we tell the throttler to send us appropriate packet
         shouldPreventPacketFromFillingUp = true
-        audioPackets = []
+        lockQueue.sync {
+            self.audioPackets = []
+        }
         
         throttler.tellSeek(offset: byteOffset)
-        processNextDataPacket()
+        self.processNextDataPacket()
     }
     
     private func getOffset(fromPacketIndex index: AVAudioPacketCount) -> UInt64? {
@@ -279,6 +301,12 @@ class AudioParser: AudioParsable {
         return Needle(TimeInterval(frame)/TimeInterval(frameCount)*duration)
     }
     
+    func append(description: AudioStreamPacketDescription?, data: Data) {
+        lockQueue.sync {
+            self.audioPackets.append((description, data))
+        }
+    }
+    
     func invalidate() {
         throttler.invalidate()
         
@@ -311,7 +339,9 @@ class AudioParser: AudioParsable {
             guard let self = self else { return }
             guard let data = d else { return }
             
-            Log.debug("processing data count: \(data.count) :: already had \(self.audioPackets.count) audio packets")
+            self.lockQueue.sync {
+                Log.debug("processing data count: \(data.count) :: already had \(self.audioPackets.count) audio packets")
+            }
             self.shouldPreventPacketFromFillingUp = false
             do {
                 let sID = self.streamID!

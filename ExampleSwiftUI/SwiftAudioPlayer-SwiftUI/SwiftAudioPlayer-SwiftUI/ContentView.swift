@@ -8,6 +8,8 @@
 import SwiftUI
 
 struct ContentView: View {
+    
+    //If you're going to use saUpdates in multiple views, consider moving this to your App file and inject it into each view. For each view save it as @ObservedObject instead of @StateObject
     @StateObject var saUpdates = SAPlayer.SAPlayerCombine.shared
     
     var body: some View {
@@ -16,6 +18,7 @@ struct ContentView: View {
                 .padding()
             Button(action: {
                 guard let status = saUpdates.update.playingStatus else {
+                    //Consider moving this stuff out of the view layer to be more scalable
                     let url = URL(string: "https://chtbl.com/track/18338/traffic.libsyn.com/secure/acquired/Acquired_-_Rec_Room_-_Final.mp3")!
                     SAPlayer.shared.startRemoteAudio(withRemoteUrl: url)
                     SAPlayer.shared.play()

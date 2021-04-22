@@ -29,6 +29,10 @@ extension SAPlayer {
     class SAPlayerCombine: ObservableObject {
         static let shared = SAPlayerCombine()
         
+        
+//        Ideally this won't be a nil because we should be using a PassthroughSubject. However, most new users are used to `@Published` so I went with that.
+//        If you're going to heavily use this player with SwiftUI consider making a PR using PassthroughSubject, or at least let me know and I'll implement that.
+        @Published var update = CombineUpdate()
 
         struct CombineUpdate {
             var url: URL?
@@ -39,9 +43,6 @@ extension SAPlayer {
             var downloadProgress: Double?
             //TODO: add queue here if people use this
         }
-        
-        @Published var update = CombineUpdate()
-        
         
         private var elapsedTimeId:UInt?
         private var durationId:UInt?

@@ -1,0 +1,574 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 50;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		25911CD42631355C0099DE52 /* SwiftAudioPlayer_SwiftUIApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25911CD32631355C0099DE52 /* SwiftAudioPlayer_SwiftUIApp.swift */; };
+		25911CD62631355C0099DE52 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25911CD52631355C0099DE52 /* ContentView.swift */; };
+		25911CD82631355E0099DE52 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 25911CD72631355E0099DE52 /* Assets.xcassets */; };
+		25911CDB2631355E0099DE52 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 25911CDA2631355E0099DE52 /* Preview Assets.xcassets */; };
+		25911D182631392C0099DE52 /* SAPlayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25911CE92631392C0099DE52 /* SAPlayer.swift */; };
+		25911D192631392C0099DE52 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25911CEB2631392C0099DE52 /* Constants.swift */; };
+		25911D1A2631392C0099DE52 /* Date.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25911CEC2631392C0099DE52 /* Date.swift */; };
+		25911D1B2631392C0099DE52 /* Log.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25911CED2631392C0099DE52 /* Log.swift */; };
+		25911D1C2631392C0099DE52 /* Data.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25911CEE2631392C0099DE52 /* Data.swift */; };
+		25911D1D2631392C0099DE52 /* DirectorThreadSafeClosures.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25911CEF2631392C0099DE52 /* DirectorThreadSafeClosures.swift */; };
+		25911D1E2631392C0099DE52 /* URL.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25911CF02631392C0099DE52 /* URL.swift */; };
+		25911D1F2631392C0099DE52 /* SALockScreenInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25911CF12631392C0099DE52 /* SALockScreenInfo.swift */; };
+		25911D202631392C0099DE52 /* SAPlayerFeatures.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25911CF22631392C0099DE52 /* SAPlayerFeatures.swift */; };
+		25911D212631392C0099DE52 /* SAPlayerUpdateSubscription.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25911CF32631392C0099DE52 /* SAPlayerUpdateSubscription.swift */; };
+		25911D222631392C0099DE52 /* SAPlayerDownloader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25911CF42631392C0099DE52 /* SAPlayerDownloader.swift */; };
+		25911D232631392C0099DE52 /* SAPlayerDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25911CF52631392C0099DE52 /* SAPlayerDelegate.swift */; };
+		25911D242631392C0099DE52 /* LockScreenViewProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25911CF62631392C0099DE52 /* LockScreenViewProtocol.swift */; };
+		25911D252631392C0099DE52 /* AudioQueue.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25911CF82631392C0099DE52 /* AudioQueue.swift */; };
+		25911D262631392C0099DE52 /* AudioDataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25911CF92631392C0099DE52 /* AudioDataManager.swift */; };
+		25911D272631392C0099DE52 /* AudioStreamWorker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25911CFB2631392C0099DE52 /* AudioStreamWorker.swift */; };
+		25911D282631392C0099DE52 /* StreamProgressDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25911CFC2631392C0099DE52 /* StreamProgressDTO.swift */; };
+		25911D292631392C0099DE52 /* FileStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25911CFE2631392C0099DE52 /* FileStorage.swift */; };
+		25911D2A2631392C0099DE52 /* AudioDownloadWorker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25911CFF2631392C0099DE52 /* AudioDownloadWorker.swift */; };
+		25911D2B2631392C0099DE52 /* StreamProgressPTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25911D002631392C0099DE52 /* StreamProgressPTO.swift */; };
+		25911D2C2631392C0099DE52 /* AudioDiskEngine.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25911D022631392C0099DE52 /* AudioDiskEngine.swift */; };
+		25911D2D2631392C0099DE52 /* AudioStreamEngine.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25911D032631392C0099DE52 /* AudioStreamEngine.swift */; };
+		25911D2E2631392C0099DE52 /* AudioConverterListener.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25911D052631392C0099DE52 /* AudioConverterListener.swift */; };
+		25911D2F2631392C0099DE52 /* AudioConverterErrors.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25911D062631392C0099DE52 /* AudioConverterErrors.swift */; };
+		25911D302631392C0099DE52 /* AudioConverter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25911D072631392C0099DE52 /* AudioConverter.swift */; };
+		25911D312631392C0099DE52 /* SAAudioAvailabilityRange.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25911D082631392C0099DE52 /* SAAudioAvailabilityRange.swift */; };
+		25911D322631392C0099DE52 /* SAPlayingStatus.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25911D092631392C0099DE52 /* SAPlayingStatus.swift */; };
+		25911D332631392C0099DE52 /* AudioParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25911D0B2631392C0099DE52 /* AudioParser.swift */; };
+		25911D342631392C0099DE52 /* AudioParsable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25911D0C2631392C0099DE52 /* AudioParsable.swift */; };
+		25911D352631392C0099DE52 /* AudioParserPropertyListener.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25911D0D2631392C0099DE52 /* AudioParserPropertyListener.swift */; };
+		25911D362631392C0099DE52 /* AudioParserPacketListener.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25911D0E2631392C0099DE52 /* AudioParserPacketListener.swift */; };
+		25911D372631392C0099DE52 /* AudioParserErrors.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25911D0F2631392C0099DE52 /* AudioParserErrors.swift */; };
+		25911D382631392C0099DE52 /* AudioThrottler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25911D102631392C0099DE52 /* AudioThrottler.swift */; };
+		25911D392631392C0099DE52 /* AudioEngine.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25911D112631392C0099DE52 /* AudioEngine.swift */; };
+		25911D3A2631392C0099DE52 /* SAPlayerPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25911D122631392C0099DE52 /* SAPlayerPresenter.swift */; };
+		25911D3B2631392C0099DE52 /* AudioClockDirector.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25911D142631392C0099DE52 /* AudioClockDirector.swift */; };
+		25911D3C2631392C0099DE52 /* DownloadProgressDirector.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25911D152631392C0099DE52 /* DownloadProgressDirector.swift */; };
+		25911D3D2631392D0099DE52 /* AudioQueueDirector.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25911D162631392C0099DE52 /* AudioQueueDirector.swift */; };
+		25911D3E2631392D0099DE52 /* StreamingDownloadDirector.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25911D172631392C0099DE52 /* StreamingDownloadDirector.swift */; };
+		25911D4126313AF90099DE52 /* SAPlayerCombineUpdates.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25911D4026313AF90099DE52 /* SAPlayerCombineUpdates.swift */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+		25911CD02631355C0099DE52 /* SwiftAudioPlayer-SwiftUI.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "SwiftAudioPlayer-SwiftUI.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		25911CD32631355C0099DE52 /* SwiftAudioPlayer_SwiftUIApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwiftAudioPlayer_SwiftUIApp.swift; sourceTree = "<group>"; };
+		25911CD52631355C0099DE52 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
+		25911CD72631355E0099DE52 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		25911CDA2631355E0099DE52 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
+		25911CDC2631355E0099DE52 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		25911CE92631392C0099DE52 /* SAPlayer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SAPlayer.swift; sourceTree = "<group>"; };
+		25911CEB2631392C0099DE52 /* Constants.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
+		25911CEC2631392C0099DE52 /* Date.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Date.swift; sourceTree = "<group>"; };
+		25911CED2631392C0099DE52 /* Log.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Log.swift; sourceTree = "<group>"; };
+		25911CEE2631392C0099DE52 /* Data.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Data.swift; sourceTree = "<group>"; };
+		25911CEF2631392C0099DE52 /* DirectorThreadSafeClosures.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DirectorThreadSafeClosures.swift; sourceTree = "<group>"; };
+		25911CF02631392C0099DE52 /* URL.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = URL.swift; sourceTree = "<group>"; };
+		25911CF12631392C0099DE52 /* SALockScreenInfo.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SALockScreenInfo.swift; sourceTree = "<group>"; };
+		25911CF22631392C0099DE52 /* SAPlayerFeatures.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SAPlayerFeatures.swift; sourceTree = "<group>"; };
+		25911CF32631392C0099DE52 /* SAPlayerUpdateSubscription.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SAPlayerUpdateSubscription.swift; sourceTree = "<group>"; };
+		25911CF42631392C0099DE52 /* SAPlayerDownloader.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SAPlayerDownloader.swift; sourceTree = "<group>"; };
+		25911CF52631392C0099DE52 /* SAPlayerDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SAPlayerDelegate.swift; sourceTree = "<group>"; };
+		25911CF62631392C0099DE52 /* LockScreenViewProtocol.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LockScreenViewProtocol.swift; sourceTree = "<group>"; };
+		25911CF82631392C0099DE52 /* AudioQueue.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AudioQueue.swift; sourceTree = "<group>"; };
+		25911CF92631392C0099DE52 /* AudioDataManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AudioDataManager.swift; sourceTree = "<group>"; };
+		25911CFB2631392C0099DE52 /* AudioStreamWorker.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AudioStreamWorker.swift; sourceTree = "<group>"; };
+		25911CFC2631392C0099DE52 /* StreamProgressDTO.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StreamProgressDTO.swift; sourceTree = "<group>"; };
+		25911CFE2631392C0099DE52 /* FileStorage.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FileStorage.swift; sourceTree = "<group>"; };
+		25911CFF2631392C0099DE52 /* AudioDownloadWorker.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AudioDownloadWorker.swift; sourceTree = "<group>"; };
+		25911D002631392C0099DE52 /* StreamProgressPTO.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StreamProgressPTO.swift; sourceTree = "<group>"; };
+		25911D022631392C0099DE52 /* AudioDiskEngine.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AudioDiskEngine.swift; sourceTree = "<group>"; };
+		25911D032631392C0099DE52 /* AudioStreamEngine.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AudioStreamEngine.swift; sourceTree = "<group>"; };
+		25911D052631392C0099DE52 /* AudioConverterListener.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AudioConverterListener.swift; sourceTree = "<group>"; };
+		25911D062631392C0099DE52 /* AudioConverterErrors.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AudioConverterErrors.swift; sourceTree = "<group>"; };
+		25911D072631392C0099DE52 /* AudioConverter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AudioConverter.swift; sourceTree = "<group>"; };
+		25911D082631392C0099DE52 /* SAAudioAvailabilityRange.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SAAudioAvailabilityRange.swift; sourceTree = "<group>"; };
+		25911D092631392C0099DE52 /* SAPlayingStatus.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SAPlayingStatus.swift; sourceTree = "<group>"; };
+		25911D0B2631392C0099DE52 /* AudioParser.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AudioParser.swift; sourceTree = "<group>"; };
+		25911D0C2631392C0099DE52 /* AudioParsable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AudioParsable.swift; sourceTree = "<group>"; };
+		25911D0D2631392C0099DE52 /* AudioParserPropertyListener.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AudioParserPropertyListener.swift; sourceTree = "<group>"; };
+		25911D0E2631392C0099DE52 /* AudioParserPacketListener.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AudioParserPacketListener.swift; sourceTree = "<group>"; };
+		25911D0F2631392C0099DE52 /* AudioParserErrors.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AudioParserErrors.swift; sourceTree = "<group>"; };
+		25911D102631392C0099DE52 /* AudioThrottler.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AudioThrottler.swift; sourceTree = "<group>"; };
+		25911D112631392C0099DE52 /* AudioEngine.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AudioEngine.swift; sourceTree = "<group>"; };
+		25911D122631392C0099DE52 /* SAPlayerPresenter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SAPlayerPresenter.swift; sourceTree = "<group>"; };
+		25911D142631392C0099DE52 /* AudioClockDirector.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AudioClockDirector.swift; sourceTree = "<group>"; };
+		25911D152631392C0099DE52 /* DownloadProgressDirector.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DownloadProgressDirector.swift; sourceTree = "<group>"; };
+		25911D162631392C0099DE52 /* AudioQueueDirector.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AudioQueueDirector.swift; sourceTree = "<group>"; };
+		25911D172631392C0099DE52 /* StreamingDownloadDirector.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StreamingDownloadDirector.swift; sourceTree = "<group>"; };
+		25911D4026313AF90099DE52 /* SAPlayerCombineUpdates.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SAPlayerCombineUpdates.swift; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		25911CCD2631355C0099DE52 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		25911CC72631355C0099DE52 = {
+			isa = PBXGroup;
+			children = (
+				25911CD22631355C0099DE52 /* SwiftAudioPlayer-SwiftUI */,
+				25911CD12631355C0099DE52 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		25911CD12631355C0099DE52 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				25911CD02631355C0099DE52 /* SwiftAudioPlayer-SwiftUI.app */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		25911CD22631355C0099DE52 /* SwiftAudioPlayer-SwiftUI */ = {
+			isa = PBXGroup;
+			children = (
+				25911CE32631371C0099DE52 /* SAPlayer */,
+				25911CD32631355C0099DE52 /* SwiftAudioPlayer_SwiftUIApp.swift */,
+				25911CD52631355C0099DE52 /* ContentView.swift */,
+				25911CD72631355E0099DE52 /* Assets.xcassets */,
+				25911CDC2631355E0099DE52 /* Info.plist */,
+				25911CD92631355E0099DE52 /* Preview Content */,
+			);
+			path = "SwiftAudioPlayer-SwiftUI";
+			sourceTree = "<group>";
+		};
+		25911CD92631355E0099DE52 /* Preview Content */ = {
+			isa = PBXGroup;
+			children = (
+				25911CDA2631355E0099DE52 /* Preview Assets.xcassets */,
+			);
+			path = "Preview Content";
+			sourceTree = "<group>";
+		};
+		25911CE32631371C0099DE52 /* SAPlayer */ = {
+			isa = PBXGroup;
+			children = (
+				25911CE82631392C0099DE52 /* Source */,
+			);
+			path = SAPlayer;
+			sourceTree = "<group>";
+		};
+		25911CE82631392C0099DE52 /* Source */ = {
+			isa = PBXGroup;
+			children = (
+				25911CE92631392C0099DE52 /* SAPlayer.swift */,
+				25911CEA2631392C0099DE52 /* Util */,
+				25911CF12631392C0099DE52 /* SALockScreenInfo.swift */,
+				25911CF22631392C0099DE52 /* SAPlayerFeatures.swift */,
+				25911CF32631392C0099DE52 /* SAPlayerUpdateSubscription.swift */,
+				25911D4026313AF90099DE52 /* SAPlayerCombineUpdates.swift */,
+				25911CF42631392C0099DE52 /* SAPlayerDownloader.swift */,
+				25911CF52631392C0099DE52 /* SAPlayerDelegate.swift */,
+				25911CF62631392C0099DE52 /* LockScreenViewProtocol.swift */,
+				25911CF72631392C0099DE52 /* Model */,
+				25911D012631392C0099DE52 /* Engine */,
+				25911D122631392C0099DE52 /* SAPlayerPresenter.swift */,
+				25911D132631392C0099DE52 /* Directors */,
+			);
+			name = Source;
+			path = ../../../../Source;
+			sourceTree = "<group>";
+		};
+		25911CEA2631392C0099DE52 /* Util */ = {
+			isa = PBXGroup;
+			children = (
+				25911CEB2631392C0099DE52 /* Constants.swift */,
+				25911CEC2631392C0099DE52 /* Date.swift */,
+				25911CED2631392C0099DE52 /* Log.swift */,
+				25911CEE2631392C0099DE52 /* Data.swift */,
+				25911CEF2631392C0099DE52 /* DirectorThreadSafeClosures.swift */,
+				25911CF02631392C0099DE52 /* URL.swift */,
+			);
+			path = Util;
+			sourceTree = "<group>";
+		};
+		25911CF72631392C0099DE52 /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				25911CF82631392C0099DE52 /* AudioQueue.swift */,
+				25911CF92631392C0099DE52 /* AudioDataManager.swift */,
+				25911CFA2631392C0099DE52 /* Streaming */,
+				25911CFD2631392C0099DE52 /* Downloading */,
+				25911D002631392C0099DE52 /* StreamProgressPTO.swift */,
+			);
+			path = Model;
+			sourceTree = "<group>";
+		};
+		25911CFA2631392C0099DE52 /* Streaming */ = {
+			isa = PBXGroup;
+			children = (
+				25911CFB2631392C0099DE52 /* AudioStreamWorker.swift */,
+				25911CFC2631392C0099DE52 /* StreamProgressDTO.swift */,
+			);
+			path = Streaming;
+			sourceTree = "<group>";
+		};
+		25911CFD2631392C0099DE52 /* Downloading */ = {
+			isa = PBXGroup;
+			children = (
+				25911CFE2631392C0099DE52 /* FileStorage.swift */,
+				25911CFF2631392C0099DE52 /* AudioDownloadWorker.swift */,
+			);
+			path = Downloading;
+			sourceTree = "<group>";
+		};
+		25911D012631392C0099DE52 /* Engine */ = {
+			isa = PBXGroup;
+			children = (
+				25911D022631392C0099DE52 /* AudioDiskEngine.swift */,
+				25911D032631392C0099DE52 /* AudioStreamEngine.swift */,
+				25911D042631392C0099DE52 /* Converter */,
+				25911D082631392C0099DE52 /* SAAudioAvailabilityRange.swift */,
+				25911D092631392C0099DE52 /* SAPlayingStatus.swift */,
+				25911D0A2631392C0099DE52 /* Parser */,
+				25911D102631392C0099DE52 /* AudioThrottler.swift */,
+				25911D112631392C0099DE52 /* AudioEngine.swift */,
+			);
+			path = Engine;
+			sourceTree = "<group>";
+		};
+		25911D042631392C0099DE52 /* Converter */ = {
+			isa = PBXGroup;
+			children = (
+				25911D052631392C0099DE52 /* AudioConverterListener.swift */,
+				25911D062631392C0099DE52 /* AudioConverterErrors.swift */,
+				25911D072631392C0099DE52 /* AudioConverter.swift */,
+			);
+			path = Converter;
+			sourceTree = "<group>";
+		};
+		25911D0A2631392C0099DE52 /* Parser */ = {
+			isa = PBXGroup;
+			children = (
+				25911D0B2631392C0099DE52 /* AudioParser.swift */,
+				25911D0C2631392C0099DE52 /* AudioParsable.swift */,
+				25911D0D2631392C0099DE52 /* AudioParserPropertyListener.swift */,
+				25911D0E2631392C0099DE52 /* AudioParserPacketListener.swift */,
+				25911D0F2631392C0099DE52 /* AudioParserErrors.swift */,
+			);
+			path = Parser;
+			sourceTree = "<group>";
+		};
+		25911D132631392C0099DE52 /* Directors */ = {
+			isa = PBXGroup;
+			children = (
+				25911D142631392C0099DE52 /* AudioClockDirector.swift */,
+				25911D152631392C0099DE52 /* DownloadProgressDirector.swift */,
+				25911D162631392C0099DE52 /* AudioQueueDirector.swift */,
+				25911D172631392C0099DE52 /* StreamingDownloadDirector.swift */,
+			);
+			path = Directors;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		25911CCF2631355C0099DE52 /* SwiftAudioPlayer-SwiftUI */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 25911CDF2631355E0099DE52 /* Build configuration list for PBXNativeTarget "SwiftAudioPlayer-SwiftUI" */;
+			buildPhases = (
+				25911CCC2631355C0099DE52 /* Sources */,
+				25911CCD2631355C0099DE52 /* Frameworks */,
+				25911CCE2631355C0099DE52 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = "SwiftAudioPlayer-SwiftUI";
+			productName = "SwiftAudioPlayer-SwiftUI";
+			productReference = 25911CD02631355C0099DE52 /* SwiftAudioPlayer-SwiftUI.app */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		25911CC82631355C0099DE52 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastSwiftUpdateCheck = 1240;
+				LastUpgradeCheck = 1240;
+				TargetAttributes = {
+					25911CCF2631355C0099DE52 = {
+						CreatedOnToolsVersion = 12.4;
+					};
+				};
+			};
+			buildConfigurationList = 25911CCB2631355C0099DE52 /* Build configuration list for PBXProject "SwiftAudioPlayer-SwiftUI" */;
+			compatibilityVersion = "Xcode 9.3";
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = 25911CC72631355C0099DE52;
+			productRefGroup = 25911CD12631355C0099DE52 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				25911CCF2631355C0099DE52 /* SwiftAudioPlayer-SwiftUI */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		25911CCE2631355C0099DE52 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				25911CDB2631355E0099DE52 /* Preview Assets.xcassets in Resources */,
+				25911CD82631355E0099DE52 /* Assets.xcassets in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		25911CCC2631355C0099DE52 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				25911D392631392C0099DE52 /* AudioEngine.swift in Sources */,
+				25911D2A2631392C0099DE52 /* AudioDownloadWorker.swift in Sources */,
+				25911D212631392C0099DE52 /* SAPlayerUpdateSubscription.swift in Sources */,
+				25911D342631392C0099DE52 /* AudioParsable.swift in Sources */,
+				25911D292631392C0099DE52 /* FileStorage.swift in Sources */,
+				25911D282631392C0099DE52 /* StreamProgressDTO.swift in Sources */,
+				25911D262631392C0099DE52 /* AudioDataManager.swift in Sources */,
+				25911D1C2631392C0099DE52 /* Data.swift in Sources */,
+				25911D2B2631392C0099DE52 /* StreamProgressPTO.swift in Sources */,
+				25911D3A2631392C0099DE52 /* SAPlayerPresenter.swift in Sources */,
+				25911D252631392C0099DE52 /* AudioQueue.swift in Sources */,
+				25911D242631392C0099DE52 /* LockScreenViewProtocol.swift in Sources */,
+				25911D182631392C0099DE52 /* SAPlayer.swift in Sources */,
+				25911D382631392C0099DE52 /* AudioThrottler.swift in Sources */,
+				25911D362631392C0099DE52 /* AudioParserPacketListener.swift in Sources */,
+				25911D2C2631392C0099DE52 /* AudioDiskEngine.swift in Sources */,
+				25911D232631392C0099DE52 /* SAPlayerDelegate.swift in Sources */,
+				25911D1E2631392C0099DE52 /* URL.swift in Sources */,
+				25911D1A2631392C0099DE52 /* Date.swift in Sources */,
+				25911D2F2631392C0099DE52 /* AudioConverterErrors.swift in Sources */,
+				25911D1F2631392C0099DE52 /* SALockScreenInfo.swift in Sources */,
+				25911D1B2631392C0099DE52 /* Log.swift in Sources */,
+				25911D3E2631392D0099DE52 /* StreamingDownloadDirector.swift in Sources */,
+				25911D3D2631392D0099DE52 /* AudioQueueDirector.swift in Sources */,
+				25911D352631392C0099DE52 /* AudioParserPropertyListener.swift in Sources */,
+				25911D222631392C0099DE52 /* SAPlayerDownloader.swift in Sources */,
+				25911D2E2631392C0099DE52 /* AudioConverterListener.swift in Sources */,
+				25911D3B2631392C0099DE52 /* AudioClockDirector.swift in Sources */,
+				25911D372631392C0099DE52 /* AudioParserErrors.swift in Sources */,
+				25911D202631392C0099DE52 /* SAPlayerFeatures.swift in Sources */,
+				25911D3C2631392C0099DE52 /* DownloadProgressDirector.swift in Sources */,
+				25911D1D2631392C0099DE52 /* DirectorThreadSafeClosures.swift in Sources */,
+				25911D302631392C0099DE52 /* AudioConverter.swift in Sources */,
+				25911CD62631355C0099DE52 /* ContentView.swift in Sources */,
+				25911CD42631355C0099DE52 /* SwiftAudioPlayer_SwiftUIApp.swift in Sources */,
+				25911D4126313AF90099DE52 /* SAPlayerCombineUpdates.swift in Sources */,
+				25911D322631392C0099DE52 /* SAPlayingStatus.swift in Sources */,
+				25911D272631392C0099DE52 /* AudioStreamWorker.swift in Sources */,
+				25911D2D2631392C0099DE52 /* AudioStreamEngine.swift in Sources */,
+				25911D332631392C0099DE52 /* AudioParser.swift in Sources */,
+				25911D192631392C0099DE52 /* Constants.swift in Sources */,
+				25911D312631392C0099DE52 /* SAAudioAvailabilityRange.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin XCBuildConfiguration section */
+		25911CDD2631355E0099DE52 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 14.4;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+			};
+			name = Debug;
+		};
+		25911CDE2631355E0099DE52 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 14.4;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		25911CE02631355E0099DE52 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_ASSET_PATHS = "\"SwiftAudioPlayer-SwiftUI/Preview Content\"";
+				DEVELOPMENT_TEAM = TN363JJW64;
+				ENABLE_PREVIEWS = YES;
+				INFOPLIST_FILE = "SwiftAudioPlayer-SwiftUI/Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = "jonmercer.SwiftAudioPlayer-SwiftUI";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		25911CE12631355E0099DE52 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_ASSET_PATHS = "\"SwiftAudioPlayer-SwiftUI/Preview Content\"";
+				DEVELOPMENT_TEAM = TN363JJW64;
+				ENABLE_PREVIEWS = YES;
+				INFOPLIST_FILE = "SwiftAudioPlayer-SwiftUI/Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = "jonmercer.SwiftAudioPlayer-SwiftUI";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		25911CCB2631355C0099DE52 /* Build configuration list for PBXProject "SwiftAudioPlayer-SwiftUI" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				25911CDD2631355E0099DE52 /* Debug */,
+				25911CDE2631355E0099DE52 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		25911CDF2631355E0099DE52 /* Build configuration list for PBXNativeTarget "SwiftAudioPlayer-SwiftUI" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				25911CE02631355E0099DE52 /* Debug */,
+				25911CE12631355E0099DE52 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 25911CC82631355C0099DE52 /* Project object */;
+}

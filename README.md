@@ -88,7 +88,7 @@ override func viewDidLoad() {
     }
 }
 ```
-Look at the [Updates](#SAPlayer.Updates) section to see usage details and other updates to follow.
+Look at the [Updates](#saplayerupdates) section to see usage details and other updates to follow.
 
 
 For realtime audio manipulations, [AVAudioUnit](https://developer.apple.com/documentation/avfoundation/avaudiounit) nodes are used. For example to adjust the reverb through a slider in the UI:
@@ -113,7 +113,8 @@ For a more detailed explanation on usage, look at the [Realtime Audio Manipulati
 
 For more details and specifics look at the [API documentation](#api-in-detail) below.
 
-## Contact
+
+# Contact
 
 ### Issues
 

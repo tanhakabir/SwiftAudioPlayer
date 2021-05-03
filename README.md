@@ -114,7 +114,7 @@ For a more detailed explanation on usage, look at the [Realtime Audio Manipulati
 For more details and specifics look at the [API documentation](#api-in-detail) below.
 
 
-# Contact
+## Contact
 
 ### Issues
 

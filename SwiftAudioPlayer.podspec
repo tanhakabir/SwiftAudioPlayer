@@ -26,7 +26,7 @@ SwiftAudioPlayer is a Swift based audio player that can handle streaming from a 
   s.license          = { :type => 'MIT', :file => 'LICENSE' }
   s.author           = { 'tanhakabir' => 'tanhakabir.ca@gmail.com', 'JonMercer' => 'mercer.jon@gmail.com' }
   s.source           = { :git => 'https://github.com/tanhakabir/SwiftAudioPlayer.git', :tag => s.version.to_s }
-  # s.social_media_url = 'https://twitter.com/<TWITTER_USERNAME>'
+s.social_media_url = 'https://twitter.com/_tanhakabir'
 
   s.ios.deployment_target = '10.0'
 

@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import SwiftAudioPlayer
 
 struct AudioInfo: Hashable {
     var index: Int = 0
@@ -43,6 +44,12 @@ struct AudioInfo: Hashable {
     
     let artist: String = "SwiftAudioPlayer Sample App"
     let releaseDate: Int = 1550790640
+    
+    var lockscreenInfo: SALockScreenInfo {
+        get {
+            return SALockScreenInfo(title: self.title, artist: self.artist, artwork: nil, releaseDate: self.releaseDate)
+        }
+    }
     
     var savedUrl: URL? {
         get {

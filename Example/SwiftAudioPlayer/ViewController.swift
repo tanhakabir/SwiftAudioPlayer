@@ -295,7 +295,7 @@ class ViewController: UIViewController {
                         self.currentUrlLocationLabel.text = "saved to: \(url.lastPathComponent)"
                         self.selectedAudio.addSavedUrl(url)
                         
-                        SAPlayer.shared.startSavedAudio(withSavedUrl: url)
+                        SAPlayer.shared.startSavedAudio(withSavedUrl: url, mediaInfo: self.selectedAudio.lockscreenInfo)
                         self.lastPlayedAudioIndex = self.selectedAudio.index
                     }
                 })
@@ -312,9 +312,9 @@ class ViewController: UIViewController {
     @IBAction func streamTouched(_ sender: Any) {
         if !isStreaming {
             if selectedAudio.index == 2 { // radio
-                SAPlayer.shared.startRemoteAudio(withRemoteUrl: selectedAudio.url, bitrate: .low)
+                SAPlayer.shared.startRemoteAudio(withRemoteUrl: selectedAudio.url, bitrate: .low, mediaInfo: selectedAudio.lockscreenInfo)
             } else {
-                SAPlayer.shared.startRemoteAudio(withRemoteUrl: selectedAudio.url)
+                SAPlayer.shared.startRemoteAudio(withRemoteUrl: selectedAudio.url, mediaInfo: selectedAudio.lockscreenInfo)
             }
 
             lastPlayedAudioIndex = selectedAudio.index

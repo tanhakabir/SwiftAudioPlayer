@@ -28,6 +28,20 @@ import AVFoundation
 import MediaPlayer
 
 class SAPlayerPresenter {
+    struct QueueItem {
+        var loc: Location
+        var url: URL
+        var mediaInfo: SALockScreenInfo?
+        var bitrate: SAPlayerBitrate
+        
+        init(loc: Location, url: URL, mediaInfo: SALockScreenInfo?, bitrate: SAPlayerBitrate = .high) {
+            self.loc = loc
+            self.url = url
+            self.mediaInfo = mediaInfo
+            self.bitrate = bitrate
+        }
+    }
+    
     enum Location {
         case remote
         case disk
@@ -48,7 +62,7 @@ class SAPlayerPresenter {
     var durationRef:UInt = 0
     var needleRef:UInt = 0
     var playingStatusRef:UInt = 0
-    var audioQueue: [(Location, URL)] = []
+    var audioQueue: [QueueItem] = []
     
     init(delegate: SAPlayerDelegate?) {
         self.delegate = delegate
@@ -79,29 +93,21 @@ class SAPlayerPresenter {
     }
     
     func handlePlaySavedAudio(withSavedUrl url: URL) {
-        // Because we support queueing, we want to clear off any existing players.
-        // Therefore, instantiate new player every time, destroy any existing ones.
-        // This prevents a crash where an owning engine already exists.
-        handleClear()
         attachForUpdates(url: url)
         delegate?.startAudioDownloaded(withSavedUrl: url)
     }
     
     func handlePlayStreamedAudio(withRemoteUrl url: URL, bitrate: SAPlayerBitrate) {
-        // Because we support queueing, we want to clear off any existing players.
-        // Therefore, instantiate new player every time, destroy any existing ones.
-        // This prevents a crash where an owning engine already exists.
-        handleClear()
         attachForUpdates(url: url)
         delegate?.startAudioStreamed(withRemoteUrl: url, bitrate: bitrate)
     }
     
-    func handleQueueStreamedAudio(withRemoteUrl url: URL) {
-        audioQueue.append((.remote, url))
+    func handleQueueStreamedAudio(withRemoteUrl url: URL, mediaInfo: SALockScreenInfo?, bitrate: SAPlayerBitrate) {
+        audioQueue.append(QueueItem(loc: .remote, url: url, mediaInfo: mediaInfo, bitrate: bitrate))
     }
     
-    func handleQueueSavedAudio(withSavedUrl url: URL) {
-        audioQueue.append((.disk, url))
+    func handleQueueSavedAudio(withSavedUrl url: URL, mediaInfo: SALockScreenInfo?) {
+        audioQueue.append(QueueItem(loc: .disk, url: url, mediaInfo: mediaInfo))
     }
     
     private func attachForUpdates(url: URL) {
@@ -238,11 +244,11 @@ extension SAPlayerPresenter {
             return
         }
         let nextAudioURL = audioQueue.removeFirst()
-        let key = nextAudioURL.1.key
+        let key = nextAudioURL.url.key
         
 
         Log.info("getting ready to play \(nextAudioURL)")
-        AudioQueueDirector.shared.changeInQueue(key, url: nextAudioURL.1)
+        AudioQueueDirector.shared.changeInQueue(key, url: nextAudioURL.url)
         
         handleClear()
         
@@ -250,12 +256,12 @@ extension SAPlayerPresenter {
         Timer.scheduledTimer(withTimeInterval: 1.0, repeats: false) { [weak self] (_) in
             guard let self = self else { return }
             
-            switch nextAudioURL.0 {
+            switch nextAudioURL.loc {
             case .remote:
-                self.handlePlayStreamedAudio(withRemoteUrl: nextAudioURL.1, bitrate: .high) // TODO fix to add option for low birate
+                self.handlePlayStreamedAudio(withRemoteUrl: nextAudioURL.url, bitrate: nextAudioURL.bitrate)
                 break
             case .disk:
-                self.handlePlaySavedAudio(withSavedUrl: nextAudioURL.1)
+                self.handlePlaySavedAudio(withSavedUrl: nextAudioURL.url)
             }
             
             self.shouldPlayImmediately = true

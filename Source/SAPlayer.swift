@@ -183,7 +183,7 @@ public class SAPlayer {
     public var audioQueued: [URL] {
         get {
             return presenter.audioQueue.map { (queued) -> URL in
-                return queued.1
+                return queued.url
             }
         }
     }
@@ -414,14 +414,14 @@ extension SAPlayer {
      - Parameter mediaInfo: The media information of the audio to show on the lockscreen media player (optional).
      */
     public func startSavedAudio(withSavedUrl url: URL, mediaInfo: SALockScreenInfo? = nil) {
-        self.mediaInfo = mediaInfo
+        
+        // Because we support queueing, we want to clear off any existing players.
+        // Therefore, instantiate new player every time, destroy any existing ones.
+        // This prevents a crash where an owning engine already exists.
+        presenter.handleClear()
+        
         presenter.handlePlaySavedAudio(withSavedUrl: url)
-    }
-    
-    @available(*, deprecated, renamed: "startSavedAudio")
-    public func initializeSavedAudio(withSavedUrl url: URL, mediaInfo: SALockScreenInfo? = nil) {
         self.mediaInfo = mediaInfo
-        presenter.handlePlaySavedAudio(withSavedUrl: url)
     }
     
     /**
@@ -453,14 +453,14 @@ extension SAPlayer {
      - Parameter mediaInfo: The media information of the audio to show on the lockscreen media player (optional).
      */
     public func startRemoteAudio(withRemoteUrl url: URL, bitrate: SAPlayerBitrate = .high, mediaInfo: SALockScreenInfo? = nil) {
-        self.mediaInfo = mediaInfo
+        
+        // Because we support queueing, we want to clear off any existing players.
+        // Therefore, instantiate new player every time, destroy any existing ones.
+        // This prevents a crash where an owning engine already exists.
+        presenter.handleClear()
+        
         presenter.handlePlayStreamedAudio(withRemoteUrl: url, bitrate: bitrate)
-    }
-    
-    @available(*, deprecated, renamed: "startRemoteAudio")
-    public func initializeRemoteAudio(withRemoteUrl url: URL, mediaInfo: SALockScreenInfo? = nil) {
         self.mediaInfo = mediaInfo
-        presenter.handlePlayStreamedAudio(withRemoteUrl: url, bitrate: .high)
     }
     
     /**
@@ -474,18 +474,21 @@ extension SAPlayer {
      Queues remote audio to be played next. The URLs in the queue can be both remote or on disk but once the queued audio starts playing it will start buffering and loading then. This means no guarantee for a 'gapless' playback where there might be several moments in between one audio ending and another starting due to buffering remote audio.
      
      - Parameter withRemoteUrl: The URL of the remote audio.
+     - Parameter bitrate: The bitrate of the streamed audio. By default the bitrate is set to high for streaming saved audio files. If you want to stream radios then you should use the `low` bitrate option.
+     - Parameter mediaInfo: The media information of the audio to show on the lockscreen media player (optional).
      */
-    public func queueRemoteAudio(withRemoteUrl url: URL) {
-        presenter.handleQueueStreamedAudio(withRemoteUrl: url)
+    public func queueRemoteAudio(withRemoteUrl url: URL, bitrate: SAPlayerBitrate = .high, mediaInfo: SALockScreenInfo? = nil) {
+        presenter.handleQueueStreamedAudio(withRemoteUrl: url, mediaInfo: mediaInfo, bitrate: bitrate)
     }
     
     /**
      Queues saved audio to be played next. The URLs in the queuecan be both remote or on disk but once the queued audio starts playing it will start buffering and loading then. This means no guarantee for a 'gapless' playback where there might be several moments in between one audio ending and another starting due to buffering remote audio.
      
      - Parameter withSavedUrl: The URL of the audio saved on the device.
+     - Parameter mediaInfo: The media information of the audio to show on the lockscreen media player (optional).
      */
-    public func queueSavedAudio(withSavedUrl url: URL) {
-        presenter.handleQueueSavedAudio(withSavedUrl: url)
+    public func queueSavedAudio(withSavedUrl url: URL, mediaInfo: SALockScreenInfo? = nil) {
+        presenter.handleQueueSavedAudio(withSavedUrl: url, mediaInfo: mediaInfo)
     }
     
     /**

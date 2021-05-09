@@ -27,6 +27,7 @@ import Foundation
 import CoreMedia
 
 protocol SAPlayerDelegate: AnyObject, LockScreenViewProtocol {
+    var mediaInfo: SALockScreenInfo? { get set }
     var skipForwardSeconds: Double { get set }
     var skipBackwardSeconds: Double { get set }
     

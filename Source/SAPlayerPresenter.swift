@@ -55,7 +55,6 @@ class SAPlayerPresenter {
     
     private var key: String?
     private var isPlaying: SAPlayingStatus = .buffering
-    private var mediaInfo: SALockScreenInfo?
     
     private var urlKeyMap: [Key: URL] = [:]
     
@@ -84,7 +83,7 @@ class SAPlayerPresenter {
         needle = nil
         duration = nil
         key = nil
-        mediaInfo = nil
+        delegate?.mediaInfo = nil
         delegate?.clearLockScreenInfo()
         
         AudioClockDirector.shared.detachFromChangesInDuration(withID: durationRef)
@@ -126,7 +125,7 @@ class SAPlayerPresenter {
             self.delegate?.updateLockscreenPlaybackDuration(duration: duration)
             self.duration = duration
             
-            self.delegate?.setLockScreenInfo(withMediaInfo: self.mediaInfo, duration: duration)
+            self.delegate?.setLockScreenInfo(withMediaInfo: self.delegate?.mediaInfo, duration: duration)
         })
         
         needleRef = AudioClockDirector.shared.attachToChangesInNeedle(closure: { [weak self] (key, needle) in
@@ -169,11 +168,6 @@ class SAPlayerPresenter {
     func handleStopStreamingAudio() {
         delegate?.clearEngine()
         detachFromUpdates()
-    }
-    
-    @available(iOS 10.0, *)
-    func handleLockscreenInfo(info: SALockScreenInfo?) {
-        self.mediaInfo = info
     }
 }
 
@@ -251,6 +245,8 @@ extension SAPlayerPresenter {
         AudioQueueDirector.shared.changeInQueue(key, url: nextAudioURL.url)
         
         handleClear()
+        
+        delegate?.mediaInfo = nextAudioURL.mediaInfo
         
         // We need to give a second to clean up the previous engine properly. Deinit takes some time.
         Timer.scheduledTimer(withTimeInterval: 1.0, repeats: false) { [weak self] (_) in

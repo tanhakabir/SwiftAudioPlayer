@@ -233,11 +233,7 @@ public class SAPlayer {
      
      - Note: Setting this to nil clears the information displayed on the lockscreen media player.
      */
-    public var mediaInfo: SALockScreenInfo? = nil {
-        didSet {
-            presenter.handleLockscreenInfo(info: mediaInfo)
-        }
-    }
+    public var mediaInfo: SALockScreenInfo? = nil
     
     private init() {
         presenter = SAPlayerPresenter(delegate: self)

@@ -14,6 +14,7 @@ Thus, using [AudioToolbox](https://developer.apple.com/documentation/audiotoolbo
 
 1. Realtime audio manipulation that includes going up to 10x speed, using [equalizers and other manipulations](https://developer.apple.com/documentation/avfaudio/avaudiouniteq)
 1. Stream online audio using AVAudioEngine
+1. Stream radio
 1. Play locally saved audio with the same API
 1. Download audio
 1. Queue up downloaded and streamed audio for autoplay

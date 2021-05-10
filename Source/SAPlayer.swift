@@ -123,13 +123,6 @@ public class SAPlayer {
             
             node.rate = value
             playbackRateOfAudioChanged(rate: value)
-            
-            // if skip silences was on, reset it to have the new rate
-            // TODO fix this to rate being broadcasted and handled in only Features.SkipSilences https://github.com/tanhakabir/SwiftAudioPlayer/issues/77
-//            if Features.SkipSilences.enabled && !(value == rate ?? 1.0 - 0.5 || value == rate ?? 1.0 + 0.5) {
-//                _ = Features.SkipSilences.disable()
-//                _ = Features.SkipSilences.enable()
-//            }
         }
     }
     

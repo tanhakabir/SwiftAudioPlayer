@@ -29,7 +29,8 @@ extension SAPlayer {
             /**
              Enable feature to skip silences in spoken word audio. The player will speed up the rate of audio playback when silence is detected. This can be called at any point of audio playback.
              
-             - Important: The first audio modifier must be the default `AVAudioUnitTimePitch` that comes with the SAPlayer for this feature to work.
+             - Precondition: The first audio modifier must be the default `AVAudioUnitTimePitch` that comes with the SAPlayer for this feature to work.
+             - Important: If you want to change the rate of the overall player while having skip silences on, please use `SAPlayer.Features.SkipSilences.setRateSafely()` to properly set the rate of the player. Any rate changes to the player will be ignored while using Skip Silences otherwise.
              */
             public static func enable() -> Bool {
                 guard let engine = SAPlayer.shared.engine else { return false }
@@ -72,7 +73,7 @@ extension SAPlayer {
             /**
              Disable feature to skip silences in spoken word audio. The player will speed up the rate of audio playback when silence is detected. This can be called at any point of audio playback.
              
-             - Important: The first audio modifier must be the default `AVAudioUnitTimePitch` that comes with the SAPlayer for this feature to work.
+             - Precondition: The first audio modifier must be the default `AVAudioUnitTimePitch` that comes with the SAPlayer for this feature to work.
              */
             public static func disable() -> Bool {
                 guard let engine = SAPlayer.shared.engine else { return false }
@@ -81,6 +82,16 @@ extension SAPlayer {
                 SAPlayer.shared.rate = originalRate
                 enabled = false
                 return true
+            }
+            
+            /**
+             Use this function to set the overall rate of the player for when skip silences is on. This ensures that the overall rate will be what is set through this function even as skip silences is on; if this function is not used then any changes asked of from the overall player while skip silences is on won't be recorded!
+             
+             - Important: The first audio modifier must be the default `AVAudioUnitTimePitch` that comes with the SAPlayer for this feature to work.
+             */
+            public static func setRateSafely(_ rate: Float) {
+                originalRate = rate
+                SAPlayer.shared.rate = rate
             }
             
             private static func scaledPower(power: Float) -> Float {

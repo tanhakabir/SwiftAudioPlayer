@@ -117,16 +117,9 @@ For more details and specifics look at the [API documentation](#api-in-detail) b
 
 ## Contact
 
-### Issues
+### Issues or questions
 
-Submit any issues or requests [on the Github repo](https://github.com/tanhakabir/SwiftAudioPlayer/issues).
-
-### Any questions?
-
-Feel free to reach out to either of us:
-
-[tanhakabir](https://github.com/tanhakabir), tanhakabir.ca@gmail.com
-[JonMercer](https://github.com/JonMercer), mercer.jon@gmail.com
+Submit any issues, requests, and questions [on the Github repo](https://github.com/tanhakabir/SwiftAudioPlayer/issues).
 
 ### License
 

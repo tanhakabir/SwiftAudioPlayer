@@ -6,38 +6,37 @@
 //  Copyright (c) 2019 tanhakabir. All rights reserved.
 //
 
-import UIKit
-import SwiftAudioPlayer
 import AVFoundation
+import SwiftAudioPlayer
+import UIKit
 
 class ViewController: UIViewController {
-    var selectedAudio: AudioInfo = AudioInfo(index: 0)
+    var selectedAudio = AudioInfo(index: 0)
     
-    var freq:[Int] = [0,0,0,0,0,0,0,0,0,0]
-    @IBOutlet weak var currentUrlLocationLabel: UILabel!
-    @IBOutlet weak var bufferProgress: UIProgressView!
-    @IBOutlet weak var scrubberSlider: UISlider!
+    var freq: [Int] = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+    @IBOutlet var currentUrlLocationLabel: UILabel!
+    @IBOutlet var bufferProgress: UIProgressView!
+    @IBOutlet var scrubberSlider: UISlider!
     
-    @IBOutlet weak var playPauseButton: UIButton!
-    @IBOutlet weak var skipBackwardButton: UIButton!
-    @IBOutlet weak var skipForwardButton: UIButton!
+    @IBOutlet var playPauseButton: UIButton!
+    @IBOutlet var skipBackwardButton: UIButton!
+    @IBOutlet var skipForwardButton: UIButton!
     
-    @IBOutlet weak var audioSelector: UISegmentedControl!
-    @IBOutlet weak var streamButton: UIButton!
-    @IBOutlet weak var downloadButton: UIButton!
-    @IBOutlet weak var rateSlider: UISlider!
+    @IBOutlet var audioSelector: UISegmentedControl!
+    @IBOutlet var streamButton: UIButton!
+    @IBOutlet var downloadButton: UIButton!
+    @IBOutlet var rateSlider: UISlider!
     
-    @IBOutlet weak var rateLabel: UILabel!
+    @IBOutlet var rateLabel: UILabel!
     
-    @IBOutlet weak var reverbLabel: UILabel!
-    @IBOutlet weak var reverbSlider: UISlider!
-    @IBOutlet weak var durationLabel: UILabel!
-    @IBOutlet weak var currentTimestampLabel: UILabel!
+    @IBOutlet var reverbLabel: UILabel!
+    @IBOutlet var reverbSlider: UISlider!
+    @IBOutlet var durationLabel: UILabel!
+    @IBOutlet var currentTimestampLabel: UILabel!
     
     var isDownloading: Bool = false
     var isStreaming: Bool = false
     var beingSeeked: Bool = false
-    
     
     var downloadId: UInt?
     var durationId: UInt?
@@ -68,6 +67,10 @@ class ViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        let node = AVAudioUnitReverb()
+        SAPlayer.shared.audioModifiers.append(node)
+        node.wetDryMix = 300
+        
         SAPlayer.Downloader.allowUsingCellularData = true
         
 //        SAPlayer.shared.DEBUG_MODE = true
@@ -85,13 +88,13 @@ class ViewController: UIViewController {
         let node = AVAudioUnitReverb()
         SAPlayer.shared.audioModifiers.append(node)
         node.wetDryMix = 300
-        let frequency:[Int] = [60,170,310,600,1000,3000,6000,12000,14000,16000]
-        let node2 = AVAudioUnitEQ(numberOfBands:frequency.count)
+        let frequency: [Int] = [60, 170, 310, 600, 1000, 3000, 6000, 12000, 14000, 16000]
+        let node2 = AVAudioUnitEQ(numberOfBands: frequency.count)
         node2.globalGain = 1
-        for i in 0...(node2.bands.count-1) {
-            node2.bands[i].frequency  = Float(frequency[i])
-            node2.bands[i].gain       = 0
-            node2.bands[i].bypass     = false
+        for i in 0...(node2.bands.count - 1) {
+            node2.bands[i].frequency = Float(frequency[i])
+            node2.bands[i].gain = 0
+            node2.bands[i].bypass = false
             node2.bands[i].filterType = .parametric
         }
         SAPlayer.shared.audioModifiers.append(node2)
@@ -120,9 +123,9 @@ class ViewController: UIViewController {
         }
         
         if let savedUrl = selectedAudio.savedUrl {
-            self.currentUrlLocationLabel.text = "saved url: \(savedUrl.absoluteString)"
+            currentUrlLocationLabel.text = "saved url: \(savedUrl.absoluteString)"
         } else {
-            self.currentUrlLocationLabel.text = "remote url: \(selectedAudio.url.absoluteString)"
+            currentUrlLocationLabel.text = "remote url: \(selectedAudio.url.absoluteString)"
         }
         
         //        if let savedUrl = savedUrls[selectedAudio] {}
@@ -144,14 +147,14 @@ class ViewController: UIViewController {
     }
     
     func subscribeToChanges() {
-        durationId = SAPlayer.Updates.Duration.subscribe { [weak self] (url, duration) in
+        durationId = SAPlayer.Updates.Duration.subscribe { [weak self] url, duration in
             guard let self = self else { return }
             guard url == self.selectedAudio.savedUrl || url == self.selectedAudio.url else { return }
             self.durationLabel.text = SAPlayer.prettifyTimestamp(duration)
             self.duration = duration
         }
         
-        elapsedId = SAPlayer.Updates.ElapsedTime.subscribe { [weak self] (url, position) in
+        elapsedId = SAPlayer.Updates.ElapsedTime.subscribe { [weak self] url, position in
             guard let self = self else { return }
             guard url == self.selectedAudio.savedUrl || url == self.selectedAudio.url else { return }
             
@@ -159,23 +162,23 @@ class ViewController: UIViewController {
             
             guard self.duration != 0 else { return }
             
-            self.scrubberSlider.value = Float(position/self.duration)
+            self.scrubberSlider.value = Float(position / self.duration)
         }
         
-        downloadId = SAPlayer.Updates.AudioDownloading.subscribe { [weak self] (url, progress) in
+        downloadId = SAPlayer.Updates.AudioDownloading.subscribe { [weak self] url, progress in
             guard let self = self else { return }
             guard url == self.selectedAudio.url else { return }
             
             if self.isDownloading {
                 DispatchQueue.main.async {
                     UIView.performWithoutAnimation {
-                        self.downloadButton.setTitle("Cancel \(String(format: "%.2f", (progress * 100)))%", for: .normal)
+                        self.downloadButton.setTitle("Cancel \(String(format: "%.2f", progress * 100))%", for: .normal)
                     }
                 }
             }
         }
         
-        bufferId = SAPlayer.Updates.StreamingBuffer.subscribe{ [weak self] (url, buffer) in
+        bufferId = SAPlayer.Updates.StreamingBuffer.subscribe { [weak self] url, buffer in
             guard let self = self else { return }
             guard url == self.selectedAudio.savedUrl || url == self.selectedAudio.url else { return }
             
@@ -192,7 +195,7 @@ class ViewController: UIViewController {
             self.isPlayable = buffer.isReadyForPlaying
         }
         
-        playingStatusId = SAPlayer.Updates.PlayingStatus.subscribe { [weak self] (url, playing) in
+        playingStatusId = SAPlayer.Updates.PlayingStatus.subscribe { [weak self] url, playing in
             guard let self = self else { return }
             guard url == self.selectedAudio.savedUrl || url == self.selectedAudio.url else { return }
             
@@ -218,7 +221,7 @@ class ViewController: UIViewController {
             }
         }
         
-        queueId = SAPlayer.Updates.AudioQueue.subscribe { [weak self] key, forthcomingPlaybackUrl in
+        queueId = SAPlayer.Updates.AudioQueue.subscribe { [weak self] _, forthcomingPlaybackUrl in
             guard let self = self else { return }
             /// we update the selected audio. this is a little contrived, but allows us to update outlets
             if let indexFound = self.selectedAudio.getIndex(forURL: forthcomingPlaybackUrl) {
@@ -244,7 +247,6 @@ class ViewController: UIViewController {
         SAPlayer.Updates.PlayingStatus.unsubscribe(playingStatusId)
     }
     
-    
     @IBAction func scrubberStartedSeeking(_ sender: UISlider) {
         beingSeeked = true
     }
@@ -254,7 +256,6 @@ class ViewController: UIViewController {
         SAPlayer.shared.seekTo(seconds: value)
         beingSeeked = false
     }
-    
     
     @IBAction func rateChanged(_ sender: Any) {
         let speed = rateSlider.value
@@ -266,13 +267,15 @@ class ViewController: UIViewController {
             SAPlayer.shared.rate = speed
         }
     }
+
     @IBAction func reverbChanged(_ sender: Any) {
-        let reverb = reverbSlider.value
-        reverbLabel.text = "reverb: \(reverb)"
         if let node = SAPlayer.shared.audioModifiers[1] as? AVAudioUnitReverb {
-            node.wetDryMix = reverb
+            let reverb = reverbSlider.value
+            reverbLabel.text = "reverb: \(reverb)"
+            node.wetDryMix = reverbSlider.value
         }
     }
+
     @IBAction func queueTouched(_ sender: Any) {
         if let savedUrl = selectedAudio.savedUrl {
             SAPlayer.shared.queueSavedAudio(withSavedUrl: savedUrl)
@@ -355,21 +358,21 @@ class ViewController: UIViewController {
     @IBAction func skipForwardTouched(_ sender: Any) {
         SAPlayer.shared.skipForward()
     }
+
     @IBAction func setEqualizerValue(_ sender: Any) {
-        if let slider = sender as? UISlider{
+        if let slider = sender as? UISlider {
             print("slider of index:", slider.tag, "is changed to", slider.value)
             freq[slider.tag] = Int(slider.value)
-            print("current frequency : ",freq)
-            if let node = SAPlayer.shared.audioModifiers[2] as? AVAudioUnitEQ{
-                for i in 0...(node.bands.count - 1){
+            print("current frequency : ", freq)
+            if let node = SAPlayer.shared.audioModifiers[2] as? AVAudioUnitEQ {
+                for i in 0...(node.bands.count - 1) {
                     node.bands[i].gain = Float(freq[i])
                 }
             }
         }
-        
     }
     
-    @IBOutlet weak var skipSilencesSwitch: UISwitch!
+    @IBOutlet var skipSilencesSwitch: UISwitch!
     
     @IBAction func skipSilencesSwitched(_ sender: Any) {
         if skipSilencesSwitch.isOn {
@@ -378,7 +381,8 @@ class ViewController: UIViewController {
             _ = SAPlayer.Features.SkipSilences.disable()
         }
     }
-    @IBOutlet weak var sleepSwitch: UISwitch!
+
+    @IBOutlet var sleepSwitch: UISwitch!
     
     @IBAction func sleepSwitched(_ sender: Any) {
         if sleepSwitch.isOn {
@@ -388,4 +392,3 @@ class ViewController: UIViewController {
         }
     }
 }
-

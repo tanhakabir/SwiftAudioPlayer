@@ -68,6 +68,13 @@ class ViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        
+        
+        let node = AVAudioUnitReverb()
+        SAPlayer.shared.audioModifiers.append(node)
+        node.wetDryMix = 300
+
+        
         SAPlayer.Downloader.allowUsingCellularData = true
         
 //        SAPlayer.shared.DEBUG_MODE = true
@@ -267,10 +274,10 @@ class ViewController: UIViewController {
         }
     }
     @IBAction func reverbChanged(_ sender: Any) {
-        let reverb = reverbSlider.value
-        reverbLabel.text = "reverb: \(reverb)"
-        if let node = SAPlayer.shared.audioModifiers[1] as? AVAudioUnitReverb {
-            node.wetDryMix = reverb
+          if let node = SAPlayer.shared.audioModifiers[1] as? AVAudioUnitReverb {
+            let reverb = reverbSlider.value
+            reverbLabel.text = "reverb: \(reverb)"
+            node.wetDryMix = reverbSlider.value
         }
     }
     @IBAction func queueTouched(_ sender: Any) {

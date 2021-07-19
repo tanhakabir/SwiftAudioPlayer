@@ -244,7 +244,7 @@ public class SAPlayer {
         }
         
         audioModifiers.append(AVAudioUnitTimePitch(audioComponentDescription: componentDescription))
-	NotificationCenter.default.addObserver(self, selector: #selector(handleInterruption), name: AVAudioSession.interruptionNotification, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(handleInterruption), name: AVAudioSession.interruptionNotification, object: nil)
     }
     
     /**
@@ -297,7 +297,7 @@ public class SAPlayer {
 
         case .began:
             // An interruption began. Update the UI as necessary.
-            player?.pause()
+            pause()
 
         case .ended:
            // An interruption ended. Resume playback, if appropriate.
@@ -306,7 +306,7 @@ public class SAPlayer {
             let options = AVAudioSession.InterruptionOptions(rawValue: optionsValue)
             if options.contains(.shouldResume) {
                 // An interruption ended. Resume playback.
-                player?.play()
+                play()
             } else {
                 // An interruption ended. Don't resume playback.
             }

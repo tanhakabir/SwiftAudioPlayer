@@ -440,8 +440,9 @@ extension SAPlayer {
         // This prevents a crash where an owning engine already exists.
         presenter.handleClear()
         
-        presenter.handlePlaySavedAudio(withSavedUrl: url)
+        // order here matters, need to set media info before trying to play audio
         self.mediaInfo = mediaInfo
+        presenter.handlePlaySavedAudio(withSavedUrl: url)
     }
     
     /**
@@ -479,8 +480,9 @@ extension SAPlayer {
         // This prevents a crash where an owning engine already exists.
         presenter.handleClear()
         
-        presenter.handlePlayStreamedAudio(withRemoteUrl: url, bitrate: bitrate)
+        // order here matters, need to set media info before trying to play audio
         self.mediaInfo = mediaInfo
+        presenter.handlePlayStreamedAudio(withRemoteUrl: url, bitrate: bitrate)
     }
     
     /**

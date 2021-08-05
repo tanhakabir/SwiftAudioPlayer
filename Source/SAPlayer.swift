@@ -29,22 +29,22 @@ import AVFoundation
 public class SAPlayer {
     public var DEBUG_MODE: Bool = false {
         didSet {
-            if(DEBUG_MODE) {
+            if DEBUG_MODE {
                 logLevel = LogLevel.EXTERNAL_DEBUG
             } else {
                 logLevel = LogLevel.MONITOR
             }
         }
     }
-    
+
     /**
      Access to the player.
      */
     public static let shared: SAPlayer = SAPlayer()
-    
+
     private var presenter: SAPlayerPresenter!
     private var player: AudioEngine?
-    
+
     /**
     Access the engine of the player. Engine is nil if player has not been initialized with audio.
      
@@ -55,7 +55,7 @@ public class SAPlayer {
             return player?.engine
         }
     }
-    
+
     /**
     Unique ID for the current engine. This will be nil if no audio has been initialized which means no engine exists.
     */
@@ -64,7 +64,7 @@ public class SAPlayer {
             return player?.key
         }
     }
-    
+
     /**
     Access the player node of the engine. Node is nil if player has not been initialized with audio.
      
@@ -75,7 +75,7 @@ public class SAPlayer {
             return player?.playerNode
         }
     }
-    
+
     /**
     Corresponding to the overall volume of the player. Volume's default value is 1.0 and the range of valid values is 0.0 to 1.0. Volume is nil if no audio has been initialized yet.
     */
@@ -83,15 +83,15 @@ public class SAPlayer {
         get {
             return player?.playerNode.volume
         }
-        
+
         set {
             guard let value = newValue else { return }
             guard value >= 0.0 && value <= 1.0 else { return }
-            
+
             player?.playerNode.volume = value
         }
     }
-    
+
     /**
     Corresponding to the rate of audio playback. This rate assumes use of the default rate modifier at the first index of `audioModifiers`; if you removed that modifier than this will be nil. If no audio has been initialized then this will also be nil.
      
@@ -116,16 +116,16 @@ public class SAPlayer {
         get {
             return (audioModifiers.first as? AVAudioUnitTimePitch)?.rate
         }
-        
+
         set {
             guard let value = newValue else { return }
             guard let node = audioModifiers.first as? AVAudioUnitTimePitch else { return }
-            
+
             node.rate = value
             playbackRateOfAudioChanged(rate: value)
         }
     }
-    
+
     /**
      Corresponding to the skipping forward button on the media player on the lockscreen. Default is set to 30 seconds.
      */
@@ -134,7 +134,7 @@ public class SAPlayer {
             presenter.handleScrubbingIntervalsChanged()
         }
     }
-    
+
     /**
      Corresponding to the skipping backwards button on the media player on the lockscreen. Default is set to 15 seconds.
      */
@@ -143,7 +143,7 @@ public class SAPlayer {
             presenter.handleScrubbingIntervalsChanged()
         }
     }
-    
+
     /**
      List of [AVAudioUnit](https://developer.apple.com/documentation/avfoundation/audio_track_engineering/audio_engine_building_blocks/audio_enhancements) audio modifiers to pass to the engine on initialization.
      
@@ -169,7 +169,7 @@ public class SAPlayer {
      To remove this default pitch modifier for playback rate changes, remove the node by calling `SAPlayer.shared.clearAudioModifiers()`.
      */
     public var audioModifiers: [AVAudioUnit] = []
-    
+
     /**
      List of audio URLs queued for playback.
      */
@@ -180,7 +180,7 @@ public class SAPlayer {
             }
         }
     }
-    
+
     /**
      Total duration of current audio initialized. Returns nil if no audio is initialized in player.
      
@@ -191,7 +191,7 @@ public class SAPlayer {
             return presenter.duration
         }
     }
-    
+
     /**
      A textual representation of the duration of the current audio initialized. Returns nil if no audio is initialized in player.
      */
@@ -201,7 +201,7 @@ public class SAPlayer {
             return SAPlayer.prettifyTimestamp(d)
         }
     }
-    
+
     /**
      Elapsed playback time of the current audio initialized. Returns nil if no audio is initialized in player.
      */
@@ -210,7 +210,7 @@ public class SAPlayer {
             return presenter.needle
         }
     }
-    
+
     /**
      A textual representation of the elapsed playback time of the current audio initialized. Returns nil if no audio is initialized in player.
      */
@@ -220,17 +220,17 @@ public class SAPlayer {
             return SAPlayer.prettifyTimestamp(e)
         }
     }
-    
+
     /**
      Corresponding to the media info to display on the lockscreen for the current audio.
      
      - Note: Setting this to nil clears the information displayed on the lockscreen media player.
      */
-    public var mediaInfo: SALockScreenInfo? = nil
-    
+    public var mediaInfo: SALockScreenInfo?
+
     private init() {
         presenter = SAPlayerPresenter(delegate: self)
-        
+
         // https://forums.developer.apple.com/thread/5874
         // https://forums.developer.apple.com/thread/6050
         // AVAudioTimePitchAlgorithm.timeDomain (just in case we want it)
@@ -242,18 +242,18 @@ public class SAPlayer {
                 return ret
             }
         }
-        
+
         audioModifiers.append(AVAudioUnitTimePitch(audioComponentDescription: componentDescription))
         NotificationCenter.default.addObserver(self, selector: #selector(handleInterruption), name: AVAudioSession.interruptionNotification, object: nil)
     }
-    
+
     /**
      Clears all [AVAudioUnit](https://developer.apple.com/documentation/avfoundation/audio_track_engineering/audio_engine_building_blocks/audio_enhancements) modifiers intended to be used for realtime audio manipulation.
      */
     public func clearAudioModifiers() {
         audioModifiers.removeAll()
     }
-    
+
     /**
      Append an [AVAudioUnit](https://developer.apple.com/documentation/avfoundation/audio_track_engineering/audio_engine_building_blocks/audio_enhancements) modifier to the list of modifiers used for realtime audio manipulation. The modifier will be added to the end of the list.
 
@@ -262,7 +262,7 @@ public class SAPlayer {
     public func addAudioModifier(_ modifer: AVAudioUnit) {
         audioModifiers.append(modifer)
     }
-    
+
     /**
      Formats a textual representation of a given timestamp for display in hh:MM:SS format, that is hours:minutes:seconds.
 
@@ -273,18 +273,18 @@ public class SAPlayer {
         let hours = Int(timestamp / 60 / 60)
         let minutes = Int((timestamp - Double(hours * 60 * 60)) / 60)
         let secondsLeft = Int(timestamp - Double(hours * 60 * 60) - Double(minutes * 60))
-        
+
         return "\(hours):\(String(format: "%02d", minutes)):\(String(format: "%02d", secondsLeft))"
     }
-    
+
     func getUrl(forKey key: Key) -> URL? {
         return presenter.getUrl(forKey: key)
     }
-    
+
     func addUrlToMapping(url: URL) {
         presenter.addUrlToKeyMap(url)
     }
-    
+
     @objc func handleInterruption(notification: Notification) {
         guard let userInfo = notification.userInfo,
             let typeValue = userInfo[AVAudioSessionInterruptionTypeKey] as? UInt,
@@ -313,18 +313,18 @@ public class SAPlayer {
 
         default: ()
         }
-    }	
+    }
 }
 
 public enum SAPlayerBitrate {
     /// This bitrate is good for radio streams that are passing ittle amounts of audio data at a time. This will allow the player to process the audio data in a fast enough rate to not pause or get stuck playing. This rate however ends up using more CPU and is worse for your battery-life and performance of your app.
     case low
-    
+
     /// This bitrate is good for streaming saved audio files like podcasts where most of the audio data will be received from the remote server at the beginning in a short time. This rate is more performant by using much less CPU and being better for your battery-life and app performance.
     case high // go for audio files being streamed. This is uses less CPU and
 }
 
-//MARK: - External Player Controls
+// MARK: - External Player Controls
 extension SAPlayer {
     /**
      Toggles between the play and pause state of the player. If nothing is playable (aka still in buffering state or no audio is initialized) no action will be taken. Please call `startSavedAudio` or `startRemoteAudio` to set up the player with audio before this.
@@ -334,7 +334,7 @@ extension SAPlayer {
     public func togglePlayAndPause() {
         presenter.handleTogglePlayingAndPausing()
     }
-    
+
     /**
      Attempts to play the player. If nothing is playable (aka still in buffering state or no audio is initialized) no action will be taken. Please call `startSavedAudio` or `startRemoteAudio` to set up the player with audio before this.
      
@@ -343,7 +343,7 @@ extension SAPlayer {
     public func play() {
         presenter.handlePlay()
     }
-    
+
     /**
      Attempts to pause the player. If nothing is playable (aka still in buffering state or no audio is initialized) no action will be taken. Please call `startSavedAudio` or `startRemoteAudio` to set up the player with audio before this.
      
@@ -352,7 +352,7 @@ extension SAPlayer {
     public func pause() {
         presenter.handlePause()
     }
-    
+
     /**
      Attempts to skip forward in audio even if nothing playable is loaded (aka still in buffering state or no audio is initialized). The interval to which to skip forward is defined by `SAPlayer.shared.skipForwardSeconds`.
      
@@ -361,7 +361,7 @@ extension SAPlayer {
     public func skipForward() {
         presenter.handleSkipForward()
     }
-    
+
     /**
      Attempts to skip backwards in audio even if nothing playable is loaded (aka still in buffering state or no audio is initialized). The interval to which to skip backwards is defined by `SAPlayer.shared.skipBackwardSeconds`.
      
@@ -370,7 +370,7 @@ extension SAPlayer {
     public func skipBackwards() {
         presenter.handleSkipBackward()
     }
-    
+
     /**
      Attempts to seek/scrub through the audio even if nothing playable is loaded (aka still in buffering state or no audio is initialized).
      
@@ -381,7 +381,7 @@ extension SAPlayer {
     public func seekTo(seconds: Double) {
         presenter.handleSeek(toNeedle: seconds)
     }
-    
+
     /**
      If using an AVAudioUnitTimePitch, it's important to notify the player that the rate at which the audio playing has changed to keep the media player in the lockscreen up to date. This is only important for playback rate changes.
      
@@ -407,7 +407,7 @@ extension SAPlayer {
     public func playbackRateOfAudioChanged(rate: Float) {
         presenter.handleAudioRateChanged(rate: rate)
     }
-    
+
     /**
      Sets up player to play audio that has been saved on the device.
      
@@ -434,17 +434,17 @@ extension SAPlayer {
      - Parameter mediaInfo: The media information of the audio to show on the lockscreen media player (optional).
      */
     public func startSavedAudio(withSavedUrl url: URL, mediaInfo: SALockScreenInfo? = nil) {
-        
+
         // Because we support queueing, we want to clear off any existing players.
         // Therefore, instantiate new player every time, destroy any existing ones.
         // This prevents a crash where an owning engine already exists.
         presenter.handleClear()
-        
+
         // order here matters, need to set media info before trying to play audio
         self.mediaInfo = mediaInfo
         presenter.handlePlaySavedAudio(withSavedUrl: url)
     }
-    
+
     /**
      Sets up player to play audio that will be streamed from a remote location. After this is called, it will connect to the server and start to receive and process data. The player is not playable the SAAudioAvailabilityRange notifies that player is ready for playing (you can subscribe to these updates through `SAPlayer.Updates.StreamingBuffer`). You can alternatively see when the player is available to play by subscribing to `SAPlayer.Updates.PlayingStatus` and waiting for a status that isn't `.buffering`.
      
@@ -474,24 +474,24 @@ extension SAPlayer {
      - Parameter mediaInfo: The media information of the audio to show on the lockscreen media player (optional).
      */
     public func startRemoteAudio(withRemoteUrl url: URL, bitrate: SAPlayerBitrate = .high, mediaInfo: SALockScreenInfo? = nil) {
-        
+
         // Because we support queueing, we want to clear off any existing players.
         // Therefore, instantiate new player every time, destroy any existing ones.
         // This prevents a crash where an owning engine already exists.
         presenter.handleClear()
-        
+
         // order here matters, need to set media info before trying to play audio
         self.mediaInfo = mediaInfo
         presenter.handlePlayStreamedAudio(withRemoteUrl: url, bitrate: bitrate)
     }
-    
+
     /**
      Stops any streaming in progress.
      */
     public func stopStreamingRemoteAudio() {
         presenter.handleStopStreamingAudio()
     }
-    
+
     /**
      Queues remote audio to be played next. The URLs in the queue can be both remote or on disk but once the queued audio starts playing it will start buffering and loading then. This means no guarantee for a 'gapless' playback where there might be several moments in between one audio ending and another starting due to buffering remote audio.
      
@@ -502,7 +502,7 @@ extension SAPlayer {
     public func queueRemoteAudio(withRemoteUrl url: URL, bitrate: SAPlayerBitrate = .high, mediaInfo: SALockScreenInfo? = nil) {
         presenter.handleQueueStreamedAudio(withRemoteUrl: url, mediaInfo: mediaInfo, bitrate: bitrate)
     }
-    
+
     /**
      Queues saved audio to be played next. The URLs in the queuecan be both remote or on disk but once the queued audio starts playing it will start buffering and loading then. This means no guarantee for a 'gapless' playback where there might be several moments in between one audio ending and another starting due to buffering remote audio.
      
@@ -512,7 +512,7 @@ extension SAPlayer {
     public func queueSavedAudio(withSavedUrl url: URL, mediaInfo: SALockScreenInfo? = nil) {
         presenter.handleQueueSavedAudio(withSavedUrl: url, mediaInfo: mediaInfo)
     }
-    
+
     /**
      Resets the player to the state before initializing audio and setting media info.
      */
@@ -521,30 +521,29 @@ extension SAPlayer {
     }
 }
 
-
-//MARK: - Internal implementation of delegate
+// MARK: - Internal implementation of delegate
 extension SAPlayer: SAPlayerDelegate {
     func startAudioDownloaded(withSavedUrl url: AudioURL) {
         player = AudioDiskEngine(withSavedUrl: url, delegate: presenter)
     }
-    
+
     func startAudioStreamed(withRemoteUrl url: AudioURL, bitrate: SAPlayerBitrate) {
         player = AudioStreamEngine(withRemoteUrl: url, delegate: presenter, bitrate: bitrate)
     }
-    
+
     func clearEngine() {
         player?.pause()
         player?.invalidate()
         player = nil
         Log.info("cleared engine")
     }
-    
+
     func playEngine() {
         becomeDeviceAudioPlayer()
         player?.play()
     }
-    
-    //Start taking control as the device's player
+
+    // Start taking control as the device's player
     private func becomeDeviceAudioPlayer() {
         do {
             if #available(iOS 11.0, tvOS 11.0, *) {
@@ -557,11 +556,11 @@ extension SAPlayer: SAPlayerDelegate {
             Log.monitor("Problem setting up AVAudioSession to play in:: \(error.localizedDescription)")
         }
     }
-    
+
     func pauseEngine() {
         player?.pause()
     }
-    
+
     func seekEngine(toNeedle needle: Needle) {
         var seekToNeedle = needle < 0 ? 0 : needle
         seekToNeedle = needle > Needle(duration ?? 0) ? Needle(duration ?? 0) : needle
@@ -569,8 +568,7 @@ extension SAPlayer: SAPlayerDelegate {
     }
 }
 
-
 // Helper function inserted by Swift 4.2 migrator.
-fileprivate func convertFromAVAudioSessionMode(_ input: AVAudioSession.Mode) -> String {
+private func convertFromAVAudioSessionMode(_ input: AVAudioSession.Mode) -> String {
 	return input.rawValue
 }

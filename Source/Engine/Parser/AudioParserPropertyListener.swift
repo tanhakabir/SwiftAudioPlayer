@@ -32,10 +32,9 @@
 import Foundation
 import AVFoundation
 
-
 func ParserPropertyListener(_ context: UnsafeMutableRawPointer, _ streamId: AudioFileStreamID, _ propertyId: AudioFileStreamPropertyID, _ flags: UnsafeMutablePointer<AudioFileStreamPropertyFlags>) {
     let selfAudioParser = Unmanaged<AudioParser>.fromOpaque(context).takeUnretainedValue()
-    
+
     Log.info("audio file stream property: \(propertyId.description)")
     switch propertyId {
     case kAudioFileStreamProperty_DataFormat:
@@ -49,28 +48,28 @@ func ParserPropertyListener(_ context: UnsafeMutableRawPointer, _ streamId: Audi
     case kAudioFileStreamProperty_AudioDataByteCount:
         GetPropertyValue(&selfAudioParser.parsedAudioPacketDataSize, streamId, propertyId)
         selfAudioParser.expectedFileSizeInBytes = selfAudioParser.parsedAudioDataOffset + selfAudioParser.parsedAudioPacketDataSize
-        break;
+        break
     case kAudioFileStreamProperty_DataOffset:
         GetPropertyValue(&selfAudioParser.parsedAudioDataOffset, streamId, propertyId)
-        
-        if(selfAudioParser.parsedAudioPacketDataSize != 0) {
+
+        if selfAudioParser.parsedAudioPacketDataSize != 0 {
             selfAudioParser.expectedFileSizeInBytes = selfAudioParser.parsedAudioDataOffset + selfAudioParser.parsedAudioPacketDataSize
         }
-        
+
         break
     default:
         break
     }
 }
 
-//property is like the medatada of
+// property is like the medatada of
 func GetPropertyValue<T>(_ value: inout T, _ streamId: AudioFileStreamID, _ propertyId: AudioFileStreamPropertyID) {
     var propertySize: UInt32 = 0
-    guard AudioFileStreamGetPropertyInfo(streamId, propertyId, &propertySize, nil) == noErr else {//try to get the size of the property
+    guard AudioFileStreamGetPropertyInfo(streamId, propertyId, &propertySize, nil) == noErr else {// try to get the size of the property
         Log.monitor("failed to get info for property:\(propertyId.description)")
         return
     }
-    
+
     guard AudioFileStreamGetProperty(streamId, propertyId, &propertySize, &value) == noErr else {
         Log.monitor("failed to get propery value for: \(propertyId.description)")
         return

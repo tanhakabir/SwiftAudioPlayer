@@ -28,62 +28,58 @@ import CoreMedia
 
 class AudioClockDirector {
     static let shared = AudioClockDirector()
-    
+
     private var needleClosures: DirectorThreadSafeClosures<Needle> = DirectorThreadSafeClosures()
     private var durationClosures: DirectorThreadSafeClosures<Duration> = DirectorThreadSafeClosures()
     private var playingStatusClosures: DirectorThreadSafeClosures<SAPlayingStatus> = DirectorThreadSafeClosures()
     private var bufferClosures: DirectorThreadSafeClosures<SAAudioAvailabilityRange> = DirectorThreadSafeClosures()
-    
+
     private init() {}
-    
+
     func create() {}
-    
+
     func clear() {
         needleClosures.clear()
         durationClosures.clear()
         playingStatusClosures.clear()
         bufferClosures.clear()
     }
-    
+
     // MARK: - Attaches
-    
+
     // Needle
     func attachToChangesInNeedle(closure: @escaping (Key, Needle) throws -> Void) -> UInt {
         return needleClosures.attach(closure: closure)
     }
-    
-    
+
     // Duration
     func attachToChangesInDuration(closure: @escaping (Key, Duration) throws -> Void) -> UInt {
         return durationClosures.attach(closure: closure)
     }
-    
-    
+
     // Playing status
-    func attachToChangesInPlayingStatus(closure: @escaping (Key, SAPlayingStatus) throws -> Void) -> UInt{
+    func attachToChangesInPlayingStatus(closure: @escaping (Key, SAPlayingStatus) throws -> Void) -> UInt {
         return playingStatusClosures.attach(closure: closure)
     }
-    
-    
+
     // Buffer
-    func attachToChangesInBufferedRange(closure: @escaping (Key, SAAudioAvailabilityRange) throws -> Void) -> UInt{
+    func attachToChangesInBufferedRange(closure: @escaping (Key, SAAudioAvailabilityRange) throws -> Void) -> UInt {
         return bufferClosures.attach(closure: closure)
     }
-    
-    
+
     // MARK: - Detaches
     func detachFromChangesInNeedle(withID id: UInt) {
         needleClosures.detach(id: id)
     }
-    
+
     func detachFromChangesInDuration(withID id: UInt) {
         durationClosures.detach(id: id)
     }
-    
+
     func detachFromChangesInPlayingStatus(withID id: UInt) {
         playingStatusClosures.detach(id: id)
     }
-    
+
     func detachFromChangesInBufferedRange(withID id: UInt) {
         bufferClosures.detach(id: id)
     }

@@ -25,7 +25,7 @@ class AudioQueueDirector {
     func detach(withID id: UInt) {
         closures.detach(id: id)
     }
-    
+
     func changeInQueue(_ key: Key, url: URL) {
         closures.broadcast(key: key, payload: url)
     }

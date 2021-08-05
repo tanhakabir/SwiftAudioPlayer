@@ -30,7 +30,7 @@ import Foundation
  */
 struct FileStorage {
     private init() {}
-    
+
     /**
      Generates a URL for a file that would be saved locally.
      
@@ -41,18 +41,18 @@ struct FileStorage {
         let url = URL(fileURLWithPath: directoryPath)
         return url.appendingPathComponent(name)
     }
-    
-    static func isStored(_ url: URL) -> Bool{
+
+    static func isStored(_ url: URL) -> Bool {
         // https://stackoverflow.com/questions/42897844/swift-3-0-filemanager-fileexistsatpath-always-return-false
         // When determining if a file exists, we must use .path not .absolute string!
         return FileManager.default.fileExists(atPath: url.path)
     }
-    
+
     static func delete(_ url: URL) {
         if !isStored(url) {
             return
         }
-        
+
         do {
             try FileManager.default.removeItem(at: url)
         } catch let error {
@@ -61,21 +61,21 @@ struct FileStorage {
     }
 }
 
-// MARK:- Audio
+// MARK: - Audio
 extension FileStorage {
     struct Audio {
         private static let directory: FileManager.SearchPathDirectory = .documentDirectory
         private init() {}
-        
+
         static func isStored(_ id: ID) -> Bool {
             guard let url = locate(id)?.path else {
                 return false
             }
-            
-            //FIXME: This is an unreliable API. Maybe use a map instead?
+
+            // FIXME: This is an unreliable API. Maybe use a map instead?
             return FileManager.default.fileExists(atPath: url)
         }
-        
+
         static func delete(_ id: ID) {
             guard let url = locate(id) else {
                 Log.warn("trying to delete audio file that doesn't exist with id: \(id)")
@@ -83,7 +83,7 @@ extension FileStorage {
             }
             return FileStorage.delete(url)
         }
-        
+
         static func write(_ id: ID, fileExtension: String, data: Data) {
             do {
                 let url = FileStorage.getUrl(givenAName: getAudioFileName(id, fileExtension: fileExtension), inDirectory: directory)
@@ -92,7 +92,7 @@ extension FileStorage {
                 Log.monitor(error.localizedDescription)
             }
         }
-        
+
         static func read(_ id: ID) -> Data? {
             guard let url = locate(id) else {
                 Log.debug("Trying to get data for audio file that doesn't exist: \(id)")
@@ -101,7 +101,7 @@ extension FileStorage {
             let data = try? Data(contentsOf: url)
             return data
         }
-        
+
         static func locate(_ id: ID) -> URL? {
             let folderUrls = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)
             guard folderUrls.count != 0 else { return nil }
@@ -116,12 +116,12 @@ extension FileStorage {
             }
             return nil
         }
-        
+
         static func getUrl(givenId id: ID, andFileExtension fileExtension: String) -> URL {
             let url = FileStorage.getUrl(givenAName: getAudioFileName(id, fileExtension: fileExtension), inDirectory: directory)
             return url
         }
-        
+
         private static func getAudioFileName(_ id: ID, fileExtension: String) -> NameFile {
             return "\(id).\(fileExtension)"
         }

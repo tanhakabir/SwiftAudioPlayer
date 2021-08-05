@@ -47,11 +47,11 @@ extension SAPlayer {
          - Parameter completion: Completion handler that will return once the download is successful and complete.
          - Parameter savedUrl: The url of where the audio was saved locally on the device. Will receive once download has completed.
          */
-        public static func downloadAudio(withRemoteUrl url: URL, completion: @escaping (_ savedUrl: URL) -> ()) {
+        public static func downloadAudio(withRemoteUrl url: URL, completion: @escaping (_ savedUrl: URL) -> Void) {
             SAPlayer.shared.addUrlToMapping(url: url)
             AudioDataManager.shared.startDownload(withRemoteURL: url, completion: completion)
         }
-        
+
         /**
          Cancel downloading audio from a specific remote url if actively downloading. If download has not started yet, it will remove from the list of future downloads queued.
          
@@ -60,7 +60,7 @@ extension SAPlayer {
         public static func cancelDownload(withRemoteUrl url: URL) {
             AudioDataManager.shared.cancelDownload(withRemoteURL: url)
         }
-        
+
         /**
          Delete downloaded audio file from device at url.
          
@@ -71,7 +71,7 @@ extension SAPlayer {
         public static func deleteDownloaded(withSavedUrl url: URL) {
             AudioDataManager.shared.deleteDownload(withLocalURL: url)
         }
-        
+
         /**
          Check if audio at remote url is downloaded on device.
          
@@ -81,7 +81,7 @@ extension SAPlayer {
         public static func isDownloaded(withRemoteUrl url: URL) -> Bool {
             return AudioDataManager.shared.getPersistedUrl(withRemoteURL: url) != nil
         }
-        
+
         /**
          Get url of audio file downloaded from remote url onto on device if it exists.
          
@@ -91,16 +91,16 @@ extension SAPlayer {
         public static func getSavedUrl(forRemoteUrl url: URL) -> URL? {
             return AudioDataManager.shared.getPersistedUrl(withRemoteURL: url)
         }
-        
+
         /**
          Pass along the completion handler from `AppDelegate` to ensure downloading continues while app is in background.
          
          - Parameter completionHandler: The completion hander from `AppDelegate` to use for app in the background downloads.
          */
-        public static func setBackgroundCompletionHandler(_ completionHandler: @escaping () -> ()) {
+        public static func setBackgroundCompletionHandler(_ completionHandler: @escaping () -> Void) {
             AudioDataManager.shared.setBackgroundCompletionHandler(completionHandler)
         }
-        
+
         /**
          Whether downloading audio on cellular data is allowed. By default this is set to `true`.
          */

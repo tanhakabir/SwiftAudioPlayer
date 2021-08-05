@@ -15,17 +15,17 @@ extension SAPlayer {
      - Note: These features assume default state of the player and `audioModifiers` meaning some expect the first audio modifier to be the default `AVAudioUnitTimePitch` that comes with the SAPlayer.
      */
     public struct Features {
-        
+
         /**
          Feature to skip silences in spoken word audio. The player will speed up the rate of audio playback when silence is detected.
          
          - Important: The first audio modifier must be the default `AVAudioUnitTimePitch` that comes with the SAPlayer for this feature to work.
          */
         public struct SkipSilences {
-            
+
             static var enabled: Bool = false
             static var originalRate: Float = 1.0
-            
+
             /**
              Enable feature to skip silences in spoken word audio. The player will speed up the rate of audio playback when silence is detected. This can be called at any point of audio playback.
              
@@ -34,15 +34,14 @@ extension SAPlayer {
              */
             public static func enable() -> Bool {
                 guard let engine = SAPlayer.shared.engine else { return false }
-                
+
                 Log.info("enabling skip silences feature")
                 enabled = true
                 originalRate = SAPlayer.shared.rate ?? 1.0
                 let format = engine.mainMixerNode.outputFormat(forBus: 0)
-                
-                
+
                 // look at documentation here to get an understanding of what is happening here: https://www.raywenderlich.com/5154-avaudioengine-tutorial-for-ios-getting-started#toc-anchor-005
-                engine.mainMixerNode.installTap(onBus: 0, bufferSize: 1024, format: format) { buffer, when in
+                engine.mainMixerNode.installTap(onBus: 0, bufferSize: 1024, format: format) { buffer, _ in
                     guard let channelData = buffer.floatChannelData else {
                         return
                     }
@@ -66,10 +65,10 @@ extension SAPlayer {
                         Log.debug("slow down rate to \(String(describing: SAPlayer.shared.rate))")
                     }
                 }
-                
+
                 return true
             }
-            
+
             /**
              Disable feature to skip silences in spoken word audio. The player will speed up the rate of audio playback when silence is detected. This can be called at any point of audio playback.
              
@@ -83,7 +82,7 @@ extension SAPlayer {
                 enabled = false
                 return true
             }
-            
+
             /**
              Use this function to set the overall rate of the player for when skip silences is on. This ensures that the overall rate will be what is set through this function even as skip silences is on; if this function is not used then any changes asked of from the overall player while skip silences is on won't be recorded!
              
@@ -93,7 +92,7 @@ extension SAPlayer {
                 originalRate = rate
                 SAPlayer.shared.rate = rate
             }
-            
+
             private static func scaledPower(power: Float) -> Float {
                 guard power.isFinite else { return 0.0 }
                 let minDb: Float = -80.0
@@ -106,13 +105,13 @@ extension SAPlayer {
                 }
             }
         }
-        
+
         /**
          Feature to pause the player after a delay. This will happen regardless of if another audio clip has started.
          */
         public struct SleepTimer {
             static var timer: Timer?
-            
+
             /**
              Enable feature to pause the player after a delay. This will happen regardless of if another audio clip has started.
              
@@ -123,7 +122,7 @@ extension SAPlayer {
                     SAPlayer.shared.pause()
                 })
             }
-            
+
             /**
              Disable feature to pause the player after a delay. 
              */

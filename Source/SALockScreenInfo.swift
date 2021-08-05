@@ -39,7 +39,7 @@ public struct SALockScreenInfo {
     var artist: String
     var artwork: UIImage?
     var releaseDate: UTC
-    
+
     public init(title: String, artist: String, artwork: UIImage?, releaseDate: UTC) {
         self.title = title
         self.artist = artist

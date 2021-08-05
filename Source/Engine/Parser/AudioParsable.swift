@@ -32,23 +32,22 @@
 import Foundation
 import AVFoundation
 
-protocol AudioParsable { //For the layer above us
+protocol AudioParsable { // For the layer above us
     var fileAudioFormat: AVAudioFormat? {get}
     var totalPredictedPacketCount: AVAudioPacketCount { get }
     func tellSeek(toIndex index: AVAudioPacketCount)
     func pollRangeOfSecondsAvailableFromNetwork() -> (Needle, Duration)
     func pullPacket(atIndex index: AVAudioPacketCount) throws -> (AudioStreamPacketDescription?, Data)
-    func invalidate() //deinit caused concurrency problems
+    func invalidate() // deinit caused concurrency problems
 }
 
-extension AudioParsable { //For the layer above us
+extension AudioParsable { // For the layer above us
     var predictedDuration: Duration? {
         guard let sampleRate = fileAudioFormat?.sampleRate else { return nil }
         guard let totalPredictedFrameCount = totalPredictedAudioFrameCount else { return nil }
         return Duration(totalPredictedFrameCount)/Duration(sampleRate)
     }
-    
-    
+
     var totalPredictedAudioFrameCount: AUAudioFrameCount? {
         guard let framesPerPacket = fileAudioFormat?.streamDescription.pointee.mFramesPerPacket else {return nil }
         return AVAudioFrameCount(totalPredictedPacketCount) * AVAudioFrameCount(framesPerPacket)

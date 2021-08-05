@@ -33,7 +33,6 @@ import Foundation
 import AVFoundation
 import AudioToolbox
 
-
 let ReaderReachedEndOfDataError: OSStatus = 932332581
 let ReaderNotEnoughDataError: OSStatus = 932332582
 let ReaderMissingSourceFormatError: OSStatus = 932332583
@@ -53,7 +52,7 @@ public enum ConverterError: LocalizedError {
     case superConcerningShouldNeverHappen
     case throttleParsingBuffersForEngine
     case failedToCreateParser
-    
+
     public var errorDescription: String? {
         switch self {
         case .cannotLockQueue:
@@ -93,7 +92,7 @@ public enum ConverterError: LocalizedError {
             return "Could not create a parser"
         }
     }
-    
+
     func localizedDescriptionFromConverterError(_ status: OSStatus) -> String {
         switch status {
         case kAudioConverterErr_FormatNotSupported:

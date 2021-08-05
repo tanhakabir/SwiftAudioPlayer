@@ -27,25 +27,25 @@ import Foundation
 
 class DownloadProgressDirector {
     static let shared = DownloadProgressDirector()
-    
+
     var closures: DirectorThreadSafeClosures<Double> = DirectorThreadSafeClosures()
-    
+
     private init() {
         AudioDataManager.shared.attach { [weak self] (key, progress) in
             self?.closures.broadcast(key: key, payload: progress)
         }
     }
-    
+
     func create() {}
-    
+
     func clear() {
         closures.clear()
     }
-    
+
     func attach(closure: @escaping (Key, Double) throws -> Void) -> UInt {
         return closures.attach(closure: closure)
     }
-    
+
     func detach(withID id: UInt) {
         closures.detach(id: id)
     }

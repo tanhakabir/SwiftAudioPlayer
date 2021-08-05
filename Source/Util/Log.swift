@@ -25,10 +25,10 @@ var logLevel: LogLevel = LogLevel.MONITOR
 
 class Log {
     private init() {}
-    
+
     // Used for OSLog
     private static let SUBSYSTEM: String = "com.SwiftAudioPlayer"
-    
+
     /**
      Used for when you're doing tests. Testing log should be removed before commiting
      
@@ -49,7 +49,7 @@ class Log {
             os_log("%@:%@:%d:: %@", log: log, fileName, functionName, lineNumber, "\(logMessage)")
         }
     }
-    
+
     /**
      Used when something unexpected happen, such as going out of bounds in an array. Errors are typically guarded for.
      
@@ -69,13 +69,13 @@ class Log {
             let log = OSLog(subsystem: SUBSYSTEM, category: "ERROR 🛑🛑🛑🛑")
             os_log("%@:%@:%d:: %@", log: log, fileName, functionName, lineNumber, "\(logMessage)")
         }
-        
+
         if logLevel.rawValue <= LogLevel.EXTERNAL_DEBUG.rawValue {
             let log = OSLog(subsystem: SUBSYSTEM, category: "WARNING")
             os_log("%@:%@:%d:: %@", log: log, fileName, functionName, lineNumber, "\(logMessage)")
         }
     }
-    
+
     /**
      Used when something catastrophic just happened. Like app about to crash, app state is inconsistent, or possible data corruption.
      
@@ -96,7 +96,7 @@ class Log {
             os_log("%@:%@:%d:: %@", log: log, fileName, functionName, lineNumber, "\(logMessage)")
         }
     }
-    
+
     /**
      Used when something went wrong, but the app can still function.
      
@@ -116,13 +116,13 @@ class Log {
             let log = OSLog(subsystem: SUBSYSTEM, category: "WARN  ⚠️⚠️⚠️⚠️")
             os_log("%@:%@:%d:: %@", log: log, fileName, functionName, lineNumber, "\(logMessage)")
         }
-        
+
         if logLevel.rawValue <= LogLevel.EXTERNAL_DEBUG.rawValue {
             let log = OSLog(subsystem: SUBSYSTEM, category: "DEBUG")
             os_log("%@:%@:%d:: %@", log: log, fileName, functionName, lineNumber, "\(logMessage)")
         }
     }
-    
+
     /**
      Used when you want to show information like username or question asked.
      
@@ -143,7 +143,7 @@ class Log {
             os_log("%@:%@:%d:: %@", log: log, fileName, functionName, lineNumber, "\(logMessage)")
         }
     }
-    
+
     /**
      Used for when you're rebugging and you want to follow what's happening.
      
@@ -164,19 +164,18 @@ class Log {
             os_log("%@:%@:%d:: %@", log: log, fileName, functionName, lineNumber, "\(logMessage)")
         }
     }
-    
-    
+
 }
 
-// MARK:- Helpers for Log class
-fileprivate struct URLUtil {
+// MARK: - Helpers for Log class
+private struct URLUtil {
     static func getNameFromStringPath(_ stringPath: String) -> String {
-        //URL sees that "+" is a " "
+        // URL sees that "+" is a " "
         let stringPath = stringPath.replacingOccurrences(of: " ", with: "+")
         let url = URL(string: stringPath)
         return url!.lastPathComponent
     }
-    
+
     static func getNameFromURL(_ url: URL) -> String {
         return url.lastPathComponent
     }
@@ -191,8 +190,8 @@ extension Date {
 }
 
 extension Array where Element == Any? {
-    var toLog: String  {
-        var strs:[String] = []
+    var toLog: String {
+        var strs: [String] = []
         for element in self {
             strs.append("\(element ?? "nil")")
         }

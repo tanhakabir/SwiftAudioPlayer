@@ -30,11 +30,11 @@ protocol SAPlayerDelegate: AnyObject, LockScreenViewProtocol {
     var mediaInfo: SALockScreenInfo? { get set }
     var skipForwardSeconds: Double { get set }
     var skipBackwardSeconds: Double { get set }
-    
+
     func startAudioDownloaded(withSavedUrl url: AudioURL)
     func startAudioStreamed(withRemoteUrl url: AudioURL, bitrate: SAPlayerBitrate)
     func clearEngine()
     func playEngine()
     func pauseEngine()
-    func seekEngine(toNeedle needle: Needle) //TODO ensure that engine cleans up out of bounds
+    func seekEngine(toNeedle needle: Needle) // TODO ensure that engine cleans up out of bounds
 }

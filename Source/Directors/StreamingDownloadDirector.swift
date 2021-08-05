@@ -26,21 +26,21 @@ import Foundation
 
 class StreamingDownloadDirector {
     static let shared = StreamingDownloadDirector()
-    
+
     var closures: DirectorThreadSafeClosures<Double> = DirectorThreadSafeClosures()
-    
+
     private init() {}
-    
+
     func create() {}
-    
+
     func clear() {
         closures.clear()
     }
-    
+
     func attach(closure: @escaping (Key, Double) throws -> Void) -> UInt {
         return closures.attach(closure: closure)
     }
-    
+
     func detach(withID id: UInt) {
         closures.detach(id: id)
     }

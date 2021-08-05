@@ -37,7 +37,7 @@ enum ParserError: LocalizedError {
     case failedToParseBytes(OSStatus)
     case notEnoughDataForReader
     case readerAskingBeyondEndOfFile
-    
+
     var errorDescription: String? {
         switch self {
         case .couldNotOpenStream:
@@ -50,7 +50,7 @@ enum ParserError: LocalizedError {
             return "Reader asking for packets beyond the end of file"
         }
     }
-    
+
     func localizedDescriptionFromParseError(_ status: OSStatus) -> String {
         switch status {
         case kAudioFileStreamError_UnsupportedFileType:
@@ -78,7 +78,6 @@ enum ParserError: LocalizedError {
         }
     }
 }
-
 
 /// This extension just helps us print out the name of an `AudioFileStreamPropertyID`. Purely for debugging and not essential to the main functionality of the parser.
 extension AudioFileStreamPropertyID {

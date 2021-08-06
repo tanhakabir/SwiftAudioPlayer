@@ -43,7 +43,7 @@ import Foundation
 
 protocol AudioDataStreamable {
     // if user taps download then starts to stream
-    init(progressCallback: @escaping (_ id: ID, _ dto: StreamProgressDTO) -> Void, doneCallback: @escaping (_ id: ID, _ error: Error?) -> Bool) // Bool is should save or not
+    init(HTTPHeaderFields: [String: String]?, progressCallback: @escaping (_ id: ID, _ dto: StreamProgressDTO) -> Void, doneCallback: @escaping (_ id: ID, _ error: Error?) -> Bool) // Bool is should save or not
     func start(withID id: ID, withRemoteURL url: URL, withInitialData data: Data?, andTotalBytesExpectedPreviously previousTotalBytesExpected: Int64?)
     func pause(withId id: ID)
     func resume(withId id: ID)
@@ -75,13 +75,17 @@ class AudioStreamWorker: NSObject, AudioDataStreamable {
     fileprivate var totalBytesExpectedForCurrentStream: Int64?
     fileprivate var totalBytesReceived: Int64 = 0
     private var corruptedBecauseOfSeek = false
+    private var HTTPHeaderFields: [String: String]?
 
     /// Init
     ///
     /// - Parameters:
     ///   - progressCallback: generic callback
     ///   - doneCallback: when finished
-    required init(progressCallback: @escaping (_ id: ID, _ dto: StreamProgressDTO) -> Void, doneCallback: @escaping (_ id: ID, _ error: Error?) -> Bool) {
+    required init(HTTPHeaderFields: [String: String]? = nil,
+                  progressCallback: @escaping (_ id: ID, _ dto: StreamProgressDTO) -> Void,
+                  doneCallback: @escaping (_ id: ID, _ error: Error?) -> Bool) {
+        self.HTTPHeaderFields = HTTPHeaderFields
         self.progressCallback = progressCallback
         self.doneCallback = doneCallback
         super.init()
@@ -104,6 +108,7 @@ class AudioStreamWorker: NSObject, AudioDataStreamable {
 
         if let data = data {
             var request = URLRequest(url: url, cachePolicy: .useProtocolCachePolicy, timeoutInterval: TIMEOUT)
+            HTTPHeaderFields?.forEach { request.setValue($1, forHTTPHeaderField: $0) }
             request.addValue("bytes=\(data.count)-", forHTTPHeaderField: "Range")
             task = session.dataTask(with: request)
             task?.taskDescription = id
@@ -120,10 +125,11 @@ class AudioStreamWorker: NSObject, AudioDataStreamable {
 
             task?.resume()
         } else {
-            task = session.dataTask(with: url)
-            task?.resume()
-
+            var request = URLRequest(url: url)
+            HTTPHeaderFields?.forEach { request.setValue($1, forHTTPHeaderField: $0) }
+            task = session.dataTask(with: request)
             task?.taskDescription = id
+            task?.resume()
         }
     }
 
@@ -215,6 +221,7 @@ class AudioStreamWorker: NSObject, AudioDataStreamable {
         self.progressCallback(id, StreamProgressDTO(progress: 0, data: Data(), totalBytesExpected: totalBytesExpectedForWholeFile))
 
         var request = URLRequest(url: url, cachePolicy: .useProtocolCachePolicy, timeoutInterval: TIMEOUT)
+        HTTPHeaderFields?.forEach { request.setValue($1, forHTTPHeaderField: $0) }
         request.addValue("bytes=\(offset)-", forHTTPHeaderField: "Range")
         task = session.dataTask(with: request)
         task?.resume()

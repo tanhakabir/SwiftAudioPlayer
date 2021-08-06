@@ -228,6 +228,12 @@ public class SAPlayer {
      */
     public var mediaInfo: SALockScreenInfo?
 
+    public var HTTPHeaderFields: [String: String]? {
+        didSet {
+            AudioDataManager.shared.HTTPHeaderFields = HTTPHeaderFields
+        }
+    }
+
     private init() {
         presenter = SAPlayerPresenter(delegate: self)
 

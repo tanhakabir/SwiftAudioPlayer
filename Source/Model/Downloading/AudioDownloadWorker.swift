@@ -26,7 +26,7 @@
 import Foundation
 
 protocol AudioDataDownloadable: AnyObject {
-    init(allowCellular: Bool, progressCallback: @escaping (_ id: ID, _ progress: Double)->Void, doneCallback: @escaping (_ id: ID, _ error: Error?)->Void, backgroundDownloadCallback: @escaping ()->Void)
+    init(HTTPHeaderFields: [String: String]?, allowCellular: Bool, progressCallback: @escaping (_ id: ID, _ progress: Double)->Void, doneCallback: @escaping (_ id: ID, _ error: Error?)->Void, backgroundDownloadCallback: @escaping ()->Void)
 
     var numberOfActive: Int { get }
     var numberOfQueued: Int { get }
@@ -68,11 +68,15 @@ class AudioDownloadWorker: NSObject, AudioDataDownloadable {
         return queuedDownloads.count
     }
 
-    required init(allowCellular: Bool,
+    private var HTTPHeaderFields: [String: String]?
+
+    required init(HTTPHeaderFields: [String: String]? = nil,
+                  allowCellular: Bool,
                   progressCallback: @escaping (_ id: ID, _ progress: Double)->Void,
                   doneCallback: @escaping (_ id: ID, _ error: Error?)->Void,
                   backgroundDownloadCallback: @escaping ()->Void) {
         Log.info("init with allowCellular: \(allowCellular)")
+        self.HTTPHeaderFields = HTTPHeaderFields
         self.progressHandler = progressCallback
         self.completionHandler = doneCallback
         self.backgroundCompletion = backgroundDownloadCallback
@@ -111,7 +115,10 @@ class AudioDownloadWorker: NSObject, AudioDataDownloadable {
 
         queuedDownloads.remove(info)
 
-        let task: URLSessionDownloadTask = session.downloadTask(with: info.remoteUrl)
+        var request = URLRequest(url: info.remoteUrl)
+        HTTPHeaderFields?.forEach { request.setValue($1, forHTTPHeaderField: $0) }
+
+        let task: URLSessionDownloadTask = session.downloadTask(with: request)
         task.taskDescription = info.id
 
         let activeTask = ActiveDownload(info: info, task: task)

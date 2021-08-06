@@ -54,7 +54,7 @@ protocol AudioDataManagable {
 class AudioDataManager: AudioDataManagable {
     var allowCellular: Bool = true
 
-    static let shared: AudioDataManagable = AudioDataManager()
+    static let shared = AudioDataManager()
 
     // When we're streaming we want to stagger the size of data push up from disk to prevent the phone from freezing. We push up data of this chunk size every couple milliseconds.
     private let MAXIMUM_DATA_SIZE_TO_PUSH = 37744
@@ -62,11 +62,20 @@ class AudioDataManager: AudioDataManagable {
 
     var backgroundCompletion: () -> Void = {} // set by AppDelegate
 
+    var HTTPHeaderFields: [String: String]?
+
     // This is the first case where a DAO passes a closure to a singleon that receives delegate calls from the OS. When the delegate from the OS is called, this class calls the DAO's closure. We pretty much set up a stream from the delegate call to the director (and all the items subscribed to that director)
     private var globalDownloadProgressCallback: (String, Double) -> Void = {_, _ in }
 
-    private var downloadWorker: AudioDataDownloadable!
-    private var streamWorker: AudioDataStreamable!
+    private lazy var downloadWorker = AudioDownloadWorker(HTTPHeaderFields: HTTPHeaderFields,
+                                                          allowCellular: allowCellular,
+                                                          progressCallback: downloadProgressListener,
+                                                          doneCallback: downloadDoneListener,
+                                                          backgroundDownloadCallback: backgroundCompletion)
+
+    private lazy var streamWorker = AudioStreamWorker(HTTPHeaderFields: HTTPHeaderFields,
+                                                      progressCallback: streamProgressListener,
+                                                      doneCallback: streamDoneListener)
 
     private var streamingCallbacks = [(ID, (StreamProgressPTO)->Void)]()
 
@@ -78,18 +87,6 @@ class AudioDataManager: AudioDataManagable {
 
     var numberOfActive: Int {
         return downloadWorker.numberOfActive
-    }
-
-    private init() {
-        downloadWorker = AudioDownloadWorker(
-            allowCellular: allowCellular,
-            progressCallback: downloadProgressListener,
-            doneCallback: downloadDoneListener,
-            backgroundDownloadCallback: backgroundCompletion)
-
-        streamWorker = AudioStreamWorker(
-            progressCallback: streamProgressListener,
-            doneCallback: streamDoneListener)
     }
 
     func clear() {

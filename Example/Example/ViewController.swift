@@ -379,9 +379,9 @@ class ViewController: UIViewController {
 
     @IBAction func sleepSwitched(_ sender: Any) {
         if sleepSwitch.isOn {
-            _ = SAPlayer.Features.SleepTimer.enable(afterDelay: 5.0)
+            SAPlayer.Features.SleepTimer.enable(afterDelay: 5.0)
         } else {
-            _ = SAPlayer.Features.SleepTimer.disable()
+            SAPlayer.Features.SleepTimer.disable()
         }
     }
 }

@@ -94,7 +94,7 @@ class AudioStreamWorker:NSObject, AudioDataStreamable {
         
         let config = URLSessionConfiguration.background(withIdentifier: "SwiftAudioPlayer.stream")
         // Specifies that the phone should keep trying till it receives connection instead of dropping immediately
-        if #available(iOS 11.0, *) {
+        if #available(iOS 11.0, tvOS 11.0, *) {
             config.waitsForConnectivity = true
         }
         self.session = URLSession(configuration: config, delegate: self, delegateQueue: nil) //TODO: should we use ephemeral

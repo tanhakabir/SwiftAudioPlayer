@@ -148,6 +148,7 @@ class AudioEngine: AudioEngineProtocol {
     
     deinit {
         if state == .resumed {
+            playerNode.stop()
             engine.stop()
         }
         
@@ -230,6 +231,7 @@ class AudioEngine: AudioEngineProtocol {
     }
     
     func invalidate() {
-        
+        playerNode.stop()
+        engine.stop()
     }
 }

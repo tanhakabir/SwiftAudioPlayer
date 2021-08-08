@@ -46,6 +46,15 @@ public class SAPlayer {
     private var player: AudioEngine?
     
     /**
+    Any necessary header fields for streaming and downloading requests can be set here.
+    */
+    public var HTTPHeaderFields: [String: String]? {
+        didSet {
+            AudioDataManager.shared.setHTTPHeaderFields(HTTPHeaderFields)
+        }
+    }
+    
+    /**
     Access the engine of the player. Engine is nil if player has not been initialized with audio.
      
      - Important: Changes to the engine are not safe guarded, thus unknown behaviour can arise from changing the engine. Just be wary and read [documentation of AVAudioEngine](https://developer.apple.com/documentation/avfoundation/avaudioengine) well when modifying,

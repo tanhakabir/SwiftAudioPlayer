@@ -69,6 +69,7 @@ class ViewController: UIViewController {
         super.viewDidLoad()
         
         SAPlayer.Downloader.allowUsingCellularData = true
+        SAPlayer.shared.HTTPHeaderFields = ["User-Agent": "foobar"]
         
 //        SAPlayer.shared.DEBUG_MODE = true
         

@@ -31,6 +31,7 @@ protocol AudioDataManagable {
     
     var allowCellular: Bool { get set }
     
+    func setHTTPHeaderFields(_ fields: [String: String]?)
     func setBackgroundCompletionHandler(_ completionHandler: @escaping () -> ())
     func setAllowCellularDownloadPreference(_ preference: Bool)
     
@@ -94,6 +95,11 @@ class AudioDataManager: AudioDataManagable {
     
     func clear() {
         streamingCallbacks = []
+    }
+    
+    func setHTTPHeaderFields(_ fields: [String: String]?) {
+        streamWorker.HTTPHeaderFields = fields
+        downloadWorker.HTTPHeaderFields = fields
     }
     
     func setBackgroundCompletionHandler(_ completionHandler: @escaping () -> ()) {

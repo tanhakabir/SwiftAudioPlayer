@@ -141,10 +141,10 @@
 			isa = PBXGroup;
 			children = (
 				1509E48C26BD115200D239FC /* Constants.swift */,
-				1509E48D26BD115200D239FC /* Date.swift */,
-				1509E48E26BD115200D239FC /* Log.swift */,
 				1509E48F26BD115200D239FC /* Data.swift */,
+				1509E48D26BD115200D239FC /* Date.swift */,
 				1509E49026BD115200D239FC /* DirectorThreadSafeClosures.swift */,
+				1509E48E26BD115200D239FC /* Log.swift */,
 				1509E49126BD115200D239FC /* URL.swift */,
 			);
 			path = Util;
@@ -153,10 +153,10 @@
 		1509E49826BD115200D239FC /* Model */ = {
 			isa = PBXGroup;
 			children = (
-				1509E49926BD115200D239FC /* AudioQueue.swift */,
-				1509E49A26BD115200D239FC /* AudioDataManager.swift */,
-				1509E49B26BD115200D239FC /* Streaming */,
 				1509E49E26BD115200D239FC /* Downloading */,
+				1509E49B26BD115200D239FC /* Streaming */,
+				1509E49A26BD115200D239FC /* AudioDataManager.swift */,
+				1509E49926BD115200D239FC /* AudioQueue.swift */,
 				1509E4A126BD115200D239FC /* StreamProgressPTO.swift */,
 			);
 			path = Model;
@@ -183,14 +183,14 @@
 		1509E4A226BD115200D239FC /* Engine */ = {
 			isa = PBXGroup;
 			children = (
-				1509E4A326BD115200D239FC /* AudioDiskEngine.swift */,
-				1509E4A426BD115200D239FC /* AudioStreamEngine.swift */,
 				1509E4A526BD115200D239FC /* Converter */,
+				1509E4AB26BD115200D239FC /* Parser */,
+				1509E4A326BD115200D239FC /* AudioDiskEngine.swift */,
+				1509E4B226BD115200D239FC /* AudioEngine.swift */,
+				1509E4A426BD115200D239FC /* AudioStreamEngine.swift */,
+				1509E4B126BD115200D239FC /* AudioThrottler.swift */,
 				1509E4A926BD115200D239FC /* SAAudioAvailabilityRange.swift */,
 				1509E4AA26BD115200D239FC /* SAPlayingStatus.swift */,
-				1509E4AB26BD115200D239FC /* Parser */,
-				1509E4B126BD115200D239FC /* AudioThrottler.swift */,
-				1509E4B226BD115200D239FC /* AudioEngine.swift */,
 			);
 			path = Engine;
 			sourceTree = "<group>";
@@ -221,8 +221,8 @@
 			isa = PBXGroup;
 			children = (
 				1509E4B526BD115200D239FC /* AudioClockDirector.swift */,
-				1509E4B626BD115200D239FC /* DownloadProgressDirector.swift */,
 				1509E4B726BD115200D239FC /* AudioQueueDirector.swift */,
+				1509E4B626BD115200D239FC /* DownloadProgressDirector.swift */,
 				1509E4B826BD115200D239FC /* StreamingDownloadDirector.swift */,
 			);
 			path = Directors;

@@ -154,6 +154,8 @@ class AudioThrottler: AudioThrottleable {
 extension Array where Element == Data {
     var sum: Int {
         get {
+            guard count > 0 else { return 0 }
+            
             return self.reduce(0) { $0 + $1.count }
         }
     }

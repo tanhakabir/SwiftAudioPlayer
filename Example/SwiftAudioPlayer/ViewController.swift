@@ -336,16 +336,6 @@ class ViewController: UIViewController {
     }
     
     @IBAction func playPauseTouched(_ sender: Any) {
-//        if lastPlayedAudioIndex != selectedAudio.index {
-//            if let savedUrl = selectedAudio.savedUrl {
-//                SAPlayer.shared.startSavedAudio(withSavedUrl: savedUrl)
-//            } else {
-//                SAPlayer.shared.startRemoteAudio(withRemoteUrl: selectedAudio.url)
-//            }
-//
-//            return
-//        }
-        
         SAPlayer.shared.togglePlayAndPause()
     }
     

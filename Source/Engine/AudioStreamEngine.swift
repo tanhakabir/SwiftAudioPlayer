@@ -266,6 +266,15 @@ class AudioStreamEngine: AudioEngine {
     //MARK:- Overriden From Parent
     override func seek(toNeedle needle: Needle) {
         Log.info("didSeek to needle: \(needle)")
+
+        // if not playable (data not loaded etc), duration could be zero.
+        guard isPlayable else {
+            if predictedStreamDuration == 0 {
+                seekNeedleCommandBeforeEngineWasReady = needle
+            }
+            return
+        }
+
         guard needle < (ceil(predictedStreamDuration)) else {
             if !isPlayable {
                 seekNeedleCommandBeforeEngineWasReady = needle

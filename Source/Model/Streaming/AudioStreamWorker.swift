@@ -130,10 +130,8 @@ class AudioStreamWorker:NSObject, AudioDataStreamable {
             var request = URLRequest(url: url)
             HTTPHeaderFields?.forEach { request.setValue($1, forHTTPHeaderField: $0) }
             task = session.dataTask(with: request)
-            
-            task?.resume()
-            
             task?.taskDescription = id
+            task?.resume()
         }
     }
     

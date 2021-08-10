@@ -37,12 +37,14 @@ public typealias UTC = Int
 public struct SALockScreenInfo {
     var title: String
     var artist: String
+    var albumTitle: String?
     var artwork: UIImage?
     var releaseDate: UTC
     
-    public init(title: String, artist: String, artwork: UIImage?, releaseDate: UTC) {
+    public init(title: String, artist: String, albumTitle: String?, artwork: UIImage?, releaseDate: UTC) {
         self.title = title
         self.artist = artist
+        self.albumTitle = albumTitle
         self.artwork = artwork
         self.releaseDate = releaseDate
     }

@@ -231,6 +231,7 @@ class AudioParser: AudioParsable {
                 isIndexValid = false
             }
         }
+        Log.test("isIndexValid \(isIndexValid)")
         guard isIndexValid else { return }
         
         guard let byteOffset = getOffset(fromPacketIndex: index) else {

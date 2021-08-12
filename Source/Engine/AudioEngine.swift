@@ -194,8 +194,6 @@ class AudioEngine: AudioEngineProtocol {
         
         let isPlaying = engine.isRunning && playerNode.isPlaying
         playingStatus = isPlaying ? .playing : .paused
-        
-//        playingStatus = .paused
     }
     
     func play() {

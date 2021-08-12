@@ -37,6 +37,7 @@ class ViewController: UIViewController {
     var isDownloading: Bool = false
     var isStreaming: Bool = false
     var beingSeeked: Bool = false
+    var loopEnabled = false
     
     
     var downloadId: UInt?
@@ -213,8 +214,10 @@ class ViewController: UIViewController {
                 self.playPauseButton.setTitle("Loading", for: .normal)
                 return
             case .ended:
-                self.isPlayable = false
-                self.playPauseButton.setTitle("Done", for: .normal)
+                if(!self.loopEnabled) {
+                    self.isPlayable = false
+                    self.playPauseButton.setTitle("Done", for: .normal)
+                }
                 return
             }
         }
@@ -377,6 +380,19 @@ class ViewController: UIViewController {
         } else {
             _ = SAPlayer.Features.SleepTimer.disable()
         }
+    }
+    
+    @IBOutlet weak var loopSwitch: UISwitch!
+    
+    @IBAction func loopSwitched(_ sender: Any) {
+        loopEnabled = loopSwitch.isOn
+        
+        if loopSwitch.isOn {
+            SAPlayer.Features.Loop.enable()
+        } else {
+            SAPlayer.Features.Loop.disable()
+        }
+        
     }
 }
 

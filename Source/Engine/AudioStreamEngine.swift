@@ -265,7 +265,7 @@ class AudioStreamEngine: AudioEngine {
     
     //MARK:- Overriden From Parent
     override func seek(toNeedle needle: Needle) {
-        Log.info("didSeek to needle: \(needle)")
+        Log.test("didSeek to needle: \(needle)")
         guard needle < (ceil(predictedStreamDuration)) else {
             if !isPlayable {
                 seekNeedleCommandBeforeEngineWasReady = needle
@@ -287,6 +287,7 @@ class AudioStreamEngine: AudioEngine {
      playerNode related commands in a DispatchQueue
      */
     private func seekHelperDispatchQueue(needle: Needle) {
+        Log.test("HELPER didSeek to needle: \(needle)")
         wasPlaying = playerNode.isPlaying
         
         //NOTE: Order matters

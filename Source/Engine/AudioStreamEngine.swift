@@ -164,7 +164,6 @@ class AudioStreamEngine: AudioEngine {
         
         doRepeatedly(timeInterval: timeInterval) { [weak self] in
             guard let self = self else { return }
-            guard self.playingStatus != .ended else { return }
             
             self.repeatedUpdates()
         }

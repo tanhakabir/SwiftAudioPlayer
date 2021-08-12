@@ -134,7 +134,7 @@ class ViewController: UIViewController {
 //        unsubscribeFromChanges()
 //        subscribeToChanges()
         
-        SAPlayer.shared.mediaInfo = SALockScreenInfo(title: selectedAudio.title, artist: selectedAudio.artist, artwork: UIImage(), releaseDate: selectedAudio.releaseDate)
+        SAPlayer.shared.mediaInfo = SALockScreenInfo(title: selectedAudio.title, artist: selectedAudio.artist, albumTitle: nil, artwork: UIImage(), releaseDate: selectedAudio.releaseDate)
     }
     
     func checkIfAudioDownloaded() {

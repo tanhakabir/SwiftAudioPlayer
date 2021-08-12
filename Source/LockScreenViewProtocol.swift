@@ -39,7 +39,7 @@ extension LockScreenViewProtocol {
          MPNowPlayingInfoCenter.default().nowPlayingInfo = [:]
     }
     
-    @available(iOS 10.0, *)
+    @available(iOS 10.0, tvOS 10.0, *)
     func setLockScreenInfo(withMediaInfo info: SALockScreenInfo?, duration: Duration) {
         var nowPlayingInfo:[String : Any] = [:]
         
@@ -50,6 +50,7 @@ extension LockScreenViewProtocol {
         
         let title = info.title
         let artist = info.artist
+        let albumTitle = info.albumTitle ?? artist
         let releaseDate = info.releaseDate
         
         // For some reason we need to set a duration here for the needle?
@@ -57,7 +58,7 @@ extension LockScreenViewProtocol {
         
         nowPlayingInfo[MPMediaItemPropertyTitle] = title
         nowPlayingInfo[MPMediaItemPropertyArtist] = artist
-        nowPlayingInfo[MPMediaItemPropertyAlbumTitle] = artist
+        nowPlayingInfo[MPMediaItemPropertyAlbumTitle] = albumTitle
         //nowPlayingInfo[MPMediaItemPropertyGenre] = //maybe later when we have it
         //nowPlayingInfo[MPMediaItemPropertyIsExplicit] = //maybe later when we have it
         nowPlayingInfo[MPMediaItemPropertyAlbumArtist] = artist
@@ -168,7 +169,10 @@ extension LockScreenViewProtocol {
     }
     
     func updateLockscreenSkipIntervals() {
-        MPRemoteCommandCenter.shared().skipBackwardCommand.preferredIntervals = [skipBackwardSeconds] as [NSNumber]
-        MPRemoteCommandCenter.shared().skipForwardCommand.preferredIntervals = [skipForwardSeconds] as [NSNumber]
+        let commandCenter = MPRemoteCommandCenter.shared()
+        commandCenter.skipBackwardCommand.isEnabled = skipBackwardSeconds > 0
+        commandCenter.skipBackwardCommand.preferredIntervals = [skipBackwardSeconds] as [NSNumber]
+        commandCenter.skipForwardCommand.isEnabled = skipForwardSeconds > 0
+        commandCenter.skipForwardCommand.preferredIntervals = [skipForwardSeconds] as [NSNumber]
     }
 }

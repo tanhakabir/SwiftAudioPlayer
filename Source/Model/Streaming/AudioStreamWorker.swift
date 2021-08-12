@@ -130,10 +130,8 @@ class AudioStreamWorker:NSObject, AudioDataStreamable {
             var request = URLRequest(url: url)
             HTTPHeaderFields?.forEach { request.setValue($1, forHTTPHeaderField: $0) }
             task = session.dataTask(with: request)
-            
-            task?.resume()
-            
             task?.taskDescription = id
+            task?.resume()
         }
     }
     
@@ -324,6 +322,7 @@ extension AudioStreamWorker: URLSessionDataDelegate {
             Log.monitor("\(task.currentRequest?.url?.absoluteString ?? "nil url") error: \(err.localizedDescription)")
             
             let _ = doneCallback(id, err)
+            return
         }
         
         let shouldSave = doneCallback(id, nil)

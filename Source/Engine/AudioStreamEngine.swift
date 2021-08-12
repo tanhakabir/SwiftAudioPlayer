@@ -329,7 +329,13 @@ class AudioStreamEngine: AudioEngine {
     }
     
     override func invalidate() {
+        queue.sync { [weak self] in
+            self?.invalidateHelperDispatchQueue()
+            self?.converter.invalidate()
+        }
+    }
+
+    private func invalidateHelperDispatchQueue() {
         super.invalidate()
-        converter.invalidate()
     }
 }

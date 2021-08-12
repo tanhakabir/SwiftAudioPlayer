@@ -102,6 +102,8 @@ class AudioEngine: AudioEngineProtocol {
             AudioClockDirector.shared.changeInAudioBuffered(key, buffered: bufferedSeconds)
         }
     }
+
+    private var audioModifiers: [AVAudioUnit]?
     
     init(url: AudioURL, delegate:AudioEngineDelegate?, engineAudioFormat: AVAudioFormat) {
         self.key = url.key
@@ -115,35 +117,35 @@ class AudioEngine: AudioEngineProtocol {
     
     func initHelper(_ engineAudioFormat: AVAudioFormat) {
         engine.attach(playerNode)
-        
-        for node in SAPlayer.shared.audioModifiers {
-            engine.attach(node)
-        }
-        
-        if SAPlayer.shared.audioModifiers.count > 0 {
-            var i = 0
-            
-            let node = SAPlayer.shared.audioModifiers[i]
-            engine.connect(playerNode, to: node, format: engineAudioFormat)
-            
-            i += 1
-            
-            while i < SAPlayer.shared.audioModifiers.count {
-                let lastNode = SAPlayer.shared.audioModifiers[i - 1]
-                let currNode = SAPlayer.shared.audioModifiers[i]
-                
-                engine.connect(lastNode, to: currNode, format: engineAudioFormat)
-                i += 1
-            }
-            
-            let finalNode = SAPlayer.shared.audioModifiers[SAPlayer.shared.audioModifiers.count - 1]
-            
-            engine.connect(finalNode, to: engine.mainMixerNode, format: engineAudioFormat)
-        } else {
+        audioModifiers = SAPlayer.shared.audioModifiers
+
+        defer { engine.prepare() }
+
+        guard let audioModifiers = audioModifiers, audioModifiers.count > 0 else {
             engine.connect(playerNode, to: engine.mainMixerNode, format: engineAudioFormat)
+            return
         }
         
-        engine.prepare()
+        audioModifiers.forEach { engine.attach($0) }
+        
+        var i = 0
+
+        let node = audioModifiers[i]
+        engine.connect(playerNode, to: node, format: engineAudioFormat)
+
+        i += 1
+
+        while i < audioModifiers.count {
+            let lastNode = audioModifiers[i - 1]
+            let currNode = audioModifiers[i]
+
+            engine.connect(lastNode, to: currNode, format: engineAudioFormat)
+            i += 1
+        }
+
+        let finalNode = audioModifiers[audioModifiers.count - 1]
+
+        engine.connect(finalNode, to: engine.mainMixerNode, format: engineAudioFormat)
     }
     
     deinit {
@@ -231,5 +233,9 @@ class AudioEngine: AudioEngineProtocol {
     func invalidate() {
         playerNode.stop()
         engine.stop()
+
+        if let audioModifiers = audioModifiers, audioModifiers.count > 0 {
+            audioModifiers.forEach { engine.detach($0) }
+        }
     }
 }

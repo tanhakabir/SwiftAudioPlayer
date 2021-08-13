@@ -131,5 +131,28 @@ extension SAPlayer {
                 timer?.invalidate()
             }
         }
+        
+        public struct Loop {
+            static var enabled: Bool = false
+            static var playingStatusId: UInt?
+            
+            public static func enable() {
+                enabled = true
+                
+                guard playingStatusId == nil else { return }
+                
+                playingStatusId = SAPlayer.Updates.PlayingStatus.subscribe({ (url, status) in
+                    if status == .ended && enabled {
+                        SAPlayer.shared.seekTo(seconds: 0.0)
+                        SAPlayer.shared.play()
+                    }
+                })
+            }
+            
+            public static func disable() {
+                enabled = false
+            }
+            
+        }
     }
 }

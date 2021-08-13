@@ -74,11 +74,17 @@ class AudioStreamEngine: AudioEngine {
         didSet {
             Log.debug("number of buffers scheduled in total: \(numberOfBuffersScheduledInTotal)")
             if numberOfBuffersScheduledInTotal == 0 {
+                if playingStatus == .playing { wasPlaying = true }
                 pause()
                 //                delegate?.didError()
                 // TODO: we should not have an error here. We should instead have the throttler
                 // propegate when it doesn't enough buffers while they were playing
                 // TODO: "Make this a legitimate warning to user about needing more data from stream"
+            }
+            
+            if numberOfBuffersScheduledInTotal > MIN_BUFFERS_TO_BE_PLAYABLE && wasPlaying {
+                wasPlaying = false
+                play()
             }
         }
     }
@@ -164,7 +170,6 @@ class AudioStreamEngine: AudioEngine {
         
         doRepeatedly(timeInterval: timeInterval) { [weak self] in
             guard let self = self else { return }
-            guard self.playingStatus != .ended else { return }
             
             self.repeatedUpdates()
         }

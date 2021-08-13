@@ -45,6 +45,7 @@ class AudioEngine: AudioEngineProtocol {
     
     var engine: AVAudioEngine!
     var playerNode: AVAudioPlayerNode!
+    private var engineInvalidated: Bool = false
     
     static let defaultEngineAudioFormat: AVAudioFormat = AVAudioFormat(commonFormat: .pcmFormatFloat32, sampleRate: 44100, channels: 2, interleaved: false)!
     
@@ -175,7 +176,7 @@ class AudioEngine: AudioEngineProtocol {
         
         Timer.scheduledTimer(withTimeInterval: timeInterval, repeats: false) { [weak self] (timer: Timer) in
             guard let self = self else { return }
-            guard self.playingStatus != .ended else {
+            guard !self.engineInvalidated else {
                 self.delegate = nil
                 return
             }
@@ -196,8 +197,6 @@ class AudioEngine: AudioEngineProtocol {
         
         let isPlaying = engine.isRunning && playerNode.isPlaying
         playingStatus = isPlaying ? .playing : .paused
-        
-//        playingStatus = .paused
     }
     
     func play() {
@@ -233,6 +232,7 @@ class AudioEngine: AudioEngineProtocol {
     }
     
     func invalidate() {
+        engineInvalidated = true
         playerNode.stop()
         engine.stop()
 

@@ -533,22 +533,22 @@ extension SAPlayer {
 
 //MARK: - Internal implementation of delegate
 extension SAPlayer: SAPlayerDelegate {
-    func startAudioDownloaded(withSavedUrl url: AudioURL) {
+    internal func startAudioDownloaded(withSavedUrl url: AudioURL) {
         player = AudioDiskEngine(withSavedUrl: url, delegate: presenter)
     }
     
-    func startAudioStreamed(withRemoteUrl url: AudioURL, bitrate: SAPlayerBitrate) {
+    internal func startAudioStreamed(withRemoteUrl url: AudioURL, bitrate: SAPlayerBitrate) {
         player = AudioStreamEngine(withRemoteUrl: url, delegate: presenter, bitrate: bitrate)
     }
     
-    func clearEngine() {
+    internal func clearEngine() {
         player?.pause()
         player?.invalidate()
         player = nil
         Log.info("cleared engine")
     }
     
-    func playEngine() {
+    internal func playEngine() {
         becomeDeviceAudioPlayer()
         player?.play()
     }
@@ -567,11 +567,11 @@ extension SAPlayer: SAPlayerDelegate {
         }
     }
     
-    func pauseEngine() {
+    internal func pauseEngine() {
         player?.pause()
     }
     
-    func seekEngine(toNeedle needle: Needle) {
+    internal func seekEngine(toNeedle needle: Needle) {
         var seekToNeedle = needle < 0 ? 0 : needle
         seekToNeedle = needle > Needle(duration ?? 0) ? Needle(duration ?? 0) : needle
         player?.seek(toNeedle: seekToNeedle)

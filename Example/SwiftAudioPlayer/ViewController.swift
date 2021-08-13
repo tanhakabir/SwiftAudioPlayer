@@ -214,7 +214,7 @@ class ViewController: UIViewController {
                 self.playPauseButton.setTitle("Loading", for: .normal)
                 return
             case .ended:
-                if(!self.loopEnabled) {
+                if !self.loopEnabled {
                     self.isPlayable = false
                     self.playPauseButton.setTitle("Done", for: .normal)
                 }

@@ -161,7 +161,7 @@ class AudioConverter: AudioConvertable {
         guard let audioPacketIndex = getPacketIndex(forNeedle: needle) else {
             return
         }
-        Log.test("didSeek to packet index: \(audioPacketIndex)")
+        Log.info("didSeek to packet index: \(audioPacketIndex)")
         queue.sync {
             currentAudioPacketIndex = audioPacketIndex
             parser.tellSeek(toIndex: audioPacketIndex)

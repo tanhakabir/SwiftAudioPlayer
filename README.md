@@ -25,6 +25,7 @@ Thus, using [AudioToolbox](https://developer.apple.com/documentation/audiotoolbo
 These are community supported audio manipulation features using this audio engine. You can implement your own version of these features and you can look at [SAPlayerFeatures](https://github.com/tanhakabir/SwiftAudioPlayer/blob/master/Source/SAPlayerFeatures.swift) to learn how they were implemented using the library.
 1. Skip silences in audio
 1. Sleep timer to stop playing audio after a delay
+1. Loop audio playback for both streamed and saved audio
 
 ### Requirements
 

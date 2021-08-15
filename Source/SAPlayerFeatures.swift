@@ -132,10 +132,16 @@ extension SAPlayer {
             }
         }
         
+        /**
+         Feature to play the current playing audio on repeat until feature is disabled.
+         */
         public struct Loop {
             static var enabled: Bool = false
             static var playingStatusId: UInt?
             
+            /**
+             Enable feature to play the current playing audio on loop. This will continue until the feature is disabled. And this feature works for both remote and saved audio.
+             */
             public static func enable() {
                 enabled = true
                 
@@ -149,6 +155,9 @@ extension SAPlayer {
                 })
             }
             
+            /**
+             Disable feature playing audio on loop.
+             */
             public static func disable() {
                 enabled = false
             }

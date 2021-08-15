@@ -109,6 +109,23 @@ class SAPlayerPresenter {
         audioQueue.append(QueueItem(loc: .disk, url: url, mediaInfo: mediaInfo))
     }
     
+    func handleRemoveFirstQueuedItem() -> URL? {
+        guard audioQueue.count != 0 else { return nil }
+        
+        return audioQueue.remove(at: 0).url
+    }
+    
+    func handleClearQueued() -> [URL] {
+        guard audioQueue.count != 0 else { return [] }
+        
+        let urls = audioQueue.map { item in
+            return item.url
+        }
+        
+        audioQueue = []
+        return urls
+    }
+    
     private func attachForUpdates(url: URL) {
         detachFromUpdates()
         

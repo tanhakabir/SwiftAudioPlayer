@@ -513,13 +513,32 @@ extension SAPlayer {
     }
     
     /**
-     Queues saved audio to be played next. The URLs in the queuecan be both remote or on disk but once the queued audio starts playing it will start buffering and loading then. This means no guarantee for a 'gapless' playback where there might be several moments in between one audio ending and another starting due to buffering remote audio.
+     Queues saved audio to be played next. The URLs in the queue can be both remote or on disk but once the queued audio starts playing it will start buffering and loading then. This means no guarantee for a 'gapless' playback where there might be several moments in between one audio ending and another starting due to buffering remote audio.
      
      - Parameter withSavedUrl: The URL of the audio saved on the device.
      - Parameter mediaInfo: The media information of the audio to show on the lockscreen media player (optional).
      */
     public func queueSavedAudio(withSavedUrl url: URL, mediaInfo: SALockScreenInfo? = nil) {
         presenter.handleQueueSavedAudio(withSavedUrl: url, mediaInfo: mediaInfo)
+    }
+    
+    /**
+     Remove the first queued audio if one exists. Receive the first URL removed back.
+     
+     - Returns the URL of the removed audio.
+     */
+    public func removeFirstQueuedAudio() -> URL? {
+        guard audioQueued.count != 0 else { return nil }
+        return presenter.handleRemoveFirstQueuedItem()
+    }
+    
+    /**
+     Remove the first queued audio if one exists. Receive the first URL removed back.
+     
+     - Returns the URL of the removed audio.
+     */
+    public func clearAllQueuedAudio() -> [URL] {
+        return presenter.handleClearQueued()
     }
     
     /**

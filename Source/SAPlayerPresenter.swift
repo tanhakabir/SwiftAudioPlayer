@@ -73,6 +73,7 @@ class SAPlayerPresenter {
         mediaInfo = nil
         delegate?.clearLockScreenInfo()
         
+        AudioClockDirector.shared.clear()
         AudioClockDirector.shared.detachFromChangesInDuration(withID: durationRef)
         AudioClockDirector.shared.detachFromChangesInNeedle(withID: needleRef)
         AudioClockDirector.shared.detachFromChangesInPlayingStatus(withID: playingStatusRef)

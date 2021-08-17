@@ -30,10 +30,12 @@ protocol AudioDataManagable {
     var numberOfActive: Int { get }
     
     var allowCellular: Bool { get set }
+    var downloadDirectory: FileManager.SearchPathDirectory { get }
     
     func setHTTPHeaderFields(_ fields: [String: String]?)
     func setBackgroundCompletionHandler(_ completionHandler: @escaping () -> ())
     func setAllowCellularDownloadPreference(_ preference: Bool)
+    func setDownloadDirectory(_ dir: FileManager.SearchPathDirectory)
     
     func clear()
     
@@ -54,6 +56,7 @@ protocol AudioDataManagable {
 
 class AudioDataManager: AudioDataManagable {
     var allowCellular: Bool = true
+    var downloadDirectory: FileManager.SearchPathDirectory = .documentDirectory
     
     static let shared: AudioDataManagable = AudioDataManager()
     
@@ -108,6 +111,10 @@ class AudioDataManager: AudioDataManagable {
     
     func setAllowCellularDownloadPreference(_ preference: Bool) {
         allowCellular = preference
+    }
+    
+    func setDownloadDirectory(_ dir: FileManager.SearchPathDirectory) {
+        downloadDirectory = dir
     }
     
     func attach(callback: @escaping (_ id: ID, _ progress: Double)->()) {

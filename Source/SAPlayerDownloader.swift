@@ -109,5 +109,14 @@ extension SAPlayer {
                 AudioDataManager.shared.setAllowCellularDownloadPreference(allowUsingCellularData)
             }
         }
+        
+        /**
+         EXPERIMENTAL!
+         */
+        public static var downloadDirectory: FileManager.SearchPathDirectory = .documentDirectory {
+            didSet {
+                AudioDataManager.shared.setDownloadDirectory(downloadDirectory)
+            }
+        }
     }
 }

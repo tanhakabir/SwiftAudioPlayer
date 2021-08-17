@@ -9,7 +9,7 @@ import Foundation
 
 class AudioQueueDirector {
     static let shared = AudioQueueDirector()
-    var closures: DirectorThreadSafeClosuresDeprecated<URL> = DirectorThreadSafeClosuresDeprecated()
+    var closures: DirectorThreadSafeClosures<URL> = DirectorThreadSafeClosures()
     private init() {}
 
     func create() {}
@@ -18,7 +18,7 @@ class AudioQueueDirector {
         closures.clear()
     }
 
-    func attach(closure: @escaping (Key, URL) throws -> Void) -> UInt {
+    func attach(closure: @escaping (URL) throws -> Void) -> UInt {
         return closures.attach(closure: closure)
     }
 
@@ -26,7 +26,7 @@ class AudioQueueDirector {
         closures.detach(id: id)
     }
     
-    func changeInQueue(_ key: Key, url: URL) {
-        closures.broadcast(key: key, payload: url)
+    func changeInQueue(url: URL) {
+        closures.broadcast(payload: url)
     }
 }

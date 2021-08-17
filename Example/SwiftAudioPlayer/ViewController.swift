@@ -214,7 +214,7 @@ class ViewController: UIViewController {
             }
         }
         
-        queueId = SAPlayer.Updates.AudioQueue.subscribe { [weak self] key, forthcomingPlaybackUrl in
+        queueId = SAPlayer.Updates.AudioQueue.subscribe { [weak self] forthcomingPlaybackUrl in
             guard let self = self else { return }
             /// we update the selected audio. this is a little contrived, but allows us to update outlets
             if let indexFound = self.selectedAudio.getIndex(forURL: forthcomingPlaybackUrl) {

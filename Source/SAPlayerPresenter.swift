@@ -75,6 +75,7 @@ class SAPlayerPresenter {
             
             // solves bug nil == owningEngine || GetEngine() == owningEngine where too many
             // ended statuses were notified to cause 2 engines to be initialized and causes an error.
+            // TODO don't need guard
             guard isPlaying != self.isPlaying else { return }
             self.isPlaying = isPlaying
             
@@ -219,11 +220,9 @@ extension SAPlayerPresenter {
             return
         }
         let nextAudioURL = audioQueue.removeFirst()
-        let key = nextAudioURL.url.key
-        
 
         Log.info("getting ready to play \(nextAudioURL)")
-        AudioQueueDirector.shared.changeInQueue(key, url: nextAudioURL.url)
+        AudioQueueDirector.shared.changeInQueue(url: nextAudioURL.url)
         
         handleClear()
         

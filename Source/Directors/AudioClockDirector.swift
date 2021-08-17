@@ -47,7 +47,6 @@ class AudioClockDirector {
     }
     
     func resetCache() {
-        currentAudioKey = nil
         needleClosures.resetCache()
         durationClosures.resetCache()
         playingStatusClosures.resetCache()

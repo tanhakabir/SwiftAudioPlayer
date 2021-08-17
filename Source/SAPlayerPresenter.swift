@@ -118,8 +118,8 @@ class SAPlayerPresenter {
         self.key = url.key
         urlKeyMap[url.key] = url
         
-        AudioClockDirector.shared.resetCache()
         AudioClockDirector.shared.setKey(url.key)
+        AudioClockDirector.shared.resetCache()
     }
     
     func handleQueueStreamedAudio(withRemoteUrl url: URL, mediaInfo: SALockScreenInfo?, bitrate: SAPlayerBitrate) {

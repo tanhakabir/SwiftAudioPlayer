@@ -114,27 +114,14 @@ class ViewController: UIViewController {
         selectedAudio.setIndex(i)
         
         if selectedAudio.savedUrl != nil {
+            downloadButton.isEnabled = true
             downloadButton.setTitle("Delete downloaded", for: .normal)
             streamButton.isEnabled = false
         } else {
+            downloadButton.isEnabled = true
             downloadButton.setTitle("Download", for: .normal)
             streamButton.isEnabled = true
         }
-        
-        if let savedUrl = selectedAudio.savedUrl {
-            self.currentUrlLocationLabel.text = "saved url: \(savedUrl.absoluteString)"
-        } else {
-            self.currentUrlLocationLabel.text = "remote url: \(selectedAudio.url.absoluteString)"
-        }
-        
-        //        if let savedUrl = savedUrls[selectedAudio] {}
-        scrubberSlider.value = 0
-        bufferProgress.progress = 0
-        
-//        unsubscribeFromChanges()
-//        subscribeToChanges()
-        
-        SAPlayer.shared.mediaInfo = SALockScreenInfo(title: selectedAudio.title, artist: selectedAudio.artist, albumTitle: nil, artwork: UIImage(), releaseDate: selectedAudio.releaseDate)
     }
     
     func checkIfAudioDownloaded() {
@@ -146,16 +133,14 @@ class ViewController: UIViewController {
     }
     
     func subscribeToChanges() {
-        durationId = SAPlayer.Updates.Duration.subscribe { [weak self] (url, duration) in
+        durationId = SAPlayer.Updates.Duration.subscribe { [weak self] (duration) in
             guard let self = self else { return }
-            guard url == self.selectedAudio.savedUrl || url == self.selectedAudio.url else { return }
             self.durationLabel.text = SAPlayer.prettifyTimestamp(duration)
             self.duration = duration
         }
         
-        elapsedId = SAPlayer.Updates.ElapsedTime.subscribe { [weak self] (url, position) in
+        elapsedId = SAPlayer.Updates.ElapsedTime.subscribe { [weak self] (position) in
             guard let self = self else { return }
-            guard url == self.selectedAudio.savedUrl || url == self.selectedAudio.url else { return }
             
             self.currentTimestampLabel.text = SAPlayer.prettifyTimestamp(position)
             
@@ -177,11 +162,8 @@ class ViewController: UIViewController {
             }
         }
         
-        bufferId = SAPlayer.Updates.StreamingBuffer.subscribe{ [weak self] (url, buffer) in
+        bufferId = SAPlayer.Updates.StreamingBuffer.subscribe{ [weak self] (buffer) in
             guard let self = self else { return }
-            guard url == self.selectedAudio.savedUrl || url == self.selectedAudio.url else { return }
-            
-            if self.duration == 0.0 { return }
             
             self.bufferProgress.progress = Float(buffer.bufferingProgress)
             
@@ -194,9 +176,8 @@ class ViewController: UIViewController {
             self.isPlayable = buffer.isReadyForPlaying
         }
         
-        playingStatusId = SAPlayer.Updates.PlayingStatus.subscribe { [weak self] (url, playing) in
+        playingStatusId = SAPlayer.Updates.PlayingStatus.subscribe { [weak self] (playing) in
             guard let self = self else { return }
-            guard url == self.selectedAudio.savedUrl || url == self.selectedAudio.url else { return }
             
             self.playbackStatus = playing
             
@@ -222,13 +203,14 @@ class ViewController: UIViewController {
             }
         }
         
-        queueId = SAPlayer.Updates.AudioQueue.subscribe { [weak self] key, forthcomingPlaybackUrl in
+        queueId = SAPlayer.Updates.AudioQueue.subscribe { [weak self] forthcomingPlaybackUrl in
             guard let self = self else { return }
             /// we update the selected audio. this is a little contrived, but allows us to update outlets
             if let indexFound = self.selectedAudio.getIndex(forURL: forthcomingPlaybackUrl) {
                 self.selectAudio(atIndex: indexFound)
             }
-            print("💥 Received queue update 💥")
+            
+            self.currentUrlLocationLabel.text = "\(forthcomingPlaybackUrl.absoluteString)"
         }
     }
     
@@ -303,9 +285,6 @@ class ViewController: UIViewController {
                     DispatchQueue.main.async {
                         self.currentUrlLocationLabel.text = "saved to: \(url.lastPathComponent)"
                         self.selectedAudio.addSavedUrl(url)
-                        
-                        SAPlayer.shared.startSavedAudio(withSavedUrl: url, mediaInfo: self.selectedAudio.lockscreenInfo)
-                        self.lastPlayedAudioIndex = self.selectedAudio.index
                     }
                 })
                 streamButton.isEnabled = false
@@ -320,6 +299,7 @@ class ViewController: UIViewController {
     
     @IBAction func streamTouched(_ sender: Any) {
         if !isStreaming {
+            self.currentUrlLocationLabel.text = "remote url: \(selectedAudio.url.absoluteString)"
             if selectedAudio.index == 2 { // radio
                 SAPlayer.shared.startRemoteAudio(withRemoteUrl: selectedAudio.url, bitrate: .low, mediaInfo: selectedAudio.lockscreenInfo)
             } else {

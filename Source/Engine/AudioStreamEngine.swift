@@ -157,9 +157,11 @@ class AudioStreamEngine: AudioEngine {
             delegate?.didError()
         }
         
-        streamChangeListenerId = StreamingDownloadDirector.shared.attach { [weak self] (key, progress) in
+        StreamingDownloadDirector.shared.setKey(key)
+        StreamingDownloadDirector.shared.resetCache()
+        
+        streamChangeListenerId = StreamingDownloadDirector.shared.attach { [weak self] (progress) in
             guard let self = self else { return }
-            guard key == url.key else { return }
 
             // polling for buffers when we receive data. This won't be throttled on fresh new audio or seeked audio but in all other cases it most likely will be throttled
             self.pollForNextBuffer() //  no buffer updates because thread issues if I try to update buffer status in streaming listener

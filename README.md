@@ -78,13 +78,10 @@ To receive streaming progress (for buffer progress %):
 override func viewDidLoad() {
     super.viewDidLoad()
     
-    _ = SAPlayer.Updates.StreamingBuffer.subscribe{ [weak self] (url, buffer) in
+    _ = SAPlayer.Updates.StreamingBuffer.subscribe{ [weak self] buffer in
         guard let self = self else { return }
-        guard url == self.selectedAudioUrl else { return }
 
-        let progress = Float((buffer.totalDurationBuffered + buffer.startingBufferTimePositon) / self.duration)
-
-        self.bufferProgress.progress = progress
+        self.bufferProgress.progress = Float(buffer.bufferingProgress)
 
         self.isPlayable = buffer.isReadyForPlaying
     }
@@ -167,6 +164,8 @@ To queue:
 SAPlayer.shared.queueSavedAudio(withSavedUrl: C://random_folder/audio.mp3) // or
 SAPlayer.shared.queueRemoteAudio(withRemoteUrl: https://randomwebsite.com/audio.mp3)
 ```
+
+You can also directly access and modify the queue from `SAPlayer.shared.audioQueued`.
 
 #### Important
 
@@ -257,13 +256,15 @@ Receive updates for changing values from the player, such as the duration, elaps
 
 All subscription functions for updates take the form of:
 ```swift
-func subscribe(_ closure: @escaping (_ url: URL, _ payload:  <Payload>) -> ()) -> UInt
+func subscribe(_ closure: @escaping (_ payload:  <Payload>) -> ()) -> UInt
 ```
 
 - `closure`: The closure that will receive the updates. It's recommended to have a weak reference to a class that uses these functions.
-- `url`: The corresponding remote URL for the update. In the case there might be multiple files observed, such as downloading many files at once or switching over from playing one audio to another and the updates corresponding to the previous aren't silenced on switch-over.
 - `payload`: The updated value.
 - Returns: the id for the subscription in the case you would like to unsubscribe to updates for the closure.
+
+Sometimes there is:
+- `url`: The corresponding remote URL for the update. In the case there might be multiple files observed, such as downloading many files at once.
 
 Similarily unsubscribe takes the form of: 
 ```swift
@@ -301,6 +302,11 @@ For progress of downloading audio that saves to the phone for playback later, lo
 Payload = `Double`
 
 Changes in the progress of downloading audio in the background. This does not correspond to progress in streaming downloads, look at StreamingBuffer for streaming progress.
+
+### AudioQueue
+Payload = `URL`
+
+Notification of the URL of the upcoming audio to be played. This URL may be remote or locally saved.
 
 ## Audio Effects
 

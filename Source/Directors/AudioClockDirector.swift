@@ -68,6 +68,7 @@ class AudioClockDirector {
     // MARK: - Attaches
     
     // Needle
+    @available(*, deprecated, message: "Use subscribe without key in the closure for current audio updates")
     func attachToChangesInNeedle(closure: @escaping (Key, Needle) throws -> Void) -> UInt {
         return depNeedleClosures.attach(closure: closure)
     }
@@ -78,6 +79,7 @@ class AudioClockDirector {
     
     
     // Duration
+    @available(*, deprecated, message: "Use subscribe without key in the closure for current audio updates")
     func attachToChangesInDuration(closure: @escaping (Key, Duration) throws -> Void) -> UInt {
         return depDurationClosures.attach(closure: closure)
     }
@@ -88,6 +90,7 @@ class AudioClockDirector {
     
     
     // Playing status
+    @available(*, deprecated, message: "Use subscribe without key in the closure for current audio updates")
     func attachToChangesInPlayingStatus(closure: @escaping (Key, SAPlayingStatus) throws -> Void) -> UInt{
         return depPlayingStatusClosures.attach(closure: closure)
     }
@@ -98,6 +101,7 @@ class AudioClockDirector {
     
     
     // Buffer
+    @available(*, deprecated, message: "Use subscribe without key in the closure for current audio updates")
     func attachToChangesInBufferedRange(closure: @escaping (Key, SAAudioAvailabilityRange) throws -> Void) -> UInt{
         return depBufferClosures.attach(closure: closure)
     }

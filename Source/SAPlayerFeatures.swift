@@ -147,7 +147,7 @@ extension SAPlayer {
                 
                 guard playingStatusId == nil else { return }
                 
-                playingStatusId = SAPlayer.Updates.PlayingStatus.subscribe({ (url, status) in
+                playingStatusId = SAPlayer.Updates.PlayingStatus.subscribe({ (status) in
                     if status == .ended && enabled {
                         SAPlayer.shared.seekTo(seconds: 0.0)
                         SAPlayer.shared.play()

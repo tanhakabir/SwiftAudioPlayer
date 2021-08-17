@@ -28,25 +28,6 @@ import AVFoundation
 import MediaPlayer
 
 class SAPlayerPresenter {
-    struct QueueItem {
-        var loc: Location
-        var url: URL
-        var mediaInfo: SALockScreenInfo?
-        var bitrate: SAPlayerBitrate
-        
-        init(loc: Location, url: URL, mediaInfo: SALockScreenInfo?, bitrate: SAPlayerBitrate = .high) {
-            self.loc = loc
-            self.url = url
-            self.mediaInfo = mediaInfo
-            self.bitrate = bitrate
-        }
-    }
-    
-    enum Location {
-        case remote
-        case disk
-    }
-    
     weak var delegate: SAPlayerDelegate?
     var shouldPlayImmediately = false //for auto-play
     
@@ -61,7 +42,7 @@ class SAPlayerPresenter {
     var durationRef:UInt = 0
     var needleRef:UInt = 0
     var playingStatusRef:UInt = 0
-    var audioQueue: [QueueItem] = []
+    var audioQueue: [SAAudioQueueItem] = []
     
     init(delegate: SAPlayerDelegate?) {
         self.delegate = delegate
@@ -102,11 +83,11 @@ class SAPlayerPresenter {
     }
     
     func handleQueueStreamedAudio(withRemoteUrl url: URL, mediaInfo: SALockScreenInfo?, bitrate: SAPlayerBitrate) {
-        audioQueue.append(QueueItem(loc: .remote, url: url, mediaInfo: mediaInfo, bitrate: bitrate))
+        audioQueue.append(SAAudioQueueItem(loc: .remote, url: url, mediaInfo: mediaInfo, bitrate: bitrate))
     }
     
     func handleQueueSavedAudio(withSavedUrl url: URL, mediaInfo: SALockScreenInfo?) {
-        audioQueue.append(QueueItem(loc: .disk, url: url, mediaInfo: mediaInfo))
+        audioQueue.append(SAAudioQueueItem(loc: .saved, url: url, mediaInfo: mediaInfo))
     }
     
     func handleRemoveFirstQueuedItem() -> URL? {
@@ -273,7 +254,7 @@ extension SAPlayerPresenter {
             case .remote:
                 self.handlePlayStreamedAudio(withRemoteUrl: nextAudioURL.url, bitrate: nextAudioURL.bitrate)
                 break
-            case .disk:
+            case .saved:
                 self.handlePlaySavedAudio(withSavedUrl: nextAudioURL.url)
             }
             

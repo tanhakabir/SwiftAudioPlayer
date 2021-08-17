@@ -180,15 +180,9 @@ public class SAPlayer {
     public var audioModifiers: [AVAudioUnit] = []
     
     /**
-     List of audio URLs queued for playback.
+     List of queued audio for playback. You can edit this list as you wish to modify the queue.
      */
-    public var audioQueued: [URL] {
-        get {
-            return presenter.audioQueue.map { (queued) -> URL in
-                return queued.url
-            }
-        }
-    }
+    public var audioQueued: [SAAudioQueueItem] = []
     
     /**
      Total duration of current audio initialized. Returns nil if no audio is initialized in player.

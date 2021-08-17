@@ -48,7 +48,7 @@
 		A470FE2125F9AF1400F135FF /* AudioQueue.swift in Sources */ = {isa = PBXBuildFile; fileRef = A470FE2025F9AF1400F135FF /* AudioQueue.swift */; };
 		A4827771262A216C00B6918A /* StreamingDownloadDirector.swift in Sources */ = {isa = PBXBuildFile; fileRef = A4827770262A216C00B6918A /* StreamingDownloadDirector.swift */; };
 		A4B4CC122223ED2A0045554B /* SAPlayerDownloader.swift in Sources */ = {isa = PBXBuildFile; fileRef = A4B4CC112223ED2A0045554B /* SAPlayerDownloader.swift */; };
-		A4FBA6B5221B74C900D5A353 /* SALockScreenInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = A4FBA6B3221B74C900D5A353 /* SALockScreenInfo.swift */; };
+		A4FBA6B5221B74C900D5A353 /* SAPlayerHelpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = A4FBA6B3221B74C900D5A353 /* SAPlayerHelpers.swift */; };
 		A4FBA6B7221BAC3D00D5A353 /* SAPlayerUpdateSubscription.swift in Sources */ = {isa = PBXBuildFile; fileRef = A4FBA6B6221BAC3D00D5A353 /* SAPlayerUpdateSubscription.swift */; };
 		A4FBA6B9221BAF8700D5A353 /* SAAudioAvailabilityRange.swift in Sources */ = {isa = PBXBuildFile; fileRef = A4FBA6B8221BAF8700D5A353 /* SAAudioAvailabilityRange.swift */; };
 		E08AD6157EF688FE832F866CBCDA3532 /* SwiftAudioPlayer-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = FB83B3B4253D41C37C5563D34D450BF8 /* SwiftAudioPlayer-dummy.m */; };
@@ -134,7 +134,7 @@
 		A470FE2025F9AF1400F135FF /* AudioQueue.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioQueue.swift; sourceTree = "<group>"; };
 		A4827770262A216C00B6918A /* StreamingDownloadDirector.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StreamingDownloadDirector.swift; sourceTree = "<group>"; };
 		A4B4CC112223ED2A0045554B /* SAPlayerDownloader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SAPlayerDownloader.swift; sourceTree = "<group>"; };
-		A4FBA6B3221B74C900D5A353 /* SALockScreenInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SALockScreenInfo.swift; sourceTree = "<group>"; };
+		A4FBA6B3221B74C900D5A353 /* SAPlayerHelpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SAPlayerHelpers.swift; sourceTree = "<group>"; };
 		A4FBA6B6221BAC3D00D5A353 /* SAPlayerUpdateSubscription.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SAPlayerUpdateSubscription.swift; sourceTree = "<group>"; };
 		A4FBA6B8221BAF8700D5A353 /* SAAudioAvailabilityRange.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SAAudioAvailabilityRange.swift; sourceTree = "<group>"; };
 		AB41D88A2C694FBDF26EA56381EED25F /* Pods-SwiftAudioPlayer_Example-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "Pods-SwiftAudioPlayer_Example-dummy.m"; sourceTree = "<group>"; };
@@ -342,7 +342,7 @@
 		A4681FE2220117B50018AB51 /* Source */ = {
 			isa = PBXGroup;
 			children = (
-				A4FBA6B3221B74C900D5A353 /* SALockScreenInfo.swift */,
+				A4FBA6B3221B74C900D5A353 /* SAPlayerHelpers.swift */,
 				A4681F8D2200E00E0018AB51 /* SAPlayer.swift */,
 				A411CE4525F9609D0039E1CD /* SAPlayerFeatures.swift */,
 				A4FBA6B6221BAC3D00D5A353 /* SAPlayerUpdateSubscription.swift */,
@@ -526,7 +526,7 @@
 				A4681FCF220113A40018AB51 /* AudioConverterListener.swift in Sources */,
 				A4681FE1220113E70018AB51 /* Constants.swift in Sources */,
 				A40DBE292391D9CA00F86146 /* Data.swift in Sources */,
-				A4FBA6B5221B74C900D5A353 /* SALockScreenInfo.swift in Sources */,
+				A4FBA6B5221B74C900D5A353 /* SAPlayerHelpers.swift in Sources */,
 				A4681FC6220113880018AB51 /* SAPlayer.swift in Sources */,
 				A4FBA6B7221BAC3D00D5A353 /* SAPlayerUpdateSubscription.swift in Sources */,
 				A4681FC72201138B0018AB51 /* SAPlayerDelegate.swift in Sources */,

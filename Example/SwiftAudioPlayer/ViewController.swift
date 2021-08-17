@@ -114,23 +114,14 @@ class ViewController: UIViewController {
         selectedAudio.setIndex(i)
         
         if selectedAudio.savedUrl != nil {
+            downloadButton.isEnabled = true
             downloadButton.setTitle("Delete downloaded", for: .normal)
             streamButton.isEnabled = false
         } else {
+            downloadButton.isEnabled = true
             downloadButton.setTitle("Download", for: .normal)
             streamButton.isEnabled = true
         }
-        
-        if let savedUrl = selectedAudio.savedUrl {
-            self.currentUrlLocationLabel.text = "saved url: \(savedUrl.absoluteString)"
-        } else {
-            self.currentUrlLocationLabel.text = "remote url: \(selectedAudio.url.absoluteString)"
-        }
-        
-        scrubberSlider.value = 0
-        bufferProgress.progress = 0
-        
-        SAPlayer.shared.mediaInfo = SALockScreenInfo(title: selectedAudio.title, artist: selectedAudio.artist, albumTitle: nil, artwork: UIImage(), releaseDate: selectedAudio.releaseDate)
     }
     
     func checkIfAudioDownloaded() {
@@ -173,8 +164,6 @@ class ViewController: UIViewController {
         
         bufferId = SAPlayer.Updates.StreamingBuffer.subscribe{ [weak self] (buffer) in
             guard let self = self else { return }
-            
-            if self.duration == 0.0 { return }
             
             self.bufferProgress.progress = Float(buffer.bufferingProgress)
             
@@ -220,7 +209,8 @@ class ViewController: UIViewController {
             if let indexFound = self.selectedAudio.getIndex(forURL: forthcomingPlaybackUrl) {
                 self.selectAudio(atIndex: indexFound)
             }
-            print("💥 Received queue update 💥")
+            
+            self.currentUrlLocationLabel.text = "\(forthcomingPlaybackUrl.absoluteString)"
         }
     }
     
@@ -295,9 +285,6 @@ class ViewController: UIViewController {
                     DispatchQueue.main.async {
                         self.currentUrlLocationLabel.text = "saved to: \(url.lastPathComponent)"
                         self.selectedAudio.addSavedUrl(url)
-                        
-                        SAPlayer.shared.startSavedAudio(withSavedUrl: url, mediaInfo: self.selectedAudio.lockscreenInfo)
-                        self.lastPlayedAudioIndex = self.selectedAudio.index
                     }
                 })
                 streamButton.isEnabled = false
@@ -312,6 +299,7 @@ class ViewController: UIViewController {
     
     @IBAction func streamTouched(_ sender: Any) {
         if !isStreaming {
+            self.currentUrlLocationLabel.text = "remote url: \(selectedAudio.url.absoluteString)"
             if selectedAudio.index == 2 { // radio
                 SAPlayer.shared.startRemoteAudio(withRemoteUrl: selectedAudio.url, bitrate: .low, mediaInfo: selectedAudio.lockscreenInfo)
             } else {

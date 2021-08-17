@@ -135,6 +135,7 @@
 		A470FE1B25F9AEB900F135FF /* AudioQueueDirector.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioQueueDirector.swift; sourceTree = "<group>"; };
 		A470FE2025F9AF1400F135FF /* AudioQueue.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioQueue.swift; sourceTree = "<group>"; };
 		A4827770262A216C00B6918A /* StreamingDownloadDirector.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StreamingDownloadDirector.swift; sourceTree = "<group>"; };
+		A4883AC926CC25DE0073B8B6 /* CHANGELOG.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = CHANGELOG.md; sourceTree = "<group>"; };
 		A4B4CC112223ED2A0045554B /* SAPlayerDownloader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SAPlayerDownloader.swift; sourceTree = "<group>"; };
 		A4FBA6B3221B74C900D5A353 /* SAPlayerHelpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SAPlayerHelpers.swift; sourceTree = "<group>"; };
 		A4FBA6B6221BAC3D00D5A353 /* SAPlayerUpdateSubscription.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SAPlayerUpdateSubscription.swift; sourceTree = "<group>"; };
@@ -255,6 +256,7 @@
 			children = (
 				15DF3E7F1B5E10B1BBE49D3E9A67C938 /* LICENSE */,
 				B8C829A46249957CD3056074B5CC0BBB /* README.md */,
+				A4883AC926CC25DE0073B8B6 /* CHANGELOG.md */,
 				6EC04ECC8F7CB2AF2E4E042A6A8ECFA1 /* SwiftAudioPlayer.podspec */,
 				A4523BC8220A0B3C0079C4BC /* Credited_LICENSE */,
 			);

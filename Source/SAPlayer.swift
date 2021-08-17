@@ -527,9 +527,9 @@ extension SAPlayer {
     }
     
     /**
-     Remove the first queued audio if one exists. Receive the first URL removed back.
+     Clear the list of queued audio.
      
-     - Returns the URL of the removed audio.
+     - Returns the list of removed audio URLs
      */
     public func clearAllQueuedAudio() -> [URL] {
         return presenter.handleClearQueued()

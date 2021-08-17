@@ -9,7 +9,7 @@ import Foundation
 
 class AudioQueueDirector {
     static let shared = AudioQueueDirector()
-    var closures: DirectorThreadSafeClosures<URL> = DirectorThreadSafeClosures()
+    var closures: DirectorThreadSafeClosuresDeprecated<URL> = DirectorThreadSafeClosuresDeprecated()
     private init() {}
 
     func create() {}

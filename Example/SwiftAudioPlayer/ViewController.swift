@@ -127,12 +127,8 @@ class ViewController: UIViewController {
             self.currentUrlLocationLabel.text = "remote url: \(selectedAudio.url.absoluteString)"
         }
         
-        //        if let savedUrl = savedUrls[selectedAudio] {}
         scrubberSlider.value = 0
         bufferProgress.progress = 0
-        
-//        unsubscribeFromChanges()
-//        subscribeToChanges()
         
         SAPlayer.shared.mediaInfo = SALockScreenInfo(title: selectedAudio.title, artist: selectedAudio.artist, albumTitle: nil, artwork: UIImage(), releaseDate: selectedAudio.releaseDate)
     }
@@ -146,16 +142,14 @@ class ViewController: UIViewController {
     }
     
     func subscribeToChanges() {
-        durationId = SAPlayer.Updates.Duration.subscribe { [weak self] (url, duration) in
+        durationId = SAPlayer.Updates.Duration.subscribe { [weak self] (duration) in
             guard let self = self else { return }
-            guard url == self.selectedAudio.savedUrl || url == self.selectedAudio.url else { return }
             self.durationLabel.text = SAPlayer.prettifyTimestamp(duration)
             self.duration = duration
         }
         
-        elapsedId = SAPlayer.Updates.ElapsedTime.subscribe { [weak self] (url, position) in
+        elapsedId = SAPlayer.Updates.ElapsedTime.subscribe { [weak self] (position) in
             guard let self = self else { return }
-            guard url == self.selectedAudio.savedUrl || url == self.selectedAudio.url else { return }
             
             self.currentTimestampLabel.text = SAPlayer.prettifyTimestamp(position)
             
@@ -177,9 +171,8 @@ class ViewController: UIViewController {
             }
         }
         
-        bufferId = SAPlayer.Updates.StreamingBuffer.subscribe{ [weak self] (url, buffer) in
+        bufferId = SAPlayer.Updates.StreamingBuffer.subscribe{ [weak self] (buffer) in
             guard let self = self else { return }
-            guard url == self.selectedAudio.savedUrl || url == self.selectedAudio.url else { return }
             
             if self.duration == 0.0 { return }
             
@@ -194,9 +187,8 @@ class ViewController: UIViewController {
             self.isPlayable = buffer.isReadyForPlaying
         }
         
-        playingStatusId = SAPlayer.Updates.PlayingStatus.subscribe { [weak self] (url, playing) in
+        playingStatusId = SAPlayer.Updates.PlayingStatus.subscribe { [weak self] (playing) in
             guard let self = self else { return }
-            guard url == self.selectedAudio.savedUrl || url == self.selectedAudio.url else { return }
             
             self.playbackStatus = playing
             

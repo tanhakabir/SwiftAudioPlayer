@@ -27,7 +27,7 @@ import Foundation
 class StreamingDownloadDirector {
     static let shared = StreamingDownloadDirector()
     
-    var closures: DirectorThreadSafeClosures<Double> = DirectorThreadSafeClosures()
+    var closures: DirectorThreadSafeClosuresDeprecated<Double> = DirectorThreadSafeClosuresDeprecated()
     
     private init() {}
     

@@ -585,8 +585,7 @@ extension SAPlayer: SAPlayerDelegate {
     }
     
     internal func seekEngine(toNeedle needle: Needle) {
-        var seekToNeedle = needle < 0 ? 0 : needle
-        seekToNeedle = needle > Needle(duration ?? 0) ? Needle(duration ?? 0) : needle
+        let seekToNeedle = needle < 0 ? 0 : needle
         player?.seek(toNeedle: seekToNeedle)
     }
 }

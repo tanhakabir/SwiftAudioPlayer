@@ -239,5 +239,6 @@ class AudioEngine: AudioEngineProtocol {
         if let audioModifiers = audioModifiers, audioModifiers.count > 0 {
             audioModifiers.forEach { engine.detach($0) }
         }
+        Log.info("invalidated engine for key \(key)")
     }
 }

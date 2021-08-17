@@ -144,12 +144,15 @@ class SAPlayerPresenter {
                 return
             }
             
-            self.isPlaying = isPlaying
-            
-            if(self.isPlaying == .paused && self.shouldPlayImmediately) {
+            if(isPlaying == .paused && self.shouldPlayImmediately) {
                 self.shouldPlayImmediately = false
                 self.handlePlay()
             }
+            
+            // solves bug nil == owningEngine || GetEngine() == owningEngine where too many
+            // ended statuses were notified to cause 2 engines to be initialized and causes an error.
+            guard isPlaying != self.isPlaying else { return }
+            self.isPlaying = isPlaying
             
             if(self.isPlaying == .ended) {
                 self.playNextAudioIfExists()
@@ -246,19 +249,15 @@ extension SAPlayerPresenter {
         
         delegate?.mediaInfo = nextAudioURL.mediaInfo
         
-        // We need to give a second to clean up the previous engine properly. Deinit takes some time.
-        Timer.scheduledTimer(withTimeInterval: 1.0, repeats: false) { [weak self] (_) in
-            guard let self = self else { return }
-            
-            switch nextAudioURL.loc {
-            case .remote:
-                self.handlePlayStreamedAudio(withRemoteUrl: nextAudioURL.url, bitrate: nextAudioURL.bitrate)
-                break
-            case .saved:
-                self.handlePlaySavedAudio(withSavedUrl: nextAudioURL.url)
-            }
-            
-            self.shouldPlayImmediately = true
+        switch nextAudioURL.loc {
+        case .remote:
+            handlePlayStreamedAudio(withRemoteUrl: nextAudioURL.url, bitrate: nextAudioURL.bitrate)
+            break
+        case .saved:
+            handlePlaySavedAudio(withSavedUrl: nextAudioURL.url)
+            break
         }
+        
+        shouldPlayImmediately = true
     }
 }

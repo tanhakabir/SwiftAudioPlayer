@@ -171,7 +171,7 @@ You can also directly access and modify the queue from `SAPlayer.shared.audioQue
 
 The engine can handle audio manipulations like speed, pitch, effects, etc. To do this, nodes for effects must be finalized before initialize is called. Look at [audio manipulation documentation](#realtime-audio-manipulation) for more information.
 
-### Lockscreen Media Player
+### LockScreen Media Player
  
 Update and set what displays on the lockscreen's media player when the player is active. 
 

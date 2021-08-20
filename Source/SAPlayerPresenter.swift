@@ -46,13 +46,11 @@ class SAPlayerPresenter {
     
     init(delegate: SAPlayerDelegate?) {
         self.delegate = delegate
-        
-        delegate?.setLockScreenControls(presenter: self)
-        
+
         durationRef = AudioClockDirector.shared.attachToChangesInDuration(closure: { [weak self] (duration) in
             guard let self = self else { throw DirectorError.closureIsDead }
             
-            self.delegate?.updateLockscreenPlaybackDuration(duration: duration)
+            self.delegate?.updateLockScreenPlaybackDuration(duration: duration)
             self.duration = duration
             
             self.delegate?.setLockScreenInfo(withMediaInfo: self.delegate?.mediaInfo, duration: duration)
@@ -62,7 +60,7 @@ class SAPlayerPresenter {
             guard let self = self else { throw DirectorError.closureIsDead }
             
             self.needle = needle
-            self.delegate?.updateLockscreenElapsedTime(needle: needle)
+            self.delegate?.updateLockScreenElapsedTime(needle: needle)
         })
         
         playingStatusRef = AudioClockDirector.shared.attachToChangesInPlayingStatus(closure: { [weak self] (isPlaying) in
@@ -106,11 +104,13 @@ class SAPlayerPresenter {
     
     func handlePlaySavedAudio(withSavedUrl url: URL) {
         resetCacheForNewAudio(url: url)
+        delegate?.setLockScreenControls(presenter: self)
         delegate?.startAudioDownloaded(withSavedUrl: url)
     }
     
     func handlePlayStreamedAudio(withRemoteUrl url: URL, bitrate: SAPlayerBitrate) {
         resetCacheForNewAudio(url: url)
+        delegate?.setLockScreenControls(presenter: self)
         delegate?.startAudioStreamed(withRemoteUrl: url, bitrate: bitrate)
     }
     
@@ -156,16 +156,7 @@ class SAPlayerPresenter {
 //MARK:- Used by outside world including:
 // SPP, lock screen, directors
 extension SAPlayerPresenter {
-    func handlePause() {
-        delegate?.pauseEngine()
-        self.delegate?.updateLockscreenPaused()
-    }
-    
-    func handlePlay() {
-        delegate?.playEngine()
-        self.delegate?.updateLockscreenPlaying()
-    }
-    
+
     func handleTogglePlayingAndPausing() {
         if isPlaying == .playing {
             handlePause()
@@ -173,34 +164,45 @@ extension SAPlayerPresenter {
             handlePlay()
         }
     }
-    
-    func handleSkipForward() {
-        guard let forward = delegate?.skipForwardSeconds else { return }
-        handleSeek(toNeedle: (needle ?? 0) + forward)
+
+    func handleAudioRateChanged(rate: Float) {
+        delegate?.updateLockScreenChangePlaybackRate(speed: rate)
     }
     
+    func handleScrubbingIntervalsChanged() {
+        delegate?.updateLockScreenSkipIntervals()
+    }
+}
+
+//MARK:- For lock screen
+extension SAPlayerPresenter : LockScreenViewPresenter {
+    
+    func getIsPlaying() -> Bool {
+        return isPlaying == .playing
+    }
+
+    func handlePlay() {
+        delegate?.playEngine()
+        self.delegate?.updateLockScreenPlaying()
+    }
+
+    func handlePause() {
+        delegate?.pauseEngine()
+        self.delegate?.updateLockScreenPaused()
+    }
+
     func handleSkipBackward() {
         guard let backward = delegate?.skipForwardSeconds else { return }
         handleSeek(toNeedle: (needle ?? 0) - backward)
     }
     
+    func handleSkipForward() {
+        guard let forward = delegate?.skipForwardSeconds else { return }
+        handleSeek(toNeedle: (needle ?? 0) + forward)
+    }
+
     func handleSeek(toNeedle needle: Needle) {
         delegate?.seekEngine(toNeedle: needle)
-    }
-    
-    func handleAudioRateChanged(rate: Float) {
-        delegate?.updateLockscreenChangePlaybackRate(speed: rate)
-    }
-    
-    func handleScrubbingIntervalsChanged() {
-        delegate?.updateLockscreenSkipIntervals()
-    }
-}
-
-//MARK:- For lock screen
-extension SAPlayerPresenter {
-    func getIsPlaying() -> Bool {
-        return isPlaying == .playing
     }
 }
 

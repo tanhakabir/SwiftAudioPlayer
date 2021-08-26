@@ -182,7 +182,14 @@ public class SAPlayer {
     /**
      List of queued audio for playback. You can edit this list as you wish to modify the queue.
      */
-    public var audioQueued: [SAAudioQueueItem] = []
+    public var audioQueued: [SAAudioQueueItem] {
+        get {
+            return presenter.audioQueue
+        }
+        set {
+          presenter.audioQueue = newValue
+        }
+    }
     
     /**
      Total duration of current audio initialized. Returns nil if no audio is initialized in player.

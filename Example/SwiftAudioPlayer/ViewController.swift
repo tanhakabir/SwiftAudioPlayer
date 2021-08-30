@@ -83,7 +83,7 @@ class ViewController: UIViewController {
         checkIfAudioDownloaded()
         selectAudio(atIndex: 0)
         
-//        addRandomModifiers()
+        addRandomModifiers()
         
         subscribeToChanges()
     }

@@ -26,6 +26,8 @@
 import Foundation
 
 protocol AudioDataManagable {
+    var currentStreamFinished: Bool { get }
+    var currentStreamFinishedWithDuration: Duration { get }
     var numberOfQueued: Int { get }
     var numberOfActive: Int { get }
     
@@ -35,6 +37,7 @@ protocol AudioDataManagable {
     func setAllowCellularDownloadPreference(_ preference: Bool)
     
     func clear()
+    func updateDuration(d: Duration)
     
     //Director pattern
     func attach(callback: @escaping (_ id: ID, _ progress: Double)->())
@@ -52,7 +55,12 @@ protocol AudioDataManagable {
 }
 
 class AudioDataManager: AudioDataManagable {
+    var currentStreamFinishedWithDuration: Duration = 0
+    
     var allowCellular: Bool = true
+    
+    public var currentStreamFinished = false
+    public var totalStreamedDuration = 0
     
     static let shared: AudioDataManagable = AudioDataManager()
     
@@ -92,6 +100,10 @@ class AudioDataManager: AudioDataManagable {
             doneCallback: streamDoneListener)
     }
     
+    func updateDuration(d: Duration) {
+        currentStreamFinishedWithDuration = d
+    }
+    
     func clear() {
         streamingCallbacks = []
     }
@@ -112,6 +124,7 @@ class AudioDataManager: AudioDataManagable {
 // MARK:- Streaming
 extension AudioDataManager {
     func startStream(withRemoteURL url: AudioURL, callback: @escaping (StreamProgressPTO) -> ()) {
+        currentStreamFinished = false
         if let data = FileStorage.Audio.read(url.key) {
             let dto = StreamProgressDTO.init(progress: 1.0, data: data, totalBytesExpected: Int64(data.count))
             callback(StreamProgressPTO(dto: dto))
@@ -213,11 +226,12 @@ extension AudioDataManager {
         globalDownloadProgressCallback(id, 1.0)
     }
     
+    
     private func streamDoneListener(id: ID, error: Error?) -> Bool {
         if error != nil {
             return false
         }
-        
+        currentStreamFinished = true
         downloadWorker.resumeAllActive()
         return false
     }

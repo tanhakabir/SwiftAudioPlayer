@@ -26,18 +26,25 @@ import Foundation
 
 class StreamingDownloadDirector {
     static let shared = StreamingDownloadDirector()
+    private var currentAudioKey: Key?
     
     var closures: DirectorThreadSafeClosures<Double> = DirectorThreadSafeClosures()
     
     private init() {}
     
-    func create() {}
+    func setKey(_ key: Key) {
+        currentAudioKey = key
+    }
+    
+    func resetCache() {
+        closures.resetCache()
+    }
     
     func clear() {
         closures.clear()
     }
     
-    func attach(closure: @escaping (Key, Double) throws -> Void) -> UInt {
+    func attach(closure: @escaping (Double) throws -> Void) -> UInt {
         return closures.attach(closure: closure)
     }
     
@@ -48,6 +55,11 @@ class StreamingDownloadDirector {
 
 extension StreamingDownloadDirector {
     func didUpdate(_ key: Key, networkStreamProgress: Double) {
-        closures.broadcast(key: key, payload: networkStreamProgress)
+        guard key == currentAudioKey else {
+            Log.debug("silence old updates")
+            return
+        }
+        
+        closures.broadcast(payload: networkStreamProgress)
     }
 }

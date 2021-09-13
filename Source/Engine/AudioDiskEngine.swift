@@ -71,7 +71,6 @@ class AudioDiskEngine: AudioEngine {
         
         doRepeatedly(timeInterval: 0.2) { [weak self] in
             guard let self = self else { return }
-            guard self.playingStatus != .ended else { return }
             
             self.updateIsPlaying()
             self.updateNeedle()
@@ -116,10 +115,11 @@ class AudioDiskEngine: AudioEngine {
         }
         
         let playing = playerNode.isPlaying
+        let seekToNeedle = needle > Needle(duration) ? Needle(duration) : needle
         
-        self.needle = needle // to tick while paused
+        self.needle = seekToNeedle // to tick while paused
         
-        seekFrame = AVAudioFramePosition(Float(needle) * audioSampleRate)
+        seekFrame = AVAudioFramePosition(Float(seekToNeedle) * audioSampleRate)
         seekFrame = max(seekFrame, 0)
         seekFrame = min(seekFrame, audioLengthSamples)
         currentPosition = seekFrame

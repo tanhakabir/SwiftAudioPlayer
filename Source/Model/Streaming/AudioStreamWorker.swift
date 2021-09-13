@@ -44,6 +44,9 @@ import Foundation
 protocol AudioDataStreamable {
     //if user taps download then starts to stream
     init(progressCallback: @escaping (_ id: ID, _ dto: StreamProgressDTO) -> (), doneCallback: @escaping (_ id: ID, _ error: Error?)->Bool) //Bool is should save or not
+    
+    var HTTPHeaderFields: [String: String]? { get set }
+    
     func start(withID id: ID, withRemoteURL url: URL, withInitialData data: Data?, andTotalBytesExpectedPreviously previousTotalBytesExpected: Int64?)
     func pause(withId id: ID)
     func resume(withId id: ID)
@@ -65,6 +68,8 @@ class AudioStreamWorker:NSObject, AudioDataStreamable {
     //Why? To know if we should persist the stream data assuming successful completion
     fileprivate let doneCallback: (_ id: ID, _ error: Error?) -> Bool
     private var session: URLSession!
+    
+    var HTTPHeaderFields: [String: String]?
     
     private var id: ID?
     private var url: URL?
@@ -89,7 +94,7 @@ class AudioStreamWorker:NSObject, AudioDataStreamable {
         
         let config = URLSessionConfiguration.background(withIdentifier: "SwiftAudioPlayer.stream")
         // Specifies that the phone should keep trying till it receives connection instead of dropping immediately
-        if #available(iOS 11.0, *) {
+        if #available(iOS 11.0, tvOS 11.0, *) {
             config.waitsForConnectivity = true
         }
         self.session = URLSession(configuration: config, delegate: self, delegateQueue: nil) //TODO: should we use ephemeral
@@ -105,6 +110,7 @@ class AudioStreamWorker:NSObject, AudioDataStreamable {
         
         if let data = data {
             var request = URLRequest(url: url, cachePolicy: .useProtocolCachePolicy, timeoutInterval: TIMEOUT)
+            HTTPHeaderFields?.forEach { request.setValue($1, forHTTPHeaderField: $0) }
             request.addValue("bytes=\(data.count)-", forHTTPHeaderField: "Range")
             task = session.dataTask(with: request)
             task?.taskDescription = id
@@ -121,10 +127,11 @@ class AudioStreamWorker:NSObject, AudioDataStreamable {
             
             task?.resume()
         } else {
-            task = session.dataTask(with: url)
-            task?.resume()
-            
+            var request = URLRequest(url: url)
+            HTTPHeaderFields?.forEach { request.setValue($1, forHTTPHeaderField: $0) }
+            task = session.dataTask(with: request)
             task?.taskDescription = id
+            task?.resume()
         }
     }
     
@@ -217,6 +224,7 @@ class AudioStreamWorker:NSObject, AudioDataStreamable {
         self.progressCallback(id, StreamProgressDTO(progress: 0, data: Data(), totalBytesExpected: totalBytesExpectedForWholeFile))
         
         var request = URLRequest(url: url, cachePolicy: .useProtocolCachePolicy, timeoutInterval: TIMEOUT)
+        HTTPHeaderFields?.forEach { request.setValue($1, forHTTPHeaderField: $0) }
         request.addValue("bytes=\(offset)-", forHTTPHeaderField: "Range")
         task = session.dataTask(with: request)
         task?.resume()
@@ -314,6 +322,7 @@ extension AudioStreamWorker: URLSessionDataDelegate {
             Log.monitor("\(task.currentRequest?.url?.absoluteString ?? "nil url") error: \(err.localizedDescription)")
             
             let _ = doneCallback(id, err)
+            return
         }
         
         let shouldSave = doneCallback(id, nil)

@@ -7,7 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		41B4A1BE666DAEDD342DBACF /* Pods_SwiftAudioPlayer_Tests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4E9F82E3AA46F1DA40F32F7F /* Pods_SwiftAudioPlayer_Tests.framework */; };
 		607FACD61AFB9204008FA782 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 607FACD51AFB9204008FA782 /* AppDelegate.swift */; };
 		607FACD81AFB9204008FA782 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 607FACD71AFB9204008FA782 /* ViewController.swift */; };
 		607FACDB1AFB9204008FA782 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 607FACD91AFB9204008FA782 /* Main.storyboard */; };
@@ -15,7 +14,6 @@
 		607FACE01AFB9204008FA782 /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 607FACDE1AFB9204008FA782 /* LaunchScreen.xib */; };
 		607FACEC1AFB9204008FA782 /* Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 607FACEB1AFB9204008FA782 /* Tests.swift */; };
 		A470FEE2260303DA00F135FF /* Model.swift in Sources */ = {isa = PBXBuildFile; fileRef = A470FEE1260303DA00F135FF /* Model.swift */; };
-		E5808EC0557FB2395AA56468 /* Pods_SwiftAudioPlayer_Example.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1E5C0E3F3235B6FFE85EF425 /* Pods_SwiftAudioPlayer_Example.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -30,9 +28,7 @@
 
 /* Begin PBXFileReference section */
 		0B7D1E6C00E83B4AF8AA1781 /* Pods-SwiftAudioPlayer_Tests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SwiftAudioPlayer_Tests.release.xcconfig"; path = "Pods/Target Support Files/Pods-SwiftAudioPlayer_Tests/Pods-SwiftAudioPlayer_Tests.release.xcconfig"; sourceTree = "<group>"; };
-		1E5C0E3F3235B6FFE85EF425 /* Pods_SwiftAudioPlayer_Example.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_SwiftAudioPlayer_Example.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		4B5DD2AE0B23A759D18926DC /* Pods-SwiftAudioPlayer_Example.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SwiftAudioPlayer_Example.release.xcconfig"; path = "Pods/Target Support Files/Pods-SwiftAudioPlayer_Example/Pods-SwiftAudioPlayer_Example.release.xcconfig"; sourceTree = "<group>"; };
-		4E9F82E3AA46F1DA40F32F7F /* Pods_SwiftAudioPlayer_Tests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_SwiftAudioPlayer_Tests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		607FACD01AFB9204008FA782 /* SwiftAudioPlayer_Example.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SwiftAudioPlayer_Example.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		607FACD41AFB9204008FA782 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		607FACD51AFB9204008FA782 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -56,7 +52,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				E5808EC0557FB2395AA56468 /* Pods_SwiftAudioPlayer_Example.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -64,22 +59,12 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				41B4A1BE666DAEDD342DBACF /* Pods_SwiftAudioPlayer_Tests.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		408E805A4561B2F63083E539 /* Frameworks */ = {
-			isa = PBXGroup;
-			children = (
-				1E5C0E3F3235B6FFE85EF425 /* Pods_SwiftAudioPlayer_Example.framework */,
-				4E9F82E3AA46F1DA40F32F7F /* Pods_SwiftAudioPlayer_Tests.framework */,
-			);
-			name = Frameworks;
-			sourceTree = "<group>";
-		};
 		4246ED1215E81CA7B8F0AB36 /* Pods */ = {
 			isa = PBXGroup;
 			children = (
@@ -99,7 +84,6 @@
 				607FACE81AFB9204008FA782 /* Tests */,
 				607FACD11AFB9204008FA782 /* Products */,
 				4246ED1215E81CA7B8F0AB36 /* Pods */,
-				408E805A4561B2F63083E539 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};

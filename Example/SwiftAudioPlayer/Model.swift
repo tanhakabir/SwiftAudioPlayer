@@ -47,7 +47,7 @@ struct AudioInfo: Hashable {
     
     var lockscreenInfo: SALockScreenInfo {
         get {
-            return SALockScreenInfo(title: self.title, artist: self.artist, artwork: nil, releaseDate: self.releaseDate)
+            return SALockScreenInfo(title: self.title, artist: self.artist, albumTitle: nil, artwork: nil, releaseDate: self.releaseDate)
         }
     }
     

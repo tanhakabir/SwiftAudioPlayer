@@ -28,6 +28,12 @@ import CoreMedia
 
 class AudioClockDirector {
     static let shared = AudioClockDirector()
+    private var currentAudioKey: Key?
+    
+    private var depNeedleClosures: DirectorThreadSafeClosuresDeprecated<Needle> = DirectorThreadSafeClosuresDeprecated()
+    private var depDurationClosures: DirectorThreadSafeClosuresDeprecated<Duration> = DirectorThreadSafeClosuresDeprecated()
+    private var depPlayingStatusClosures: DirectorThreadSafeClosuresDeprecated<SAPlayingStatus> = DirectorThreadSafeClosuresDeprecated()
+    private var depBufferClosures: DirectorThreadSafeClosuresDeprecated<SAAudioAvailabilityRange> = DirectorThreadSafeClosuresDeprecated()
     
     private var needleClosures: DirectorThreadSafeClosures<Needle> = DirectorThreadSafeClosures()
     private var durationClosures: DirectorThreadSafeClosures<Duration> = DirectorThreadSafeClosures()
@@ -36,9 +42,23 @@ class AudioClockDirector {
     
     private init() {}
     
-    func create() {}
+    func setKey(_ key: Key) {
+        currentAudioKey = key
+    }
+    
+    func resetCache() {
+        needleClosures.resetCache()
+        durationClosures.resetCache()
+        playingStatusClosures.resetCache()
+        bufferClosures.resetCache()
+    }
     
     func clear() {
+        depNeedleClosures.clear()
+        depDurationClosures.clear()
+        depPlayingStatusClosures.clear()
+        depBufferClosures.clear()
+        
         needleClosures.clear()
         durationClosures.clear()
         playingStatusClosures.clear()
@@ -48,43 +68,67 @@ class AudioClockDirector {
     // MARK: - Attaches
     
     // Needle
+    @available(*, deprecated, message: "Use subscribe without key in the closure for current audio updates")
     func attachToChangesInNeedle(closure: @escaping (Key, Needle) throws -> Void) -> UInt {
+        return depNeedleClosures.attach(closure: closure)
+    }
+    
+    func attachToChangesInNeedle(closure: @escaping (Needle) throws -> Void) -> UInt {
         return needleClosures.attach(closure: closure)
     }
     
     
     // Duration
+    @available(*, deprecated, message: "Use subscribe without key in the closure for current audio updates")
     func attachToChangesInDuration(closure: @escaping (Key, Duration) throws -> Void) -> UInt {
+        return depDurationClosures.attach(closure: closure)
+    }
+    
+    func attachToChangesInDuration(closure: @escaping (Duration) throws -> Void) -> UInt {
         return durationClosures.attach(closure: closure)
     }
     
     
     // Playing status
+    @available(*, deprecated, message: "Use subscribe without key in the closure for current audio updates")
     func attachToChangesInPlayingStatus(closure: @escaping (Key, SAPlayingStatus) throws -> Void) -> UInt{
+        return depPlayingStatusClosures.attach(closure: closure)
+    }
+    
+    func attachToChangesInPlayingStatus(closure: @escaping (SAPlayingStatus) throws -> Void) -> UInt{
         return playingStatusClosures.attach(closure: closure)
     }
     
     
     // Buffer
+    @available(*, deprecated, message: "Use subscribe without key in the closure for current audio updates")
     func attachToChangesInBufferedRange(closure: @escaping (Key, SAAudioAvailabilityRange) throws -> Void) -> UInt{
+        return depBufferClosures.attach(closure: closure)
+    }
+    
+    func attachToChangesInBufferedRange(closure: @escaping (SAAudioAvailabilityRange) throws -> Void) -> UInt{
         return bufferClosures.attach(closure: closure)
     }
     
     
     // MARK: - Detaches
     func detachFromChangesInNeedle(withID id: UInt) {
+        depNeedleClosures.detach(id: id)
         needleClosures.detach(id: id)
     }
     
     func detachFromChangesInDuration(withID id: UInt) {
+        depDurationClosures.detach(id: id)
         durationClosures.detach(id: id)
     }
     
     func detachFromChangesInPlayingStatus(withID id: UInt) {
+        depPlayingStatusClosures.detach(id: id)
         playingStatusClosures.detach(id: id)
     }
     
     func detachFromChangesInBufferedRange(withID id: UInt) {
+        depBufferClosures.detach(id: id)
         bufferClosures.detach(id: id)
     }
 }
@@ -92,24 +136,44 @@ class AudioClockDirector {
 // MARK: - Receives notifications from AudioEngine on ticks
 extension AudioClockDirector {
     func needleTick(_ key: Key, needle: Needle) {
-        needleClosures.broadcast(key: key, payload: needle)
+        guard key == currentAudioKey else {
+            Log.debug("silence old updates")
+            return
+        }
+        depNeedleClosures.broadcast(key: key, payload: needle)
+        needleClosures.broadcast(payload: needle)
     }
 }
 
 extension AudioClockDirector {
     func durationWasChanged(_ key: Key, duration: Duration) {
-        durationClosures.broadcast(key: key, payload: duration)
+        guard key == currentAudioKey else {
+            Log.debug("silence old updates")
+            return
+        }
+        depDurationClosures.broadcast(key: key, payload: duration)
+        durationClosures.broadcast(payload: duration)
     }
 }
 
 extension AudioClockDirector {
     func audioPlayingStatusWasChanged(_ key: Key, status: SAPlayingStatus) {
-        playingStatusClosures.broadcast(key: key, payload: status)
+        guard key == currentAudioKey else {
+            Log.debug("silence old updates")
+            return
+        }
+        depPlayingStatusClosures.broadcast(key: key, payload: status)
+        playingStatusClosures.broadcast(payload: status)
     }
 }
 
 extension AudioClockDirector {
     func changeInAudioBuffered(_ key: Key, buffered: SAAudioAvailabilityRange) {
-        bufferClosures.broadcast(key: key, payload: buffered)
+        guard key == currentAudioKey else {
+            Log.debug("silence old updates")
+            return
+        }
+        depBufferClosures.broadcast(key: key, payload: buffered)
+        bufferClosures.broadcast(payload: buffered)
     }
 }

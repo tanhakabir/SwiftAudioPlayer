@@ -25,15 +25,18 @@
 
 import Foundation
 
+enum DirectorError: Error {
+    case closureIsDead
+}
 
 /**
  P for payload
  */
-class DirectorThreadSafeClosures<P>  {
-    typealias TypeClosure = (P) throws -> Void
+class DirectorThreadSafeClosuresDeprecated<P>  {
+    typealias TypeClosure = (Key, P) throws -> Void
     private var queue: DispatchQueue = DispatchQueue(label: "SwiftAudioPlayer.thread_safe_map", attributes: .concurrent)
     private var closures: [UInt: TypeClosure] = [:]
-    private var cache: P? = nil
+    private var cache: [Key: P] = [:]
     
     var count: Int {
         get {
@@ -41,17 +44,13 @@ class DirectorThreadSafeClosures<P>  {
         }
     }
     
-    func resetCache() {
-        cache = nil
-    }
-    
-    func broadcast(payload: P) {
+    func broadcast(key: Key, payload: P) {
         queue.sync {
-            self.cache = payload
+            self.cache[key] = payload
             var iterator = self.closures.makeIterator()
             while let element = iterator.next() {
                 do {
-                    try element.value(payload)
+                    try element.value(key, payload)
                 } catch {
                     helperRemove(withKey: element.key)
                 }
@@ -65,9 +64,9 @@ class DirectorThreadSafeClosures<P>  {
         
         //The director may not yet have the status yet. We should only call the closure if we have it
         //Let the caller know the immediate value. If it's dead already then stop
-        if let val = cache {
+        for (key, val) in cache {
             do {
-                try closure(val)
+                try closure(key, val)
             } catch {
                 return id
             }
@@ -86,7 +85,7 @@ class DirectorThreadSafeClosures<P>  {
     func clear() {
         queue.async(flags: .barrier) {
             self.closures.removeAll()
-            self.cache = nil
+            self.cache.removeAll()
         }
     }
     

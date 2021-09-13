@@ -25,6 +25,7 @@ Thus, using [AudioToolbox](https://developer.apple.com/documentation/audiotoolbo
 These are community supported audio manipulation features using this audio engine. You can implement your own version of these features and you can look at [SAPlayerFeatures](https://github.com/tanhakabir/SwiftAudioPlayer/blob/master/Source/SAPlayerFeatures.swift) to learn how they were implemented using the library.
 1. Skip silences in audio
 1. Sleep timer to stop playing audio after a delay
+1. Loop audio playback for both streamed and saved audio
 
 ### Requirements
 
@@ -77,13 +78,10 @@ To receive streaming progress (for buffer progress %):
 override func viewDidLoad() {
     super.viewDidLoad()
     
-    _ = SAPlayer.Updates.StreamingBuffer.subscribe{ [weak self] (url, buffer) in
+    _ = SAPlayer.Updates.StreamingBuffer.subscribe{ [weak self] buffer in
         guard let self = self else { return }
-        guard url == self.selectedAudioUrl else { return }
 
-        let progress = Float((buffer.totalDurationBuffered + buffer.startingBufferTimePositon) / self.duration)
-
-        self.bufferProgress.progress = progress
+        self.bufferProgress.progress = Float(buffer.bufferingProgress)
 
         self.isPlayable = buffer.isReadyForPlaying
     }
@@ -167,11 +165,13 @@ SAPlayer.shared.queueSavedAudio(withSavedUrl: C://random_folder/audio.mp3) // or
 SAPlayer.shared.queueRemoteAudio(withRemoteUrl: https://randomwebsite.com/audio.mp3)
 ```
 
+You can also directly access and modify the queue from `SAPlayer.shared.audioQueued`.
+
 #### Important
 
 The engine can handle audio manipulations like speed, pitch, effects, etc. To do this, nodes for effects must be finalized before initialize is called. Look at [audio manipulation documentation](#realtime-audio-manipulation) for more information.
 
-### Lockscreen Media Player
+### LockScreen Media Player
  
 Update and set what displays on the lockscreen's media player when the player is active. 
 
@@ -256,13 +256,15 @@ Receive updates for changing values from the player, such as the duration, elaps
 
 All subscription functions for updates take the form of:
 ```swift
-func subscribe(_ closure: @escaping (_ url: URL, _ payload:  <Payload>) -> ()) -> UInt
+func subscribe(_ closure: @escaping (_ payload:  <Payload>) -> ()) -> UInt
 ```
 
 - `closure`: The closure that will receive the updates. It's recommended to have a weak reference to a class that uses these functions.
-- `url`: The corresponding remote URL for the update. In the case there might be multiple files observed, such as downloading many files at once or switching over from playing one audio to another and the updates corresponding to the previous aren't silenced on switch-over.
 - `payload`: The updated value.
 - Returns: the id for the subscription in the case you would like to unsubscribe to updates for the closure.
+
+Sometimes there is:
+- `url`: The corresponding remote URL for the update. In the case there might be multiple files observed, such as downloading many files at once.
 
 Similarily unsubscribe takes the form of: 
 ```swift
@@ -300,6 +302,11 @@ For progress of downloading audio that saves to the phone for playback later, lo
 Payload = `Double`
 
 Changes in the progress of downloading audio in the background. This does not correspond to progress in streaming downloads, look at StreamingBuffer for streaming progress.
+
+### AudioQueue
+Payload = `URL`
+
+Notification of the URL of the upcoming audio to be played. This URL may be remote or locally saved.
 
 ## Audio Effects
 

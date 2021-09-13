@@ -155,9 +155,8 @@ class AudioParser: AudioParsable {
         
         self.throttler = AudioThrottler(withRemoteUrl: url, withDelegate: self)
         
-        streamChangeListenerId = StreamingDownloadDirector.shared.attach { [weak self] (key, progress) in
+        streamChangeListenerId = StreamingDownloadDirector.shared.attach { [weak self] (progress) in
             guard let self = self else { return }
-            guard key == url.key else { return }
             self.networkProgress = progress
             
             // initially parse a bunch of packets

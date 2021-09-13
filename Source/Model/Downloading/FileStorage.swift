@@ -64,8 +64,13 @@ struct FileStorage {
 // MARK:- Audio
 extension FileStorage {
     struct Audio {
-        private static let directory: FileManager.SearchPathDirectory = .documentDirectory
         private init() {}
+        
+        private static var directory: FileManager.SearchPathDirectory {
+            get {
+                return AudioDataManager.shared.downloadDirectory
+            }
+        }
         
         static func isStored(_ id: ID) -> Bool {
             guard let url = locate(id)?.path else {
@@ -103,7 +108,7 @@ extension FileStorage {
         }
         
         static func locate(_ id: ID) -> URL? {
-            let folderUrls = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)
+            let folderUrls = FileManager.default.urls(for: directory, in: .userDomainMask)
             guard folderUrls.count != 0 else { return nil }
 
             if let urls = try? FileManager.default.contentsOfDirectory(at: folderUrls[0], includingPropertiesForKeys: nil) {

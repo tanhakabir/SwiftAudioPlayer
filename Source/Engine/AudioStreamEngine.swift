@@ -74,11 +74,17 @@ class AudioStreamEngine: AudioEngine {
         didSet {
             Log.debug("number of buffers scheduled in total: \(numberOfBuffersScheduledInTotal)")
             if numberOfBuffersScheduledInTotal == 0 {
+                if playingStatus == .playing { wasPlaying = true }
                 pause()
                 //                delegate?.didError()
                 // TODO: we should not have an error here. We should instead have the throttler
                 // propegate when it doesn't enough buffers while they were playing
                 // TODO: "Make this a legitimate warning to user about needing more data from stream"
+            }
+            
+            if numberOfBuffersScheduledInTotal > MIN_BUFFERS_TO_BE_PLAYABLE && wasPlaying {
+                wasPlaying = false
+                play()
             }
         }
     }
@@ -151,9 +157,11 @@ class AudioStreamEngine: AudioEngine {
             delegate?.didError()
         }
         
-        streamChangeListenerId = StreamingDownloadDirector.shared.attach { [weak self] (key, progress) in
+        StreamingDownloadDirector.shared.setKey(key)
+        StreamingDownloadDirector.shared.resetCache()
+        
+        streamChangeListenerId = StreamingDownloadDirector.shared.attach { [weak self] (progress) in
             guard let self = self else { return }
-            guard key == url.key else { return }
 
             // polling for buffers when we receive data. This won't be throttled on fresh new audio or seeked audio but in all other cases it most likely will be throttled
             self.pollForNextBuffer() //  no buffer updates because thread issues if I try to update buffer status in streaming listener
@@ -164,7 +172,6 @@ class AudioStreamEngine: AudioEngine {
         
         doRepeatedly(timeInterval: timeInterval) { [weak self] in
             guard let self = self else { return }
-            guard self.playingStatus != .ended else { return }
             
             self.repeatedUpdates()
         }
@@ -203,7 +210,7 @@ class AudioStreamEngine: AudioEngine {
             
             Log.debug("processed buffer for engine of frame length \(nextScheduledBuffer.frameLength)")
             queue.async { [weak self] in
-                if #available(iOS 11.0, *) {
+                if #available(iOS 11.0, tvOS 11.0, *) {
                     // to make sure the pcm buffers are properly free'd from memory we need to nil them after the player has used them
                     self?.playerNode.scheduleBuffer(nextScheduledBuffer, completionCallbackType: .dataConsumed, completionHandler: { (_) in
                         nextScheduledBuffer = nil
@@ -277,6 +284,15 @@ class AudioStreamEngine: AudioEngine {
     //MARK:- Overriden From Parent
     override func seek(toNeedle needle: Needle) {
         Log.info("didSeek to needle: \(needle)")
+
+        // if not playable (data not loaded etc), duration could be zero.
+        guard isPlayable else {
+            if predictedStreamDuration == 0 {
+                seekNeedleCommandBeforeEngineWasReady = needle
+            }
+            return
+        }
+
         guard needle < (ceil(predictedStreamDuration)) else {
             if !isPlayable {
                 seekNeedleCommandBeforeEngineWasReady = needle
@@ -339,7 +355,13 @@ class AudioStreamEngine: AudioEngine {
     }
     
     override func invalidate() {
+        queue.sync { [weak self] in
+            self?.invalidateHelperDispatchQueue()
+            self?.converter.invalidate()
+        }
+    }
+
+    private func invalidateHelperDispatchQueue() {
         super.invalidate()
-        converter.invalidate()
     }
 }

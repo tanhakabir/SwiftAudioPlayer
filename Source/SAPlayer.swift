@@ -46,6 +46,15 @@ public class SAPlayer {
     private var player: AudioEngine?
     
     /**
+    Any necessary header fields for streaming and downloading requests can be set here.
+    */
+    public var HTTPHeaderFields: [String: String]? {
+        didSet {
+            AudioDataManager.shared.setHTTPHeaderFields(HTTPHeaderFields)
+        }
+    }
+    
+    /**
     Access the engine of the player. Engine is nil if player has not been initialized with audio.
      
      - Important: Changes to the engine are not safe guarded, thus unknown behaviour can arise from changing the engine. Just be wary and read [documentation of AVAudioEngine](https://developer.apple.com/documentation/avfoundation/avaudioengine) well when modifying,
@@ -171,13 +180,14 @@ public class SAPlayer {
     public var audioModifiers: [AVAudioUnit] = []
     
     /**
-     List of audio URLs queued for playback.
+     List of queued audio for playback. You can edit this list as you wish to modify the queue.
      */
-    public var audioQueued: [URL] {
+    public var audioQueued: [SAAudioQueueItem] {
         get {
-            return presenter.audioQueue.map { (queued) -> URL in
-                return queued.url
-            }
+            return presenter.audioQueue
+        }
+        set {
+          presenter.audioQueue = newValue
         }
     }
     
@@ -504,13 +514,32 @@ extension SAPlayer {
     }
     
     /**
-     Queues saved audio to be played next. The URLs in the queuecan be both remote or on disk but once the queued audio starts playing it will start buffering and loading then. This means no guarantee for a 'gapless' playback where there might be several moments in between one audio ending and another starting due to buffering remote audio.
+     Queues saved audio to be played next. The URLs in the queue can be both remote or on disk but once the queued audio starts playing it will start buffering and loading then. This means no guarantee for a 'gapless' playback where there might be several moments in between one audio ending and another starting due to buffering remote audio.
      
      - Parameter withSavedUrl: The URL of the audio saved on the device.
      - Parameter mediaInfo: The media information of the audio to show on the lockscreen media player (optional).
      */
     public func queueSavedAudio(withSavedUrl url: URL, mediaInfo: SALockScreenInfo? = nil) {
         presenter.handleQueueSavedAudio(withSavedUrl: url, mediaInfo: mediaInfo)
+    }
+    
+    /**
+     Remove the first queued audio if one exists. Receive the first URL removed back.
+     
+     - Returns the URL of the removed audio.
+     */
+    public func removeFirstQueuedAudio() -> URL? {
+        guard audioQueued.count != 0 else { return nil }
+        return presenter.handleRemoveFirstQueuedItem()
+    }
+    
+    /**
+     Clear the list of queued audio.
+     
+     - Returns the list of removed audio URLs
+     */
+    public func clearAllQueuedAudio() -> [URL] {
+        return presenter.handleClearQueued()
     }
     
     /**
@@ -524,22 +553,22 @@ extension SAPlayer {
 
 //MARK: - Internal implementation of delegate
 extension SAPlayer: SAPlayerDelegate {
-    func startAudioDownloaded(withSavedUrl url: AudioURL) {
+    internal func startAudioDownloaded(withSavedUrl url: AudioURL) {
         player = AudioDiskEngine(withSavedUrl: url, delegate: presenter)
     }
     
-    func startAudioStreamed(withRemoteUrl url: AudioURL, bitrate: SAPlayerBitrate) {
+    internal func startAudioStreamed(withRemoteUrl url: AudioURL, bitrate: SAPlayerBitrate) {
         player = AudioStreamEngine(withRemoteUrl: url, delegate: presenter, bitrate: bitrate)
     }
     
-    func clearEngine() {
+    internal func clearEngine() {
         player?.pause()
         player?.invalidate()
         player = nil
         Log.info("cleared engine")
     }
     
-    func playEngine() {
+    internal func playEngine() {
         becomeDeviceAudioPlayer()
         player?.play()
     }
@@ -547,7 +576,7 @@ extension SAPlayer: SAPlayerDelegate {
     //Start taking control as the device's player
     private func becomeDeviceAudioPlayer() {
         do {
-            if #available(iOS 11.0, *) {
+            if #available(iOS 11.0, tvOS 11.0, *) {
                 try AVAudioSession.sharedInstance().setCategory(.playback, mode: .spokenAudio, policy: .longFormAudio, options: [])
             } else {
                 try AVAudioSession.sharedInstance().setCategory(AVAudioSession.Category.playback, mode: AVAudioSession.Mode(rawValue: convertFromAVAudioSessionMode(AVAudioSession.Mode.default)), options: .allowAirPlay)
@@ -558,13 +587,12 @@ extension SAPlayer: SAPlayerDelegate {
         }
     }
     
-    func pauseEngine() {
+    internal func pauseEngine() {
         player?.pause()
     }
     
-    func seekEngine(toNeedle needle: Needle) {
-        var seekToNeedle = needle < 0 ? 0 : needle
-        seekToNeedle = needle > Needle(duration ?? 0) ? Needle(duration ?? 0) : needle
+    internal func seekEngine(toNeedle needle: Needle) {
+        let seekToNeedle = needle < 0 ? 0 : needle
         player?.seek(toNeedle: seekToNeedle)
     }
 }

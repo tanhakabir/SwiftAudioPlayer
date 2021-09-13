@@ -31,6 +31,8 @@ protocol AudioDataDownloadable: AnyObject {
     var numberOfActive: Int { get }
     var numberOfQueued: Int { get }
     
+    var HTTPHeaderFields: [String: String]? { get set }
+    
     func getProgressOfDownload(withID id: ID) -> Double?
     
     func start(withID id: ID, withRemoteUrl remoteUrl: URL, completion: @escaping (URL) -> ())
@@ -56,6 +58,8 @@ class AudioDownloadWorker: NSObject, AudioDataDownloadable {
         config.allowsCellularAccess = allowsCellularDownload
         return URLSession(configuration: config, delegate: self, delegateQueue: nil)
     }()
+    
+    var HTTPHeaderFields: [String: String]?
     
     private var activeDownloads: [ActiveDownload] = []
     private var queuedDownloads = Set<DownloadInfo>()
@@ -111,7 +115,10 @@ class AudioDownloadWorker: NSObject, AudioDataDownloadable {
         
         queuedDownloads.remove(info)
         
-        let task: URLSessionDownloadTask = session.downloadTask(with: info.remoteUrl)
+        var request = URLRequest(url: info.remoteUrl)
+        HTTPHeaderFields?.forEach { request.setValue($1, forHTTPHeaderField: $0) }
+        
+        let task: URLSessionDownloadTask = session.downloadTask(with: request)
         task.taskDescription = info.id
         
         let activeTask = ActiveDownload(info: info, task: task)

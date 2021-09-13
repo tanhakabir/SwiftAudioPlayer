@@ -32,9 +32,12 @@ protocol AudioDataManagable {
     var numberOfActive: Int { get }
     
     var allowCellular: Bool { get set }
+    var downloadDirectory: FileManager.SearchPathDirectory { get }
     
+    func setHTTPHeaderFields(_ fields: [String: String]?)
     func setBackgroundCompletionHandler(_ completionHandler: @escaping () -> ())
     func setAllowCellularDownloadPreference(_ preference: Bool)
+    func setDownloadDirectory(_ dir: FileManager.SearchPathDirectory)
     
     func clear()
     func updateDuration(d: Duration)
@@ -58,6 +61,7 @@ class AudioDataManager: AudioDataManagable {
     var currentStreamFinishedWithDuration: Duration = 0
     
     var allowCellular: Bool = true
+    var downloadDirectory: FileManager.SearchPathDirectory = .documentDirectory
     
     public var currentStreamFinished = false
     public var totalStreamedDuration = 0
@@ -108,12 +112,21 @@ class AudioDataManager: AudioDataManagable {
         streamingCallbacks = []
     }
     
+    func setHTTPHeaderFields(_ fields: [String: String]?) {
+        streamWorker.HTTPHeaderFields = fields
+        downloadWorker.HTTPHeaderFields = fields
+    }
+    
     func setBackgroundCompletionHandler(_ completionHandler: @escaping () -> ()) {
         backgroundCompletion = completionHandler
     }
     
     func setAllowCellularDownloadPreference(_ preference: Bool) {
         allowCellular = preference
+    }
+    
+    func setDownloadDirectory(_ dir: FileManager.SearchPathDirectory) {
+        downloadDirectory = dir
     }
     
     func attach(callback: @escaping (_ id: ID, _ progress: Double)->()) {

@@ -167,10 +167,12 @@ extension AudioDataManager {
         streamWorker.resume(withId: url.key)
     }
     func seekStream(withRemoteURL url: AudioURL, toByteOffset offset: UInt64) {
+        currentStreamFinished = false
         streamWorker.seek(withId: url.key, withByteOffset: offset)
     }
     
     func deleteStream(withRemoteURL url: AudioURL) {
+        currentStreamFinished = false
         streamWorker.stop(withId: url.key)
         streamingCallbacks.removeAll { (cb: (ID, (StreamProgressPTO) -> ())) -> Bool in
             return cb.0 == url.key

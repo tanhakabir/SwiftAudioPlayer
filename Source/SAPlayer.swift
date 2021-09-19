@@ -543,7 +543,7 @@ extension SAPlayer {
     }
 
     /**
-     looking foor next audio in queue, if it exist play it
+     looking for next audio in queue, if it exist play it
     */
     public func playNextAudioIfExists() {
       return presenter.playNextAudioIfExists()

@@ -541,6 +541,13 @@ extension SAPlayer {
     public func clearAllQueuedAudio() -> [URL] {
         return presenter.handleClearQueued()
     }
+
+    /**
+     looking foor next audio in queue, if it exist play it
+    */
+    public func playNextAudioIfExists() {
+      return presenter.playNextAudioIfExists()
+    }
     
     /**
      Resets the player to the state before initializing audio and setting media info.

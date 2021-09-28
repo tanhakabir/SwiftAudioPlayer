@@ -280,8 +280,15 @@ class ViewController: UIViewController {
             } else {
                 downloadButton.setTitle("Cancel 0%", for: .normal)
                 isDownloading = true
-                SAPlayer.Downloader.downloadAudio(withRemoteUrl: selectedAudio.url, completion: { [weak self] url in
+                SAPlayer.Downloader.downloadAudio(withRemoteUrl: selectedAudio.url, completion: { [weak self] (url, error) in
                     guard let self = self else { return }
+                    guard error == nil else {
+                        DispatchQueue.main.async {
+                            self.currentUrlLocationLabel.text = "ERROR! \(error!.localizedDescription)"
+                        }
+                        return
+                    }
+                    
                     DispatchQueue.main.async {
                         self.currentUrlLocationLabel.text = "saved to: \(url.lastPathComponent)"
                         self.selectedAudio.addSavedUrl(url)

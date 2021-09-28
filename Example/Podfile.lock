@@ -1,0 +1,16 @@
+PODS:
+  - SwiftAudioPlayer (7.3.0)
+
+DEPENDENCIES:
+  - SwiftAudioPlayer (from `../`)
+
+EXTERNAL SOURCES:
+  SwiftAudioPlayer:
+    :path: "../"
+
+SPEC CHECKSUMS:
+  SwiftAudioPlayer: 018a69b3a6551844c48017cd7e6e82b409367e44
+
+PODFILE CHECKSUM: 92c7367b33454536515e31bf5d93e792787f3f4a
+
+COCOAPODS: 1.10.1

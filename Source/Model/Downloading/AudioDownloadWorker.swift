@@ -35,7 +35,7 @@ protocol AudioDataDownloadable: AnyObject {
     
     func getProgressOfDownload(withID id: ID) -> Double?
     
-    func start(withID id: ID, withRemoteUrl remoteUrl: URL, completion: @escaping (URL) -> ())
+    func start(withID id: ID, withRemoteUrl remoteUrl: URL, completion: @escaping (URL, Error?) -> ())
     func stop(withID id: ID, callback: ((_ dataSoFar: Data?, _ totalBytesExpected: Int64?) -> ())?)
     func pauseAllActive() //Because of streaming
     func resumeAllActive() //Because of streaming
@@ -56,6 +56,7 @@ class AudioDownloadWorker: NSObject, AudioDataDownloadable {
         config.isDiscretionary = !allowsCellularDownload
         config.sessionSendsLaunchEvents = true
         config.allowsCellularAccess = allowsCellularDownload
+        config.timeoutIntervalForRequest = 30
         return URLSession(configuration: config, delegate: self, delegateQueue: nil)
     }()
     
@@ -89,7 +90,7 @@ class AudioDownloadWorker: NSObject, AudioDataDownloadable {
         return activeDownloads.filter { $0.info.id == id }.first?.progress
     }
     
-    func start(withID id: ID, withRemoteUrl remoteUrl: URL, completion: @escaping (URL) -> ()) {
+    func start(withID id: ID, withRemoteUrl remoteUrl: URL, completion: @escaping (URL, Error?) -> ()) {
         Log.info("startExternal paramID: \(id) activeDownloadIDs: \((activeDownloads.map { $0.info.id } ).toLog)")
         let temp = activeDownloads.filter { $0.info.id == id }.count
         guard temp == 0 else {
@@ -204,7 +205,7 @@ extension AudioDownloadWorker: URLSessionDownloadDelegate {
         completionHandler(task.info.id, nil)
     
         for handler in task.info.completionHandlers {
-            handler(destinationUrl)
+            handler(destinationUrl, nil)
         }
         
         activeDownloads = activeDownloads.filter { $0 != task }
@@ -238,6 +239,9 @@ extension AudioDownloadWorker: URLSessionDownloadDelegate {
             
             for download in activeDownloads {
                 if download.task == task {
+                    for handler in download.info.completionHandlers {
+                        handler(download.info.remoteUrl, e)
+                    }
                     completionHandler(download.info.id, e)
                     activeDownloads = activeDownloads.filter { $0.task != task }
                 }
@@ -281,7 +285,7 @@ extension AudioDownloadWorker {
         let id: ID
         let remoteUrl: URL
         let rank: Int
-        var completionHandlers: [(URL) -> ()]
+        var completionHandlers: [(URL, Error?) -> ()]
         
         func hash(into hasher: inout Hasher) {
             hasher.combine(id)
@@ -328,11 +332,11 @@ extension Set where Element == AudioDownloadWorker.DownloadInfo {
         return ret
     }
     
-    mutating func updatePreservingOldCompletionHandlers(withID id: ID, withRemoteUrl remoteUrl: URL, completion: ((URL) -> ())? = nil) -> AudioDownloadWorker.DownloadInfo {
+    mutating func updatePreservingOldCompletionHandlers(withID id: ID, withRemoteUrl remoteUrl: URL, completion: ((URL, Error?) -> ())? = nil) -> AudioDownloadWorker.DownloadInfo {
         
         let rank = Date.getUTC()
         
-        let tempHandlers: [(URL) -> ()] = completion != nil ? [completion!] : []
+        let tempHandlers: [(URL, Error?) -> ()] = completion != nil ? [completion!] : []
         
         var newInfo = AudioDownloadWorker.DownloadInfo.init(id: id, remoteUrl: remoteUrl, rank: rank, completionHandlers: tempHandlers)
         

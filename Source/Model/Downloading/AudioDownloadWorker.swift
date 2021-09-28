@@ -56,6 +56,7 @@ class AudioDownloadWorker: NSObject, AudioDataDownloadable {
         config.isDiscretionary = !allowsCellularDownload
         config.sessionSendsLaunchEvents = true
         config.allowsCellularAccess = allowsCellularDownload
+        config.timeoutIntervalForRequest = 30
         return URLSession(configuration: config, delegate: self, delegateQueue: nil)
     }()
     

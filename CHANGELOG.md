@@ -1,5 +1,9 @@
 #  Changelog
 
+## 7.6.0
+
+- Add Carthage support thanks to @cntrump!
+
 ## 7.5.0
 
 - Propagate up any errors from downloading audio. This will cause breaking changes to `SAPlayer.Downloader.downloadAudio(...)`

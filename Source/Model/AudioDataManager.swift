@@ -26,6 +26,8 @@
 import Foundation
 
 protocol AudioDataManagable {
+    var currentStreamFinished: Bool { get }
+    var currentStreamFinishedWithDuration: Duration { get }
     var numberOfQueued: Int { get }
     var numberOfActive: Int { get }
     
@@ -38,6 +40,7 @@ protocol AudioDataManagable {
     func setDownloadDirectory(_ dir: FileManager.SearchPathDirectory)
     
     func clear()
+    func updateDuration(d: Duration)
     
     //Director pattern
     func attach(callback: @escaping (_ id: ID, _ progress: Double)->())
@@ -55,8 +58,13 @@ protocol AudioDataManagable {
 }
 
 class AudioDataManager: AudioDataManagable {
+    var currentStreamFinishedWithDuration: Duration = 0
+    
     var allowCellular: Bool = true
     var downloadDirectory: FileManager.SearchPathDirectory = .documentDirectory
+    
+    public var currentStreamFinished = false
+    public var totalStreamedDuration = 0
     
     static let shared: AudioDataManagable = AudioDataManager()
     
@@ -96,6 +104,10 @@ class AudioDataManager: AudioDataManagable {
             doneCallback: streamDoneListener)
     }
     
+    func updateDuration(d: Duration) {
+        currentStreamFinishedWithDuration = d
+    }
+    
     func clear() {
         streamingCallbacks = []
     }
@@ -125,6 +137,7 @@ class AudioDataManager: AudioDataManagable {
 // MARK:- Streaming
 extension AudioDataManager {
     func startStream(withRemoteURL url: AudioURL, callback: @escaping (StreamProgressPTO) -> ()) {
+        currentStreamFinished = false
         if let data = FileStorage.Audio.read(url.key) {
             let dto = StreamProgressDTO.init(progress: 1.0, data: data, totalBytesExpected: Int64(data.count))
             callback(StreamProgressPTO(dto: dto))
@@ -154,10 +167,12 @@ extension AudioDataManager {
         streamWorker.resume(withId: url.key)
     }
     func seekStream(withRemoteURL url: AudioURL, toByteOffset offset: UInt64) {
+        currentStreamFinished = false
         streamWorker.seek(withId: url.key, withByteOffset: offset)
     }
     
     func deleteStream(withRemoteURL url: AudioURL) {
+        currentStreamFinished = false
         streamWorker.stop(withId: url.key)
         streamingCallbacks.removeAll { (cb: (ID, (StreamProgressPTO) -> ())) -> Bool in
             return cb.0 == url.key
@@ -226,11 +241,12 @@ extension AudioDataManager {
         globalDownloadProgressCallback(id, 1.0)
     }
     
+    
     private func streamDoneListener(id: ID, error: Error?) -> Bool {
         if error != nil {
             return false
         }
-        
+        currentStreamFinished = true
         downloadWorker.resumeAllActive()
         return false
     }

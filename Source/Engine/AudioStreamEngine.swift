@@ -29,13 +29,13 @@
 //  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 //  THE SOFTWARE.
 
-import Foundation
 import AVFoundation
+import Foundation
 
 /**
  Start of the streaming chain. Get PCM buffer from lower chain and feed it to
  engine
- 
+
  Main responsibilities:
  POLL FOR BUFFER. When we start a stream it takes time for the lower chain to
  receive audio format. We don't know how long this would take. Therefore we poll
@@ -43,36 +43,35 @@ import AVFoundation
  seeked beyond pcm buffer, and down-chain buffer. We keep polling until we fill
  N buffers. If we stick to one buffer the audio sounds choppy because sometimes
  the parser takes longer than usual to parse a buffer
- 
+
  RECURSE FOR BUFFER. When we receive N buffers we switch to recursive mode. This
  means we only ask for the next buffer when one of the loaded buffers are
  used up. This is to prevent high CPU usage (100%) because otherwise we keep
  polling and parser keeps parsing even though the user is nowhere near that
  part of audio
- 
+
  UPDATES FOR UI. Duration, needle ticking, playing status, etc.
- 
+
  HANDLE PLAYING. Ensure the engine is in the correct state when playing,
  pausing, or seeking
  */
 class AudioStreamEngine: AudioEngine {
-    //Constants
-    private let MAX_POLL_BUFFER_COUNT = 300 //Having one buffer in engine at a time is choppy.
+    // Constants
+    private let MAX_POLL_BUFFER_COUNT = 300 // Having one buffer in engine at a time is choppy.
     private let MIN_BUFFERS_TO_BE_PLAYABLE = 1
     private var PCM_BUFFER_SIZE: AVAudioFrameCount = 8192
-    
+
     private let queue = DispatchQueue(label: "SwiftAudioPlayer.StreamEngine", qos: .userInitiated)
-    
-    //From init
+
+    // From init
     private var converter: AudioConvertable!
-    
-    //Fields
+
+    // Fields
     private var currentTimeOffset: TimeInterval = 0
     private var streamChangeListenerId: UInt?
-    
+
     private var numberOfBuffersScheduledInTotal = 0 {
         didSet {
-            
             Log.debug("number of buffers scheduled in total: \(numberOfBuffersScheduledInTotal)")
             if numberOfBuffersScheduledInTotal == 0 {
                 if playingStatus == .playing { wasPlaying = true }
@@ -83,21 +82,21 @@ class AudioStreamEngine: AudioEngine {
                 // propegate when it doesn't enough buffers while they were playing
                 // TODO: "Make this a legitimate warning to user about needing more data from stream"
             }
-            
-            if numberOfBuffersScheduledInTotal > MIN_BUFFERS_TO_BE_PLAYABLE && wasPlaying {
+
+            if numberOfBuffersScheduledInTotal > MIN_BUFFERS_TO_BE_PLAYABLE, wasPlaying {
                 wasPlaying = false
                 play()
             }
         }
     }
-    
+
     private var wasPlaying = false
     private var numberOfBuffersScheduledFromPoll = 0 {
         didSet {
             if numberOfBuffersScheduledFromPoll > MAX_POLL_BUFFER_COUNT {
                 shouldPollForNextBuffer = false
             }
-            
+
             if numberOfBuffersScheduledFromPoll > MIN_BUFFERS_TO_BE_PLAYABLE {
                 if wasPlaying {
                     play()
@@ -106,7 +105,7 @@ class AudioStreamEngine: AudioEngine {
             }
         }
     }
-    
+
     private var shouldPollForNextBuffer = true {
         didSet {
             if shouldPollForNextBuffer {
@@ -114,107 +113,106 @@ class AudioStreamEngine: AudioEngine {
             }
         }
     }
-    
-    //Prediction keeps fluctuating. We debounce to keep the UI from jitter
+
+    // Prediction keeps fluctuating. We debounce to keep the UI from jitter
     private var predictedStreamDurationDebounceHelper: Duration = 0
     private var predictedStreamDuration: Duration = 0 {
         didSet {
             let d = predictedStreamDuration
             let s = predictedStreamDurationDebounceHelper
-            if d/DEBOUNCING_BUFFER_TIME != s/DEBOUNCING_BUFFER_TIME {
+            if d / DEBOUNCING_BUFFER_TIME != s / DEBOUNCING_BUFFER_TIME {
                 predictedStreamDurationDebounceHelper = predictedStreamDuration
                 duration = predictedStreamDuration
             }
         }
     }
-    
+
     private var seekNeedleCommandBeforeEngineWasReady: Needle?
     private var isPlayable = false {
         didSet {
             if isPlayable != oldValue {
                 Log.info("isPlayable status changed: \(isPlayable)")
             }
-            
+
             if isPlayable, let needle = seekNeedleCommandBeforeEngineWasReady {
                 seekNeedleCommandBeforeEngineWasReady = nil
                 seek(toNeedle: needle)
             }
         }
     }
-    
-    init(withRemoteUrl url: AudioURL, delegate:AudioEngineDelegate?, bitrate: SAPlayerBitrate, engine: AVAudioEngine) {
+
+    init(withRemoteUrl url: AudioURL, delegate: AudioEngineDelegate?, bitrate: SAPlayerBitrate, engine: AVAudioEngine) {
         Log.info(url)
         super.init(url: url, delegate: delegate, engineAudioFormat: AudioEngine.defaultEngineAudioFormat, engine: engine)
-        
+
         switch bitrate {
         case .high:
             PCM_BUFFER_SIZE = 8192
         case .low:
             PCM_BUFFER_SIZE = 4096
         }
-        
+
         do {
             converter = try AudioConverter(withRemoteUrl: url, toEngineAudioFormat: AudioEngine.defaultEngineAudioFormat, withPCMBufferSize: PCM_BUFFER_SIZE)
         } catch {
             delegate?.didError()
         }
-        
+
         StreamingDownloadDirector.shared.setKey(key)
         StreamingDownloadDirector.shared.resetCache()
-        
-        streamChangeListenerId = StreamingDownloadDirector.shared.attach { [weak self] (progress) in
+
+        streamChangeListenerId = StreamingDownloadDirector.shared.attach { [weak self] _ in
             guard let self = self else { return }
 
             // polling for buffers when we receive data. This won't be throttled on fresh new audio or seeked audio but in all other cases it most likely will be throttled
             self.pollForNextBuffer() //  no buffer updates because thread issues if I try to update buffer status in streaming listener
         }
-        
-        
+
         let timeInterval = 1 / (converter.engineAudioFormat.sampleRate / Double(PCM_BUFFER_SIZE))
-        
+
         doRepeatedly(timeInterval: timeInterval) { [weak self] in
             guard let self = self else { return }
-            
+
             self.repeatedUpdates()
         }
     }
-    
+
     deinit {
         if let id = streamChangeListenerId {
             StreamingDownloadDirector.shared.detach(withID: id)
         }
     }
-    
+
     private func repeatedUpdates() {
-        self.pollForNextBuffer()
-        self.updateNetworkBufferRange() // thread issues if I try to update buffer status in streaming listener
-        self.updateNeedle()
-        self.updateIsPlaying()
-        self.updateDuration()
+        pollForNextBuffer()
+        updateNetworkBufferRange() // thread issues if I try to update buffer status in streaming listener
+        updateNeedle()
+        updateIsPlaying()
+        updateDuration()
     }
-    
-    //MARK:- Timer loop
-    
-    //Called when
-    //1. First time audio is finally parsed
-    //2. When we run to the end of the network buffer and we're waiting again
+
+    // MARK: - Timer loop
+
+    // Called when
+    // 1. First time audio is finally parsed
+    // 2. When we run to the end of the network buffer and we're waiting again
     private func pollForNextBuffer() {
         guard shouldPollForNextBuffer else { return }
-        
+
         pollForNextBufferRecursive()
     }
-    
+
     private func pollForNextBufferRecursive() {
         do {
             var nextScheduledBuffer: AVAudioPCMBuffer! = try converter.pullBuffer()
             numberOfBuffersScheduledFromPoll += 1
             numberOfBuffersScheduledInTotal += 1
-            
+
             Log.debug("processed buffer for engine of frame length \(nextScheduledBuffer.frameLength)")
             queue.async { [weak self] in
                 if #available(iOS 11.0, tvOS 11.0, *) {
                     // to make sure the pcm buffers are properly free'd from memory we need to nil them after the player has used them
-                    self?.playerNode.scheduleBuffer(nextScheduledBuffer, completionCallbackType: .dataConsumed, completionHandler: { (_) in
+                    self?.playerNode.scheduleBuffer(nextScheduledBuffer, completionCallbackType: .dataConsumed, completionHandler: { _ in
                         nextScheduledBuffer = nil
                         self?.numberOfBuffersScheduledInTotal -= 1
                         self?.pollForNextBufferRecursive()
@@ -227,8 +225,8 @@ class AudioStreamEngine: AudioEngine {
                     }
                 }
             }
-            
-            //TODO: re-do how to pass and log these errors
+
+            // TODO: re-do how to pass and log these errors
         } catch ConverterError.reachedEndOfFile {
             Log.info(ConverterError.reachedEndOfFile.localizedDescription)
         } catch ConverterError.notEnoughData {
@@ -239,40 +237,41 @@ class AudioStreamEngine: AudioEngine {
             Log.debug(error.localizedDescription)
         }
     }
-    
-    private func updateNetworkBufferRange() { //for ui
+
+    private func updateNetworkBufferRange() { // for ui
         let range = converter.pollNetworkAudioAvailabilityRange()
         isPlayable = (numberOfBuffersScheduledInTotal >= MIN_BUFFERS_TO_BE_PLAYABLE && range.1 > 0) && predictedStreamDuration > 0
         Log.debug("loaded \(range), numberOfBuffersScheduledInTotal: \(numberOfBuffersScheduledInTotal), isPlayable: \(isPlayable)")
         bufferedSeconds = SAAudioAvailabilityRange(startingNeedle: range.0, durationLoadedByNetwork: range.1, predictedDurationToLoad: predictedStreamDuration, isPlayable: isPlayable)
     }
-    
+
     private func updateNeedle() {
         guard engine.isRunning else { return }
-        
+
         guard let nodeTime = playerNode.lastRenderTime,
-            let playerTime = playerNode.playerTime(forNodeTime: nodeTime) else {
-                return
+              let playerTime = playerNode.playerTime(forNodeTime: nodeTime)
+        else {
+            return
         }
-        
-        //NOTE: playerTime can sometimes be < 0 when seeking. Reason pasted below
-        //"The usual AVAudioNode sample times (as observed by lastRenderTime ) have an arbitrary zero point.
-        //AVAudioPlayerNode superimposes a second “player timeline” on top of this, to reflect when the
-        //player was started, and intervals during which it was paused."
+
+        // NOTE: playerTime can sometimes be < 0 when seeking. Reason pasted below
+        // "The usual AVAudioNode sample times (as observed by lastRenderTime ) have an arbitrary zero point.
+        // AVAudioPlayerNode superimposes a second “player timeline” on top of this, to reflect when the
+        // player was started, and intervals during which it was paused."
         var currentTime = TimeInterval(playerTime.sampleTime) / playerTime.sampleRate
         currentTime = currentTime > 0 ? currentTime : 0
-        
+
         needle = (currentTime + currentTimeOffset)
     }
-    
+
     private func updateDuration() {
         if let d = converter.pollPredictedDuration() {
-            self.predictedStreamDuration = d
+            predictedStreamDuration = d
         }
     }
-    
-    
-    //MARK:- Overriden From Parent
+
+    // MARK: - Overriden From Parent
+
     override func seek(toNeedle needle: Needle) {
         Log.info("didSeek to needle: \(needle)")
 
@@ -284,21 +283,21 @@ class AudioStreamEngine: AudioEngine {
             return
         }
 
-        guard needle < (ceil(predictedStreamDuration)) else {
+        guard needle < ceil(predictedStreamDuration) else {
             if !isPlayable {
                 seekNeedleCommandBeforeEngineWasReady = needle
             }
             Log.error("tried to seek beyond duration")
             return
         }
-        
-        self.needle = needle //to tick while paused
-        
+
+        self.needle = needle // to tick while paused
+
         queue.sync { [weak self] in
             self?.seekHelperDispatchQueue(needle: needle)
         }
     }
-    
+
     /**
      The UI would freeze when we tried to call playerNode.stop() while
      simultaneously filling a buffer on another thread. Solution was to put
@@ -306,45 +305,45 @@ class AudioStreamEngine: AudioEngine {
      */
     private func seekHelperDispatchQueue(needle: Needle) {
         wasPlaying = playerNode.isPlaying
-        
-        //NOTE: Order matters
-        //seek needs to be called before stop
-        //Why? Stop will clear all buffers. Each buffer being cleared
-        //will call the callback which then fills the buffers with things to the
-        //right of the needle. If the order of these two were reversed we would
-        //schedule things to the right of the old needle then actually schedule everything
-        //after the new needle
-        //We also need to poll right after the seek to give us more buffers
+
+        // NOTE: Order matters
+        // seek needs to be called before stop
+        // Why? Stop will clear all buffers. Each buffer being cleared
+        // will call the callback which then fills the buffers with things to the
+        // right of the needle. If the order of these two were reversed we would
+        // schedule things to the right of the old needle then actually schedule everything
+        // after the new needle
+        // We also need to poll right after the seek to give us more buffers
         converter.seek(needle)
         currentTimeOffset = TimeInterval(needle)
-        
+
         playerNode.stop()
-        
+
         shouldPollForNextBuffer = true
-        
+
         updateNetworkBufferRange()
     }
-    
+
     override func pause() {
         queue.async { [weak self] in
             self?.pauseHelperDispatchQueue()
         }
     }
-    
+
     private func pauseHelperDispatchQueue() {
         super.pause()
     }
-    
+
     override func play() {
         queue.async { [weak self] in
             self?.playHelperDispatchQueue()
         }
     }
-    
+
     private func playHelperDispatchQueue() {
         super.play()
     }
-    
+
     override func invalidate() {
         queue.sync { [weak self] in
             self?.invalidateHelperDispatchQueue()

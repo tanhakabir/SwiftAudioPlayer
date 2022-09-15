@@ -23,21 +23,19 @@
 //  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 //  THE SOFTWARE.
 
-
 import Foundation
-
 
 struct StreamProgressPTO {
     let dto: StreamProgressDTO
-    
+
     func getProgress() -> Double {
         return dto.progress
     }
-    
+
     func getData() -> Data {
         return dto.data
     }
-    
+
     func getTotalBytesExpected() -> Int64? {
         return dto.totalBytesExpected
     }

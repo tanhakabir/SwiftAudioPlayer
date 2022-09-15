@@ -25,7 +25,7 @@
 
 import Foundation
 
-//Just a helper because it got too messy
+// Just a helper because it got too messy
 struct StreamProgressDTO {
     let progress: Double
     let data: Data

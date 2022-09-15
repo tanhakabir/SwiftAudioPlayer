@@ -40,7 +40,7 @@ public struct SALockScreenInfo {
     var albumTitle: String?
     var artwork: UIImage?
     var releaseDate: UTC
-    
+
     public init(title: String, artist: String, albumTitle: String?, artwork: UIImage?, releaseDate: UTC) {
         self.title = title
         self.artist = artist
@@ -50,7 +50,6 @@ public struct SALockScreenInfo {
     }
 }
 
-
 /**
  Use to add audio to be queued for playback.
  */
@@ -59,10 +58,10 @@ public struct SAAudioQueueItem {
     public var url: URL
     public var mediaInfo: SALockScreenInfo?
     public var bitrate: SAPlayerBitrate
-    
+
     /**
      Use to add audio to be queued for playback.
-     
+
      - Parameter loc: If the URL for the file is remote or saved on device.
      - Parameter url: URL of audio to be queued
      - Parameter mediaInfo: Relevant lockscreen media info for the queued audio.
@@ -74,7 +73,7 @@ public struct SAAudioQueueItem {
         self.mediaInfo = mediaInfo
         self.bitrate = bitrate
     }
-    
+
     /**
      Where the queued audio is sourced. Remote to be streamed or locally saved on device.
      */

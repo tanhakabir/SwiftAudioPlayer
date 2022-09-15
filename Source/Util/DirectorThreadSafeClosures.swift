@@ -25,26 +25,23 @@
 
 import Foundation
 
-
 /**
  P for payload
  */
-class DirectorThreadSafeClosures<P>  {
+class DirectorThreadSafeClosures<P> {
     typealias TypeClosure = (P) throws -> Void
-    private var queue: DispatchQueue = DispatchQueue(label: "SwiftAudioPlayer.thread_safe_map", attributes: .concurrent)
+    private var queue: DispatchQueue = .init(label: "SwiftAudioPlayer.thread_safe_map", attributes: .concurrent)
     private var closures: [UInt: TypeClosure] = [:]
-    private var cache: P? = nil
-    
+    private var cache: P?
+
     var count: Int {
-        get {
-            return closures.count
-        }
+        return closures.count
     }
-    
+
     func resetCache() {
         cache = nil
     }
-    
+
     func broadcast(payload: P) {
         queue.sync {
             self.cache = payload
@@ -58,13 +55,13 @@ class DirectorThreadSafeClosures<P>  {
             }
         }
     }
-    
-    //UInt is actually 64-bits on modern devices
+
+    // UInt is actually 64-bits on modern devices
     func attach(closure: @escaping TypeClosure) -> UInt {
         let id: UInt = Date.getUTC64()
-        
-        //The director may not yet have the status yet. We should only call the closure if we have it
-        //Let the caller know the immediate value. If it's dead already then stop
+
+        // The director may not yet have the status yet. We should only call the closure if we have it
+        // Let the caller know the immediate value. If it's dead already then stop
         if let val = cache {
             do {
                 try closure(val)
@@ -72,30 +69,30 @@ class DirectorThreadSafeClosures<P>  {
                 return id
             }
         }
-        
-        //Replace what's in the map with the new closure
+
+        // Replace what's in the map with the new closure
         helperInsert(withKey: id, closure: closure)
-        
+
         return id
     }
-    
+
     func detach(id: UInt) {
         helperRemove(withKey: id)
     }
-    
+
     func clear() {
         queue.async(flags: .barrier) {
             self.closures.removeAll()
             self.cache = nil
         }
     }
-    
+
     private func helperRemove(withKey key: UInt) {
         queue.async(flags: .barrier) {
             self.closures[key] = nil
         }
     }
-    
+
     private func helperInsert(withKey key: UInt, closure: @escaping TypeClosure) {
         queue.async(flags: .barrier) {
             self.closures[key] = closure

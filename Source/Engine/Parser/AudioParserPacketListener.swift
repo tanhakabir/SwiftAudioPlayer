@@ -29,36 +29,35 @@
 //  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 //  THE SOFTWARE.
 
-import Foundation
 import AVFoundation
+import Foundation
 
 #if swift(>=5.3)
-func ParserPacketListener (_ context: UnsafeMutableRawPointer, _ byteCount: UInt32, _ packetCount: UInt32, _ streamData: UnsafeRawPointer, _ packetDescriptions: UnsafeMutablePointer<AudioStreamPacketDescription>?) {
-    parserPacket(context, byteCount, packetCount, streamData, packetDescriptions)
-}
+    func ParserPacketListener(_ context: UnsafeMutableRawPointer, _ byteCount: UInt32, _ packetCount: UInt32, _ streamData: UnsafeRawPointer, _ packetDescriptions: UnsafeMutablePointer<AudioStreamPacketDescription>?) {
+        parserPacket(context, byteCount, packetCount, streamData, packetDescriptions)
+    }
 
 #else
-func ParserPacketListener (_ context: UnsafeMutableRawPointer, _ byteCount: UInt32, _ packetCount: UInt32, _ streamData: UnsafeRawPointer, _ packetDescriptions: UnsafeMutablePointer<AudioStreamPacketDescription>) {
-    parserPacket(context, byteCount, packetCount, streamData, packetDescriptions)
-}
+    func ParserPacketListener(_ context: UnsafeMutableRawPointer, _ byteCount: UInt32, _ packetCount: UInt32, _ streamData: UnsafeRawPointer, _ packetDescriptions: UnsafeMutablePointer<AudioStreamPacketDescription>) {
+        parserPacket(context, byteCount, packetCount, streamData, packetDescriptions)
+    }
 #endif
 
-func parserPacket(_ context: UnsafeMutableRawPointer, _ byteCount: UInt32, _ packetCount: UInt32, _ streamData: UnsafeRawPointer, _ packetDescriptions: UnsafeMutablePointer<AudioStreamPacketDescription>?){
-    
+func parserPacket(_ context: UnsafeMutableRawPointer, _: UInt32, _ packetCount: UInt32, _ streamData: UnsafeRawPointer, _ packetDescriptions: UnsafeMutablePointer<AudioStreamPacketDescription>?) {
     let selfAudioParser = Unmanaged<AudioParser>.fromOpaque(context).takeUnretainedValue()
-    
+
     guard let fileAudioFormat = selfAudioParser.fileAudioFormat else {
         Log.monitor("should not have reached packet listener without a data format")
         return
     }
-    
+
     guard selfAudioParser.shouldPreventPacketFromFillingUp == false else {
         Log.error("skipping parsing packets because of seek")
         return
     }
-    
-    //TODO refactor this after we get it working
-    if let compressedPacketDescriptions = packetDescriptions {  // is compressed audio (.mp3)
+
+    // TODO: refactor this after we get it working
+    if let compressedPacketDescriptions = packetDescriptions { // is compressed audio (.mp3)
         Log.debug("compressed audio")
         for i in 0 ..< Int(packetCount) {
             let audioPacketDescription = compressedPacketDescriptions[i]
@@ -78,5 +77,4 @@ func parserPacket(_ context: UnsafeMutableRawPointer, _ byteCount: UInt32, _ pac
             selfAudioParser.append(description: nil, data: audioPacketData)
         }
     }
-    
 }

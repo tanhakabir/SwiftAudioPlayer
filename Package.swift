@@ -6,13 +6,14 @@ import PackageDescription
 let package = Package(
     name: "SwiftAudioPlayer",
     platforms: [
-        .iOS(.v10), .tvOS(.v10)
+        .iOS(.v10), .tvOS(.v10),
     ],
     products: [
         // Products define the executables and libraries a package produces, and make them visible to other packages.
         .library(
             name: "SwiftAudioPlayer",
-            targets: ["SwiftAudioPlayer"])
+            targets: ["SwiftAudioPlayer"]
+        ),
     ],
     dependencies: [
         // Dependencies declare other packages that this package depends on.
@@ -24,7 +25,7 @@ let package = Package(
         .target(
             name: "SwiftAudioPlayer",
             path: "Source"
-        )
+        ),
     ],
     swiftLanguageVersions: [.v5]
 )

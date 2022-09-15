@@ -32,6 +32,6 @@ typealias AudioURL = URL
 typealias IsPlaying = Bool
 typealias ID = String
 
-typealias NameFile = String //Should have last path component (.mp3)
+typealias NameFile = String // Should have last path component (.mp3)
 
 let DEBOUNCING_BUFFER_TIME: Double = 1.0

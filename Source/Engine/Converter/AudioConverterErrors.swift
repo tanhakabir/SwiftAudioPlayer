@@ -29,16 +29,15 @@
 //  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 //  THE SOFTWARE.
 
-import Foundation
-import AVFoundation
 import AudioToolbox
+import AVFoundation
+import Foundation
 
-
-let ReaderReachedEndOfDataError: OSStatus = 932332581
-let ReaderNotEnoughDataError: OSStatus = 932332582
-let ReaderMissingSourceFormatError: OSStatus = 932332583
-let ReaderMissingParserError: OSStatus = 932332584
-let ReaderShouldNotHappenError: OSStatus = 932332585
+let ReaderReachedEndOfDataError: OSStatus = 932_332_581
+let ReaderNotEnoughDataError: OSStatus = 932_332_582
+let ReaderMissingSourceFormatError: OSStatus = 932_332_583
+let ReaderMissingParserError: OSStatus = 932_332_584
+let ReaderShouldNotHappenError: OSStatus = 932_332_585
 
 public enum ConverterError: LocalizedError {
     case cannotLockQueue
@@ -53,13 +52,13 @@ public enum ConverterError: LocalizedError {
     case superConcerningShouldNeverHappen
     case throttleParsingBuffersForEngine
     case failedToCreateParser
-    
+
     public var errorDescription: String? {
         switch self {
         case .cannotLockQueue:
             Log.warn("Failed to lock queue")
             return "Failed to lock queue"
-        case .converterFailed(let status):
+        case let .converterFailed(status):
             Log.warn(localizedDescriptionFromConverterError(status))
             return localizedDescriptionFromConverterError(status)
         case .failedToCreateDestinationFormat:
@@ -77,7 +76,7 @@ public enum ConverterError: LocalizedError {
         case .reachedEndOfFile:
             Log.warn("Reached the end of the file")
             return "Reached the end of the file"
-        case .unableToCreateConverter(let status):
+        case let .unableToCreateConverter(status):
             return localizedDescriptionFromConverterError(status)
         case .superConcerningShouldNeverHappen:
             Log.warn("Weird unexpected reader error. Should not have happened")
@@ -93,7 +92,7 @@ public enum ConverterError: LocalizedError {
             return "Could not create a parser"
         }
     }
-    
+
     func localizedDescriptionFromConverterError(_ status: OSStatus) -> String {
         switch status {
         case kAudioConverterErr_FormatNotSupported:

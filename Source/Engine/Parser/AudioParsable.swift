@@ -29,28 +29,27 @@
 //  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 //  THE SOFTWARE.
 
-import Foundation
 import AVFoundation
+import Foundation
 
-protocol AudioParsable { //For the layer above us
-    var fileAudioFormat: AVAudioFormat? {get}
+protocol AudioParsable { // For the layer above us
+    var fileAudioFormat: AVAudioFormat? { get }
     var totalPredictedPacketCount: AVAudioPacketCount { get }
     func tellSeek(toIndex index: AVAudioPacketCount)
     func pollRangeOfSecondsAvailableFromNetwork() -> (Needle, Duration)
     func pullPacket(atIndex index: AVAudioPacketCount) throws -> (AudioStreamPacketDescription?, Data)
-    func invalidate() //deinit caused concurrency problems
+    func invalidate() // deinit caused concurrency problems
 }
 
-extension AudioParsable { //For the layer above us
+extension AudioParsable { // For the layer above us
     var predictedDuration: Duration? {
         guard let sampleRate = fileAudioFormat?.sampleRate else { return nil }
         guard let totalPredictedFrameCount = totalPredictedAudioFrameCount else { return nil }
-        return Duration(totalPredictedFrameCount)/Duration(sampleRate)
+        return Duration(totalPredictedFrameCount) / Duration(sampleRate)
     }
-    
-    
+
     var totalPredictedAudioFrameCount: AUAudioFrameCount? {
-        guard let framesPerPacket = fileAudioFormat?.streamDescription.pointee.mFramesPerPacket else {return nil }
+        guard let framesPerPacket = fileAudioFormat?.streamDescription.pointee.mFramesPerPacket else { return nil }
         return AVAudioFrameCount(totalPredictedPacketCount) * AVAudioFrameCount(framesPerPacket)
     }
 }

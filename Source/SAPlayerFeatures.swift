@@ -32,12 +32,12 @@ extension SAPlayer {
              - Precondition: The first audio modifier must be the default `AVAudioUnitTimePitch` that comes with the SAPlayer for this feature to work.
              - Important: If you want to change the rate of the overall player while having skip silences on, please use `SAPlayer.Features.SkipSilences.setRateSafely()` to properly set the rate of the player. Any rate changes to the player will be ignored while using Skip Silences otherwise.
              */
-            public static func enable() -> Bool {
-                guard let engine = SAPlayer.shared.engine else { return false }
+            public static func enable(on player: SAPlayer) -> Bool {
+                guard let engine = player.engine else { return false }
                 
                 Log.info("enabling skip silences feature")
                 enabled = true
-                originalRate = SAPlayer.shared.rate ?? 1.0
+                originalRate = player.rate ?? 1.0
                 let format = engine.mainMixerNode.outputFormat(forBus: 0)
                 
                 
@@ -59,11 +59,11 @@ extension SAPlayer {
                     let meterLevel = self.scaledPower(power: avgPower)
                     Log.debug("meterLevel: \(meterLevel)")
                     if meterLevel < 0.6 { // below 0.6 decibels is below audible audio
-                        SAPlayer.shared.rate = originalRate + 0.5
-                        Log.debug("speed up rate to \(String(describing: SAPlayer.shared.rate))")
+                        player.rate = originalRate + 0.5
+                        Log.debug("speed up rate to \(String(describing: player.rate))")
                     } else {
-                        SAPlayer.shared.rate = originalRate
-                        Log.debug("slow down rate to \(String(describing: SAPlayer.shared.rate))")
+                        player.rate = originalRate
+                        Log.debug("slow down rate to \(String(describing: player.rate))")
                     }
                 }
                 
@@ -75,11 +75,11 @@ extension SAPlayer {
              
              - Precondition: The first audio modifier must be the default `AVAudioUnitTimePitch` that comes with the SAPlayer for this feature to work.
              */
-            public static func disable() -> Bool {
-                guard let engine = SAPlayer.shared.engine else { return false }
+            public static func disable(on player: SAPlayer) -> Bool {
+                guard let engine = player.engine else { return false }
                 Log.info("disabling skip silences feature")
                 engine.mainMixerNode.removeTap(onBus: 0)
-                SAPlayer.shared.rate = originalRate
+                player.rate = originalRate
                 enabled = false
                 return true
             }
@@ -89,9 +89,9 @@ extension SAPlayer {
              
              - Important: The first audio modifier must be the default `AVAudioUnitTimePitch` that comes with the SAPlayer for this feature to work.
              */
-            public static func setRateSafely(_ rate: Float) {
+            public static func setRateSafely(_ rate: Float, on player: SAPlayer) {
                 originalRate = rate
-                SAPlayer.shared.rate = rate
+                player.rate = rate
             }
             
             private static func scaledPower(power: Float) -> Float {
@@ -118,9 +118,9 @@ extension SAPlayer {
              
              - Parameter afterDelay: The number of seconds to wait before pausing the audio
              */
-            public static func enable(afterDelay delay: Double) {
+            public static func enable(afterDelay delay: Double, on player: SAPlayer) {
                 timer = Timer.scheduledTimer(withTimeInterval: delay, repeats: false, block: { _ in
-                    SAPlayer.shared.pause()
+                    player.pause()
                 })
             }
             
@@ -142,15 +142,15 @@ extension SAPlayer {
             /**
              Enable feature to play the current playing audio on loop. This will continue until the feature is disabled. And this feature works for both remote and saved audio.
              */
-            public static func enable() {
+            public static func enable(on player: SAPlayer) {
                 enabled = true
                 
                 guard playingStatusId == nil else { return }
                 
                 playingStatusId = SAPlayer.Updates.PlayingStatus.subscribe({ (status) in
                     if status == .ended && enabled {
-                        SAPlayer.shared.seekTo(seconds: 0.0)
-                        SAPlayer.shared.play()
+                        player.seekTo(seconds: 0.0)
+                        player.play()
                     }
                 })
             }

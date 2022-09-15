@@ -25,11 +25,13 @@
 
 import Foundation
 import CoreMedia
+import AVFAudio
 
 protocol SAPlayerDelegate: AnyObject, LockScreenViewProtocol {
     var mediaInfo: SALockScreenInfo? { get set }
     var skipForwardSeconds: Double { get set }
     var skipBackwardSeconds: Double { get set }
+    var audioModifiers: [AVAudioUnit] { get }
     
     func startAudioDownloaded(withSavedUrl url: AudioURL)
     func startAudioStreamed(withRemoteUrl url: AudioURL, bitrate: SAPlayerBitrate)

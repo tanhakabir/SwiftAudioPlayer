@@ -72,10 +72,12 @@ class AudioStreamEngine: AudioEngine {
     
     private var numberOfBuffersScheduledInTotal = 0 {
         didSet {
+            
             Log.debug("number of buffers scheduled in total: \(numberOfBuffersScheduledInTotal)")
             if numberOfBuffersScheduledInTotal == 0 {
                 if playingStatus == .playing { wasPlaying = true }
-                pause()
+                // Pausing here triggers an odd state where, while downloading the audio the player will not resume playing when the first buffer is ready
+//                pause()
                 //                delegate?.didError()
                 // TODO: we should not have an error here. We should instead have the throttler
                 // propegate when it doesn't enough buffers while they were playing
@@ -140,9 +142,9 @@ class AudioStreamEngine: AudioEngine {
         }
     }
     
-    init(withRemoteUrl url: AudioURL, delegate:AudioEngineDelegate?, bitrate: SAPlayerBitrate) {
+    init(withRemoteUrl url: AudioURL, delegate:AudioEngineDelegate?, bitrate: SAPlayerBitrate, engine: AVAudioEngine) {
         Log.info(url)
-        super.init(url: url, delegate: delegate, engineAudioFormat: AudioEngine.defaultEngineAudioFormat)
+        super.init(url: url, delegate: delegate, engineAudioFormat: AudioEngine.defaultEngineAudioFormat, engine: engine)
         
         switch bitrate {
         case .high:

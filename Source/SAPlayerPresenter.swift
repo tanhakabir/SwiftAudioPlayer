@@ -23,140 +23,140 @@
 //  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 //  THE SOFTWARE.
 
-import Foundation
 import AVFoundation
+import Foundation
 import MediaPlayer
 
 class SAPlayerPresenter {
     weak var delegate: SAPlayerDelegate?
-    var shouldPlayImmediately = false //for auto-play
-    
+    var shouldPlayImmediately = false // for auto-play
+
     var needle: Needle?
     var duration: Duration?
-    
+
     private var key: String?
     private var isPlaying: SAPlayingStatus = .buffering
-    
+
     private var urlKeyMap: [Key: URL] = [:]
-    
+
     var durationRef: UInt = 0
     var needleRef: UInt = 0
     var playingStatusRef: UInt = 0
     var audioQueue: [SAAudioQueueItem] = []
-    
+
     init(delegate: SAPlayerDelegate?) {
         self.delegate = delegate
 
-        durationRef = AudioClockDirector.shared.attachToChangesInDuration(closure: { [weak self] (duration) in
+        durationRef = AudioClockDirector.shared.attachToChangesInDuration(closure: { [weak self] duration in
             guard let self = self else { throw DirectorError.closureIsDead }
-            
+
             self.delegate?.updateLockScreenPlaybackDuration(duration: duration)
             self.duration = duration
-            
+
             self.delegate?.setLockScreenInfo(withMediaInfo: self.delegate?.mediaInfo, duration: duration)
         })
-        
-        needleRef = AudioClockDirector.shared.attachToChangesInNeedle(closure: { [weak self] (needle) in
+
+        needleRef = AudioClockDirector.shared.attachToChangesInNeedle(closure: { [weak self] needle in
             guard let self = self else { throw DirectorError.closureIsDead }
-            
+
             self.needle = needle
             self.delegate?.updateLockScreenElapsedTime(needle: needle)
         })
-        
-        playingStatusRef = AudioClockDirector.shared.attachToChangesInPlayingStatus(closure: { [weak self] (isPlaying) in
+
+        playingStatusRef = AudioClockDirector.shared.attachToChangesInPlayingStatus(closure: { [weak self] isPlaying in
             guard let self = self else { throw DirectorError.closureIsDead }
-            
-            if(isPlaying == .paused && self.shouldPlayImmediately) {
+
+            if isPlaying == .paused, self.shouldPlayImmediately {
                 self.shouldPlayImmediately = false
                 self.handlePlay()
             }
-            
+
             // solves bug nil == owningEngine || GetEngine() == owningEngine where too many
             // ended statuses were notified to cause 2 engines to be initialized and causes an error.
-            // TODO don't need guard
+            // TODO: don't need guard
             guard isPlaying != self.isPlaying else { return }
             self.isPlaying = isPlaying
-            
-            if(self.isPlaying == .ended) {
+
+            if self.isPlaying == .ended {
                 self.playNextAudioIfExists()
             }
         })
     }
-    
+
     func getUrl(forKey key: Key) -> URL? {
         return urlKeyMap[key]
     }
-    
+
     func addUrlToKeyMap(_ url: URL) {
         urlKeyMap[url.key] = url
     }
-    
+
     func handleClear() {
         delegate?.clearEngine()
         AudioClockDirector.shared.resetCache()
-        
+
         needle = nil
         duration = nil
         key = nil
         delegate?.mediaInfo = nil
         delegate?.clearLockScreenInfo()
     }
-    
+
     func handlePlaySavedAudio(withSavedUrl url: URL) {
         resetCacheForNewAudio(url: url)
         delegate?.setLockScreenControls(presenter: self)
         delegate?.startAudioDownloaded(withSavedUrl: url)
     }
-    
+
     func handlePlayStreamedAudio(withRemoteUrl url: URL, bitrate: SAPlayerBitrate) {
         resetCacheForNewAudio(url: url)
         delegate?.setLockScreenControls(presenter: self)
         delegate?.startAudioStreamed(withRemoteUrl: url, bitrate: bitrate)
     }
-    
+
     private func resetCacheForNewAudio(url: URL) {
-        self.key = url.key
+        key = url.key
         urlKeyMap[url.key] = url
-        
+
         AudioClockDirector.shared.setKey(url.key)
         AudioClockDirector.shared.resetCache()
     }
-    
+
     func handleQueueStreamedAudio(withRemoteUrl url: URL, mediaInfo: SALockScreenInfo?, bitrate: SAPlayerBitrate) {
         audioQueue.append(SAAudioQueueItem(loc: .remote, url: url, mediaInfo: mediaInfo, bitrate: bitrate))
     }
-    
+
     func handleQueueSavedAudio(withSavedUrl url: URL, mediaInfo: SALockScreenInfo?) {
         audioQueue.append(SAAudioQueueItem(loc: .saved, url: url, mediaInfo: mediaInfo))
     }
-    
+
     func handleRemoveFirstQueuedItem() -> URL? {
         guard audioQueue.count != 0 else { return nil }
-        
+
         return audioQueue.remove(at: 0).url
     }
-    
+
     func handleClearQueued() -> [URL] {
         guard audioQueue.count != 0 else { return [] }
-        
+
         let urls = audioQueue.map { item in
-            return item.url
+            item.url
         }
-        
+
         audioQueue = []
         return urls
     }
-    
+
     func handleStopStreamingAudio() {
         delegate?.clearEngine()
         AudioClockDirector.shared.resetCache()
     }
 }
 
-//MARK:- Used by outside world including:
+// MARK: - Used by outside world including:
+
 // SPP, lock screen, directors
 extension SAPlayerPresenter {
-
     func handleTogglePlayingAndPausing() {
         if isPlaying == .playing {
             handlePause()
@@ -168,34 +168,34 @@ extension SAPlayerPresenter {
     func handleAudioRateChanged(rate: Float) {
         delegate?.updateLockScreenChangePlaybackRate(speed: rate)
     }
-    
+
     func handleScrubbingIntervalsChanged() {
         delegate?.updateLockScreenSkipIntervals()
     }
 }
 
-//MARK:- For lock screen
-extension SAPlayerPresenter : LockScreenViewPresenter {
-    
+// MARK: - For lock screen
+
+extension SAPlayerPresenter: LockScreenViewPresenter {
     func getIsPlaying() -> Bool {
         return isPlaying == .playing
     }
 
     func handlePlay() {
         delegate?.playEngine()
-        self.delegate?.updateLockScreenPlaying()
+        delegate?.updateLockScreenPlaying()
     }
 
     func handlePause() {
         delegate?.pauseEngine()
-        self.delegate?.updateLockScreenPaused()
+        delegate?.updateLockScreenPaused()
     }
 
     func handleSkipBackward() {
         guard let backward = delegate?.skipForwardSeconds else { return }
         handleSeek(toNeedle: (needle ?? 0) - backward)
     }
-    
+
     func handleSkipForward() {
         guard let forward = delegate?.skipForwardSeconds else { return }
         handleSeek(toNeedle: (needle ?? 0) + forward)
@@ -206,14 +206,20 @@ extension SAPlayerPresenter : LockScreenViewPresenter {
     }
 }
 
-//MARK:- AVAudioEngineDelegate
+// MARK: - AVAudioEngineDelegate
+
 extension SAPlayerPresenter: AudioEngineDelegate {
+    var audioModifiers: [AVAudioUnit] {
+        delegate?.audioModifiers ?? []
+    }
+
     func didError() {
         Log.monitor("We should have handled engine error")
     }
 }
 
-//MARK:- Autoplay
+// MARK: - Autoplay
+
 extension SAPlayerPresenter {
     func playNextAudioIfExists() {
         Log.info("looking foor next audio in queue to play")
@@ -225,20 +231,18 @@ extension SAPlayerPresenter {
 
         Log.info("getting ready to play \(nextAudioURL)")
         AudioQueueDirector.shared.changeInQueue(url: nextAudioURL.url)
-        
+
         handleClear()
-        
+
         delegate?.mediaInfo = nextAudioURL.mediaInfo
-        
+
         switch nextAudioURL.loc {
         case .remote:
             handlePlayStreamedAudio(withRemoteUrl: nextAudioURL.url, bitrate: nextAudioURL.bitrate)
-            break
         case .saved:
             handlePlaySavedAudio(withSavedUrl: nextAudioURL.url)
-            break
         }
-        
+
         shouldPlayImmediately = true
     }
 }

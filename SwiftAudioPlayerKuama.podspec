@@ -7,9 +7,9 @@
 #
 
 Pod::Spec.new do |s|
-  s.name             = 'SwiftAudioPlayer'
-  s.version          = '7.6.0'
-  s.summary          = 'SwiftAudioPlayer is a Swift based audio player that can handle streaming from a remote location and audio manipulation.'
+  s.name             = 'SwiftAudioPlayerKuama'
+  s.version          = '7.6.2'
+  s.summary          = 'Temporary SwiftAudioPlayer no-singletone implementation.'
 
 # This description is used to generate tags and improve search results.
 #   * Think: What does it do? Why did you write it? What is the focus?
@@ -21,11 +21,11 @@ Pod::Spec.new do |s|
 SwiftAudioPlayer is a Swift based audio player that can handle streaming from a remote location and audio manipulation. It can perform actions like playing audio up to 32x playback rate on streamed audio.
                        DESC
 
-  s.homepage         = 'https://github.com/tanhakabir/SwiftAudioPlayer'
+  s.homepage         = 'https://github.com/Kuama-IT/SwiftAudioPlayer.git'
   # s.screenshots     = 'www.example.com/screenshots_1', 'www.example.com/screenshots_2'
   s.license          = { :type => 'MIT', :file => 'LICENSE' }
   s.author           = { 'tanhakabir' => 'tanhakabir.ca@gmail.com', 'JonMercer' => 'mercer.jon@gmail.com' }
-  s.source           = { :git => 'https://github.com/tanhakabir/SwiftAudioPlayer.git', :tag => s.version.to_s }
+  s.source           = { :git => 'https://github.com/Kuama-IT/SwiftAudioPlayer.git', :tag => s.version.to_s }
   s.social_media_url = 'https://twitter.com/_tanhakabir'
 
   s.platforms = { :ios => '10.0', :tvos => '10.0' }

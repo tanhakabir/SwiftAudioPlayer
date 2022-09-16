@@ -29,20 +29,20 @@
 //  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 //  THE SOFTWARE.
 
-import Foundation
 import AVFoundation
+import Foundation
 
 enum ParserError: LocalizedError {
     case couldNotOpenStream
     case failedToParseBytes(OSStatus)
     case notEnoughDataForReader
     case readerAskingBeyondEndOfFile
-    
+
     var errorDescription: String? {
         switch self {
         case .couldNotOpenStream:
             return "Could not open stream for parsing"
-        case .failedToParseBytes(let status):
+        case let .failedToParseBytes(status):
             return localizedDescriptionFromParseError(status)
         case .notEnoughDataForReader:
             return "Not enough data for reader. Will attemp to seek"
@@ -50,7 +50,7 @@ enum ParserError: LocalizedError {
             return "Reader asking for packets beyond the end of file"
         }
     }
-    
+
     func localizedDescriptionFromParseError(_ status: OSStatus) -> String {
         switch status {
         case kAudioFileStreamError_UnsupportedFileType:
@@ -79,10 +79,9 @@ enum ParserError: LocalizedError {
     }
 }
 
-
 /// This extension just helps us print out the name of an `AudioFileStreamPropertyID`. Purely for debugging and not essential to the main functionality of the parser.
-extension AudioFileStreamPropertyID {
-    public var description: String {
+public extension AudioFileStreamPropertyID {
+    var description: String {
         switch self {
         case kAudioFileStreamProperty_ReadyToProducePackets:
             return "Ready to produce packets"

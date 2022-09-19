@@ -63,7 +63,7 @@ class AudioStreamEngine: AudioEngine {
     
     private let queue = DispatchQueue(label: "SwiftAudioPlayer.StreamEngine", qos: .userInitiated)
     
-    //From init
+    // From init
     private var converter: AudioConvertable!
     
     //Fields
@@ -162,7 +162,7 @@ class AudioStreamEngine: AudioEngine {
         
         streamChangeListenerId = StreamingDownloadDirector.shared.attach { [weak self] (progress) in
             guard let self = self else { return }
-
+            
             // polling for buffers when we receive data. This won't be throttled on fresh new audio or seeked audio but in all other cases it most likely will be throttled
             self.pollForNextBuffer() //  no buffer updates because thread issues if I try to update buffer status in streaming listener
         }
@@ -203,6 +203,9 @@ class AudioStreamEngine: AudioEngine {
     }
     
     private func pollForNextBufferRecursive() {
+        if(!converter.initialized) {
+            return
+        }
         do {
             var nextScheduledBuffer: AVAudioPCMBuffer! = try converter.pullBuffer()
             numberOfBuffersScheduledFromPoll += 1
@@ -249,8 +252,8 @@ class AudioStreamEngine: AudioEngine {
         guard engine.isRunning else { return }
         
         guard let nodeTime = playerNode.lastRenderTime,
-            let playerTime = playerNode.playerTime(forNodeTime: nodeTime) else {
-                return
+              let playerTime = playerNode.playerTime(forNodeTime: nodeTime) else {
+            return
         }
         
         //NOTE: playerTime can sometimes be < 0 when seeking. Reason pasted below
@@ -273,7 +276,7 @@ class AudioStreamEngine: AudioEngine {
     //MARK:- Overriden From Parent
     override func seek(toNeedle needle: Needle) {
         Log.info("didSeek to needle: \(needle)")
-
+        
         // if not playable (data not loaded etc), duration could be zero.
         guard isPlayable else {
             if predictedStreamDuration == 0 {
@@ -281,7 +284,7 @@ class AudioStreamEngine: AudioEngine {
             }
             return
         }
-
+        
         guard needle < (ceil(predictedStreamDuration)) else {
             if !isPlayable {
                 seekNeedleCommandBeforeEngineWasReady = needle
@@ -349,7 +352,7 @@ class AudioStreamEngine: AudioEngine {
             self?.converter.invalidate()
         }
     }
-
+    
     private func invalidateHelperDispatchQueue() {
         super.invalidate()
     }

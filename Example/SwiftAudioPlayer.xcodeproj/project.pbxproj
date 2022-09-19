@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		04189FDC28D4B80A002FB779 /* shakerando.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 04189FDB28D4B80A002FB779 /* shakerando.mp3 */; };
 		167925E2C5C6ADCE11B754E1 /* Pods_SwiftAudioPlayer_Example.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 058F1591E417A3726F7843F4 /* Pods_SwiftAudioPlayer_Example.framework */; };
 		525488EF886AF0ADD5AB6CBC /* Pods_SwiftAudioPlayer_Tests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5EA58146EC63DA3BC72BCFD1 /* Pods_SwiftAudioPlayer_Tests.framework */; };
 		607FACD61AFB9204008FA782 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 607FACD51AFB9204008FA782 /* AppDelegate.swift */; };
@@ -29,6 +30,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		04189FDB28D4B80A002FB779 /* shakerando.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = shakerando.mp3; sourceTree = "<group>"; };
 		058F1591E417A3726F7843F4 /* Pods_SwiftAudioPlayer_Example.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_SwiftAudioPlayer_Example.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		0B7D1E6C00E83B4AF8AA1781 /* Pods-SwiftAudioPlayer_Tests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SwiftAudioPlayer_Tests.release.xcconfig"; path = "Pods/Target Support Files/Pods-SwiftAudioPlayer_Tests/Pods-SwiftAudioPlayer_Tests.release.xcconfig"; sourceTree = "<group>"; };
 		4B5DD2AE0B23A759D18926DC /* Pods-SwiftAudioPlayer_Example.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SwiftAudioPlayer_Example.release.xcconfig"; path = "Pods/Target Support Files/Pods-SwiftAudioPlayer_Example/Pods-SwiftAudioPlayer_Example.release.xcconfig"; sourceTree = "<group>"; };
@@ -106,6 +108,7 @@
 		607FACD21AFB9204008FA782 /* Example for SwiftAudioPlayer */ = {
 			isa = PBXGroup;
 			children = (
+				04189FDB28D4B80A002FB779 /* shakerando.mp3 */,
 				607FACD51AFB9204008FA782 /* AppDelegate.swift */,
 				607FACD71AFB9204008FA782 /* ViewController.swift */,
 				A470FEE1260303DA00F135FF /* Model.swift */,
@@ -215,12 +218,12 @@
 				TargetAttributes = {
 					607FACCF1AFB9204008FA782 = {
 						CreatedOnToolsVersion = 6.3.1;
-						DevelopmentTeam = H9Y26B6GZB;
+						DevelopmentTeam = 666D2FP3SY;
 						LastSwiftMigration = 1120;
 					};
 					607FACE41AFB9204008FA782 = {
 						CreatedOnToolsVersion = 6.3.1;
-						DevelopmentTeam = H9Y26B6GZB;
+						DevelopmentTeam = 666D2FP3SY;
 						LastSwiftMigration = 1120;
 						TestTargetID = 607FACCF1AFB9204008FA782;
 					};
@@ -250,6 +253,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				04189FDC28D4B80A002FB779 /* shakerando.mp3 in Resources */,
 				607FACDB1AFB9204008FA782 /* Main.storyboard in Resources */,
 				607FACE01AFB9204008FA782 /* LaunchScreen.xib in Resources */,
 				607FACDD1AFB9204008FA782 /* Images.xcassets in Resources */,
@@ -291,11 +295,11 @@
 			);
 			inputPaths = (
 				"${PODS_ROOT}/Target Support Files/Pods-SwiftAudioPlayer_Example/Pods-SwiftAudioPlayer_Example-frameworks.sh",
-				"${BUILT_PRODUCTS_DIR}/SwiftAudioPlayer/SwiftAudioPlayer.framework",
+				"${BUILT_PRODUCTS_DIR}/SwiftAudioPlayerKuama/SwiftAudioPlayerKuama.framework",
 			);
 			name = "[CP] Embed Pods Frameworks";
 			outputPaths = (
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SwiftAudioPlayer.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SwiftAudioPlayerKuama.framework",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -479,7 +483,7 @@
 			baseConfigurationReference = 65A66AB4C3016E8BB53FF3E0 /* Pods-SwiftAudioPlayer_Example.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				DEVELOPMENT_TEAM = H9Y26B6GZB;
+				DEVELOPMENT_TEAM = 666D2FP3SY;
 				INFOPLIST_FILE = SwiftAudioPlayer/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				MODULE_NAME = ExampleApp;
@@ -494,7 +498,7 @@
 			baseConfigurationReference = 4B5DD2AE0B23A759D18926DC /* Pods-SwiftAudioPlayer_Example.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				DEVELOPMENT_TEAM = H9Y26B6GZB;
+				DEVELOPMENT_TEAM = 666D2FP3SY;
 				INFOPLIST_FILE = SwiftAudioPlayer/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				MODULE_NAME = ExampleApp;
@@ -508,7 +512,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = BBD877782CC67FBCC7BF7532 /* Pods-SwiftAudioPlayer_Tests.debug.xcconfig */;
 			buildSettings = {
-				DEVELOPMENT_TEAM = H9Y26B6GZB;
+				DEVELOPMENT_TEAM = 666D2FP3SY;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(SDKROOT)/Developer/Library/Frameworks",
 					"$(inherited)",
@@ -530,7 +534,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 0B7D1E6C00E83B4AF8AA1781 /* Pods-SwiftAudioPlayer_Tests.release.xcconfig */;
 			buildSettings = {
-				DEVELOPMENT_TEAM = H9Y26B6GZB;
+				DEVELOPMENT_TEAM = 666D2FP3SY;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(SDKROOT)/Developer/Library/Frameworks",
 					"$(inherited)",

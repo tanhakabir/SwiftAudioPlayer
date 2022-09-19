@@ -6,7 +6,7 @@
 //  Copyright (c) 2019 tanhakabir. All rights reserved.
 //
 
-import SwiftAudioPlayer
+import SwiftAudioPlayerKuama
 import UIKit
 
 @UIApplicationMain

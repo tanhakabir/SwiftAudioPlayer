@@ -1,4 +1,4 @@
-import SwiftAudioPlayer
+import SwiftAudioPlayerKuama
 import XCTest
 
 class Tests: XCTestCase {

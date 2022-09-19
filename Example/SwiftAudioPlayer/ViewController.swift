@@ -7,7 +7,7 @@
 //
 
 import AVFoundation
-import SwiftAudioPlayer
+import SwiftAudioPlayerKuama
 import UIKit
 
 class ViewController: UIViewController {
@@ -86,6 +86,10 @@ class ViewController: UIViewController {
         player.DEBUG_MODE = true
         player1.DEBUG_MODE = true
         player2.DEBUG_MODE = true
+        
+        //player.startSavedAudio(withSavedUrl: Bundle.main.url(forResource: "shakerando.mp3", withExtension: "")!)
+        //player.startRemoteAudio(withRemoteUrl: longTrackUrl)
+        //player.play()
 
         isPlayable = false
 

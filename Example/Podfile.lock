@@ -1,16 +1,16 @@
 PODS:
-  - SwiftAudioPlayer (7.6.0)
+  - SwiftAudioPlayerKuama (7.6.2)
 
 DEPENDENCIES:
-  - SwiftAudioPlayer (from `../`)
+  - SwiftAudioPlayerKuama (from `../`)
 
 EXTERNAL SOURCES:
-  SwiftAudioPlayer:
+  SwiftAudioPlayerKuama:
     :path: "../"
 
 SPEC CHECKSUMS:
-  SwiftAudioPlayer: a546709faf47f3ab0cb59e41ba4432e6bb61db0a
+  SwiftAudioPlayerKuama: 9feeeb234358c2e0d52544ee727aedf317def515
 
-PODFILE CHECKSUM: 92c7367b33454536515e31bf5d93e792787f3f4a
+PODFILE CHECKSUM: 6e16afcb9ced10b4c910161bd0c5a63b4863cf2e
 
 COCOAPODS: 1.11.2

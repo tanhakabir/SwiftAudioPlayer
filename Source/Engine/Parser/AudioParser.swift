@@ -85,6 +85,7 @@ class AudioParser: AudioParsable {
 
     public var totalPredictedPacketCount: AVAudioPacketCount {
         if parsedAudioHeaderPacketCount != 0 {
+            print("reading from headers")
             // TODO: we should log the duration to the server for better user experience
             return max(AVAudioPacketCount(parsedAudioHeaderPacketCount), AVAudioPacketCount(audioPackets.count))
         }
@@ -98,7 +99,7 @@ class AudioParser: AudioParsable {
         let predictedCount = AVAudioPacketCount(Double(sizeOfFileInBytes) / bytesPerPacket)
 
         guard networkProgress != 1.0 else {
-            return max(AVAudioPacketCount(audioPackets.count), predictedCount)
+            return min(AVAudioPacketCount(audioPackets.count), predictedCount)
         }
 
         return predictedCount
@@ -120,7 +121,7 @@ class AudioParser: AudioParsable {
         }
     }
 
-    private let lockQueue = DispatchQueue(label: "SwiftAudioPlayer.Parser.packets.lock")
+    private let lockQueue = DispatchQueue(label: "SwiftAudioPlayer.Parser.packets.lock", qos: .userInteractive)
     var lastSentAudioPacketIndex = -1
 
     /**
@@ -141,6 +142,7 @@ class AudioParser: AudioParsable {
     }
 
     var isParsingComplete: Bool {
+        print("\(fileAudioFormat), predicted: \(totalPredictedPacketCount), pulled: \(audioPackets.count)")
         guard fileAudioFormat != nil else {
             return false
         }
@@ -190,12 +192,17 @@ class AudioParser: AudioParsable {
         // Check if we've reached the end of the packets. We have two scenarios:
         //     1. We've reached the end of the packet data and the file has been completely parsed
         //     2. We've reached the end of the data we currently have downloaded, but not the file
+        
         let packetIndex = index - indexSeekOffset
 
         var exception: ParserError?
         var packet: (AudioStreamPacketDescription?, Data) = (nil, Data())
-        lockQueue.sync {
+        lockQueue.sync { [weak self] in
+            guard let self = self else {
+                return
+            }
             if packetIndex >= self.audioPackets.count {
+                print("packetIndex: \(packetIndex), totPacketsCount: \(self.audioPackets.count)")
                 if isParsingComplete {
                     exception = ParserError.readerAskingBeyondEndOfFile
                     return
@@ -217,7 +224,10 @@ class AudioParser: AudioParsable {
     }
 
     private func determineIfMoreDataNeedsToBeParsed(index: AVAudioPacketCount) {
-        lockQueue.sync {
+        lockQueue.sync { [weak self] in
+            guard let self = self else {
+                return
+            }
             if index > self.audioPackets.count - self.MIN_PACKETS_TO_HAVE_AVAILABLE_BEFORE_THROTTLING_PARSING {
                 self.processNextDataPacket()
             }
@@ -227,7 +237,10 @@ class AudioParser: AudioParsable {
     func tellSeek(toIndex index: AVAudioPacketCount) {
         // Already within the processed audio packets. Ignore
         var isIndexValid = true
-        lockQueue.sync {
+        lockQueue.sync { [weak self] in
+            guard let self = self else {
+                return
+            }
             if self.indexSeekOffset <= index, index < self.audioPackets.count + Int(self.indexSeekOffset) {
                 isIndexValid = false
             }
@@ -303,8 +316,8 @@ class AudioParser: AudioParsable {
     }
 
     func append(description: AudioStreamPacketDescription?, data: Data) {
-        lockQueue.sync {
-            self.audioPackets.append((description, data))
+        lockQueue.sync { [weak self] in
+            self?.audioPackets.append((description, data))
         }
     }
 

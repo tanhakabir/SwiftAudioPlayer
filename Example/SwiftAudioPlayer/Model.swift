@@ -7,7 +7,7 @@
 //
 
 import Foundation
-import SwiftAudioPlayer
+import SwiftAudioPlayerKuama
 
 struct AudioInfo: Hashable {
     var index: Int = 0

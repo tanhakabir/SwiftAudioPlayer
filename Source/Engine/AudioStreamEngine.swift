@@ -121,7 +121,11 @@ class AudioStreamEngine: AudioEngine {
             let s = predictedStreamDurationDebounceHelper
             if d/DEBOUNCING_BUFFER_TIME != s/DEBOUNCING_BUFFER_TIME {
                 predictedStreamDurationDebounceHelper = predictedStreamDuration
-                duration = predictedStreamDuration
+                if AudioDataManager.shared.currentStreamFinished {
+                    duration = AudioDataManager.shared.currentStreamFinishedWithDuration
+                } else {
+                    duration = predictedStreamDuration
+                }
             }
         }
     }
@@ -245,7 +249,12 @@ class AudioStreamEngine: AudioEngine {
         let range = converter.pollNetworkAudioAvailabilityRange()
         isPlayable = (numberOfBuffersScheduledInTotal >= MIN_BUFFERS_TO_BE_PLAYABLE && range.1 > 0) && predictedStreamDuration > 0
         Log.debug("loaded \(range), numberOfBuffersScheduledInTotal: \(numberOfBuffersScheduledInTotal), isPlayable: \(isPlayable)")
-        bufferedSeconds = SAAudioAvailabilityRange(startingNeedle: range.0, durationLoadedByNetwork: range.1, predictedDurationToLoad: predictedStreamDuration, isPlayable: isPlayable)
+        if AudioDataManager.shared.currentStreamFinished {
+            AudioDataManager.shared.updateDuration(d: range.1);
+            bufferedSeconds = SAAudioAvailabilityRange(startingNeedle: range.0, durationLoadedByNetwork: range.1, predictedDurationToLoad: range.1, isPlayable: isPlayable)
+        } else {
+            bufferedSeconds = SAAudioAvailabilityRange(startingNeedle: range.0, durationLoadedByNetwork: range.1, predictedDurationToLoad: predictedStreamDuration, isPlayable: isPlayable)
+        }
     }
     
     private func updateNeedle() {
@@ -268,8 +277,13 @@ class AudioStreamEngine: AudioEngine {
     
     private func updateDuration() {
         if let d = converter.pollPredictedDuration() {
-            self.predictedStreamDuration = d
-        }
+             self.predictedStreamDuration = d
+             if AudioDataManager.shared.currentStreamFinished {
+                 self.predictedStreamDuration = AudioDataManager.shared.currentStreamFinishedWithDuration
+             } else {
+                 self.predictedStreamDuration = d
+             }
+         }
     }
     
     

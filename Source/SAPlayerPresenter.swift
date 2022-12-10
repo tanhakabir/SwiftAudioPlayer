@@ -192,7 +192,7 @@ extension SAPlayerPresenter : LockScreenViewPresenter {
     }
 
     func handleSkipBackward() {
-        guard let backward = delegate?.skipForwardSeconds else { return }
+        guard let backward = delegate?.skipBackwardSeconds else { return }
         handleSeek(toNeedle: (needle ?? 0) - backward)
     }
     
